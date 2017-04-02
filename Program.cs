@@ -24,7 +24,10 @@ namespace CorpusExplorer.Port.RProgramming.Api
       new MetaAction(),
       new CrossFrequencyAction(),
       new ConvertAction(),
-      new FilterAction()
+      new FilterAction(),
+      new NGramAction(),
+      new VocabularyComplexityAction(), 
+      new ReadingEaseAction(),
     };
 
     private static readonly AbstractImporter[] _importer =
@@ -32,7 +35,10 @@ namespace CorpusExplorer.Port.RProgramming.Api
       new ImporterCec5(),
       new ImporterCec6(),
       new ImporterDtaBf(),
-      new ImporterWeblicht()
+      new ImporterWeblicht(),
+      new ImporterClanChildes(),
+      new ImporterTreeTagger(),
+      new ImporterTnTTagger(), 
     };
 
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -81,7 +87,7 @@ namespace CorpusExplorer.Port.RProgramming.Api
 
     private static AbstractCorpusAdapter LoadCorpus(string path)
     {
-      var importer = _importer.FirstOrDefault(x => path.ToLower().EndsWith(x.FileExtension));
+      var importer = _importer.FirstOrDefault(x => x.Match(path));
       return importer?.Import(path);
     }
 

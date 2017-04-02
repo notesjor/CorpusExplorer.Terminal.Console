@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -55,15 +56,22 @@
     <Compile Include="Action\Frequency3Action.cs" />
     <Compile Include="Action\MetaAction.cs" />
     <Compile Include="Action\FilterAction.cs" />
+    <Compile Include="Action\NGramAction.cs" />
+    <Compile Include="Action\ReadingEaseAction.cs" />
+    <Compile Include="Action\VocabularyComplexityAction.cs" />
     <Compile Include="Exporter\Abstract\AbstractExporter.cs" />
     <Compile Include="Exporter\ExporterCec5.cs" />
     <Compile Include="Exporter\ExporterCec6.cs" />
     <Compile Include="Exporter\ExporterDtaBf.cs" />
     <Compile Include="Exporter\ExporterWeblicht.cs" />
+    <Compile Include="Importer\Abstract\AbstractTagger.cs" />
     <Compile Include="Importer\Abstract\AbstractImporter.cs" />
     <Compile Include="Importer\ImporterCec5.cs" />
     <Compile Include="Importer\ImporterCec6.cs" />
+    <Compile Include="Importer\ImporterClanChildes.cs" />
     <Compile Include="Importer\ImporterDtaBf.cs" />
+    <Compile Include="Importer\ImporterTnTTagger.cs" />
+    <Compile Include="Importer\ImporterTreeTagger.cs" />
     <Compile Include="Importer\ImporterWeblicht.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +80,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CorpusExplorer.Core\CorpusExplorer.Core.csproj">
+      <Project>{029FE5A6-9504-499A-9E0D-05754D44CBB1}</Project>
+      <Name>CorpusExplorer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CorpusExplorer.Sdk.Extern.Json\CorpusExplorer.Sdk.Extern.Json.csproj">
+      <Project>{DD54A9B0-80A9-4DD6-83A6-65359086CE18}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj">
       <Project>{6841C8CA-7C40-44C4-B5AA-FBC84FCB7293}</Project>
       <Name>CorpusExplorer.Sdk.Extern.Xml</Name>
