@@ -8,7 +8,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Importer
 {
   public class ImporterDtaBf : AbstractImporter
   {
-    public override string FileExtension => ".tcf.xml";
+    public override bool Match(string path) { return path.ToLower().EndsWith(".tct.xml"); }
 
     public override AbstractCorpusAdapter Import(string path)
     {

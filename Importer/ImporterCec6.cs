@@ -6,7 +6,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Importer
 {
   public class ImporterCec6 : AbstractImporter
   {
-    public override string FileExtension => ".cec6";
+    public override bool Match(string path) { return path.ToLower().EndsWith(".cec6"); }
     public override AbstractCorpusAdapter Import(string path) => CorpusAdapterWriteDirect.Create(path);
   }
 }

@@ -8,7 +8,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Importer
 {
   public class ImporterWeblicht : AbstractImporter
   {
-    public override string FileExtension => ".xml";
+    public override bool Match(string path) { return path.ToLower().EndsWith(".xml") && !path.ToLower().EndsWith(".tcf.xml"); }
 
     public override AbstractCorpusAdapter Import(string path)
     {

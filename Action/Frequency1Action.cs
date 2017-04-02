@@ -8,7 +8,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
   public class Frequency1Action : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> {"freq", "frequency", "freq1", "frequency1"};
+      => new HashSet<string> { "freq", "frequency", "freq1", "frequency1" };
 
     public override void Execute(Selection selection, IEnumerable<string> args)
     {
