@@ -59,11 +59,14 @@ namespace CorpusExplorer.Port.RProgramming.Api
 
     private static void Execute(string[] args)
     {
-      if (args == null || args.Length == 0)
-        return;
-
       CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
 
+      if (args == null || args.Length == 0)
+      {
+        PrintHelp();
+        return;
+      }
+      
       var corpus = LoadCorpus(args[0]);
       var selection = corpus?.ToSelection();
       if (selection == null || selection.CountToken == 0)
@@ -86,9 +89,9 @@ namespace CorpusExplorer.Port.RProgramming.Api
 
     private static AbstractCorpusAdapter LoadCorpus(string path)
     {
-      return path.StartsWith("annotate|")
+      return path.StartsWith("annotate#")
                ? LoadCorpusAnnotate(path)
-               : (path.StartsWith("import|")
+               : (path.StartsWith("import#")
                     ? LoadCorpusImport(path)
                     : null);
     }
@@ -101,7 +104,7 @@ namespace CorpusExplorer.Port.RProgramming.Api
       if (split.Count != 5)
         return null;
 
-      split.RemoveAt(0); // entfernt annotate|
+      split.RemoveAt(0); // entfernt annotate#
       if (!scrapers.ContainsKey(split[0]))
         return null;
 
@@ -140,7 +143,7 @@ namespace CorpusExplorer.Port.RProgramming.Api
       if (split.Count < 3)
         return null;
 
-      split.RemoveAt(0); // entfernt import|
+      split.RemoveAt(0); // entfernt import#
       if (!importers.ContainsKey(split[0]))
         return null;
 
@@ -165,6 +168,43 @@ namespace CorpusExplorer.Port.RProgramming.Api
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
       Execute(args);
+    }
+
+    private static void PrintHelp()
+    {
+      Console.WriteLine("CorpusExplorer v2.0");
+      Console.WriteLine("Copyright 2013-2017 by Jan Oliver Rüdiger");
+      Console.WriteLine();
+      Console.WriteLine("ceRport.exe [INPUT] [TASK]");
+      Console.WriteLine();
+      Console.WriteLine("[INPUT]");
+      Console.WriteLine("Available importer:");
+
+      var importer = Configuration.AddonImporters.GetDictionary();
+      foreach (var x in importer)
+      {
+        Console.WriteLine($"ceRport.exe import#{x.Key}#[FILES] [TASK]");
+      }
+      var scraper = Configuration.AddonScrapers.GetDictionary();
+      Console.WriteLine("Available scraper:");
+      foreach (var x in scraper)
+      {
+        Console.WriteLine($"ceRport.exe annotate#{x.Key}#[TAGGER]#[LANGUAGE]#[DIRECTORY] [TASK]");
+      }
+      var tagger = Configuration.AddonTaggers.GetDictionary();
+      Console.WriteLine("Available tagger & languages:");
+      foreach (var x in tagger)
+      {
+        Console.WriteLine($"ceRport.exe annotate#[SCRAPER]#{x.Key}#[LANGUAGE]#[DIRECTORY] [TASK]");
+        Console.WriteLine($"supported languages: {string.Join(", ", x.Value.LanguagesAvailabel)}");
+      }
+      var exporter = Configuration.AddonExporters.GetDictionary();
+      Console.WriteLine("Available exporters (convert / query):");
+      foreach (var x in exporter)
+      {
+        Console.WriteLine($"ceRport.exe [INPUT] convert {x.Key}#[FILE]");
+        Console.WriteLine($"ceRport.exe [INPUT] query [QUERY] {x.Key}#[FILE]");
+      }
     }
   }
 }
