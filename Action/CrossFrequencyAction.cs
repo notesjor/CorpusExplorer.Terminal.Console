@@ -7,7 +7,8 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
 {
   public class CrossFrequencyAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels => new HashSet<string> {"cfreq", "cross-frequency", "crossfrequency" };
+    protected override HashSet<string> MatchActionLabels
+      => new HashSet<string> {"cfreq", "cross-frequency", "crossfrequency"};
 
     public override void Execute(Selection selection, IEnumerable<string> args)
     {

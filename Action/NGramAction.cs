@@ -9,7 +9,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
   public class NGramAction : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "ngram", "n-gram" };
+      => new HashSet<string> {"ngram", "n-gram"};
 
     public override void Execute(Selection selection, IEnumerable<string> args)
     {

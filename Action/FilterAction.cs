@@ -3,8 +3,6 @@ using System.Linq;
 using CorpusExplorer.Port.RProgramming.Api.Action.Abstract;
 using CorpusExplorer.Port.RProgramming.Api.Action.Filter;
 using CorpusExplorer.Port.RProgramming.Api.Action.Filter.Abstract;
-using CorpusExplorer.Port.RProgramming.Api.Exporter;
-using CorpusExplorer.Port.RProgramming.Api.Exporter.Abstract;
 using CorpusExplorer.Sdk.Model;
 
 namespace CorpusExplorer.Port.RProgramming.Api.Action
@@ -16,14 +14,14 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
       new ActionFilterFulltextAny(),
       new ActionFilterFulltextInDocument(),
       new ActionFilterFulltextExactPhrase(),
-      new ActionFilterFulltextInSentence(),      
+      new ActionFilterFulltextInSentence(),
       new ActionFilterFulltextRegex(),
       new ActionFilterMetaContains(),
       new ActionFilterMetaRegex()
     };
 
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "query", "filter", "select", "snapshot" };
+      => new HashSet<string> {"query", "filter", "select", "snapshot"};
 
     public override void Execute(Selection selection, IEnumerable<string> args)
     {
@@ -43,8 +41,8 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
       if (sub == null || sub.CountToken == 0)
         return;
 
-      var export = new ConvertAction();
-      export.Execute(sub, new[] { output });
+      var export = new OutputAction();
+      export.Execute(sub, new[] {output});
     }
   }
 }

@@ -9,7 +9,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action.Filter
 {
   public class ActionFilterFulltextExactPhrase : AbstractActionFilter
   {
-    public override HashSet<string> Operator => new HashSet<string> { "phrase", "!phrase" };
+    public override HashSet<string> Operator => new HashSet<string> {"phrase", "!phrase"};
     public override string Request => "text";
 
     public override Selection Execute(Selection selection, string @operator, string target, string query)
@@ -21,7 +21,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action.Filter
           {
             Inverse = @operator.StartsWith("!"),
             LayerDisplayname = target,
-            LayerQueries = query.Split(new[] {"|", ",", ";"}, StringSplitOptions.RemoveEmptyEntries)
+            LayerQueries = query.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries)
           }
         });
     }

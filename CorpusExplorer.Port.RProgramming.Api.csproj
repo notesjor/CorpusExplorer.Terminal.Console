@@ -40,7 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action\Abstract\AbstractAction.cs" />
-    <Compile Include="Action\ConvertAction.cs" />
+    <Compile Include="Action\DocumentCountAction.cs" />
+    <Compile Include="Action\LayerNamesAction.cs" />
+    <Compile Include="Action\MetaCategoriesAction.cs" />
+    <Compile Include="Action\OutputAction.cs" />
     <Compile Include="Action\CooccurrenceAction.cs" />
     <Compile Include="Action\CrossFrequencyAction.cs" />
     <Compile Include="Action\Filter\Abstract\AbstractActionFilter.cs" />
@@ -58,21 +61,10 @@
     <Compile Include="Action\FilterAction.cs" />
     <Compile Include="Action\NGramAction.cs" />
     <Compile Include="Action\ReadingEaseAction.cs" />
+    <Compile Include="Action\SentenceCountAction.cs" />
+    <Compile Include="Action\TokenCountAction.cs" />
     <Compile Include="Action\VocabularyComplexityAction.cs" />
-    <Compile Include="Exporter\Abstract\AbstractExporter.cs" />
-    <Compile Include="Exporter\ExporterCec5.cs" />
-    <Compile Include="Exporter\ExporterCec6.cs" />
-    <Compile Include="Exporter\ExporterDtaBf.cs" />
-    <Compile Include="Exporter\ExporterWeblicht.cs" />
-    <Compile Include="Importer\Abstract\AbstractTagger.cs" />
-    <Compile Include="Importer\Abstract\AbstractImporter.cs" />
-    <Compile Include="Importer\ImporterCec5.cs" />
-    <Compile Include="Importer\ImporterCec6.cs" />
-    <Compile Include="Importer\ImporterClanChildes.cs" />
-    <Compile Include="Importer\ImporterDtaBf.cs" />
-    <Compile Include="Importer\ImporterTnTTagger.cs" />
-    <Compile Include="Importer\ImporterTreeTagger.cs" />
-    <Compile Include="Importer\ImporterWeblicht.cs" />
+    <Compile Include="Helper\AvailableAddonHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

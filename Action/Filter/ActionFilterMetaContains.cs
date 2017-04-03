@@ -21,7 +21,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action.Filter
           {
             Inverse = @operator.StartsWith("!"),
             MetaLabel = target,
-            MetaValues = query.Split(new[] {"|", ",", ";"}, StringSplitOptions.RemoveEmptyEntries)
+            MetaValues = query.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries)
           }
         });
     }

@@ -10,11 +10,11 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
   public class ReadingEaseAction : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "rease", "readingease", "reading-ease", "r-ease" };
+      => new HashSet<string> {"rease", "readingease", "reading-ease", "r-ease"};
 
     public override void Execute(Selection selection, IEnumerable<string> args)
     {
-      var vm = new ReadingEaseViewModel { Selection = selection };
+      var vm = new ReadingEaseViewModel {Selection = selection};
       vm.Analyse();
       var table = vm.GetDataTable();
 

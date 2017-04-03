@@ -21,7 +21,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action.Filter
           {
             Inverse = @operator.StartsWith("!"),
             LayerDisplayname = target,
-            LayerQueries = query.Split(new[] {"|", ",", ";"}, StringSplitOptions.RemoveEmptyEntries)
+            LayerQueries = query.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries)
           }
         });
     }

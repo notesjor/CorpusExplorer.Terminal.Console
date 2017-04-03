@@ -10,11 +10,11 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
   public class VocabularyComplexityAction : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "vocac", "vocabularycomplexity", "vocabulary-complexity", "v-complexity" };
+      => new HashSet<string> {"vocac", "vocabularycomplexity", "vocabulary-complexity", "v-complexity"};
 
     public override void Execute(Selection selection, IEnumerable<string> args)
     {
-      var vm = new VocabularyComplexityViewModel { Selection = selection };
+      var vm = new VocabularyComplexityViewModel {Selection = selection};
       vm.Analyse();
       var table = vm.GetDataTable();
 
