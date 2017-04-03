@@ -1,5 +1,5 @@
 # CorpusExplorer-Port-R
-Erlaubt es, aus R oder über die Konsole auf den CorpusExplorer zuzugreifen.
+Erlaubt es, aus R oder über die Konsole auf den CorpusExplorer v2.0 (http://www.corpusexplorer.de) zuzugreifen.
 
 ## Voraussetzungen
 1. Installieren Sie den CorpusExplorer (http://www.bitcutstudios.com/products/corpusexplorer/standard/publish.htm)
@@ -7,7 +7,7 @@ Erlaubt es, aus R oder über die Konsole auf den CorpusExplorer zuzugreifen.
 3. (OPTIONAL) Installieren Sie eine aktuelle R-Version (http://ftp5.gwdg.de/pub/misc/cran/) WENN Sie den CorpusExplorer unter R nutzen möchten. Andernfalls können Sie auch auf die Windows-Konsole zurück greifen und die Programmausgabe mittels ">" in eine Datei (CSV) umleiten.
 
 ## Grundlegendes
-Der ceRport.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle installierten Erweiterungen für den CorpusExplorer sind nutzbar. Rufen Sie ceRport.exe über die Konsole ohne Parameter auf, dann erhalten Sie alle verfügbaren Scraper, Importer, Tagger und Exporter.
+Der ceRport.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle installierten Erweiterungen für den CorpusExplorer sind nutzbar. Rufen Sie ceRport.exe über die Konsole ohne Parameter auf, dann erhalten Sie alle verfügbaren Scraper, Importer, Tagger und Exporter. Erweiterungen für den CorpusExplorer finden Sie hier: http://notes.jan-oliver-ruediger.de/software/corpusexplorer-overview/corpusexplorer-v2-0/erweiterungen/
 
 Die Grundsyntax für den Konsolenaufruf lautet:
 ```SHELL
