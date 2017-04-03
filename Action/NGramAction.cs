@@ -13,9 +13,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
 
     public override void Execute(Selection selection, IEnumerable<string> args)
     {
-      var size = (from x in args where x.StartsWith("n:") select int.Parse(x.Replace("n:", ""))).FirstOrDefault();
-      if (size < 1)
-        size = 2;
+      var size = int.Parse(args.Last());
 
       var block = selection.CreateBlock<NgramPatternBlock>();
       block.NGramSizeMin = size;

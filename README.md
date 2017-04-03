@@ -7,14 +7,14 @@ Erlaubt es, dass R-Skripte auf den CorpusExplorer zugreifen...
 3. Laden Sie die aktuelle Version des R-Ports herunter und entpacken Sie die Dateien (http://bitcut.de/products/CorpusExplorer/addons/R-Language/CE-R-Port.zip)
 
 ## Grundlegendes
-ceRport.exe [CORPUSFILE] [TASK]
+cec.exe [CORPUSFILE] [TASK]
 - Bsp. für R: 
 ```R
-tbl <- read.table(pipe("ceRport.exe demo.cec5 frequency"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
+tbl <- read.table(pipe("cec.exe demo.cec5 frequency"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
 ```
 - Bsp. für Konsole zu CSV: 
 ```SHELL
-ceRport.exe demo.cec5 frequency > frequency.csv
+cec.exe demo.cec5 frequency > frequency.csv
 ```
 
 ### [CORPUSFILE]
@@ -36,7 +36,7 @@ Für TASK können folgenden Befehle genutzt werden:
 - query = Erlaubt es ein Korpus zu filtern und das Resultat zu speichern (siehe [QUERY])
 Bsp.:
 ```R
-tbl <- read.table(pipe("ceRport.exe demo.cec5 cooccurrence"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
+tbl <- read.table(pipe("cec.exe demo.cec5 cooccurrence"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
 ```
 
 ### [QUERY]
@@ -49,7 +49,7 @@ Der Wert [CATEGORY] gibt die Metadaten-Ketegorie an - z. B. Datum, Autor, Verlag
 - query meta contains [CATEGORY] [VALUE] [OUTPUTFILE] = [CATEGORY] enthält [VALUE]
 Bsp.:
 ```SHELL
-ceRport.exe corpusIn.cec5 query meta Verlag contains SPIEGEL corpusOut.cec6
+cec.exe corpusIn.cec5 query meta Verlag contains SPIEGEL corpusOut.cec6
 ```
 Erklärung: Schreibt alle Dokumente aus corpusIn.cec5, die eine Meta-Angabe "Verlag" enthalten, deren Wert "SPIEGEL" ist, in die Datei corpusOut.cec6 (inkl. Formatkonvertierung)
 
@@ -63,6 +63,6 @@ Die Angabe [LAYER] bezieht sich auf die verfügbaren Layer, die im CorpusExplore
 - query text regex [LAYER] [RegEx] [OUTPUTFILE] = RegEx fragt Werte ab, die im Dokument vorkommen müssen
 Bsp.: 
 ```SHELL
-ceRport.exe corpusIn.cec5 query text any Wort Korpuslinguistik|Linguistik|Korpus corpusOut.cec6
+cec.exe corpusIn.cec5 query text any Wort Korpuslinguistik|Linguistik|Korpus corpusOut.cec6
 ```
 Erklärung: Schreibt alle Dokumente aus corpusIn.cec5, die die Worte (Wort-Layer) Korpuslinguistik, Linguistik oder Korpus enthalten, in die Datei corpusOut.cec6  (inkl. Formatkonvertierung)

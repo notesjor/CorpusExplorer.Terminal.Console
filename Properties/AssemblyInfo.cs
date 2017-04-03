@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CorpusExplorer.Port.RProgramming.Api")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2017 by Jan Oliver Rüdiger")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
