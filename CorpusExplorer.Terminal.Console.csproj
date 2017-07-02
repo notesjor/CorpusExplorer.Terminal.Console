@@ -7,7 +7,7 @@
     <ProjectGuid>{77D277FA-CB8F-4619-90E8-4AF5BE6E9AC3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CorpusExplorer.Port.RProgramming.Api</RootNamespace>
+    <RootNamespace>CorpusExplorer.Terminal.Console</RootNamespace>
     <AssemblyName>cec</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -3,22 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using CorpusExplorer.Port.RProgramming.Api.Action;
-using CorpusExplorer.Port.RProgramming.Api.Action.Abstract;
-using CorpusExplorer.Port.RProgramming.Api.Helper;
-using CorpusExplorer.Sdk.Ecosystem;
-using CorpusExplorer.Sdk.Ecosystem.Model;
-using CorpusExplorer.Sdk.Helper;
-using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
-using CorpusExplorer.Sdk.Model.Cache;
-using CorpusExplorer.Sdk.Model.Extension;
-using CorpusExplorer.Sdk.Utils.CorpusManipulation;
-using CorpusExplorer.Sdk.Utils.DocumentProcessing.Builder;
-using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
+using CorpusExplorer.Terminal.Console.Action;
+using CorpusExplorer.Terminal.Console.Action.Abstract;
 
-namespace CorpusExplorer.Port.RProgramming.Api
+namespace CorpusExplorer.Terminal.Console
 {
-  internal class Program
+  public class Program
   {
     private static readonly AbstractAction[] _actions =
     {
@@ -72,7 +62,7 @@ namespace CorpusExplorer.Port.RProgramming.Api
       if (selection == null || selection.CountToken == 0)
         return;
 
-      Console.OutputEncoding = Encoding.UTF8;
+      System.Console.OutputEncoding = Encoding.UTF8;
 
       foreach (var action in _actions)
       {
@@ -172,38 +162,38 @@ namespace CorpusExplorer.Port.RProgramming.Api
 
     private static void PrintHelp()
     {
-      Console.WriteLine("CorpusExplorer v2.0");
-      Console.WriteLine("Copyright 2013-2017 by Jan Oliver Rüdiger");
-      Console.WriteLine();
-      Console.WriteLine("ceRport.exe [INPUT] [TASK]");
-      Console.WriteLine();
-      Console.WriteLine("[INPUT]");
-      Console.WriteLine("Available importer:");
+      System.Console.WriteLine("CorpusExplorer v2.0");
+      System.Console.WriteLine("Copyright 2013-2017 by Jan Oliver Rüdiger");
+      System.Console.WriteLine();
+      System.Console.WriteLine("ceRport.exe [INPUT] [TASK]");
+      System.Console.WriteLine();
+      System.Console.WriteLine("[INPUT]");
+      System.Console.WriteLine("Available importer:");
 
       var importer = Configuration.AddonImporters.GetDictionary();
       foreach (var x in importer)
       {
-        Console.WriteLine($"ceRport.exe import#{x.Key}#[FILES] [TASK]");
+        System.Console.WriteLine($"ceRport.exe import#{x.Key}#[FILES] [TASK]");
       }
       var scraper = Configuration.AddonScrapers.GetDictionary();
-      Console.WriteLine("Available scraper:");
+      System.Console.WriteLine("Available scraper:");
       foreach (var x in scraper)
       {
-        Console.WriteLine($"ceRport.exe annotate#{x.Key}#[TAGGER]#[LANGUAGE]#[DIRECTORY] [TASK]");
+        System.Console.WriteLine($"ceRport.exe annotate#{x.Key}#[TAGGER]#[LANGUAGE]#[DIRECTORY] [TASK]");
       }
       var tagger = Configuration.AddonTaggers.GetDictionary();
-      Console.WriteLine("Available tagger & languages:");
+      System.Console.WriteLine("Available tagger & languages:");
       foreach (var x in tagger)
       {
-        Console.WriteLine($"ceRport.exe annotate#[SCRAPER]#{x.Key}#[LANGUAGE]#[DIRECTORY] [TASK]");
-        Console.WriteLine($"supported languages: {string.Join(", ", x.Value.LanguagesAvailabel)}");
+        System.Console.WriteLine($"ceRport.exe annotate#[SCRAPER]#{x.Key}#[LANGUAGE]#[DIRECTORY] [TASK]");
+        System.Console.WriteLine($"supported languages: {string.Join(", ", x.Value.LanguagesAvailabel)}");
       }
       var exporter = Configuration.AddonExporters.GetDictionary();
-      Console.WriteLine("Available exporters (convert / query):");
+      System.Console.WriteLine("Available exporters (convert / query):");
       foreach (var x in exporter)
       {
-        Console.WriteLine($"ceRport.exe [INPUT] convert {x.Key}#[FILE]");
-        Console.WriteLine($"ceRport.exe [INPUT] query [QUERY] {x.Key}#[FILE]");
+        System.Console.WriteLine($"ceRport.exe [INPUT] convert {x.Key}#[FILE]");
+        System.Console.WriteLine($"ceRport.exe [INPUT] query [QUERY] {x.Key}#[FILE]");
       }
     }
   }

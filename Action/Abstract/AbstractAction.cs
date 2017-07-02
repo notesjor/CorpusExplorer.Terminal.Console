@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using CorpusExplorer.Sdk.Model;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Action.Abstract
+namespace CorpusExplorer.Terminal.Console.Action.Abstract
 {
   public abstract class AbstractAction
   {
@@ -16,7 +14,7 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action.Abstract
     protected void WriteOutput(string line)
     {
       var buffer = Encoding.UTF8.GetBytes(line.Replace("&#", "#"));
-      Console.OpenStandardOutput().Write(buffer, 0, buffer.Length);
+      System.Console.OpenStandardOutput().Write(buffer, 0, buffer.Length);
     }
   }
 }

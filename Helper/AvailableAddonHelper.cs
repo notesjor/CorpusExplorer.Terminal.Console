@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Helper
+namespace CorpusExplorer.Terminal.Console.Helper
 {
   public static class AvailableAddonHelper
   {

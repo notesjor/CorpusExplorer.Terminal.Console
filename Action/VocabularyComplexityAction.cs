@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using CorpusExplorer.Port.RProgramming.Api.Action.Abstract;
-using CorpusExplorer.Sdk.Model;
-using CorpusExplorer.Sdk.ViewModel;
+using CorpusExplorer.Terminal.Console.Action.Abstract;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Action
+namespace CorpusExplorer.Terminal.Console.Action
 {
   public class VocabularyComplexityAction : AbstractAction
   {

@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using CorpusExplorer.Port.RProgramming.Api.Action.Filter.Abstract;
-using CorpusExplorer.Sdk.Model;
-using CorpusExplorer.Sdk.Utils.Filter.Abstract;
-using CorpusExplorer.Sdk.Utils.Filter.Queries;
+using CorpusExplorer.Terminal.Console.Action.Filter.Abstract;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Action.Filter
+namespace CorpusExplorer.Terminal.Console.Action.Filter
 {
   public class ActionFilterFulltextInSentence : AbstractActionFilter
   {

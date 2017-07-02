@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using CorpusExplorer.Port.RProgramming.Api.Action.Abstract;
-using CorpusExplorer.Sdk.Blocks;
-using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Terminal.Console.Action.Abstract;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Action
+namespace CorpusExplorer.Terminal.Console.Action
 {
   public class CooccurrenceAction : AbstractAction
   {

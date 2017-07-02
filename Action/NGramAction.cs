@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CorpusExplorer.Port.RProgramming.Api.Action.Abstract;
-using CorpusExplorer.Sdk.Blocks;
-using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Terminal.Console.Action.Abstract;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Action
+namespace CorpusExplorer.Terminal.Console.Action
 {
   public class NGramAction : AbstractAction
   {
@@ -15,13 +13,12 @@ namespace CorpusExplorer.Port.RProgramming.Api.Action
     {
       var size = int.Parse(args.Last());
 
-      var block = selection.CreateBlock<NgramPatternBlock>();
-      block.NGramSizeMin = size;
-      block.NGramSizeMax = size;
+      var block = selection.CreateBlock<Ngram1LayerBlock>();
+      block.NGramSize = size;
       block.Calculate();
 
       WriteOutput("ngram\tfrequency\r\n");
-      foreach (var x in block.NGramSimpleFrequency)
+      foreach (var x in block.NGramFrequency)
         WriteOutput($"{x.Key}\t{x.Value}\r\n");
     }
   }

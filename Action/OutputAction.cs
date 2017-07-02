@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CorpusExplorer.Port.RProgramming.Api.Action.Abstract;
-using CorpusExplorer.Port.RProgramming.Api.Helper;
-using CorpusExplorer.Sdk.Ecosystem.Model;
-using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Terminal.Console.Action.Abstract;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Action
+namespace CorpusExplorer.Terminal.Console.Action
 {
   public class OutputAction : AbstractAction
   {

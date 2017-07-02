@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using CorpusExplorer.Sdk.Model;
 
-namespace CorpusExplorer.Port.RProgramming.Api.Action.Filter.Abstract
+namespace CorpusExplorer.Terminal.Console.Action.Filter.Abstract
 {
   public abstract class AbstractActionFilter
   {
