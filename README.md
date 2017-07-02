@@ -1,10 +1,15 @@
-# CorpusExplorer-Port-R
-Erlaubt es, aus R oder über die Konsole auf den CorpusExplorer v2.0 (http://www.corpusexplorer.de) zuzugreifen.
+# CorpusExplorer.Terminal.Console (früher: CorpusExplorer-Port-R)
+Der CorpusExplorer steht neben der offizielen GUI (http://www.corpusexplorer.de) auch als Konsolenanwendung zur Verfügung. Damit ist es möglich, aus anderen Programmen oder anderen Programmiersprachen auf Analysen/Daten des CorpusExplorers zuzugreifen. Ursprünglich wurde die Konsolen-Lösung unter dem Namen CorpusExplorer-Port-R entwickelt und sollte die Nutzung des CorpusExplorers innerhalb der Programmiersprache R ermöglichen.
 
-## Voraussetzungen
+## Installation Windows
 1. Installieren Sie den CorpusExplorer (http://www.bitcutstudios.com/products/corpusexplorer/standard/publish.htm)
-2. Laden Sie die aktuelle Version des R-Ports herunter und entpacken Sie die Dateien (http://bitcut.de/products/CorpusExplorer/addons/R-Language/CE-R-Port.zip)
-3. (OPTIONAL) Installieren Sie eine aktuelle R-Version (http://ftp5.gwdg.de/pub/misc/cran/) WENN Sie den CorpusExplorer unter R nutzen möchten. Andernfalls können Sie auch auf die Windows-Konsole zurück greifen und die Programmausgabe mittels ">" in eine Datei (CSV) umleiten.
+2. Fertig! (OPTIONAL) Installieren Sie eine aktuelle R-Version (http://ftp5.gwdg.de/pub/misc/cran/) WENN Sie den CorpusExplorer unter R nutzen möchten. Andernfalls können Sie auch auf die Windows-Konsole zurück greifen und die Programmausgabe mittels ">" in eine Datei (CSV) umleiten.
+
+## Installation Linux/MacOS
+1. Installieren Sie mono (http://www.mono-project.com/download/) - Mindestversion 4.x
+2. Laden und entpacken Sie die folgende Datei: http://www.bitcutstudios.com/products/corpusexplorer/App.zip
+3. Stellen Sie allen Aufrufen ein "mono" voran - z. B. "mono cec.exe import#CorpusExplorerV5Importer#demo.cec5 frequency". Mono führt die cec.exe aus (die sich im entpackten Ordner - siehe 2. - befindet).
+__Einschränkung Linux/MacOS__: Gegenwärtig ist es nocht nicht möglich, den Befehl "annotate" auszuführen. Alle anderen Befehle funktionieren einwandfrei (gestet auf Debian 8 - Mono 5.0.1).
 
 ## Grundlegendes
 Der cec.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle installierten Erweiterungen für den CorpusExplorer sind nutzbar. Rufen Sie cec.exe über die Konsole ohne Parameter auf, dann erhalten Sie alle verfügbaren Scraper, Importer, Tagger und Exporter. Erweiterungen für den CorpusExplorer finden Sie hier: http://notes.jan-oliver-ruediger.de/software/corpusexplorer-overview/corpusexplorer-v2-0/erweiterungen/
