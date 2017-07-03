@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Action.Filter;
 using CorpusExplorer.Terminal.Console.Action.Filter.Abstract;

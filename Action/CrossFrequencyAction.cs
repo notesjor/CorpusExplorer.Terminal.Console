@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using CorpusExplorer.Sdk.Blocks;
+using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action

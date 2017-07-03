@@ -3,8 +3,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using CorpusExplorer.Sdk.Ecosystem;
+using CorpusExplorer.Sdk.Ecosystem.Model;
+using CorpusExplorer.Sdk.Helper;
+using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
+using CorpusExplorer.Sdk.Model.Cache;
+using CorpusExplorer.Sdk.Model.Extension;
+using CorpusExplorer.Sdk.Utils.CorpusManipulation;
+using CorpusExplorer.Sdk.Utils.DocumentProcessing.Builder;
+using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Terminal.Console.Action;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Helper;
 
 namespace CorpusExplorer.Terminal.Console
 {

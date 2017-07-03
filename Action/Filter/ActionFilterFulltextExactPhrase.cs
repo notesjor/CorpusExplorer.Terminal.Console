@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.Utils.Filter.Abstract;
+using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Filter.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action.Filter

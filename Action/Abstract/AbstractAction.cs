@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using CorpusExplorer.Sdk.Model;
 
 namespace CorpusExplorer.Terminal.Console.Action.Abstract
 {

@@ -81,19 +81,19 @@
     <None Include="CorpusExplorerNextSnKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CorpusExplorer.Core\CorpusExplorer.Core.csproj">
+    <ProjectReference Include="..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Core\CorpusExplorer.Core.csproj">
       <Project>{029FE5A6-9504-499A-9E0D-05754D44CBB1}</Project>
       <Name>CorpusExplorer.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CorpusExplorer.Sdk.Extern.Json\CorpusExplorer.Sdk.Extern.Json.csproj">
+    <ProjectReference Include="..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Sdk.Extern.Json\CorpusExplorer.Sdk.Extern.Json.csproj">
       <Project>{DD54A9B0-80A9-4DD6-83A6-65359086CE18}</Project>
       <Name>CorpusExplorer.Sdk.Extern.Json</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj">
+    <ProjectReference Include="..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj">
       <Project>{6841C8CA-7C40-44C4-B5AA-FBC84FCB7293}</Project>
       <Name>CorpusExplorer.Sdk.Extern.Xml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
+    <ProjectReference Include="..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
       <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>
       <Name>CorpusExplorer.Sdk</Name>
     </ProjectReference>

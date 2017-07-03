@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CorpusExplorer.Sdk.Model;
 
 namespace CorpusExplorer.Terminal.Console.Action.Filter.Abstract
 {
