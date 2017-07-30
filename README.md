@@ -1,5 +1,5 @@
 # CorpusExplorer.Terminal.Console (früher: CorpusExplorer-Port-R)
-Der CorpusExplorer steht neben der offizielen GUI (http://www.corpusexplorer.de) auch als Konsolenanwendung zur Verfügung. Damit ist es möglich, aus anderen Programmen oder anderen Programmiersprachen auf Analysen/Daten des CorpusExplorers zuzugreifen. Ursprünglich wurde die Konsolen-Lösung unter dem Namen CorpusExplorer-Port-R entwickelt und sollte die Nutzung des CorpusExplorers innerhalb der Programmiersprache R ermöglichen.
+Der CorpusExplorer steht neben der offiziellen GUI (http://www.corpusexplorer.de) auch als Konsolenanwendung zur Verfügung. Damit ist es möglich, aus anderen Programmen oder anderen Programmiersprachen auf Analysen/Daten des CorpusExplorers zuzugreifen. Ursprünglich wurde die Konsolen-Lösung unter dem Namen CorpusExplorer-Port-R entwickelt und sollte die Nutzung des CorpusExplorers innerhalb der Programmiersprache R ermöglichen.
 
 ## Installation Windows
 1. Installieren Sie den CorpusExplorer (http://www.bitcutstudios.com/products/corpusexplorer/standard/publish.htm)
@@ -9,7 +9,7 @@ Der CorpusExplorer steht neben der offizielen GUI (http://www.corpusexplorer.de)
 1. Installieren Sie mono (http://www.mono-project.com/download/) - Mindestversion 4.x
 2. Laden und entpacken Sie die folgende Datei: http://www.bitcutstudios.com/products/corpusexplorer/App.zip
 3. Stellen Sie allen Aufrufen ein "mono" voran - z. B. "mono cec.exe import#CorpusExplorerV5Importer#demo.cec5 frequency". Mono führt die cec.exe aus (die sich im entpackten Ordner - siehe 2. - befindet).
-__Einschränkung Linux/MacOS__: Gegenwärtig ist es nocht nicht möglich, den Befehl "annotate" auszuführen. Alle anderen Befehle funktionieren einwandfrei (gestet auf Debian 8 - Mono 5.0.1).
+__Einschränkung Linux/MacOS__: Gegenwärtig ist es noch nicht möglich, den Befehl "annotate" auszuführen. Alle anderen Befehle funktionieren einwandfrei (getestet auf Debian 8 - Mono 5.0.1).
 
 ## Grundlegendes
 Der cec.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle installierten Erweiterungen für den CorpusExplorer sind nutzbar. Rufen Sie cec.exe über die Konsole ohne Parameter auf, dann erhalten Sie alle verfügbaren Scraper, Importer, Tagger und Exporter. Erweiterungen für den CorpusExplorer finden Sie hier: http://notes.jan-oliver-ruediger.de/software/corpusexplorer-overview/corpusexplorer-v2-0/erweiterungen/
@@ -31,16 +31,17 @@ cec.exe import#CorpusExplorerV5Importer#demo.cec5 frequency > frequency.csv
 Es können zwei unterschiedliche INPUT-Quellen genutzt werden. "import" für bereits annotiertes Korpusmaterial oder "annotate", um einen Annotationsprozess anzustoßen. 
 
 #### [INPUT] - import
-Syntax für "import" (trennen Sie mehrere [FILES] mittels #):
+Syntax für "import" (trennen Sie mehrere [FILES] mittels |):
 ```SHELL
 cec.exe import#[IMPORTER]#[FILES] [TASK]
 ```
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [IMPORTER] abzufragen.
 Bsp. für DTAbf und Weblicht:
 ```SHELL
-cec.exe import#DtaImporter#"C:/DTAbf/doc01.tcf.xml" [TASK]
-cec.exe import#WeblichtImporter#"C:/Weblicht/page01.xml"#"C:/webL.xml" [TASK]
+cec.exe import#DtaImporter#C:/DTAbf/doc01.tcf.xml [TASK]
+cec.exe import#WeblichtImporter#C:/Weblicht/page01.xml|C:/webL.xml [TASK]
 ```
+Hinweis: Achten Sie darauf, dass sich in den Pfadangaben KEINE Leerzeichen befinden.
 
 #### [INPUT] - annotate
 Syntax für "annotate" (annotiert immer den gesamten Ordner):
@@ -57,6 +58,7 @@ Lade das erzeugte Korpus "C:/korpus.cec5" für weitere Berechnungen:
 cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" frequency > frequency.csv
 cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" cooccurrence > cooccurrence.csv
 ```
+Hinweis: Achten Sie darauf, dass sich in den Pfadangaben KEINE Leerzeichen befinden.
 
 ### [TASK]
 Für TASK können folgenden Befehle genutzt werden:
@@ -82,32 +84,68 @@ tbl <- read.table(pipe("cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5"
 ```
 
 #### [TASK] query
-Query-Abfragen schreiben die Ergebnisse in ein neues Korpus [EXPORT]. Sie können entweder Dokument-Metadaten (meta) oder Volltext-Abfragen (text) zum Filtern verwenden. 
+Seit August 2017 nutzen alle CorpusExplorer-Terminals die selbe Abfragesyntax. D. h. Sie können auch aus der Windows-GUI Abfragen exportieren und in der Konsole nutzen.
+Beispiel der Abfragesyntax:
 
-##### [TASK] query meta
-Der Wert [CATEGORY] gibt die Metadaten-Ketegorie an - z. B. Datum, Autor, Verlag, etc. Bitte stellen Sie sicher, dass diese Kategorie im Korpus enthalten ist (nutzen Sie dazu den [TASK] "metacategories").
-- query meta regex [CATEGORY] [RegEx] [EXPORT] = [CATEGORY] Abfrage via RegEx
-- query meta !contains [CATEGORY] [VALUE] [EXPORT] = [CATEGORY] enthält [VALUE] nicht
-- query meta contains [CATEGORY] [VALUE] [EXPORT] = [CATEGORY] enthält [VALUE]
+```SHELL
+cec.exe [INPUT] query [QUERY] [EXPORT]
+```
+
+Aus einer oder mehren Quellen (gleichen Typs) werden mittels [QUERY] alle passenden Dokumente ausgewählt und in [EXPORT] geschrieben.
+Aktuell können Sie nur ein einzelne Abfrage(gruppe) pro Kommandozeilenaufruf übergeben.
+Um mehrere hintereinander geschaltete Abfragen zu starten, rufen Sie entweder mehrfach hintereinander die Kommandozeile auf
+oder nutzen Sie anstelle von [QUERY] folgende Angabe > FILE:[FILENAME].
+Damit wird es möglich, Abfrage aus einer zuvor gespeicherten *.ceusd zu laden.
 Bsp.:
-```SHELL
-cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" query meta Verlag contains SPIEGEL ExporterCec6#corpusOut.cec6
-```
-Erklärung: Schreibt alle Dokumente aus corpusIn.cec5, die eine Meta-Angabe "Verlag" enthalten, deren Wert "SPIEGEL" ist, in die Datei corpusOut.cec6 (inkl. Formatkonvertierung)
 
-##### [TASK] query text
-Die Angabe [LAYER] bezieht sich auf die verfügbaren Layer, die im CorpusExplorer nach einem Import zur Verfügung stehen würden. Übliche Layer sind: Wort, Lemma, POS, Phrase, Satz. Layer sind abhängig vom Import-Prozess. Daher überprüfen Sie bitte vorab, ob der Layer im Ausgangskorpus verfügbar ist (nutzen Sie dazu den [TASK] "layernames"). Der Parameter [SEPARATEDVALUES] darf KEINE Leerzeichen enthalten. Trennen Sie Worte mit: # - Bsp.: Tag#Nacht#Korpus#Berge#Baum
-- query text any [LAYER] [SEPARATEDVALUES] [EXPORT] = Dokument enthält [SEPARATEDVALUES]
-- query text !any [LAYER] [SEPARATEDVALUES] [EXPORT] = Dokument enthält [SEPARATEDVALUES] nicht
-- query text indocument [LAYER] [SEPARATEDVALUES] [EXPORT] = Alle [SEPARATEDVALUES] kommen in einem Dokument gemeinsam vor
-- query text insentence [LAYER] [SEPARATEDVALUES] [EXPORT] = Alle [SEPARATEDVALUES] kommen in einem Satz gemeinsam vor (beliebige Reihenfolge)
-- query text phrase [LAYER] [SEPARATEDVALUES] [OUTPUTFILE] = Alle [SEPARATEDVALUES] kommen exakt so hintereinander vor (Phrase)
-- query text regex [LAYER] [RegEx] [OUTPUTFILE] = RegEx fragt Werte ab, die im Dokument vorkommen müssen
-Bsp.: 
 ```SHELL
-cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" query text any Wort Korpuslinguistik#Linguistik#Korpus ExporterCec6#corpusOut.cec6
+cec.exe [INPUT] query FILE:C:/query.ceusd [EXPORT]
 ```
-Erklärung: Schreibt alle Dokumente aus corpusIn.cec5, die die Worte (Wort-Layer) Korpuslinguistik, Linguistik oder Korpus enthalten, in die Datei corpusOut.cec6  (inkl. Formatkonvertierung)
+
+Pro Zeile ist nur eine Abfrage(-gruppe) zulässig.
+
+##### [TASK] query - Abfragesyntax
+
+Primäre Typen und deren Operatoren (geordnet nach Priorität):
+- ( = Beginnt eine Abfrage mit ( so muss das Ende der Zeile mit ) abgeschlossen werden. Dieser Typ definiert eine Abfragegruppe. Damit lassen sich mehrere Abfragen mittels OR/ODER verschachteln. Getrennt werden die Abfragen mit |.
+- ! = Negiert die folgende Abfrage
+- M = Abfrage von Metadaten
+	- ? = Übergbener Wert wird als Regex-Ausdruck interpretiert.
+	- ! = Meta-Angabe muss leer sein.
+	- . = Meta-Angabe muss diesen Wert enthalten.
+	- : = Meta-Angabe muss diesen Wert enthalten (case-sensitive).
+	- - = Meta-Angabe muss diesem Wert entsprechen.
+	- = = Meta-Angabe muss diesem Wert entsprechen (case-sensitive).
+- T = Abfragen von Text/Layer-Werten
+	- ~ = Mindestens ein Wert aus der Liste muss im Dokument vorkommen.
+	- - = Alle Werte aus der Liste müssen im Dokument vorkommen.
+	- = = Alle Werte aus der Liste müssen in einem Satz vorkommen.
+	- § = Alle Werte aus der Liste müssen exakt in der Listenreihenfolge vorkommen.
+
+Typ, Operator und Abfrageziel werden ohne trennende Leerzeichen geschrieben. Dieser Erste Teil ist durch :> vom Wert-Teil getrennt.
+
+Beispiele:
+```SHELL
+cec.exe import#CorpusExplorerV5Importer#C:/input.cec5 query !T~Wort:>aber;kein ExporterCec6#C:/output.cec6
+```
+Was bedeutet diese Abfrage? negiere (__!__) die Text-Abfrage (__T__) welche einen beliebigen Wert (__~__) aus der Liste (alles nach __:>__ - Trennung mittels ;) sucht. Gefunden werden also alle Dokumente, die weder __aber__ noch __kein__ enthalten.
+
+Um die folgenden Beispiele möglichst kurz zu halten, wurde die sonst übliche Dokumentation des Konsolenaufrufs eingekürzt. Wiedergeben wird hier nur die Abfragesyntax.
+
+```SHELL
+(!M-Verlag:>Spiegel | !T~Wort:>Diktator)
+```
+Gruppen-Abfrage: Gefunden werden alle Dokumente die entweder nicht (__!__) in der Meta-Angabe (__M__) __Spiegel__ enthalten (__-__) ODER nicht (__!__) das __Wort__ __Diktator__ enthalten (__~__).
+
+```SHELL
+M!Verlag:>
+```
+Leere-Metadaten: Gibt alle Dokumente zurück, für die keine Meta-Daten zu __Verlag__ hinterlegt sind.
+
+```SHELL
+T§Wort:>den;Tag;nicht;vor;dem;Abend;loben
+```
+Findet alle Dokumente, die im Volltext (__T__) (__Wort__-Layer) die Phrase (__§__) "den Tag nicht vor dem Abend loben" enthalten.
 
 #### [TASK] ngram
 Erfordert, dass Sie ein N festlegen. Bsp. N = 5:
@@ -116,7 +154,7 @@ tbl <- read.table(pipe("cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5"
 ```
 
 #### [TASK] convert
-Erlaubt es, ein bestehndes Korpus in einem der verfügbaren Export-Formate zu speichern.
+Erlaubt es, ein bestehendes Korpus in einem der verfügbaren Export-Formate zu speichern.
 ```SHELL
 cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" convert ExporterCec6#corpusOut.cec6
 ```

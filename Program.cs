@@ -139,19 +139,17 @@ namespace CorpusExplorer.Terminal.Console
     {
       // Importer laden bestehende Korpora
       var importers = Configuration.AddonImporters.GetDictionary();
-      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries).ToList();
-      if (split.Count < 3)
+      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      if (split.Length != 3)
         return null;
 
-      split.RemoveAt(0); // entfernt import#
-      if (!importers.ContainsKey(split[0]))
+      if (!importers.ContainsKey(split[1]))
         return null;
+      var importer = importers[split[1]];
 
-      split.RemoveAt(0); // entfernt [IMPORTER]
-      for (var i = 0; i < split.Count; i++)
-        split[i] = split[i].Replace("\"", "");
+      split = split[2].Split(new[]{"|","\""}, StringSplitOptions.RemoveEmptyEntries);
 
-      var res = importers[split[1]].Execute(split).ToArray();
+      var res = importer.Execute(split).ToArray();
       if (res.Length == 1)
         return res[0];
 
