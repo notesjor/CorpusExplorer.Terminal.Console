@@ -114,11 +114,11 @@ Primäre Typen und deren Operatoren (geordnet nach Priorität):
 	- ! = Meta-Angabe muss leer sein.
 	- . = Meta-Angabe muss diesen Wert enthalten.
 	- : = Meta-Angabe muss diesen Wert enthalten (case-sensitive).
-	- - = Meta-Angabe muss diesem Wert entsprechen.
+	- \- = Meta-Angabe muss diesem Wert entsprechen.
 	- = = Meta-Angabe muss diesem Wert entsprechen (case-sensitive).
 - T = Abfragen von Text/Layer-Werten
 	- ~ = Mindestens ein Wert aus der Liste muss im Dokument vorkommen.
-	- - = Alle Werte aus der Liste müssen im Dokument vorkommen.
+	- \- = Alle Werte aus der Liste müssen im Dokument vorkommen.
 	- = = Alle Werte aus der Liste müssen in einem Satz vorkommen.
 	- § = Alle Werte aus der Liste müssen exakt in der Listenreihenfolge vorkommen.
 
