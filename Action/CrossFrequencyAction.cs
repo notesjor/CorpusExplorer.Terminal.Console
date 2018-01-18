@@ -8,11 +8,13 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class CrossFrequencyAction : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> {"cfreq", "cross-frequency", "crossfrequency"};
+      => new HashSet<string> { "cross-frequency" };
 
-    public override void Execute(Selection selection, IEnumerable<string> args)
+    public override void Execute(Selection selection, string[] args)
     {
       var block = selection.CreateBlock<CrossFrequencyBlock>();
+      if (args != null && args.Length == 1)
+        block.LayerDisplayname = args[0];
       block.Calculate();
 
       WriteOutput("termA\ttermB\tsignificance\r\n");

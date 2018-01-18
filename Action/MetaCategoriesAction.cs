@@ -7,9 +7,9 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class MetaCategoriesAction : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> {"meta-categories", "metacategories"};
+      => new HashSet<string> { "meta-categories" };
 
-    public override void Execute(Selection selection, IEnumerable<string> args)
+    public override void Execute(Selection selection, string[] args)
     {
       var categories = selection.GetDocumentMetadataPrototypeOnlyProperties();
 

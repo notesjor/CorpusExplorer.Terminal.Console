@@ -7,11 +7,13 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class MetaAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels => new HashSet<string> {"meta"};
+    protected override HashSet<string> MatchActionLabels => new HashSet<string> { "meta" };
 
-    public override void Execute(Selection selection, IEnumerable<string> args)
+    public override void Execute(Selection selection, string[] args)
     {
       var block = selection.CreateBlock<DocumentMetadataWeightBlock>();
+      if (args != null && args.Length == 1)
+        block.LayerDisplayname = args[0];
       block.Calculate();
 
       WriteOutput("category\tlabel\ttokens\ttypes\tdocuments\r\n");

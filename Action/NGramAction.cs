@@ -9,14 +9,19 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class NGramAction : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> {"ngram", "n-gram"};
+      => new HashSet<string> { "n-gram" };
 
-    public override void Execute(Selection selection, IEnumerable<string> args)
+    public override void Execute(Selection selection, string[] args)
     {
       var size = int.Parse(args.Last());
 
       var block = selection.CreateBlock<Ngram1LayerBlock>();
-      block.NGramSize = size;
+      if (args == null || args.Length == 0)
+        block.NGramSize = 5;
+      if (args.Length == 1 || args.Length == 2)
+        block.NGramSize = int.Parse(args[0]);
+      if (args.Length == 2)
+        block.LayerDisplayname = args[1];
       block.Calculate();
 
       WriteOutput("ngram\tfrequency\r\n");

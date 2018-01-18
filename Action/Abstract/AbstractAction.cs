@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
 
 namespace CorpusExplorer.Terminal.Console.Action.Abstract
@@ -8,13 +9,13 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
   {
     protected abstract HashSet<string> MatchActionLabels { get; }
 
-    public abstract void Execute(Selection selection, IEnumerable<string> args);
+    public abstract void Execute(Selection selection, string[] args);
 
     public bool Match(string actionLabel) { return MatchActionLabels.Contains(actionLabel.ToLower()); }
 
     protected void WriteOutput(string line)
     {
-      var buffer = Encoding.UTF8.GetBytes(line.Replace("&#", "#"));
+      var buffer = Configuration.Encoding.GetBytes(line.Replace("&#", "#"));
       System.Console.OpenStandardOutput().Write(buffer, 0, buffer.Length);
     }
   }

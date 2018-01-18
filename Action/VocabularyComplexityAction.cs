@@ -10,11 +10,13 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class VocabularyComplexityAction : AbstractAction
   {
     protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> {"vocac", "vocabularycomplexity", "vocabulary-complexity", "v-complexity"};
+      => new HashSet<string> { "vocabulary-complexity" };
 
-    public override void Execute(Selection selection, IEnumerable<string> args)
+    public override void Execute(Selection selection, string[] args)
     {
-      var vm = new VocabularyComplexityViewModel {Selection = selection};
+      var vm = new VocabularyComplexityViewModel { Selection = selection };
+      if (args != null && args.Length == 1)
+        vm.LayerDisplayname = args[0];
       vm.Analyse();
       var table = vm.GetDataTable();
 
