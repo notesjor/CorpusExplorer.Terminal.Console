@@ -9,8 +9,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class Frequency1Action : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "frequency1" };
+    public override string Action => "frequency1";
+    public override string Description => "frequency1 [LAYER1] - count token frequency on 1 [LAYER]";
 
     public override void Execute(Selection selection, string[] args)
     {

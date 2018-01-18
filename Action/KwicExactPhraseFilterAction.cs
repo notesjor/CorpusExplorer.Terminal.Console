@@ -7,8 +7,10 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class KwicExactPhraseFilterAction : AbstractFilterAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "kwic-phrase" };
+    public override string Action => "kwic-phrase";
+
+    public override string Description =>
+      "kwic-phrase [LAYER] [TEXT] - [TEXT] = space separated tokens - all token in one sentence + given order";
 
     protected override AbstractFilterQuery GetQuery() => new FilterQuerySingleLayerExactPhrase();
   }

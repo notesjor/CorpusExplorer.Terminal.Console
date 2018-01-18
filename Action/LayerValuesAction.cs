@@ -7,8 +7,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class LayerValuesAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "get-types" };
+    public override string Action => "get-types";
+    public override string Description => "get-types [LAYER] - list all [LAYER]-values (types)";
 
     public override void Execute(Selection selection, string[] args)
     {

@@ -17,8 +17,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class FilterAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "query" };
+    public override string Action => "query";
+    public override string Description => "query - see help section [OUTPUT] for more information";
 
     public override void Execute(Selection selection, string[] args)
     {

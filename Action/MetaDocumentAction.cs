@@ -8,7 +8,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class MetaDocumentAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels => new HashSet<string> { "meta-by-document" };
+    public override string Action => "meta-by-document";
+    public override string Description => "meta-by-document - list all documents with meta-data";
 
     public override void Execute(Selection selection, string[] args)
     {

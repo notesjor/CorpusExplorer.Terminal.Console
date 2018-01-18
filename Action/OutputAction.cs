@@ -11,7 +11,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class OutputAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels => new HashSet<string> { "convert" };
+    public override string Action => "convert";
+    public override string Description => "convert - see help section [OUTPUT] for more information";
 
     public override void Execute(Selection selection, string[] args)
     {

@@ -7,7 +7,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class MetaAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels => new HashSet<string> { "meta" };
+    public override string Action => "meta";
+    public override string Description => "meta - lists all meta-categories, labels and token/type/document-count";
 
     public override void Execute(Selection selection, string[] args)
     {

@@ -7,8 +7,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class TypeCountAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "how-many-types" };
+    public override string Action => "how-many-types";
+    public override string Description => "how-many-types [LAYER] - sum of all [LAYER]-values (types)";
 
     public override void Execute(Selection selection, string[] args)
     {

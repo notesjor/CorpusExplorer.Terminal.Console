@@ -6,8 +6,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class BasicInformationAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "basic-information" };
+    public override string Action => "basic-information";
+    public override string Description => "basic-information - basic information tokens/sentences/documents";
 
     public override void Execute(Selection selection, string[] args)
     {

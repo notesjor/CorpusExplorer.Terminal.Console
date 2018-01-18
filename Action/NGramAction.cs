@@ -8,8 +8,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class NGramAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "n-gram" };
+    public override string Action => "n-gram";
+    public override string Description => "n-gram [N] [LAYER] - [N] sized N-gram based on [LAYER]";
 
     public override void Execute(Selection selection, string[] args)
     {

@@ -9,8 +9,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class ReadingEaseAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "reading-ease" };
+    public override string Action => "reading-ease";
+    public override string Description => "reading-ease [LAYER] - reading ease of [LAYER]";
 
     public override void Execute(Selection selection, string[] args)
     {

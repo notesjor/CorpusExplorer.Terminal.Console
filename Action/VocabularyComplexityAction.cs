@@ -9,8 +9,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class VocabularyComplexityAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "vocabulary-complexity" };
+    public override string Action => "vocabulary-complexity";
+    public override string Description => "vocabulary-complexity [LAYER] - vocabulary complexity in [LAYER]";
 
     public override void Execute(Selection selection, string[] args)
     {

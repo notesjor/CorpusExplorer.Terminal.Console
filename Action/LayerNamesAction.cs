@@ -6,8 +6,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class LayerNamesAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "layer-names" };
+    public override string Action => "layer-names";
+    public override string Description => "layer-names - all available names for [LAYER]";
 
     public override void Execute(Selection selection, string[] args)
     {

@@ -24,29 +24,30 @@ namespace CorpusExplorer.Terminal.Console
   {
     private static readonly string _appPath =
       Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "cec.exe");
-    private static readonly string _servicePath =
-      Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ceservice.exe");
 
-    private static readonly AbstractAction[] _actions = {
+    private static readonly Dictionary<string, AbstractAction> _actions = new AbstractAction[]{
+      new BasicInformationAction(),
+      new LayerNamesAction(),
+      new MetaCategoriesAction(),
+
+      new DocumentCountAction(),
+      new SentenceCountAction(),    
+      new TokenCountAction(),
+      new LayerValuesAction(),
+      new TypeCountAction(),
+
       new Frequency1Action(),
       new Frequency2Action(),
       new Frequency3Action(),
+      new NGramAction(),
+      new CrossFrequencyAction(),
       new CooccurrenceAction(),
       new MetaAction(),
-      new CrossFrequencyAction(),
-      new NGramAction(),
+      new MetaDocumentAction(),
+      
       new VocabularyComplexityAction(),
       new ReadingEaseAction(),
-      new LayerNamesAction(),
-      new MetaCategoriesAction(),
-      new TokenCountAction(),
-      new TypeCountAction(),
-      new DocumentCountAction(),
-      new SentenceCountAction(),
-      new BasicInformationAction(),
-      new LayerValuesAction(),
-      new MetaDocumentAction(),
-
+      
       new KwicAnyFilterAction(),
       new KwicAllInDocumentFilterAction(),
       new KwicAllInSentenceFilterAction(),
@@ -54,7 +55,7 @@ namespace CorpusExplorer.Terminal.Console
 
       new OutputAction(),
       new FilterAction(),
-    };
+    }.ToDictionary(x => x.Action, x => x);
 
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {
@@ -89,15 +90,8 @@ namespace CorpusExplorer.Terminal.Console
         ExecuteSkript(args);
       else if (args[0].ToLowerInvariant() == "shell")
         ExecuteShell();
-      else if (args[0].StartsWith("PORT:"))
-        ExecuteService(args[0]);
       else
         ExecuteDirect(args);
-    }
-
-    private static void ExecuteService(string port)
-    {
-      
     }
 
     private static void ExecuteShell()
@@ -154,7 +148,7 @@ namespace CorpusExplorer.Terminal.Console
       for (var i = 0; i < files.Count; i++)
       {
         var file = files[i];
-        System.Console.Write($"[{i+1:D3}/{files.Count:D3}] {file}");
+        System.Console.Write($"[{i + 1:D3}/{files.Count:D3}] {file}");
         StartProcessCec($"import#{split[1]}#{file} {other}");
         System.Console.WriteLine("...ok!");
       }
@@ -169,7 +163,7 @@ namespace CorpusExplorer.Terminal.Console
       for (var i = 0; i < lines.Length; i++)
       {
         var line = lines[i];
-        System.Console.Write($"[{i+1:D3}/{lines.Length:D3}] {line}");
+        System.Console.Write($"[{i + 1:D3}/{lines.Length:D3}] {line}");
         StartProcessCec(line);
         System.Console.WriteLine("...ok!");
       }
@@ -198,20 +192,17 @@ namespace CorpusExplorer.Terminal.Console
       var selection = corpus?.ToSelection();
       if (selection == null || selection.CountToken == 0)
         return;
+      
+      var task = args[1].ToLowerInvariant();
+
+      if (!_actions.ContainsKey(task)) 
+        return;
 
       System.Console.OutputEncoding = Configuration.Encoding;
-
-      foreach (var action in _actions)
-      {
-        if (!action.Match(args[1]))
-          continue;
-
-        var temp = args.ToList();
-        temp.RemoveAt(0); // CorpusFile (no longer needed)
-        temp.RemoveAt(0); // Action (no longer needed)
-        action.Execute(selection, temp.ToArray());
-        return;
-      }
+      var temp = args.ToList();
+      temp.RemoveAt(0); // CorpusFile (no longer needed)
+      temp.RemoveAt(0); // Action (no longer needed)
+      _actions[task].Execute(selection, temp.ToArray());
     }
 
     private static AbstractCorpusAdapter LoadCorpus(string path)
@@ -427,26 +418,11 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("<: --- [TASK] --- :>");
       System.Console.WriteLine();
 
-      System.Console.WriteLine("[TASK] = layer-names - all available names for [LAYER]");
-      System.Console.WriteLine("[TASK] = meta-categories - all available names for meta categories");
-      System.Console.WriteLine("[TASK] = meta-by-document - list all documents with meta-data");
-      System.Console.WriteLine("[TASK] = basic-information - basic information tokens/sentences/documents");
-      System.Console.WriteLine("[TASK] = kwic-any [LAYER] [TEXT] - KWIC any occurrence - [TEXT] = space separated tokens");
-      System.Console.WriteLine("[TASK] = kwic-document [LAYER] [TEXT] - [TEXT] = space separated tokens - a document must contains all token");
-      System.Console.WriteLine("[TASK] = kwic-sentence [LAYER] [TEXT] - [TEXT] = space separated tokens - a sentence must contains all token");
-      System.Console.WriteLine("[TASK] = kwic-phrase [LAYER] [TEXT] - [TEXT] = space separated tokens - all token in one sentence + given order");
-      System.Console.WriteLine("[TASK] = frequency1 [LAYER1] - count token frequency on 1 [LAYER]");
-      System.Console.WriteLine("[TASK] = frequency2 [LAYER1] [LAYER2] - count token frequency on 2 layers");
-      System.Console.WriteLine("[TASK] = frequency3 [LAYER1] [LAYER2] [LAYER3] - count token frequency on 3 layers");
-      System.Console.WriteLine("[TASK] = cooccurrence [LAYER1] - significant cooccurrences for all [LAYER] values");
-      System.Console.WriteLine("[TASK] = n-gram [N] [LAYER] - [N] sized N-gram based on [LAYER]");
-      System.Console.WriteLine("[TASK] = vocabulary-complexity [LAYER] - vocabulary complexity in [LAYER]");
-      System.Console.WriteLine("[TASK] = reading-ease [LAYER] - reading ease of [LAYER]");
-      System.Console.WriteLine("[TASK] = how-many-tokens - sum of all tokens");
-      System.Console.WriteLine("[TASK] = how-many-types [LAYER] - sum of all [LAYER]-values (types)");
-      System.Console.WriteLine("[TASK] = get-types [LAYER] - list all [LAYER]-values (types)");
-      System.Console.WriteLine("[TASK] = how-many-sentences - sum of all sentences");
-      System.Console.WriteLine("[TASK] = how-many-documents - sum of all documents");
+      foreach (var action in _actions)
+      {
+        System.Console.WriteLine($"[TASK] = {action.Value.Description}");
+      }
+
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");
       System.Console.WriteLine();
       System.Console.WriteLine();

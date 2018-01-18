@@ -7,8 +7,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class CrossFrequencyAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "cross-frequency" };
+    public override string Action =>  "cross-frequency";
+    public override string Description => "cross-frequency [LAYER] - calculates the cross-frequency based on [LAYER]";
 
     public override void Execute(Selection selection, string[] args)
     {

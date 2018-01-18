@@ -6,8 +6,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class TokenCountAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "how-many-tokens" };
+    public override string Action => "how-many-tokens";
+    public override string Description => "how-many-tokens - sum of all tokens";
 
     public override void Execute(Selection selection, string[] args)
     {

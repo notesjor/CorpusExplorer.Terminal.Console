@@ -6,8 +6,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class SentenceCountAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "how-many-sentences" };
+    public override string Action => "how-many-sentences";
+    public override string Description => "how-many-sentences - sum of all sentences";
 
     public override void Execute(Selection selection, string[] args)
     {

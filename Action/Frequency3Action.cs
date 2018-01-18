@@ -7,7 +7,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class Frequency3Action : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels => new HashSet<string> { "frequency3" };
+    public override string Action => "frequency3";
+    public override string Description => "frequency3 [LAYER1] [LAYER2] [LAYER3] - count token frequency on 3 layers";
 
     public override void Execute(Selection selection, string[] args)
     {

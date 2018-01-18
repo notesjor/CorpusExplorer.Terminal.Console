@@ -7,8 +7,10 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class KwicAllInDocumentFilterAction : AbstractFilterAction
   {
-    protected override HashSet<string> MatchActionLabels
-      => new HashSet<string> { "kwic-document" };
+    public override string Action => "kwic-document";
+
+    public override string Description =>
+      "kwic-document [LAYER] [TEXT] - [TEXT] = space separated tokens - a document must contains all token";
 
     protected override AbstractFilterQuery GetQuery() => new FilterQuerySingleLayerAllInOnDocument();
   }

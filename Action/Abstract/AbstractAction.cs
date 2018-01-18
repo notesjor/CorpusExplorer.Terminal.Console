@@ -7,11 +7,11 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
 {
   public abstract class AbstractAction
   {
-    protected abstract HashSet<string> MatchActionLabels { get; }
+    public abstract string Action { get; }
+
+    public abstract string Description { get; }
 
     public abstract void Execute(Selection selection, string[] args);
-
-    public bool Match(string actionLabel) { return MatchActionLabels.Contains(actionLabel.ToLower()); }
 
     protected void WriteOutput(string line)
     {

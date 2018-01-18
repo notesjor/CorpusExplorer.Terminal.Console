@@ -7,7 +7,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class CooccurrenceAction : AbstractAction
   {
-    protected override HashSet<string> MatchActionLabels => new HashSet<string> { "cooccurrence" };
+    public override string Action => "cooccurrence";
+    public override string Description => "cooccurrence [LAYER1] - significant cooccurrences for all [LAYER] values";
 
     public override void Execute(Selection selection, string[] args)
     {
