@@ -84,9 +84,7 @@ namespace CorpusExplorer.Terminal.Console
         return;
       }
 
-      if (args[0].StartsWith("batch#"))
-        ExecuteBatch(args);
-      else if (args[0].StartsWith("FILE:"))
+      if (args[0].StartsWith("FILE:"))
         ExecuteSkript(args);
       else if (args[0].ToLowerInvariant() == "shell")
         ExecuteShell();
@@ -130,27 +128,6 @@ namespace CorpusExplorer.Terminal.Console
 
             break;
         }
-      }
-    }
-
-    private static void ExecuteBatch(string[] args)
-    {
-      var split = args[0].Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
-      if (split.Length != 3)
-        return;
-
-      var files = DetectFileOrDirectoryPaths(split[2]);
-      var tmp = new List<string>(args);
-      tmp.RemoveAt(0);
-      var other = string.Join(" ", tmp);
-
-      System.Console.WriteLine($"execute batch task: {other}");
-      for (var i = 0; i < files.Count; i++)
-      {
-        var file = files[i];
-        System.Console.Write($"[{i + 1:D3}/{files.Count:D3}] {file}");
-        StartProcessCec($"import#{split[1]}#{file} {other}");
-        System.Console.WriteLine("...ok!");
       }
     }
 
@@ -280,7 +257,7 @@ namespace CorpusExplorer.Terminal.Console
       return merger.Output.FirstOrDefault();
     }
 
-    private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
+    private static List<string>  DetectFileOrDirectoryPaths(string fileOrDirectory)
     {
       var tmp = fileOrDirectory.Split(new[] { "|", "\"" }, StringSplitOptions.RemoveEmptyEntries);
       var files = new List<string>();
@@ -326,13 +303,11 @@ namespace CorpusExplorer.Terminal.Console
       var importer = Configuration.AddonImporters.GetDictionary();
       foreach (var x in importer)
       {
-        System.Console.WriteLine($"[INPUT] = import#{x.Key}#[DIRECTORY]");
+        System.Console.WriteLine($"[INPUT] = import#{x.Key}#[FILES]");
       }
 
-      System.Console.WriteLine("Note 1: [DIRECTORY] = any directory you like - all files will be processed");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
-      System.Console.WriteLine("Note 2: import bundels all files to one input - if you wish to handle files separatly use batch");
-      System.Console.WriteLine("Example: cec.exe batch#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
+      System.Console.WriteLine("Note: [FILES] = separate files with & - merges all files before processing");
+      System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus1.cec5&C:\\mycorpus2.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
 
       var scraper = Configuration.AddonScrapers.GetDictionary();

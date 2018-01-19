@@ -9,8 +9,11 @@ namespace CorpusExplorer.Terminal.Console.Helper
     {
       var dictionary = new Dictionary<string, T>();
       foreach (var pair in dic)
-        if (!dictionary.ContainsKey(pair.Value.GetType().Name))
-          dictionary.Add(pair.Value.GetType().Name, pair.Value);
+      {
+        var key = pair.Value.GetType().Name;
+        if (!dictionary.ContainsKey(key))
+          dictionary.Add(key, pair.Value);
+      }
       return dictionary;
     }
 
@@ -18,8 +21,23 @@ namespace CorpusExplorer.Terminal.Console.Helper
     {
       var dictionary = new Dictionary<string, T>();
       foreach (var unknown in enumerable)
-        if (!dictionary.ContainsKey(unknown.GetType().Name))
-          dictionary.Add(unknown.GetType().Name, unknown);
+      {
+        var key = unknown.GetType().Name;
+        if (!dictionary.ContainsKey(key))
+          dictionary.Add(key, unknown);
+      }
+      return dictionary;
+    }
+
+    public static Dictionary<string, string> GetDictionaryForScriptEditor<T>(this IEnumerable<KeyValuePair<string, T>> dic)
+    {
+      var dictionary = new Dictionary<string, string>();
+      foreach (var pair in dic)
+      {
+        var key = pair.Value.GetType().Name;
+        if (!dictionary.ContainsKey(key))
+          dictionary.Add(key, pair.Key);
+      }
       return dictionary;
     }
   }
