@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
@@ -11,7 +12,15 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args)
     {
-      WriteOutput(selection.CountToken.ToString());
+      var dt = new DataTable();
+      dt.Columns.Add("param", typeof(string));
+      dt.Columns.Add("value", typeof(double));
+
+      dt.BeginLoadData();
+      dt.Rows.Add("tokens", (double)selection.CountToken);
+      dt.EndLoadData();
+
+      WriteTable(dt);
     }
   }
 }

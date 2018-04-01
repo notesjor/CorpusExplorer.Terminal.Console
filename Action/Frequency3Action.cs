@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
@@ -12,20 +13,16 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args)
     {
-      var block = selection.CreateBlock<Frequency3LayerBlock>();
+      var vm = new Frequency3LayerViewModel {Selection = selection};
       if (args != null && args.Length == 3)
       {
-        block.Layer1Displayname = args[0];
-        block.Layer2Displayname = args[1];
-        block.Layer3Displayname = args[2];
+        vm.Layer1Displayname = args[0];
+        vm.Layer2Displayname = args[1];
+        vm.Layer3Displayname = args[2];
       }
-      block.Calculate();
+      vm.Analyse();
 
-      WriteOutput("pos\tlemma\tterm\tfrequency\r\n");
-      foreach (var x in block.Frequency)
-        foreach (var y in x.Value)
-          foreach (var z in y.Value)
-            WriteOutput($"{x.Key}\t{y.Key}\t{z.Key}\t{z.Value}\r\n");
+      WriteTable(vm.GetDataTable());
     }
   }
 }

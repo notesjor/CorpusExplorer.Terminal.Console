@@ -17,6 +17,7 @@ using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Terminal.Console.Action;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
+using CorpusExplorer.Terminal.Console.Writer;
 
 namespace CorpusExplorer.Terminal.Console
 {
@@ -31,7 +32,7 @@ namespace CorpusExplorer.Terminal.Console
       new MetaCategoriesAction(),
 
       new DocumentCountAction(),
-      new SentenceCountAction(),    
+      new SentenceCountAction(),
       new TokenCountAction(),
       new LayerValuesAction(),
       new TypeCountAction(),
@@ -44,10 +45,10 @@ namespace CorpusExplorer.Terminal.Console
       new CooccurrenceAction(),
       new MetaAction(),
       new MetaDocumentAction(),
-      
+
       new VocabularyComplexityAction(),
       new ReadingEaseAction(),
-      
+
       new KwicAnyFilterAction(),
       new KwicAllInDocumentFilterAction(),
       new KwicAllInSentenceFilterAction(),
@@ -82,6 +83,14 @@ namespace CorpusExplorer.Terminal.Console
       {
         PrintHelp();
         return;
+      }
+
+      if (args[0] == "JSON")
+      {
+        ConsoleConfiguration.Writer = new JsonTableWriter();
+        var list = new List<string>(args);
+        list.RemoveAt(0);
+        args = list.ToArray();
       }
 
       if (args[0].StartsWith("FILE:"))
@@ -150,7 +159,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       var process = Process.Start(new ProcessStartInfo
       {
-        Arguments = argument,
+        Arguments = ConsoleConfiguration.Writer is JsonTableWriter && !argument.StartsWith("JSON ") ? "JSON " + argument : argument,
         CreateNoWindow = true,
         FileName = _appPath,
         WindowStyle = ProcessWindowStyle.Hidden,
@@ -169,10 +178,10 @@ namespace CorpusExplorer.Terminal.Console
       var selection = corpus?.ToSelection();
       if (selection == null || selection.CountToken == 0)
         return;
-      
+
       var task = args[1].ToLowerInvariant();
 
-      if (!_actions.ContainsKey(task)) 
+      if (!_actions.ContainsKey(task))
         return;
 
       System.Console.OutputEncoding = Configuration.Encoding;
@@ -257,7 +266,7 @@ namespace CorpusExplorer.Terminal.Console
       return merger.Output.FirstOrDefault();
     }
 
-    private static List<string>  DetectFileOrDirectoryPaths(string fileOrDirectory)
+    private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
     {
       var tmp = fileOrDirectory.Split(new[] { "|", "\"" }, StringSplitOptions.RemoveEmptyEntries);
       var files = new List<string>();

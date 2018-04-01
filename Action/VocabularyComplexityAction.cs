@@ -20,9 +20,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       vm.Analyse();
       var table = vm.GetDataTable();
 
-      WriteOutput(string.Join("\t", from DataColumn x in table.Columns select x.ColumnName) + "\r\n");
-      foreach (DataRow x in table.Rows)
-        WriteOutput(string.Join("\t", from y in x.ItemArray select x.ToString()) + "\r\n");
+      WriteTable(table);
     }
   }
 }

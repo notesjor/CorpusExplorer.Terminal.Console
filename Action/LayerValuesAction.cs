@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
@@ -13,14 +14,18 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override void Execute(Selection selection, string[] args)
     {
       if (args == null || args.Length == 0)
-        WriteOutput("");
+        return;
 
-      WriteOutput("type\r\n");
+      var dt = new DataTable();
+      dt.Columns.Add("type", typeof(string));
+
       var values = new HashSet<string>(selection.GetLayers(args[0]).SelectMany(layer => layer.Values));
+      dt.BeginLoadData();
       foreach (var value in values)
-      {
-        WriteOutput($"{value}\r\n");
-      }
+        dt.Rows.Add(value);
+      dt.EndLoadData();
+
+      WriteTable(dt);
     }
   }
 }

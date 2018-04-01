@@ -23,34 +23,34 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override void Execute(Selection selection, string[] args)
     {
       var a = args?.ToArray();
-      if (a == null || a.Length != 1)
-        return;
-
-      var s = a[0].Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
-      if (s.Length != 2)
+      if (a == null || a.Length != 2)
         return;
 
       Selection sub;
-      if (s[0].StartsWith("FILE:"))
+      if (a[0].StartsWith("FILE:"))
       {
-        var lines = File.ReadAllLines(s[0].Replace("FILE:", string.Empty), Configuration.Encoding);
+        var lines = File.ReadAllLines(a[0].Replace("FILE:", string.Empty), Configuration.Encoding);
         var queries = lines.Select(QueryParser.Parse);
-        sub = queries.Aggregate(selection, (current, q) => current.Create(new[] { q }, Path.GetFileNameWithoutExtension(s[1])));
+        sub = queries.Aggregate(selection, (current, q) => current.Create(new[] { q }, Path.GetFileNameWithoutExtension(a[1])));
       }
       else
       {
-        var query = QueryParser.Parse(s[0]);
+        var query = QueryParser.Parse(a[0]);
         if (query is FilterQueryUnsupportedParserFeature)
         {
+          var s = a[0].Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+          if (s.Length != 2)
+            return;
+
           UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature)query, s[1]);
           return;
         }
 
-        sub = selection.Create(new[] { query }, Path.GetFileNameWithoutExtension(s[1]));
+        sub = selection.Create(new[] { query }, Path.GetFileNameWithoutExtension(a[1]));
       }
 
       var export = new OutputAction();
-      export.Execute(sub, new[] { s[1] });
+      export.Execute(sub, new[] { a[1] });
     }
 
     private void UnsupportedParserFeatureHandler(Selection selection, FilterQueryUnsupportedParserFeature query, string path)
@@ -101,19 +101,27 @@ namespace CorpusExplorer.Terminal.Console.Action
         case "TEXT":
         case "text":
         case "Text":
-          block.ClusterGenerator = new SelectionClusterGeneratorByStringValue();
+          block.ClusterGenerator = new SelectionClusterGeneratorStringValue();
           break;
         case "INT":
         case "int":
         case "Int":
           if (split.Length != 2)
             return;
-          block.ClusterGenerator = new SelectionClusterGeneratorByIntegerRange().Configure(int.Parse(split[1]));
+          block.ClusterGenerator = new SelectionClusterGeneratorIntegerRange
+          {
+            Ranges = int.Parse(split[1]),
+            AutoDetectMinMax = true
+          };
           break;
         case "FLOAT":
         case "float":
         case "Float":
-          block.ClusterGenerator = new SelectionClusterGeneratorByDoubleRange().Configure(int.Parse(split[1]));
+          block.ClusterGenerator = new SelectionClusterGeneratorDoubleRange
+          {
+            Ranges = int.Parse(split[1]),
+            AutoDetectMinMax = true
+          }; ;
           break;
         case "DATE":
         case "date":
@@ -123,25 +131,29 @@ namespace CorpusExplorer.Terminal.Console.Action
             case "CLUSTER":
               if(split.Length != 3)
                 return;
-              block.ClusterGenerator = new SelectionClusterGeneratorByDateTimeRange().Configure(int.Parse(split[2]));
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeRange
+              {
+                Ranges = int.Parse(split[2]),
+                AutoDetectMinMax = true
+              }; ;
               break;
             case "Y":
-              block.ClusterGenerator = new SelectionClusterGeneratorByDateTimeYearOnlyValue();
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearOnlyValue();
               break;
             case "YM":
-              block.ClusterGenerator = new SelectionClusterGeneratorByDateTimeYearMonthOnlyValue();
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearMonthOnlyValue();
               break;
             case "YMD":
-              block.ClusterGenerator = new SelectionClusterGeneratorByDateTimeYearMonthDayOnlyValue();
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearMonthDayOnlyValue();
               break;
             case "YMDH":
-              block.ClusterGenerator = new SelectionClusterGeneratorByDateTimeYearMonthDayHourOnlyValue();
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearMonthDayHourOnlyValue();
               break;
             case "YMDHM":
-              block.ClusterGenerator = new SelectionClusterGeneratorByDateTimeYearMonthDayHourMinuteOnlyValue();
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearMonthDayHourMinuteOnlyValue();
               break;
             case "ALL":
-              block.ClusterGenerator = new SelectionClusterGeneratorByDateTimeValue();
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeValue();
               break;
           }
           break;

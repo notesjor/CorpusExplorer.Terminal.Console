@@ -1,26 +1,24 @@
 using System.Collections.Generic;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
   public class CrossFrequencyAction : AbstractAction
   {
-    public override string Action =>  "cross-frequency";
+    public override string Action => "cross-frequency";
     public override string Description => "cross-frequency [LAYER] - calculates the cross-frequency based on [LAYER]";
 
     public override void Execute(Selection selection, string[] args)
     {
-      var block = selection.CreateBlock<CrossFrequencyBlock>();
+      var vm = new FrequencyCrossViewModel { Selection = selection };
       if (args != null && args.Length == 1)
-        block.LayerDisplayname = args[0];
-      block.Calculate();
+        vm.LayerDisplayname = args[0];
+      vm.Analyse();
 
-      WriteOutput("termA\ttermB\tsignificance\r\n");
-      foreach (var x in block.CooccurrencesFrequency)
-      foreach (var y in x.Value)
-        WriteOutput($"{x.Key}\t{y.Key}\t{y.Value}\r\n");
+      WriteTable(vm.GetDataTable());
     }
   }
 }

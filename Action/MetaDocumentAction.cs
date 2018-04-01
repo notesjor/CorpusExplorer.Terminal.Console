@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using CorpusExplorer.Sdk.Model;
@@ -13,23 +14,23 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args)
     {
-      var categories = selection.GetDocumentMetadataPrototypeOnlyProperties().ToArray();
-      WriteOutput($"GUID\t{string.Join("\t", categories)}\r\n");
-      foreach (var dsel in selection.DocumentGuids)
+      var columns = selection.GetDocumentMetadataPrototypeOnlyPropertiesAndTypes().ToArray();
+
+      var dt = new DataTable();
+      dt.Columns.Add("GUID", typeof(string));
+      foreach (var column in columns)
+        dt.Columns.Add(column.Key, column.Value);
+
+      dt.BeginLoadData();
+      foreach (var pair in selection.DocumentMetadata)
       {
-        var meta = selection.GetDocumentMetadata(dsel);
-        var output = new StringBuilder($"{dsel:N}\t");
-
-        for (var i = 0; i < categories.Length; i++)
-        {
-          if (meta.ContainsKey(categories[i]) && meta[categories[i]] != null)
-            output.Append($"{meta[categories[i]]}{(i + 1 == categories.Length ? "\r\n" : "\t")}");
-          else
-            output.Append($"{(i + 1 == categories.Length ? "\r\n" : "\t")}");
-        }
-
-        WriteOutput(output.ToString());
+        var items = new List<object> { pair.Key.ToString() };
+        items.AddRange(columns.Select(column => pair.Value.ContainsKey(column.Key) ? pair.Value[column.Key] : null));
+        dt.Rows.Add(items.ToArray());
       }
+      dt.EndLoadData();
+
+      WriteTable(dt);
     }
   }
 }

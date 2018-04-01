@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
@@ -12,15 +11,12 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args)
     {
-      var block = selection.CreateBlock<CooccurrenceBlock>();
+      var vm = new CooccurrenceViewModel {Selection = selection};
       if (args != null && args.Length == 1)
-        block.LayerDisplayname = args[0];
-      block.Calculate();
+        vm.LayerDisplayname = args[0];
+      vm.Analyse();
 
-      WriteOutput("termA\ttermB\tsignificance\r\n");
-      foreach (var x in block.CooccurrenceSignificance)
-        foreach (var y in x.Value)
-          WriteOutput($"{x.Key}\t{y.Key}\t{y.Value}\r\n");
+      WriteTable(vm.GetFullDataTable());
     }
   }
 }

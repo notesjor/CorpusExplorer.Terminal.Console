@@ -28,18 +28,12 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
           ((FilterQuerySingleLayerExactPhrase)query).LayerQueries = queries;
           break;
       }
-
-
+      
       var vm = new TextLiveSearchViewModel { Selection = selection };
       vm.AddQuery(query);
       vm.Analyse();
 
-      var data = vm.GetUniqueData();
-
-      WriteOutput("pre\tmatch\tpost\tfreq\tdocId\tsentId\r\n");
-      foreach (var x in data)
-      foreach (var s in x.Sentences)
-        WriteOutput($"{x.Pre}\t{x.Match}\t{x.Post}\t{x.Count}\t{s.Key:N}\t{s.Value}\r\n");
+      WriteTable(vm.GetDataTable());
     }
 
     protected abstract AbstractFilterQuery GetQuery();

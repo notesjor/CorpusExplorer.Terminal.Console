@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
@@ -13,9 +14,15 @@ namespace CorpusExplorer.Terminal.Console.Action
     {
       var categories = selection.GetDocumentMetadataPrototypeOnlyProperties();
 
-      WriteOutput("meta-categories\r\n");
+      var dt = new DataTable();
+      dt.Columns.Add("meta-categories", typeof(string));
+
+      dt.BeginLoadData();
       foreach (var x in categories)
-        WriteOutput($"{x}\r\n");
+        dt.Rows.Add(x);
+      dt.EndLoadData();
+
+      WriteTable(dt);
     }
   }
 }

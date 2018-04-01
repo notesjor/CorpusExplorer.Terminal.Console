@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Text;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
@@ -13,10 +15,9 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
 
     public abstract void Execute(Selection selection, string[] args);
 
-    protected void WriteOutput(string line)
+    protected void WriteTable(DataTable table)
     {
-      var buffer = Configuration.Encoding.GetBytes(line.Replace("&#", "#"));
-      System.Console.OpenStandardOutput().Write(buffer, 0, buffer.Length);
+      ConsoleConfiguration.Writer.WriteTable(table);
     }
   }
 }

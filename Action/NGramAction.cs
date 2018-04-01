@@ -1,5 +1,6 @@
 ﻿using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
@@ -11,18 +12,16 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args)
     {
-      var block = selection.CreateBlock<Ngram1LayerBlock>();
+      var vm = new NgramViewModel { Selection = selection };
       if (args == null || args.Length == 0)
-        block.NGramSize = 5;
+        vm.NGramSize = 5;
       if (args.Length >= 1)
-        block.NGramSize = int.Parse(args[0]);
+        vm.NGramSize = int.Parse(args[0]);
       if (args.Length == 2)
-        block.LayerDisplayname = args[1];
-      block.Calculate();
+        vm.LayerDisplayname = args[1];
+      vm.Analyse();
 
-      WriteOutput("ngram\tfrequency\r\n");
-      foreach (var x in block.NGramFrequency)
-        WriteOutput($"{x.Key}\t{x.Value}\r\n");
+      WriteTable(vm.GetDataTable());
     }
   }
 }
