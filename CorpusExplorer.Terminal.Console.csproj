@@ -80,6 +80,7 @@
     <Compile Include="Writer\Abstract\AbstractTableWriter.cs" />
     <Compile Include="Writer\CsvTableWriter.cs" />
     <Compile Include="Writer\JsonTableWriter.cs" />
+    <Compile Include="Writer\SqlTableWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

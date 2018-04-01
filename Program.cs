@@ -85,9 +85,23 @@ namespace CorpusExplorer.Terminal.Console
         return;
       }
 
-      if (args[0] == "JSON")
+      if (args[0].StartsWith("F:"))
       {
-        ConsoleConfiguration.Writer = new JsonTableWriter();
+        switch (args[0])
+        {
+          case "F:JSON":
+            ConsoleConfiguration.Writer = new JsonTableWriter();
+            break;
+          case "F:SQL":
+            ConsoleConfiguration.Writer = new SqlTableWriter();
+            break;
+          // ReSharper disable once RedundantCaseLabel
+          case "F:CSV":
+          default:
+            ConsoleConfiguration.Writer = new CsvTableWriter();
+            break;
+        }
+
         var list = new List<string>(args);
         list.RemoveAt(0);
         args = list.ToArray();
@@ -95,6 +109,8 @@ namespace CorpusExplorer.Terminal.Console
 
       if (args[0].StartsWith("FILE:"))
         ExecuteSkript(args);
+      else if (args[0].StartsWith("DEBUG:"))
+        DebugSkript(args);
       else if (args[0].ToLowerInvariant() == "shell")
         ExecuteShell();
       else
@@ -124,7 +140,7 @@ namespace CorpusExplorer.Terminal.Console
           case "exit":
             return;
           case "help":
-            System.Console.WriteLine(StartProcessCec(""));
+            PrintHelp();
             break;
           default:
             if (command.StartsWith("SAVE:"))
@@ -132,7 +148,7 @@ namespace CorpusExplorer.Terminal.Console
             else
             {
               history.Add(command);
-              System.Console.WriteLine(StartProcessCec(command));
+              StartProcessCec(command);
             }
 
             break;
@@ -145,21 +161,38 @@ namespace CorpusExplorer.Terminal.Console
       var path = args[0].Replace("FILE:", "").Replace("\"", "");
       var lines = File.ReadAllLines(path, Configuration.Encoding);
 
+      foreach (var line in lines)
+        StartProcessCec(line);
+    }
+
+    private static void DebugSkript(string[] args)
+    {
+      var path = args[0].Replace("DEBUG:", "").Replace("\"", "");
+      var lines = File.ReadAllLines(path, Configuration.Encoding);
+
       System.Console.WriteLine($"execute script: {path}");
       for (var i = 0; i < lines.Length; i++)
       {
-        var line = lines[i];
-        System.Console.Write($"[{i + 1:D3}/{lines.Length:D3}] {line}");
-        StartProcessCec(line);
-        System.Console.WriteLine("...ok!");
+        try
+        {
+          var line = lines[i];
+          System.Console.Write($"[{i + 1:D3}/{lines.Length:D3}] {line}");
+          StartProcessCec(line);
+          System.Console.WriteLine("...ok!");
+        }
+        catch (Exception ex)
+        {
+          System.Console.WriteLine(ex.Message);
+          System.Console.WriteLine(ex.StackTrace);
+        }
       }
     }
 
-    private static string StartProcessCec(string argument)
+    private static void StartProcessCec(string argument)
     {
       var process = Process.Start(new ProcessStartInfo
       {
-        Arguments = ConsoleConfiguration.Writer is JsonTableWriter && !argument.StartsWith("JSON ") ? "JSON " + argument : argument,
+        Arguments = !argument.StartsWith("F:") ? $"{ConsoleConfiguration.Writer.TableWriterTag} {argument}" : argument,
         CreateNoWindow = true,
         FileName = _appPath,
         WindowStyle = ProcessWindowStyle.Hidden,
@@ -169,7 +202,8 @@ namespace CorpusExplorer.Terminal.Console
       });
       var res = process.StandardOutput.ReadToEnd();
       process.WaitForExit();
-      return res;
+
+      System.Console.Out.Write(res);
     }
 
     private static void ExecuteDirect(string[] args)
@@ -298,9 +332,11 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Syntax for filtering:");
       System.Console.WriteLine("cec.exe [INPUT] [QUERY] [OUTPUT]");
       System.Console.WriteLine("Syntax for analytics (writes TSV-output to stdout):");
-      System.Console.WriteLine("cec.exe [INPUT] [TASK]");
-      System.Console.WriteLine("Syntax for scripting");
+      System.Console.WriteLine("cec.exe [F:FORMAT] [INPUT] [TASK]");
+      System.Console.WriteLine("Syntax for scripting:");
       System.Console.WriteLine("cec.exe FILE:[PATH]");
+      System.Console.WriteLine("More detailed scripting errors:");
+      System.Console.WriteLine("cec.exe DEBUG:[PATH]");
       System.Console.WriteLine("To start interactive shell mode");
       System.Console.WriteLine("cec.exe SHELL");
       System.Console.WriteLine();
@@ -396,7 +432,6 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query XSDate::DATE;YMD ExporterCec6#C:\\mycorpus.cec6");
 
-
       System.Console.WriteLine();
       System.Console.WriteLine();
       System.Console.WriteLine("<: --- [TASK] --- :>");
@@ -415,6 +450,17 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("All tasks above can be stored in a file to build up a automatic process.");
       System.Console.WriteLine("In this case it's recommended to redirect the [TASK]-output to a file and not to stdout");
       System.Console.WriteLine("Example: import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort > output.csv");
+
+      System.Console.WriteLine();
+      System.Console.WriteLine();
+      System.Console.WriteLine("<: --- [F:FORMAT] --- :>");
+      System.Console.WriteLine();
+      System.Console.WriteLine("If you use [TASK] or the scripting-mode [FILE: / DEBUG:], you can change the output format.");
+      System.Console.WriteLine("You need to set one of the following tags as first parameter:");
+      System.Console.WriteLine("F:CSV - (standard output format) ';' separated values");
+      System.Console.WriteLine("F:JSON - JSON-array");
+      System.Console.WriteLine("F:SQL - SQL-statement");
+      System.Console.WriteLine("Example: cec.exe F:JSON import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");
     }
   }
 }

@@ -10,6 +10,8 @@ namespace CorpusExplorer.Terminal.Console.Writer.Abstract
 {
   public abstract class AbstractTableWriter
   {
+    public abstract string TableWriterTag { get; }
+
     public abstract void WriteTable(DataTable table);
 
     protected void WriteOutput(string line)

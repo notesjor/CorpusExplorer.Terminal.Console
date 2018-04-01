@@ -9,6 +9,8 @@ namespace CorpusExplorer.Terminal.Console.Writer
 {
   public class JsonTableWriter : AbstractTableWriter
   {
+    public override string TableWriterTag => "F:JSON";
+
     public override void WriteTable(DataTable table)
     {
       var columns = new List<KeyValuePair<string, Type>>();
