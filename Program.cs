@@ -95,6 +95,9 @@ namespace CorpusExplorer.Terminal.Console
           case "F:SQL":
             ConsoleConfiguration.Writer = new SqlTableWriter();
             break;
+          case "F:XML":
+            ConsoleConfiguration.Writer = new XmlTableWriter();
+            break;
           // ReSharper disable once RedundantCaseLabel
           case "F:CSV":
           default:
