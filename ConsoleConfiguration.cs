@@ -10,6 +10,11 @@ namespace CorpusExplorer.Terminal.Console
 {
   public static class ConsoleConfiguration
   {
-    public static AbstractTableWriter Writer { get; set; } = new CsvTableWriter();
+    public static AbstractTableWriter Writer { get; set; } = new TsvTableWriter();
+
+    public static void Dispose()
+    {
+      Writer.Dispose();
+    }
   }
 }

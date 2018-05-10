@@ -98,10 +98,11 @@ namespace CorpusExplorer.Terminal.Console
           case "F:XML":
             ConsoleConfiguration.Writer = new XmlTableWriter();
             break;
-          // ReSharper disable once RedundantCaseLabel
           case "F:CSV":
-          default:
             ConsoleConfiguration.Writer = new CsvTableWriter();
+            break;
+          default:
+            ConsoleConfiguration.Writer = new TsvTableWriter();
             break;
         }
 
@@ -116,8 +117,15 @@ namespace CorpusExplorer.Terminal.Console
         DebugSkript(args);
       else if (args[0].ToLowerInvariant() == "shell")
         ExecuteShell();
+      else if (args.Length == 1 && File.Exists(args[0]))
+      {
+        args[0] = "FILE:" + args[0];
+        ExecuteSkript(args);
+      }
       else
         ExecuteDirect(args);
+
+      ConsoleConfiguration.Dispose();
     }
 
     private static void ExecuteShell()
@@ -193,20 +201,51 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void StartProcessCec(string argument)
     {
-      var process = Process.Start(new ProcessStartInfo
+      if(string.IsNullOrEmpty(argument))
+        return;
+      if(argument.StartsWith("#"))
       {
-        Arguments = !argument.StartsWith("F:") ? $"{ConsoleConfiguration.Writer.TableWriterTag} {argument}" : argument,
-        CreateNoWindow = true,
-        FileName = _appPath,
-        WindowStyle = ProcessWindowStyle.Hidden,
-        RedirectStandardOutput = true,
-        StandardOutputEncoding = Configuration.Encoding,
-        UseShellExecute = false
-      });
-      var res = process.StandardOutput.ReadToEnd();
-      process.WaitForExit();
+        System.Console.WriteLine(argument);
+        return;
+      }
 
-      System.Console.Out.Write(res);
+      if (argument.Contains(" > "))
+      {
+        var split = argument.Split(new[] {" > "}, StringSplitOptions.None).ToList();
+        argument = split[0];
+
+        var process = Process.Start(new ProcessStartInfo
+        {
+          Arguments = !argument.StartsWith("F:") ? $"{ConsoleConfiguration.Writer.TableWriterTag} {argument}" : argument,
+          CreateNoWindow = true,
+          FileName = _appPath,
+          WindowStyle = ProcessWindowStyle.Hidden,
+          RedirectStandardOutput = true,
+          StandardOutputEncoding = Configuration.Encoding,
+          UseShellExecute = false
+        });
+        var res = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+
+        File.WriteAllText(split[1], res, Configuration.Encoding);
+      }
+      else
+      {
+        var process = Process.Start(new ProcessStartInfo
+        {
+          Arguments = !argument.StartsWith("F:") ? $"{ConsoleConfiguration.Writer.TableWriterTag} {argument}" : argument,
+          CreateNoWindow = true,
+          FileName = _appPath,
+          WindowStyle = ProcessWindowStyle.Hidden,
+          RedirectStandardOutput = true,
+          StandardOutputEncoding = Configuration.Encoding,
+          UseShellExecute = false
+        });
+        var res = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+
+        System.Console.Out.Write(res);
+      }      
     }
 
     private static void ExecuteDirect(string[] args)
@@ -220,7 +259,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (!_actions.ContainsKey(task))
         return;
-
+      
       System.Console.OutputEncoding = Configuration.Encoding;
       var temp = args.ToList();
       temp.RemoveAt(0); // CorpusFile (no longer needed)
@@ -403,6 +442,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Second character [OPERATOR] (if you choose M):");
       System.Console.WriteLine("? = regEx | : = contains (case sensitive) | . = contains (not case sensitive)");
       System.Console.WriteLine("= = match exact (case sensitive) | - = match exact (not case sensitive) | ! = is empty");
+      System.Console.WriteLine("( = starts with (case sensitive) | ) = ends with (case sensitive)");
       System.Console.WriteLine("Second character [OPERATOR] (if you choose T):");
       System.Console.WriteLine("~ = any match | - = all in one document | = = all in one sentence | § = exact phrase");
       System.Console.WriteLine("Second character [OPERATOR] (if you choose X):");
@@ -431,8 +471,9 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query XSYear::INT;10 ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine("DATE;C;[CLUSTERSIZE] - generates [CLUSTERSIZE] clusters.");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query XSDate::DATE;C;10 ExporterCec6#C:\\mycorpus.cec6");
+      System.Console.WriteLine("DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster");
       System.Console.WriteLine("DATE;Y = Year-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster");
-      System.Console.WriteLine("DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster");
+      System.Console.WriteLine("DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster");      
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query XSDate::DATE;YMD ExporterCec6#C:\\mycorpus.cec6");
 
       System.Console.WriteLine();
@@ -460,7 +501,8 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine();
       System.Console.WriteLine("If you use [TASK] or the scripting-mode [FILE: / DEBUG:], you can change the output format.");
       System.Console.WriteLine("You need to set one of the following tags as first parameter:");
-      System.Console.WriteLine("F:CSV - (standard output format) ';' separated values");
+      System.Console.WriteLine("F:TSV - (standard output format) tab separated values");
+      System.Console.WriteLine("F:CSV - ';' separated values");
       System.Console.WriteLine("F:JSON - JSON-array");
       System.Console.WriteLine("F:SQL - SQL-statement");
       System.Console.WriteLine("Example: cec.exe F:JSON import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");

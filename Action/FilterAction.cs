@@ -38,11 +38,11 @@ namespace CorpusExplorer.Terminal.Console.Action
         var query = QueryParser.Parse(a[0]);
         if (query is FilterQueryUnsupportedParserFeature)
         {
-          var s = a[0].Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+          var s = a[0].Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
           if (s.Length != 2)
             return;
 
-          UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature)query, s[1]);
+          UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature)query, a[1]);
           return;
         }
 
@@ -53,18 +53,22 @@ namespace CorpusExplorer.Terminal.Console.Action
       export.Execute(sub, new[] { a[1] });
     }
 
-    private void UnsupportedParserFeatureHandler(Selection selection, FilterQueryUnsupportedParserFeature query, string path)
+    private void UnsupportedParserFeatureHandler(Selection selection, FilterQueryUnsupportedParserFeature query, string output)
     {
       if (query.MetaLabel == "<:RANDOM:>")
-        UnsupportedParserRandomFeature(selection, query, path);
+        UnsupportedParserRandomFeature(selection, query, output);
       else
-        UnsupportedParserFeatureAutosplit(selection, query, path);
+        UnsupportedParserFeatureAutosplit(selection, query, output);
     }
 
-    private void UnsupportedParserRandomFeature(Selection selection, FilterQueryUnsupportedParserFeature query, string path)
+    private void UnsupportedParserRandomFeature(Selection selection, FilterQueryUnsupportedParserFeature query, string output)
     {
       var values = query.MetaValues?.ToArray();
       if (values?.Length != 1)
+        return;
+
+      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+      if (outputOptions.Length != 2)
         return;
 
       var block = selection.CreateBlock<RandomSelectionBlock>();
@@ -72,23 +76,31 @@ namespace CorpusExplorer.Terminal.Console.Action
       block.Calculate();
 
       var export = new OutputAction();
-      export.Execute(block.RandomSelection, new[] { path });
+      export.Execute(block.RandomSelection, new[] { output });
 
-      var dir = Path.GetDirectoryName(path);
+      var form = outputOptions[0];
+      var path = outputOptions[1];
       var nam = Path.GetFileNameWithoutExtension(path);
       var ext = Path.GetExtension(path);
+      var dir = Path.GetDirectoryName(path);
+      if (!Directory.Exists(dir))
+        Directory.CreateDirectory(dir);
 
       var none = new HashSet<Guid>(block.RandomSelection.DocumentGuids);
       var list = selection.DocumentGuids.Where(dsel => !none.Contains(dsel));
       var nega = selection.CreateTemporary(list);
 
-      export.Execute(nega, new[] { Path.Combine(dir, $"{nam}_inverse{ext}") });
+      export.Execute(nega, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\"" });
     }
 
-    private void UnsupportedParserFeatureAutosplit(Selection selection, FilterQueryUnsupportedParserFeature query, string path)
+    private void UnsupportedParserFeatureAutosplit(Selection selection, FilterQueryUnsupportedParserFeature query, string output)
     {
       var values = query.MetaValues?.ToArray();
       if (values?.Length != 1)
+        return;
+
+      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+      if (outputOptions.Length != 2)
         return;
 
       var block = selection.CreateBlock<SelectionClusterBlock>();
@@ -129,13 +141,19 @@ namespace CorpusExplorer.Terminal.Console.Action
           switch (split[1])
           {
             case "CLUSTER":
-              if(split.Length != 3)
+              if (split.Length != 3)
                 return;
               block.ClusterGenerator = new SelectionClusterGeneratorDateTimeRange
               {
                 Ranges = int.Parse(split[2]),
                 AutoDetectMinMax = true
               }; ;
+              break;
+            case "CEN":
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeCenturyOnlyValue();
+              break;
+            case "DEC":
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeDecateOnlyValue();
               break;
             case "Y":
               block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearOnlyValue();
@@ -161,14 +179,19 @@ namespace CorpusExplorer.Terminal.Console.Action
       block.MetadataKey = query.MetaLabel;
       block.Calculate();
 
+      var form = outputOptions[0];
+      var path = outputOptions[1];
       var dir = Path.GetDirectoryName(path);
       var nam = Path.GetFileNameWithoutExtension(path);
       var ext = Path.GetExtension(path);
 
+      if (!Directory.Exists(dir))
+        Directory.CreateDirectory(dir);
+
       var export = new OutputAction();
       foreach (var cluster in block.GetSelectionClusters())
       {
-        export.Execute(cluster, new[] { Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}") });
+        export.Execute(cluster, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\"" });
       }
     }
   }

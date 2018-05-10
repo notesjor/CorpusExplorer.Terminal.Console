@@ -12,19 +12,22 @@ namespace CorpusExplorer.Terminal.Console.Writer
 
     public override void WriteTable(DataTable table)
     {
-      WriteOutput(string.Join(";", from DataColumn x in table.Columns select $"\"{x.ColumnName.Replace("\"", "''")}\"") + "\r\n");
+      WriteOutput($"{string.Join(";", from DataColumn x in table.Columns select EnsureValue(x.ColumnName))}\r\n");
       foreach (DataRow x in table.Rows)
       {
         var r = new string[table.Columns.Count];
         for (var i = 0; i < table.Columns.Count; i++)
         {
-          r[i] = table.Columns[i].DataType == typeof(string)
-            ? $"\"{x[i].ToString().Replace("\"", "''")}\""
-            : x[i].ToString();
+          r[i] = x[i] == null ? "\"\"" : $"\"{EnsureValue(x[i].ToString())}\"";
         }
 
-        WriteOutput(string.Join(";", r) + "\r\n");
+        WriteOutput($"{string.Join(";", r)}\r\n");
       }
+    }
+
+    private string EnsureValue(string value)
+    {
+      return value.Replace("\"", "''").Replace("\t", "").Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ").Replace("  ", " ").Replace("  ", " ").Replace("  ", " ");
     }
   }
 }
