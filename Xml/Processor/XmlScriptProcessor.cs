@@ -132,7 +132,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           if (!formats.ContainsKey(task.output.format))
             return;
 
-          var format = formats[task.output.format];
+          var format = formats[$"F:{task.output.format}"];
           using (var fs = new FileStream(OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type), FileMode.Create, FileAccess.Write))
           {
             format.OutputStream = fs;

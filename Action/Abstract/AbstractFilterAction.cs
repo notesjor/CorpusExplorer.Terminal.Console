@@ -19,13 +19,13 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
       var query = GetQuery();
       switch (query)
       {
-        case AbstractFilterQuerySingleLayer _:
-          ((AbstractFilterQuerySingleLayer)query).LayerDisplayname = args[0];
-          ((AbstractFilterQuerySingleLayer)query).LayerQueries = queries;
+        case AbstractFilterQuerySingleLayer q:
+          q.LayerDisplayname = args[0];
+          q.LayerQueries = queries;
           break;
-        case FilterQuerySingleLayerExactPhrase _:
-          ((FilterQuerySingleLayerExactPhrase)query).LayerDisplayname = args[0];
-          ((FilterQuerySingleLayerExactPhrase)query).LayerQueries = queries;
+        case FilterQuerySingleLayerExactPhrase q:
+          q.LayerDisplayname = args[0];
+          q.LayerQueries = queries;
           break;
       }
       

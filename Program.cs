@@ -19,6 +19,7 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Writer;
 using CorpusExplorer.Terminal.Console.Writer.Abstract;
+using CorpusExplorer.Terminal.Console.Xml.Processor;
 
 namespace CorpusExplorer.Terminal.Console
 {
@@ -163,6 +164,9 @@ namespace CorpusExplorer.Terminal.Console
     private static void ExecuteSkript(string[] args)
     {
       var path = args[0].Replace("FILE:", "").Replace("\"", "");
+      if (ProcessXmlScript(path))
+        return;
+
       var lines = File.ReadAllLines(path, Configuration.Encoding);
 
       foreach (var line in lines)
@@ -172,6 +176,9 @@ namespace CorpusExplorer.Terminal.Console
     private static void DebugSkript(string[] args)
     {
       var path = args[0].Replace("DEBUG:", "").Replace("\"", "");
+      if (ProcessXmlScript(path))
+        return;
+
       var lines = File.ReadAllLines(path, Configuration.Encoding);
 
       System.Console.WriteLine($"execute script: {path}");
@@ -189,6 +196,22 @@ namespace CorpusExplorer.Terminal.Console
           System.Console.WriteLine(ex.Message);
           System.Console.WriteLine(ex.StackTrace);
         }
+      }
+    }
+
+    private static bool ProcessXmlScript(string path)
+    {
+      if (!XmlScriptProcessor.IsXmlScript(path))
+        return false;
+
+      try
+      {
+        XmlScriptProcessor.Process(path, _actions, _formats);
+        return true;
+      }
+      catch
+      {
+        return false;
       }
     }
 
