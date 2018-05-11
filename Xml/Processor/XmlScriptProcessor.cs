@@ -83,23 +83,27 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               var action = actions[task.type];
 
               if (task.query != "*")
-                Parallel.ForEach(selections, selection =>
+                Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
                 {
-                  try
+                  Parallel.ForEach(selection.Value, sel =>
                   {
-                    ExecuteTask(action, task, formats, selection.Value, scriptFilename);
-                  }
-                  catch
-                  {
-                    // ignore
-                  }
+                    try
+                    {
+                      ExecuteTask(action, task, formats, sel, scriptFilename);
+                    }
+                    catch
+                    {
+                      // ignore
+                    }
+                  });
                 });
               else
               {
                 if (!selections.ContainsKey(task.query ?? string.Empty))
                   return;
 
-                ExecuteTask(action, task, formats, selections[task.query ?? string.Empty], scriptFilename);
+                var selection = selections[task.query ?? string.Empty];
+                Parallel.ForEach(selection, sel => { ExecuteTask(action, task, formats, sel, scriptFilename); });
               }
             }
             catch
