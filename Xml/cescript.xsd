@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="cescript">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="head"/>
+        <xs:element ref="sessions"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="head">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="meta"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="meta">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:NMTOKEN">
+          <xs:attribute name="key" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sessions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="session"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="session">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="sources"/>
+        <xs:element ref="queries"/>
+        <xs:element ref="tasks"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sources">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="annotate"/>
+        <xs:element maxOccurs="unbounded" ref="import"/>
+      </xs:sequence>
+      <xs:attribute name="processing" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="annotate">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="directory"/>
+        <xs:element ref="file"/>
+      </xs:choice>
+      <xs:attribute name="language" use="required" type="xs:NCName"/>
+      <xs:attribute name="tagger" use="required" type="xs:NCName"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="import">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="directory"/>
+        <xs:element ref="file"/>
+      </xs:choice>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="queries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="query"/>
+      </xs:sequence>
+      <xs:attribute name="processing" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="query">
+    <xs:complexType mixed="true">
+      <xs:attribute name="name" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tasks">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="task"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="task">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="output"/>
+        <xs:element minOccurs="0" ref="arguments"/>
+      </xs:sequence>
+      <xs:attribute name="query" type="xs:NCName"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="output">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:anyURI">
+          <xs:attribute name="format" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="arguments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="argument"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="argument" type="xs:NCName"/>
+  <xs:element name="file" type="xs:anyURI"/>
+  <xs:element name="directory">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:anyURI">
+          <xs:attribute name="filter" use="required" type="xs:NMTOKEN"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

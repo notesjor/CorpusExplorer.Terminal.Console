@@ -1,0 +1,99 @@
+<cescript>
+<head>
+	<meta key="a">Hallo</meta>
+	<meta key="b">2018</meta>
+</head>
+<sessions>
+	<session>
+		<sources>
+			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</annotate>
+			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</annotate>
+			<import type="ImporterCec6">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</import>
+			<import type="ImporterCec6">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</import>			
+		</sources>
+		
+		<queries>
+			<query>!M:Author::Jan</query>
+			<query name="q1">!M:Author::Jan</query>
+		</queries>
+		
+		<tasks>
+			<task type="convert">
+				<output format="ExporterCec6">C:/test.cec6</output>
+			</task>
+			<task type="basic-information" query="q1">
+				<output format="TSV">C:/{input}_{query}.tsv</output>
+			</task>
+			<task type="frequency2">
+				<output format="TSV">C:/f.tsv</output>
+				<arguments>
+					<argument>POS</argument>
+					<argument>Lemma</argument>
+				</arguments>
+			</task>
+		</tasks>
+	</session>
+	<session>	
+		<sources processing="merge"> <!-- processing = merge OR loop -->
+			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</annotate>
+			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</annotate>
+			<import type="ImporterCec6">
+				<file>C:/test.abc</file>
+				<file>C:/test.abc</file>
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+				<directory filter=".cec6">C:/</directory>
+			</import>
+			<import type="ImporterCec6">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</import>			
+		</sources>
+		
+		<queries processing="all"> <!-- process = all, any OR loop -->
+			<query>!M:Author::Jan</query>
+			<query name="q1">!M:Author::Jan</query>
+		</queries>
+		
+		<tasks>
+			<task type="convert">
+				<output format="ExporterCec6">C:/test.cec6</output>
+			</task>
+			<task type="basic-information" query="q1">
+				<output format="TSV">C:/{input}_{query}.tsv</output>
+			</task>
+			<task type="frequency2">
+				<output format="TSV">C:/f.tsv</output>
+				<arguments>
+					<argument>POS</argument>
+					<argument>Lemma</argument>
+				</arguments>
+			</task>
+		</tasks>
+	</session>
+	</sessions>
+</cescript>

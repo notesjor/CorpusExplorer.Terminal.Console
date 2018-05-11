@@ -83,6 +83,8 @@
     <Compile Include="Writer\SqlTableWriter.cs" />
     <Compile Include="Writer\TsvTableWriter.cs" />
     <Compile Include="Writer\XmlTableWriter.cs" />
+    <Compile Include="Xml\Model\cescript.cs" />
+    <Compile Include="Xml\Processor\XmlScriptProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -98,6 +100,7 @@
       <Name>CorpusExplorer.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

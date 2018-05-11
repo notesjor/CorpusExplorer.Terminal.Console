@@ -18,6 +18,11 @@ namespace CorpusExplorer.Terminal.Console.Writer.Abstract
       _output = System.Console.OpenStandardOutput();
     }
 
+    public Stream OutputStream
+    {
+      get => _output; set => _output = value;
+    }
+
     public abstract string TableWriterTag { get; }
 
     public abstract void WriteTable(DataTable table);

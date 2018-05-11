@@ -18,6 +18,7 @@ using CorpusExplorer.Terminal.Console.Action;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Writer;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console
 {
@@ -58,6 +59,15 @@ namespace CorpusExplorer.Terminal.Console
       new FilterAction(),
     }.ToDictionary(x => x.Action, x => x);
 
+    private static Dictionary<string, AbstractTableWriter> _formats = new Dictionary<string, AbstractTableWriter>
+    {
+      {"F:TSV", new TsvTableWriter()},
+      {"F:CSV", new CsvTableWriter()},
+      {"F:XML", new XmlTableWriter()},
+      {"F:SQL", new SqlTableWriter()},
+      {"F:JSON", new JsonTableWriter()},
+    };
+
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {
       try
@@ -87,25 +97,8 @@ namespace CorpusExplorer.Terminal.Console
 
       if (args[0].StartsWith("F:"))
       {
-        switch (args[0])
-        {
-          case "F:JSON":
-            ConsoleConfiguration.Writer = new JsonTableWriter();
-            break;
-          case "F:SQL":
-            ConsoleConfiguration.Writer = new SqlTableWriter();
-            break;
-          case "F:XML":
-            ConsoleConfiguration.Writer = new XmlTableWriter();
-            break;
-          case "F:CSV":
-            ConsoleConfiguration.Writer = new CsvTableWriter();
-            break;
-          default:
-            ConsoleConfiguration.Writer = new TsvTableWriter();
-            break;
-        }
-
+        ConsoleConfiguration.Writer = _formats.ContainsKey(args[0]) ? _formats[args[0]] : _formats.First().Value;
+        
         var list = new List<string>(args);
         list.RemoveAt(0);
         args = list.ToArray();
