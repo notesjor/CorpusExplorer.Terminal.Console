@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
@@ -14,6 +15,7 @@ using CorpusExplorer.Sdk.Utils.CorpusManipulation;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Builder;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.Filter;
+using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Writer.Abstract;
@@ -143,12 +145,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
-    private static Dictionary<string, Selection> GenerateSelections(AbstractCorpusAdapter source, queries queries)
+    private static Dictionary<string, Selection[]> GenerateSelections(AbstractCorpusAdapter source, queries queries)
     {
       var all = source.ToSelection();
       all.Displayname = "";
 
-      var res = new Dictionary<string, Selection>();
+      var res = new Dictionary<string, Selection[]>();
       foreach (var q in queries.query)
       {
         var key = q.name ?? string.Empty;
@@ -161,9 +163,34 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         try
         {
-          var qs = (from x in queries.query where x.name == key select QueryParser.Parse(string.Join(" ", x.Text)))
-            .Where(x => x != null);
-          res[key] = all.Create(qs, key);
+          var qs = (from x in queries.query where x.name == key select QueryParser.Parse(string.Join(" ", x.Text))).Where(x => x != null).ToArray();
+          if (qs.Length == 1)
+          {
+            if (qs[0] is FilterQueryUnsupportedParserFeature)
+            {
+              var q = (FilterQueryUnsupportedParserFeature)qs[0];
+              switch (q.MetaLabel)
+              {
+                case "<:RANDOM:>":
+                  res[key] = GenerateSelections_RandomSplit(all, q.MetaValues);
+                  break;
+                case "<:CORPUS:>":
+                  res[key] = GenerateSelections_CorporaSplit(all);
+                  break;
+                default:
+                  res[key] = GenerateSelections_MetaSplit(all, q, q.MetaValues);
+                  break;
+              }
+            }
+            else
+            {
+              res[key] = new[] { all.Create(qs, key) };
+            }
+          }
+          else
+          {
+            res[key] = new[] { all.Create(qs, key) };
+          }
         }
         catch
         {
@@ -172,9 +199,37 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
 
       if (!res.ContainsKey(""))
-        res.Add("", all);
+        res.Add("", new[] { all });
 
-      return res;
+      return res.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
+    }
+
+    private static Selection[] GenerateSelections_MetaSplit(Selection selection, FilterQueryUnsupportedParserFeature q, IEnumerable<object> values)
+    {
+      var vs = values?.ToArray();
+      if (vs?.Length != 1)
+        return null;
+
+      var block = AutoSplitBlockHelper.RunAutoSplit(selection, q, vs);
+      return block.GetSelectionClusters().ToArray();
+    }
+
+    private static Selection[] GenerateSelections_CorporaSplit(Selection selection)
+    {
+      return 
+         (from csel in selection.CorporaGuids
+          let corpus = selection.GetCorpus(csel)
+          let dsels = new HashSet<Guid>(corpus.DocumentGuids)
+          select selection.Create(new Dictionary<Guid, HashSet<Guid>> {{csel, dsels}}, corpus.CorpusDisplayname))
+        .ToArray();
+    }
+
+    private static Selection[] GenerateSelections_RandomSplit(Selection selection, IEnumerable<object> values)
+    {
+      var block = selection.CreateBlock<RandomSelectionBlock>();
+      block.DocumentCount = int.Parse(values.First().ToString());
+      block.Calculate();
+      return new[] { block.RandomSelection, block.RandomInvertSelection };
     }
 
     private static AbstractCorpusAdapter ReadSources(sources sources)

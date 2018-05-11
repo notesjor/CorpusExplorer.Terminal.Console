@@ -88,13 +88,13 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void Execute(string[] args)
     {
-      CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
-
       if (args == null || args.Length == 0)
       {
         PrintHelp();
         return;
       }
+
+      CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
 
       if (args[0].StartsWith("F:"))
       {

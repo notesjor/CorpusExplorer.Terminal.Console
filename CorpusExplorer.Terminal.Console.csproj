@@ -74,6 +74,7 @@
     <Compile Include="Action\TypeCountAction.cs" />
     <Compile Include="Action\VocabularyComplexityAction.cs" />
     <Compile Include="ConsoleConfiguration.cs" />
+    <Compile Include="Helper\AutoSplitBlockHelper.cs" />
     <Compile Include="Helper\AvailableAddonHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,7 +84,21 @@
     <Compile Include="Writer\SqlTableWriter.cs" />
     <Compile Include="Writer\TsvTableWriter.cs" />
     <Compile Include="Writer\XmlTableWriter.cs" />
+    <Compile Include="Xml\Model\annotate.cs" />
+    <Compile Include="Xml\Model\arguments.cs" />
     <Compile Include="Xml\Model\cescript.cs" />
+    <Compile Include="Xml\Model\directory.cs" />
+    <Compile Include="Xml\Model\head.cs" />
+    <Compile Include="Xml\Model\import.cs" />
+    <Compile Include="Xml\Model\meta.cs" />
+    <Compile Include="Xml\Model\output.cs" />
+    <Compile Include="Xml\Model\queries.cs" />
+    <Compile Include="Xml\Model\query.cs" />
+    <Compile Include="Xml\Model\session.cs" />
+    <Compile Include="Xml\Model\sessions.cs" />
+    <Compile Include="Xml\Model\sources.cs" />
+    <Compile Include="Xml\Model\task.cs" />
+    <Compile Include="Xml\Model\tasks.cs" />
     <Compile Include="Xml\Processor\XmlScriptProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
