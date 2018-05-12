@@ -82,7 +82,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 return;
               var action = actions[task.type];
 
-              if (task.query != "*")
+              if (task.query == "*")
                 Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
                 {
                   Parallel.ForEach(selection.Value, sel =>
@@ -91,7 +91,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     {
                       ExecuteTask(action, task, formats, sel, scriptFilename);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                       // ignore
                     }
@@ -106,7 +106,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 Parallel.ForEach(selection, sel => { ExecuteTask(action, task, formats, sel, scriptFilename); });
               }
             }
-            catch
+            catch (Exception ex)
             {
               // ignore
             }
@@ -135,10 +135,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         lock (_excecuteLock)
         {
-          if (!formats.ContainsKey(task.output.format))
+          var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
+          if (!formats.ContainsKey(formatKey))
             return;
 
-          var format = formats[$"F:{task.output.format}"];
+          var format = formats[formatKey];
           using (var fs = new FileStream(OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type), FileMode.Create, FileAccess.Write))
           {
             format.OutputStream = fs;
@@ -327,7 +328,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
     private static string OutputPathBuilder(string path, string scriptFilename, string selectionName, string action)
     {
-      var res = path.Replace("{script}", scriptFilename).Replace("{selection}", selectionName).Replace("{action}", action);
+      var res = path.Replace("{all}", "{script}_{selection}_{action}").Replace("{script}", scriptFilename).Replace("{selection}", selectionName == "*" ? "ALL" : selectionName).Replace("{action}", action).EnsureFileName();
       var dir = Path.GetDirectoryName(res);
       if (dir != null && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
