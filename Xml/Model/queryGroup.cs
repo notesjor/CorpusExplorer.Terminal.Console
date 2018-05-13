@@ -7,32 +7,44 @@
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
   [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-  public partial class import {
+  public partial class queryGroup {
     
-    private object[] itemsField;
+    private query[] queryField;
     
-    private string typeField;
+    private string nameField;
+    
+    private string operatorField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("directory", typeof(directory))]
-    [System.Xml.Serialization.XmlElementAttribute("file", typeof(file))]
-    public object[] Items {
+    [System.Xml.Serialization.XmlElementAttribute("query")]
+    public query[] query {
       get {
-        return this.itemsField;
+        return this.queryField;
       }
       set {
-        this.itemsField = value;
+        this.queryField = value;
       }
     }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string type {
+    public string name {
       get {
-        return this.typeField;
+        return this.nameField;
       }
       set {
-        this.typeField = value;
+        this.nameField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string @operator {
+      get {
+        return this.operatorField;
+      }
+      set {
+        this.operatorField = value;
       }
     }
   }

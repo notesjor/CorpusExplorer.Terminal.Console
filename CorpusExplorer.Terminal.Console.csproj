@@ -88,12 +88,15 @@
     <Compile Include="Xml\Model\arguments.cs" />
     <Compile Include="Xml\Model\cescript.cs" />
     <Compile Include="Xml\Model\directory.cs" />
+    <Compile Include="Xml\Model\file.cs" />
     <Compile Include="Xml\Model\head.cs" />
     <Compile Include="Xml\Model\import.cs" />
     <Compile Include="Xml\Model\meta.cs" />
     <Compile Include="Xml\Model\output.cs" />
     <Compile Include="Xml\Model\queries.cs" />
     <Compile Include="Xml\Model\query.cs" />
+    <Compile Include="Xml\Model\queryBuilder.cs" />
+    <Compile Include="Xml\Model\queryGroup.cs" />
     <Compile Include="Xml\Model\session.cs" />
     <Compile Include="Xml\Model\sessions.cs" />
     <Compile Include="Xml\Model\sources.cs" />

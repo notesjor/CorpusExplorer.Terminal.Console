@@ -202,7 +202,7 @@ public partial class annotate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("directory", typeof(directory))]
-    [System.Xml.Serialization.XmlElementAttribute("file", typeof(string), DataType="anyURI")]
+    [System.Xml.Serialization.XmlElementAttribute("file", typeof(file))]
     public object[] Items {
         get {
             return this.itemsField;
@@ -255,9 +255,35 @@ public partial class annotate {
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class directory {
     
+    private bool deleteField;
+    
+    private bool deleteFieldSpecified;
+    
     private string filterField;
     
     private string valueField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool delete {
+        get {
+            return this.deleteField;
+        }
+        set {
+            this.deleteField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool deleteSpecified {
+        get {
+            return this.deleteFieldSpecified;
+        }
+        set {
+            this.deleteFieldSpecified = value;
+        }
+    }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute(DataType="NMTOKEN")]
@@ -289,6 +315,55 @@ public partial class directory {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class file {
+    
+    private bool deleteField;
+    
+    private bool deleteFieldSpecified;
+    
+    private string valueField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool delete {
+        get {
+            return this.deleteField;
+        }
+        set {
+            this.deleteField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool deleteSpecified {
+        get {
+            return this.deleteFieldSpecified;
+        }
+        set {
+            this.deleteFieldSpecified = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute(DataType="anyURI")]
+    public string Value {
+        get {
+            return this.valueField;
+        }
+        set {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class import {
     
     private object[] itemsField;
@@ -297,7 +372,7 @@ public partial class import {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("directory", typeof(directory))]
-    [System.Xml.Serialization.XmlElementAttribute("file", typeof(string), DataType="anyURI")]
+    [System.Xml.Serialization.XmlElementAttribute("file", typeof(file))]
     public object[] Items {
         get {
             return this.itemsField;
@@ -328,18 +403,20 @@ public partial class import {
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class queries {
     
-    private query[] queryField;
+    private object[] itemsField;
     
     private string processingField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("query")]
-    public query[] query {
+    [System.Xml.Serialization.XmlElementAttribute("query", typeof(query))]
+    [System.Xml.Serialization.XmlElementAttribute("queryBuilder", typeof(queryBuilder))]
+    [System.Xml.Serialization.XmlElementAttribute("queryGroup", typeof(queryGroup))]
+    public object[] Items {
         get {
-            return this.queryField;
+            return this.itemsField;
         }
         set {
-            this.queryField = value;
+            this.itemsField = value;
         }
     }
     
@@ -387,6 +464,104 @@ public partial class query {
         }
         set {
             this.textField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class queryBuilder {
+    
+    private string[] valueField;
+    
+    private string nameField;
+    
+    private string prefixField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("value")]
+    public string[] value {
+        get {
+            return this.valueField;
+        }
+        set {
+            this.valueField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string prefix {
+        get {
+            return this.prefixField;
+        }
+        set {
+            this.prefixField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class queryGroup {
+    
+    private query[] queryField;
+    
+    private string nameField;
+    
+    private string operatorField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("query")]
+    public query[] query {
+        get {
+            return this.queryField;
+        }
+        set {
+            this.queryField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string @operator {
+        get {
+            return this.operatorField;
+        }
+        set {
+            this.operatorField = value;
         }
     }
 }

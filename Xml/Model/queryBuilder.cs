@@ -7,32 +7,44 @@
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
   [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-  public partial class import {
+  public partial class queryBuilder {
     
-    private object[] itemsField;
+    private string[] valueField;
     
-    private string typeField;
+    private string nameField;
+    
+    private string prefixField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("directory", typeof(directory))]
-    [System.Xml.Serialization.XmlElementAttribute("file", typeof(file))]
-    public object[] Items {
+    [System.Xml.Serialization.XmlElementAttribute("value")]
+    public string[] value {
       get {
-        return this.itemsField;
+        return this.valueField;
       }
       set {
-        this.itemsField = value;
+        this.valueField = value;
       }
     }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string type {
+    public string name {
       get {
-        return this.typeField;
+        return this.nameField;
       }
       set {
-        this.typeField = value;
+        this.nameField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string prefix {
+      get {
+        return this.prefixField;
+      }
+      set {
+        this.prefixField = value;
       }
     }
   }

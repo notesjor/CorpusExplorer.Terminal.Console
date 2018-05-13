@@ -19,6 +19,7 @@ using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Writer.Abstract;
+using CorpusExplorer.Terminal.Console.Xml.Model;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Processor
 {
@@ -152,49 +153,23 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
     private static Dictionary<string, Selection[]> GenerateSelections(AbstractCorpusAdapter source, queries queries)
     {
-      var all = source.ToSelection();
-      all.Displayname = "";
+      var res = new Dictionary<string, Selection[]> { { "", new[] { source.ToSelection() } } };
 
-      var res = new Dictionary<string, Selection[]>();
-      foreach (var q in queries.query)
-      {
-        var key = q.name ?? string.Empty;
-        if (key != "*" && !res.ContainsKey(key))
-          res.Add(key, null);
-      }
-
-      var keys = res.Keys.ToArray();
-      foreach (var key in keys)
+      foreach (var item in queries.Items)
       {
         try
         {
-          var qs = (from x in queries.query where x.name == key select QueryParser.Parse(string.Join(" ", x.Text))).Where(x => x != null).ToArray();
-          if (qs.Length == 1)
+          switch (item)
           {
-            if (qs[0] is FilterQueryUnsupportedParserFeature)
-            {
-              var q = (FilterQueryUnsupportedParserFeature)qs[0];
-              switch (q.MetaLabel)
-              {
-                case "<:RANDOM:>":
-                  res[key] = GenerateSelections_RandomSplit(all, q.MetaValues);
-                  break;
-                case "<:CORPUS:>":
-                  res[key] = GenerateSelections_CorporaSplit(all);
-                  break;
-                default:
-                  res[key] = GenerateSelections_MetaSplit(all, q, q.MetaValues);
-                  break;
-              }
-            }
-            else
-            {
-              res[key] = new[] { all.Create(qs, key) };
-            }
-          }
-          else
-          {
-            res[key] = new[] { all.Create(qs, key) };
+            case query q:
+              GenerateSelections_SingleQuery(q, ref res, source.ToSelection());
+              break;
+            case queryBuilder b:
+              GenerateSelections_QueryBuilder(b, ref res, source.ToSelection());
+              break;
+            case queryGroup g:
+              GenerateSelections_QueryGroup(g, ref res, source.ToSelection());
+              break;
           }
         }
         catch
@@ -203,10 +178,110 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
       }
 
-      if (!res.ContainsKey(""))
-        res.Add("", new[] { all });
+      return res;
+    }
 
-      return res.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
+    private static void GenerateSelections_SingleQuery(query query1, ref Dictionary<string, Selection[]> res, Selection all)
+    {
+      var key = query1.name ?? string.Empty;
+      if (key == "" || key == "*" || res.ContainsKey(key))
+        return;
+      res.Add(key, GenerateSelections_Compile(all, string.Join(" ", query1.Text), query1.name));
+    }
+
+    private static void GenerateSelections_QueryBuilder(queryBuilder queryBuilder, ref Dictionary<string, Selection[]> res, Selection all)
+    {
+      var key = queryBuilder.name ?? string.Empty;
+      if (key == "" || key == "*" || queryBuilder.value == null)
+        return;
+      foreach (var v in queryBuilder.value)
+      {
+        var gname = (queryBuilder.name + v).Replace("\"", "");
+        if (res.ContainsKey(gname))
+          continue;
+        var gquery = queryBuilder.prefix + v;
+
+        res.Add(gname, GenerateSelections_Compile(all, gquery, gname));
+      }
+    }
+
+    private static void GenerateSelections_QueryGroup(queryGroup queryGroup, ref Dictionary<string, Selection[]> res, Selection all)
+    {
+      var key = queryGroup.name ?? string.Empty;
+      if (key == "" || key == "*" || res.ContainsKey(key))
+        return;
+
+      var qs = new List<query>(queryGroup.query);
+      var selection = GenerateSelections_Compile(all, string.Join(" ", qs[0].Text), qs[0].name).First()
+        .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
+      qs.RemoveAt(0);
+
+      foreach (var query in qs)
+      {
+        var temp = GenerateSelections_Compile(all.CreateTemporary(selection), string.Join(" ", query.Text), "").First()
+          .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
+        switch (queryGroup.@operator)
+        {
+          default:
+          case "and":
+            var csels = selection.Keys.ToArray();
+            foreach (var csel in csels)
+            {
+              if (!temp.ContainsKey(csel))
+              {
+                selection.Remove(csel);
+                continue;
+              }
+
+              var dsels = selection[csel];
+              foreach (var dsel in dsels)
+                if (!temp.ContainsKey(dsel))
+                  selection[csel].Remove(dsel);
+            }
+
+            break;
+          case "or":
+            foreach (var csel in temp)
+            {
+              if (!selection.ContainsKey(csel.Key))
+                selection.Add(csel.Key, new HashSet<Guid>());
+              foreach (var dsel in csel.Value)
+                if (!selection[csel.Key].Contains(dsel))
+                  selection[csel.Key].Add(dsel);
+            }
+
+            break;
+        }
+      }
+
+      res.Add(key, new[] { all.Create(selection, key) });
+    }
+
+    private static Selection[] GenerateSelections_Compile(Selection selection, string query, string key)
+    {
+      try
+      {
+        var filterQuery = QueryParser.Parse(query);
+        if (!(filterQuery is FilterQueryUnsupportedParserFeature))
+          return new[] { selection.Create(new[] { filterQuery }, key) };
+
+        var q = (FilterQueryUnsupportedParserFeature)filterQuery;
+        switch (q.MetaLabel)
+        {
+          case "<:RANDOM:>":
+            return GenerateSelections_RandomSplit(selection, q.MetaValues);
+          case "<:CORPUS:>":
+            return GenerateSelections_CorporaSplit(selection);
+          default:
+            return GenerateSelections_MetaSplit(selection, q, q.MetaValues);
+        }
+      }
+      catch
+      {
+        // ignore
+      }
+
+      return null;
     }
 
     private static Selection[] GenerateSelections_MetaSplit(Selection selection, FilterQueryUnsupportedParserFeature q, IEnumerable<object> values)
@@ -221,11 +296,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
     private static Selection[] GenerateSelections_CorporaSplit(Selection selection)
     {
-      return 
+      return
          (from csel in selection.CorporaGuids
           let corpus = selection.GetCorpus(csel)
           let dsels = new HashSet<Guid>(corpus.DocumentGuids)
-          select selection.Create(new Dictionary<Guid, HashSet<Guid>> {{csel, dsels}}, corpus.CorpusDisplayname))
+          select selection.Create(new Dictionary<Guid, HashSet<Guid>> { { csel, dsels } }, corpus.CorpusDisplayname))
         .ToArray();
     }
 

@@ -71,15 +71,31 @@
   </xs:element>
   <xs:element name="queries">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="query"/>
-      </xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="query"/>
+        <xs:element ref="queryBuilder"/>
+        <xs:element ref="queryGroup"/>
+      </xs:choice>
       <xs:attribute name="processing" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="query">
-    <xs:complexType mixed="true">
-      <xs:attribute name="name" type="xs:NCName"/>
+  <xs:element name="queryBuilder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="value"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="prefix" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value" type="xs:string"/>
+  <xs:element name="queryGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="query"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="operator" use="required" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="tasks">
@@ -116,14 +132,28 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="argument" type="xs:NCName"/>
-  <xs:element name="file" type="xs:anyURI"/>
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:anyURI">
+          <xs:attribute name="delete" type="xs:boolean"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="directory">
     <xs:complexType>
       <xs:simpleContent>
         <xs:extension base="xs:anyURI">
+          <xs:attribute name="delete" type="xs:boolean"/>
           <xs:attribute name="filter" use="required" type="xs:NMTOKEN"/>
         </xs:extension>
       </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="query">
+    <xs:complexType mixed="true">
+      <xs:attribute name="name" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>

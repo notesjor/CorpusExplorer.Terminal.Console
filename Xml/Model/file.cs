@@ -7,20 +7,33 @@
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
   [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-  public partial class output {
+  public partial class file {
     
-    private string formatField;
+    private bool deleteField;
+    
+    private bool deleteFieldSpecified;
     
     private string valueField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string format {
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool delete {
       get {
-        return this.formatField;
+        return this.deleteField;
       }
       set {
-        this.formatField = value;
+        this.deleteField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool deleteSpecified {
+      get {
+        return this.deleteFieldSpecified;
+      }
+      set {
+        this.deleteFieldSpecified = value;
       }
     }
     
