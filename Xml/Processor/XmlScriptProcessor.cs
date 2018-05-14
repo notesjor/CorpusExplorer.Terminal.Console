@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using CorpusExplorer.Sdk.Blocks;
+using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
@@ -120,8 +121,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       });
     }
 
-    private static object _excecuteLock = new object();
-
     private static void ExecuteTask(AbstractAction action, task task, Dictionary<string, AbstractTableWriter> formats,
       Selection selection, string scriptFilename)
     {
@@ -130,28 +129,26 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         var exporters = Configuration.AddonExporters.GetDictionary();
         if (!exporters.ContainsKey(task.output.format))
           return;
+
         exporters[task.output.format].Export(selection, OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type));
       }
       else
       {
-        lock (_excecuteLock)
-        {
-          var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
-          if (!formats.ContainsKey(formatKey))
-            return;
+        var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
+        if (!formats.ContainsKey(formatKey))
+          return;
 
-          var format = formats[formatKey];
-          using (var fs = new FileStream(OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type), FileMode.Create, FileAccess.Write))
-          {
-            format.OutputStream = fs;
-            ConsoleConfiguration.Writer = format;
-            action.Execute(selection, task.arguments);
-          }
+        var format = formats[formatKey];
+        using (var fs = new FileStream(OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type), FileMode.Create, FileAccess.Write))
+        {
+          format.OutputStream = fs;
+          ConsoleConfiguration.Writer = format;
+          action.Execute(selection, task.arguments);
         }
       }
     }
 
-    private static Dictionary<string, Selection[]> GenerateSelections(AbstractCorpusAdapter source, queries queries)
+    private static Dictionary<string, Selection[]> GenerateSelections(Project source, queries queries)
     {
       var res = new Dictionary<string, Selection[]> { { "", new[] { source.ToSelection() } } };
 
@@ -162,13 +159,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           switch (item)
           {
             case query q:
-              GenerateSelections_SingleQuery(q, ref res, source.ToSelection());
+              GenerateSelections_SingleQuery(q, ref res, source.SelectAll);
               break;
             case queryBuilder b:
-              GenerateSelections_QueryBuilder(b, ref res, source.ToSelection());
+              GenerateSelections_QueryBuilder(b, ref res, source.SelectAll);
               break;
             case queryGroup g:
-              GenerateSelections_QueryGroup(g, ref res, source.ToSelection());
+              GenerateSelections_QueryGroup(g, ref res, source.SelectAll);
               break;
           }
         }
@@ -186,7 +183,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       var key = query1.name ?? string.Empty;
       if (key == "" || key == "*" || res.ContainsKey(key))
         return;
-      res.Add(key, GenerateSelections_Compile(all, string.Join(" ", query1.Text), query1.name));
+      res.Add(key, GenerateSelections_Compile(all, query1.Text.CleanXmlValue(), query1.name));
     }
 
     private static void GenerateSelections_QueryBuilder(queryBuilder queryBuilder, ref Dictionary<string, Selection[]> res, Selection all)
@@ -212,13 +209,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         return;
 
       var qs = new List<query>(queryGroup.query);
-      var selection = GenerateSelections_Compile(all, string.Join(" ", qs[0].Text), qs[0].name).First()
+      var selection = GenerateSelections_Compile(all, qs[0].Text.CleanXmlValue(), qs[0].name).First()
         .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
       qs.RemoveAt(0);
 
       foreach (var query in qs)
       {
-        var temp = GenerateSelections_Compile(all.CreateTemporary(selection), string.Join(" ", query.Text), "").First()
+        var temp = GenerateSelections_Compile(all.CreateTemporary(selection), query.Text.CleanXmlValue(), "").First()
           .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
         switch (queryGroup.@operator)
         {
@@ -261,7 +258,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       try
       {
-        var filterQuery = QueryParser.Parse(query);
+        var filterQuery = QueryParser.Parse(query.CleanXmlValue());
         if (!(filterQuery is FilterQueryUnsupportedParserFeature))
           return new[] { selection.Create(new[] { filterQuery }, key) };
 
@@ -312,9 +309,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return new[] { block.RandomSelection, block.RandomInvertSelection };
     }
 
-    private static AbstractCorpusAdapter ReadSources(sources sources)
+    private static Project ReadSources(sources sources)
     {
-      var res = new List<AbstractCorpusAdapter>();
+      var res = CorpusExplorerEcosystem.InitializeMinimal();
 
       if (sources.annotate != null)
       {
@@ -343,7 +340,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             tagger.Input = cleaner2.Output;
             tagger.Execute();
 
-            res.AddRange(tagger.Output);
+            foreach (var corpus in tagger.Output)
+              res.Add(corpus);
           }
           catch
           {
@@ -363,7 +361,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             if (!importers.ContainsKey(import.type))
               continue;
 
-            res.AddRange(importers[import.type].Execute(SearchFiles(import.Items)));
+            foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items)))
+              res.Add(corpus);
           }
           catch
           {
@@ -372,7 +371,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
       }
 
-      return CorpusMerger.Merge(res, new CorpusBuilderWriteDirect());
+      return res;
     }
 
     private static IEnumerable<string> SearchFiles(object[] annotateItems)
@@ -384,8 +383,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         {
           switch (item)
           {
-            case string i:
-              res.Add(i);
+            case file i:
+              res.Add(i.Value);
               break;
             case directory i:
               res.AddRange(Directory.GetFiles(i.Value, i.filter, SearchOption.TopDirectoryOnly));
