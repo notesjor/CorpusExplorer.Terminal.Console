@@ -176,10 +176,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static void ExecuteTask(AbstractAction action, task task, Dictionary<string, AbstractTableWriter> formats,
       Selection selection, string scriptFilename)
     {
-      // Reporting für Konsole
       var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
-      ExecuteTaskReport(selection.Displayname, task.type, outputPath, false);
       
+      // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
+      if (File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
+        return;
+
+      // Reporting für Konsole
+      ExecuteTaskReport(selection.Displayname, task.type, outputPath, false);
+
       // Ist der Task vom Typ query oder convert, dann muss ist format ein AbstractExporter
       if (task.type == "query" || task.type == "convert")
       {
