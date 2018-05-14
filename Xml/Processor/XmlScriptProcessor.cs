@@ -26,6 +26,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 {
   public static class XmlScriptProcessor
   {
+    /// <summary>
+    /// Überprüft, ob es sich bei der übergebenen Datei (path) um ein CEScript handelt.
+    /// </summary>
+    /// <param name="path">Datei</param>
+    /// <returns><c>true</c> wenn es sich um ein CEScript handelt, andernfalls <c>false</c>.</returns>
     public static bool IsXmlScript(string path)
     {
       try
@@ -46,23 +51,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
+    /// <summary>
+    /// Verarbeitete ein CEScript
+    /// </summary>
+    /// <param name="path">Pfad des CEScript</param>
+    /// <param name="actions">Actions - Auflistung wird in CorpusExplorer.Terminal.Console.Program festgelegt.</param>
+    /// <param name="formats">Formate für Tabellenexport - Auflistung wird in CorpusExplorer.Terminal.Console.Program festgelegt.</param>
     public static void Process(string path, Dictionary<string, AbstractAction> actions, Dictionary<string, AbstractTableWriter> formats)
     {
-      cescript script = null;
-      var scriptFilename = Path.GetFileNameWithoutExtension(path);
-      try
-      {
-        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-        {
-          var se = new XmlSerializer(typeof(cescript));
-          script = se.Deserialize(fs) as cescript;
-        }
-      }
-      catch (Exception ex)
-      {
-        // ignore
-      }
-
+      var script = LoadCeScript(path, out var scriptFilename);
       if (script == null)
       {
         System.Console.WriteLine("XML Parser Error 001");
@@ -71,9 +68,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       Parallel.ForEach(script.sessions, Configuration.ParallelOptions, session =>
       {
+        HashSet<string> deletePaths = null;
         try
         {
-          var source = ReadSources(session.sources);
+          var source = ReadSources(session.sources, out deletePaths);
           var selections = GenerateSelections(source, session.queries);
 
           Parallel.ForEach(session.tasks, Configuration.ParallelOptions, task =>
@@ -84,6 +82,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 return;
               var action = actions[task.type];
 
+              // Wenn eine Action alle Queries adressiert (query="*") dann durchlaufe alle Queries.
               if (task.query == "*")
                 Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
                 {
@@ -99,6 +98,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     }
                   });
                 });
+              // Wird nur ein bestimmter Query adressiert, dann werte nur diesen aus.
               else
               {
                 if (!selections.ContainsKey(task.query ?? string.Empty))
@@ -118,35 +118,148 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         {
           // ignore
         }
+        // Bereinige nicht mehr benötigte Dateien
+        finally
+        {
+          foreach (var p in deletePaths)
+          {
+            try
+            {
+              File.Delete(p);
+            }
+            catch
+            {
+              // ignore
+            }
+          }
+        }
       });
     }
 
+    /// <summary>
+    /// Lade/Deserialisere das CeScrpit
+    /// </summary>
+    /// <param name="path">Pfad</param>
+    /// <param name="scriptFilename">Gibt den Dateinamen ohne Erweiterung zurück</param>
+    /// <returns>CeScript</returns>
+    private static cescript LoadCeScript(string path, out string scriptFilename)
+    {
+      cescript script = null;
+      scriptFilename = Path.GetFileNameWithoutExtension(path);
+      try
+      {
+        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+        {
+          var se = new XmlSerializer(typeof(cescript));
+          script = se.Deserialize(fs) as cescript;
+        }
+      }
+      catch (Exception ex)
+      {
+        // ignore
+      }
+
+      return script;
+    }
+
+    private static object _executeTaskListLock = new object();
+    private static Dictionary<string, bool> _executeTaskList = new Dictionary<string, bool>();
+
+    /// <summary>
+    /// Führe den Task aus.
+    /// </summary>
+    /// <param name="action">Action - siehe CorpusExplorer.Terminal.Console.Action</param>
+    /// <param name="task">Task (beinhaltet Information zum Ausführen und Speichern der Resulate)</param>
+    /// <param name="formats">Ausgabeformat</param>
+    /// <param name="selection">Schnappschuss</param>
+    /// <param name="scriptFilename">Name des CeScripts</param>
     private static void ExecuteTask(AbstractAction action, task task, Dictionary<string, AbstractTableWriter> formats,
       Selection selection, string scriptFilename)
     {
+      // Reporting für Konsole
+      var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
+      ExecuteTaskReport(selection.Displayname, task.type, outputPath, false);
+      
+      // Ist der Task vom Typ query oder convert, dann muss ist format ein AbstractExporter
       if (task.type == "query" || task.type == "convert")
       {
         var exporters = Configuration.AddonExporters.GetDictionary();
         if (!exporters.ContainsKey(task.output.format))
           return;
 
-        exporters[task.output.format].Export(selection, OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type));
+        exporters[task.output.format].Export(selection, outputPath);
       }
+      // Andernfalls ist format ein AbstractTableWriter
       else
       {
         var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
         if (!formats.ContainsKey(formatKey))
           return;
 
+        // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
         var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter;
-        using (var fs = new FileStream(OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type), FileMode.Create, FileAccess.Write))
+        using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
         {
           format.OutputStream = fs;
           action.Execute(selection, task.arguments, format);
         }
       }
+
+      // Reporting für Konsole
+      ExecuteTaskReport(selection.Displayname, task.type, outputPath, true);
     }
 
+    /// <summary>
+    /// Erzeugt eine Ausgabe auf der Konsole - Damit die Nutzer*in einen Überblick behält was aktuell passiert.
+    /// </summary>
+    /// <param name="selectionDisplayname">Schnappschussname</param>
+    /// <param name="taskType">Typ der Aufgabe</param>
+    /// <param name="outputPath">Pfad der Ausgabedatei</param>
+    /// <param name="done">Ist die Aufgabe erledigt?</param>
+    private static void ExecuteTaskReport(string selectionDisplayname, string taskType, string outputPath, bool done)
+    {
+      try
+      {
+        var key = $"{selectionDisplayname} > {taskType} > {Path.GetFileName(outputPath)}";
+        lock (_executeTaskListLock)
+        {
+          // Entferne bereits erledigte Aufgaben
+          var keys = _executeTaskList.Keys.ToArray();
+          foreach (var k in keys)
+            if (_executeTaskList[k])
+              _executeTaskList.Remove(k);
+
+          // Status aktualisieren
+          if (_executeTaskList.ContainsKey(key))
+            _executeTaskList[key] = done;
+          else
+            _executeTaskList.Add(key, done);
+
+          // Liste ausgeben
+          System.Console.Clear();
+          System.Console.WriteLine();
+          System.Console.WriteLine("CorpusExplorer v2.0");
+          System.Console.WriteLine($"Copyright 2013-{DateTime.Now.Year} by Jan Oliver Rüdiger");
+          System.Console.WriteLine();
+          System.Console.WriteLine("..:: CURRENT TASKS ::..");
+          foreach (var t in _executeTaskList)
+          {
+            System.Console.WriteLine($"{t.Key} ... {(t.Value ? "done" : "running")}");
+          }
+        }
+      }
+      catch
+      {
+        // ignore
+      }
+    }
+
+    /// <summary>
+    /// Erzeugt Abfragen
+    /// </summary>
+    /// <param name="source">Projekt</param>
+    /// <param name="queries">Abfragen</param>
+    /// <returns>Auflistung mit allen Abfragen</returns>
     private static Dictionary<string, Selection[]> GenerateSelections(Project source, queries queries)
     {
       var res = new Dictionary<string, Selection[]> { { "", new[] { source.ToSelection() } } };
@@ -177,14 +290,26 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return res;
     }
 
-    private static void GenerateSelections_SingleQuery(query query1, ref Dictionary<string, Selection[]> res, Selection all)
+    /// <summary>
+    /// Erzeugt eine Einzelabfrage
+    /// </summary>
+    /// <param name="query">Einzelabfrage</param>
+    /// <param name="res">Rückgabeliste</param>
+    /// <param name="all">Schnappschuss: Alle Dokumente</param>
+    private static void GenerateSelections_SingleQuery(query query, ref Dictionary<string, Selection[]> res, Selection all)
     {
-      var key = query1.name ?? string.Empty;
+      var key = query.name ?? string.Empty;
       if (key == "" || key == "*" || res.ContainsKey(key))
         return;
-      res.Add(key, GenerateSelections_Compile(all, query1.Text.CleanXmlValue(), query1.name));
+      res.Add(key, GenerateSelections_Compile(all, query.Text.CleanXmlValue(), query.name));
     }
 
+    /// <summary>
+    /// Baut aus vorgegebenen Werten mehrere Einzelabfragen
+    /// </summary>
+    /// <param name="queryBuilder">QueryBuilder</param>
+    /// <param name="res">Rückgabeliste</param>
+    /// <param name="all">Schnappschuss: Alle Dokumente</param>
     private static void GenerateSelections_QueryBuilder(queryBuilder queryBuilder, ref Dictionary<string, Selection[]> res, Selection all)
     {
       var key = queryBuilder.name ?? string.Empty;
@@ -201,17 +326,25 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
+    /// <summary>
+    /// Eine QueryGroup verknüpft mehrere Abfragen miteinander
+    /// </summary>
+    /// <param name="queryGroup">QueryGroup</param>
+    /// <param name="res">Rückgabeliste</param>
+    /// <param name="all">Schnappschuss: Alle Dokumente</param>
     private static void GenerateSelections_QueryGroup(queryGroup queryGroup, ref Dictionary<string, Selection[]> res, Selection all)
     {
       var key = queryGroup.name ?? string.Empty;
       if (key == "" || key == "*" || res.ContainsKey(key))
         return;
 
+      // Erzeuge erste Abfrage
       var qs = new List<query>(queryGroup.query);
       var selection = GenerateSelections_Compile(all, qs[0].Text.CleanXmlValue(), qs[0].name).First()
         .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
-      qs.RemoveAt(0);
+      qs.RemoveAt(0); // Entferne erste Abfrage aus der Liste
 
+      // Führe alle Folgeabfragen aus.
       foreach (var query in qs)
       {
         var temp = GenerateSelections_Compile(all.CreateTemporary(selection), query.Text.CleanXmlValue(), "").First()
@@ -219,7 +352,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         switch (queryGroup.@operator)
         {
           default:
-          case "and":
+          case "and": // Ergebnisse müssen mit allen Abfragen übereinstimmen
             var csels = selection.Keys.ToArray();
             foreach (var csel in csels)
             {
@@ -236,7 +369,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             }
 
             break;
-          case "or":
+          case "or": // Ergebnis trifft auf die erste oder eine Folgeabfrage zu
             foreach (var csel in temp)
             {
               if (!selection.ContainsKey(csel.Key))
@@ -253,6 +386,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       res.Add(key, new[] { all.Create(selection, key) });
     }
 
+    /// <summary>
+    /// Nutzt den QueryParser des CE, um Abfragen zu bauen
+    /// </summary>
+    /// <param name="selection">Schnappschuss: Alle Dokumente</param>
+    /// <param name="query">Abfrage</param>
+    /// <param name="key">Name der Abfrage</param>
+    /// <returns>Neue Schnappschüsse</returns>
     private static Selection[] GenerateSelections_Compile(Selection selection, string query, string key)
     {
       try
@@ -280,6 +420,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return null;
     }
 
+    /// <summary>
+    /// Ermöglicht eine Metasplit-Abfrage (wird vom QueryParser nicht unterstützt).
+    /// </summary>
+    /// <param name="selection">Schnappschuss</param>
+    /// <param name="q">Abfrage</param>
+    /// <param name="values">Parameter</param>
+    /// <returns>Neue Schnappschüsse</returns>
     private static Selection[] GenerateSelections_MetaSplit(Selection selection, FilterQueryUnsupportedParserFeature q, IEnumerable<object> values)
     {
       var vs = values?.ToArray();
@@ -290,6 +437,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return block.GetSelectionClusters().ToArray();
     }
 
+    /// <summary>
+    /// Ermöglicht es auf alle Korpora zuzugreifen
+    /// </summary>
+    /// <param name="selection">Schnappschuss</param>
+    /// <returns>Neue Schnappschüsse</returns>
     private static Selection[] GenerateSelections_CorporaSplit(Selection selection)
     {
       return
@@ -300,6 +452,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         .ToArray();
     }
 
+    /// <summary>
+    /// Ermöglicht es einen zufälligen Schnappschuss zu erstellen
+    /// </summary>
+    /// <param name="selection">Schnappschuss</param>
+    /// <param name="values">Parameter</param>
+    /// <returns>Neue Schnappschüsse</returns>
     private static Selection[] GenerateSelections_RandomSplit(Selection selection, IEnumerable<object> values)
     {
       var block = selection.CreateBlock<RandomSelectionBlock>();
@@ -308,10 +466,18 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return new[] { block.RandomSelection, block.RandomInvertSelection };
     }
 
-    private static Project ReadSources(sources sources)
+    /// <summary>
+    /// Liest die gewünschten Korpusquellen ein
+    /// </summary>
+    /// <param name="sources">Quellen</param>
+    /// <param name="deletePaths">Dateien die nach Ende der Session gelöscht werden sollen</param>
+    /// <returns>Project</returns>
+    private static Project ReadSources(sources sources, out HashSet<string> deletePaths)
     {
       var res = CorpusExplorerEcosystem.InitializeMinimal();
+      deletePaths = new HashSet<string>();
 
+      // Wenn zu annotierendes Material vorhanden ist, dann lese dieses ein.
       if (sources.annotate != null)
       {
         var scrapers = Configuration.AddonScrapers.GetDictionary();
@@ -326,14 +492,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             if (!taggers.ContainsKey(annotate.tagger))
               continue;
 
+            // Extrahiere und bereinige die Dokumente
             var scraper = scrapers[annotate.type];
-            scraper.Input.Enqueue(SearchFiles(annotate.Items));
+            scraper.Input.Enqueue(SearchFiles(annotate.Items, ref deletePaths));
             scraper.Execute();
             var cleaner1 = new StandardCleanup { Input = scraper.Output };
             cleaner1.Execute();
             var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
             cleaner2.Execute();
 
+            // Annotiere das Textmaterial
             var tagger = taggers[annotate.tagger];
             tagger.LanguageSelected = annotate.language;
             tagger.Input = cleaner2.Output;
@@ -349,6 +517,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
       }
 
+      // Wenn Import-Quellen vorhanden sind, dann lese diese ein.
       // ReSharper disable once InvertIf
       if (sources.import != null)
       {
@@ -360,7 +529,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             if (!importers.ContainsKey(import.type))
               continue;
 
-            foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items)))
+            foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items, ref deletePaths)))
               res.Add(corpus);
           }
           catch
@@ -373,9 +542,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return res;
     }
 
-    private static IEnumerable<string> SearchFiles(object[] annotateItems)
+    /// <summary>
+    /// Es gibt zwei mögliche Arten Quellen zu spezifizieren - als Datei oder komplette Order
+    /// </summary>
+    /// <param name="annotateItems">Quellen</param>
+    /// <param name="deletePaths">Dateien die nach Ende der Session gelöscht werden sollen</param>
+    /// <returns>Dateien</returns>
+    private static IEnumerable<string> SearchFiles(object[] annotateItems, ref HashSet<string> deletePaths)
     {
       var res = new List<string>();
+
       foreach (var item in annotateItems)
       {
         try
@@ -384,9 +560,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           {
             case file i:
               res.Add(i.Value);
+              if(i.delete)
+                deletePaths.Add(i.Value);
               break;
             case directory i:
-              res.AddRange(Directory.GetFiles(i.Value, i.filter, SearchOption.TopDirectoryOnly));
+              var files = Directory.GetFiles(i.Value, i.filter, SearchOption.TopDirectoryOnly);
+              res.AddRange(files);
+              if(i.delete)
+                foreach (var f in files)
+                  deletePaths.Add(f);
               break;
           }
         }
@@ -399,6 +581,14 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return res;
     }
 
+    /// <summary>
+    /// Erzeugt einen Ausgabepfad
+    /// </summary>
+    /// <param name="path">Pfad</param>
+    /// <param name="scriptFilename">Name des CeScripts</param>
+    /// <param name="selectionName">Schnappschussname</param>
+    /// <param name="action">Action</param>
+    /// <returns>Ausgabepfad</returns>
     private static string OutputPathBuilder(string path, string scriptFilename, string selectionName, string action)
     {
       var res = path.Replace("{all}", "{script}_{selection}_{action}").Replace("{script}", scriptFilename).Replace("{selection}", selectionName == "*" ? "ALL" : selectionName).Replace("{action}", action).EnsureFileName();

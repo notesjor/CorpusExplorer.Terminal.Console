@@ -127,7 +127,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       System.Console.WriteLine();
       System.Console.WriteLine("CorpusExplorer v2.0");
-      System.Console.WriteLine("Copyright 2013-2017 by Jan Oliver Rüdiger");
+      System.Console.WriteLine($"Copyright 2013-{DateTime.Now.Year} by Jan Oliver Rüdiger");
       System.Console.WriteLine();
       System.Console.WriteLine("help - to display command help");
       System.Console.WriteLine("FILE:[FILE] - to execute script");
