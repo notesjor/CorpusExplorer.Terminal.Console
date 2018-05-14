@@ -125,10 +125,7 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void ExecuteShell()
     {
-      System.Console.WriteLine();
-      System.Console.WriteLine("CorpusExplorer v2.0");
-      System.Console.WriteLine($"Copyright 2013-{DateTime.Now.Year} by Jan Oliver Rüdiger");
-      System.Console.WriteLine();
+      ConsoleHelper.PrintHeader();
       System.Console.WriteLine("help - to display command help");
       System.Console.WriteLine("FILE:[FILE] - to execute script");
       System.Console.WriteLine("SAVE:[FILE] - to save command history as script");
@@ -382,10 +379,7 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void PrintHelp()
     {
-      System.Console.WriteLine();
-      System.Console.WriteLine("CorpusExplorer v2.0");
-      System.Console.WriteLine("Copyright 2013-2017 by Jan Oliver Rüdiger");
-      System.Console.WriteLine();
+      ConsoleHelper.PrintHeader();
       System.Console.WriteLine("Syntax for annotation/conversion:");
       System.Console.WriteLine("cec.exe [INPUT] [OUTPUT]");
       System.Console.WriteLine("Syntax for filtering:");

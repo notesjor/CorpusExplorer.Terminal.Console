@@ -66,6 +66,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         return;
       }
 
+      ConsoleHelper.PrintHeader();
+
       Parallel.ForEach(script.sessions, Configuration.ParallelOptions, session =>
       {
         HashSet<string> deletePaths = null;
@@ -177,7 +179,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       Selection selection, string scriptFilename)
     {
       var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
-      
+
       // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
       if (File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
         return;
@@ -204,8 +206,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
         var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter;
         using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+        using (var bs = new BufferedStream(fs))
         {
-          format.OutputStream = fs;
+          format.OutputStream = bs;
           action.Execute(selection, task.arguments, format);
         }
       }
@@ -241,11 +244,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             _executeTaskList.Add(key, done);
 
           // Liste ausgeben
-          System.Console.Clear();
-          System.Console.WriteLine();
-          System.Console.WriteLine("CorpusExplorer v2.0");
-          System.Console.WriteLine($"Copyright 2013-{DateTime.Now.Year} by Jan Oliver Rüdiger");
-          System.Console.WriteLine();
+          ConsoleHelper.PrintHeader();
           System.Console.WriteLine("..:: CURRENT TASKS ::..");
           foreach (var t in _executeTaskList)
           {
@@ -565,13 +564,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           {
             case file i:
               res.Add(i.Value);
-              if(i.delete)
+              if (i.delete)
                 deletePaths.Add(i.Value);
               break;
             case directory i:
               var files = Directory.GetFiles(i.Value, i.filter, SearchOption.TopDirectoryOnly);
               res.AddRange(files);
-              if(i.delete)
+              if (i.delete)
                 foreach (var f in files)
                   deletePaths.Add(f);
               break;
