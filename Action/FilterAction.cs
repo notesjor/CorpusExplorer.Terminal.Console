@@ -13,6 +13,7 @@ using CorpusExplorer.Sdk.Utils.Filter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -21,7 +22,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "query";
     public override string Description => "query - see help section [OUTPUT] for more information";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var a = args?.ToArray();
       if (a == null || a.Length != 2)
@@ -43,7 +44,7 @@ namespace CorpusExplorer.Terminal.Console.Action
           if (s.Length != 2)
             return;
 
-          UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature)query, a[1]);
+          UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature)query, a[1], writer);
           return;
         }
 
@@ -51,18 +52,18 @@ namespace CorpusExplorer.Terminal.Console.Action
       }
 
       var export = new OutputAction();
-      export.Execute(sub, new[] { a[1] });
+      export.Execute(sub, new[] { a[1] }, writer);
     }
 
-    private void UnsupportedParserFeatureHandler(Selection selection, FilterQueryUnsupportedParserFeature query, string output)
+    private void UnsupportedParserFeatureHandler(Selection selection, FilterQueryUnsupportedParserFeature query, string output, AbstractTableWriter writer)
     {
       if (query.MetaLabel == "<:RANDOM:>")
-        UnsupportedParserRandomFeature(selection, query, output);
+        UnsupportedParserRandomFeature(selection, query, output, writer);
       else
-        UnsupportedParserFeatureAutosplit(selection, query, output);
+        UnsupportedParserFeatureAutosplit(selection, query, output, writer);
     }
 
-    private void UnsupportedParserRandomFeature(Selection selection, FilterQueryUnsupportedParserFeature query, string output)
+    private void UnsupportedParserRandomFeature(Selection selection, FilterQueryUnsupportedParserFeature query, string output, AbstractTableWriter writer)
     {
       var values = query.MetaValues?.ToArray();
       if (values?.Length != 1)
@@ -77,7 +78,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       block.Calculate();
 
       var export = new OutputAction();
-      export.Execute(block.RandomSelection, new[] { output });
+      export.Execute(block.RandomSelection, new[] { output }, writer);
 
       var form = outputOptions[0];
       var path = outputOptions[1];
@@ -91,10 +92,10 @@ namespace CorpusExplorer.Terminal.Console.Action
       var list = selection.DocumentGuids.Where(dsel => !none.Contains(dsel));
       var nega = selection.CreateTemporary(list);
 
-      export.Execute(nega, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\"" });
+      export.Execute(nega, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\"" }, writer);
     }
 
-    private void UnsupportedParserFeatureAutosplit(Selection selection, FilterQueryUnsupportedParserFeature query, string output)
+    private void UnsupportedParserFeatureAutosplit(Selection selection, FilterQueryUnsupportedParserFeature query, string output, AbstractTableWriter writer)
     {
       var values = query.MetaValues?.ToArray();
       if (values?.Length != 1)
@@ -118,7 +119,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       var export = new OutputAction();
       foreach (var cluster in block.GetSelectionClusters())
       {
-        export.Execute(cluster, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\"" });
+        export.Execute(cluster, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\"" }, writer);
       }
     }
   }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action.Abstract
 {
@@ -13,11 +14,6 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
 
     public abstract string Description { get; }
 
-    public abstract void Execute(Selection selection, string[] args);
-
-    protected void WriteTable(DataTable table)
-    {
-      ConsoleConfiguration.Writer.WriteTable(table);
-    }
+    public abstract void Execute(Selection selection, string[] args, AbstractTableWriter writer);
   }
 }

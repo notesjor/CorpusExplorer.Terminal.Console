@@ -73,7 +73,6 @@
     <Compile Include="Action\TokenCountAction.cs" />
     <Compile Include="Action\TypeCountAction.cs" />
     <Compile Include="Action\VocabularyComplexityAction.cs" />
-    <Compile Include="ConsoleConfiguration.cs" />
     <Compile Include="Helper\AutoSplitBlockHelper.cs" />
     <Compile Include="Helper\AvailableAddonHelper.cs" />
     <Compile Include="Helper\XmlValueHelper.cs" />

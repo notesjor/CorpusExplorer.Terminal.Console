@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -69,6 +68,8 @@ namespace CorpusExplorer.Terminal.Console
       {"F:JSON", new JsonTableWriter()},
     };
 
+    private static AbstractTableWriter _writer;
+
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {
       try
@@ -98,7 +99,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (args[0].StartsWith("F:"))
       {
-        ConsoleConfiguration.Writer = _formats.ContainsKey(args[0]) ? _formats[args[0]] : _formats.First().Value;
+        _writer = _formats.ContainsKey(args[0]) ? _formats[args[0]] : _formats.First().Value;
         
         var list = new List<string>(args);
         list.RemoveAt(0);
@@ -119,7 +120,7 @@ namespace CorpusExplorer.Terminal.Console
       else
         ExecuteDirect(args);
 
-      ConsoleConfiguration.Dispose();
+      _writer.Dispose();
     }
 
     private static void ExecuteShell()
@@ -232,7 +233,7 @@ namespace CorpusExplorer.Terminal.Console
 
         var process = Process.Start(new ProcessStartInfo
         {
-          Arguments = !argument.StartsWith("F:") ? $"{ConsoleConfiguration.Writer.TableWriterTag} {argument}" : argument,
+          Arguments = !argument.StartsWith("F:") ? $"{_writer.TableWriterTag} {argument}" : argument,
           CreateNoWindow = true,
           FileName = _appPath,
           WindowStyle = ProcessWindowStyle.Hidden,
@@ -249,7 +250,7 @@ namespace CorpusExplorer.Terminal.Console
       {
         var process = Process.Start(new ProcessStartInfo
         {
-          Arguments = !argument.StartsWith("F:") ? $"{ConsoleConfiguration.Writer.TableWriterTag} {argument}" : argument,
+          Arguments = !argument.StartsWith("F:") ? $"{_writer.TableWriterTag} {argument}" : argument,
           CreateNoWindow = true,
           FileName = _appPath,
           WindowStyle = ProcessWindowStyle.Hidden,
@@ -280,7 +281,7 @@ namespace CorpusExplorer.Terminal.Console
       var temp = args.ToList();
       temp.RemoveAt(0); // CorpusFile (no longer needed)
       temp.RemoveAt(0); // Action (no longer needed)
-      _actions[task].Execute(selection, temp.ToArray());
+      _actions[task].Execute(selection, temp.ToArray(), _writer);
     }
 
     private static AbstractCorpusAdapter LoadCorpus(string path)

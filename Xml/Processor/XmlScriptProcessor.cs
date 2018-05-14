@@ -138,12 +138,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         if (!formats.ContainsKey(formatKey))
           return;
 
-        var format = formats[formatKey];
+        var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter;
         using (var fs = new FileStream(OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type), FileMode.Create, FileAccess.Write))
         {
           format.OutputStream = fs;
-          ConsoleConfiguration.Writer = format;
-          action.Execute(selection, task.arguments);
+          action.Execute(selection, task.arguments, format);
         }
       }
     }

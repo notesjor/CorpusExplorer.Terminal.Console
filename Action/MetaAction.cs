@@ -3,6 +3,7 @@ using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -11,11 +12,11 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "meta";
     public override string Description => "meta - lists all meta-categories, labels and token/type/document-count";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new CorpusWeightUnlimmitedViewModel { Selection = selection };
       vm.Analyse();
-      WriteTable(vm.GetDataTable());
+      writer.WriteTable(vm.GetDataTable());
     }
   }
 }

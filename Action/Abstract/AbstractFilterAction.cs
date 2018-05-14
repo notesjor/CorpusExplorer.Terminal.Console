@@ -3,12 +3,13 @@ using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.Filter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Sdk.ViewModel;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action.Abstract
 {
   public abstract class AbstractFilterAction : AbstractAction
   {
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length < 2)
         return;
@@ -33,7 +34,7 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
       vm.AddQuery(query);
       vm.Analyse();
 
-      WriteTable(vm.GetDataTable());
+      writer.WriteTable(vm.GetDataTable());
     }
 
     protected abstract AbstractFilterQuery GetQuery();

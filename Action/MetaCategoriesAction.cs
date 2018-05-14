@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -10,7 +11,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "meta-categories";
     public override string Description => "meta-categories - all available names for meta categories";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var categories = selection.GetDocumentMetadataPrototypeOnlyProperties();
 
@@ -22,7 +23,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         dt.Rows.Add(x);
       dt.EndLoadData();
 
-      WriteTable(dt);
+      writer.WriteTable(dt);
     }
   }
 }

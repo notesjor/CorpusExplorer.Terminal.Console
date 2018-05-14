@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -11,7 +12,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "how-many-types";
     public override string Description => "how-many-types [LAYER] - sum of all [LAYER]-values (types)";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length == 0)
         return;
@@ -24,7 +25,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       dt.Rows.Add("types", (double)new HashSet<string>(selection.GetLayers(args[0]).SelectMany(layer => layer.Values)).Count);
       dt.EndLoadData();
 
-      WriteTable(dt);
+      writer.WriteTable(dt);
     }
   }
 }

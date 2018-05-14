@@ -6,6 +6,7 @@ using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -14,7 +15,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "convert";
     public override string Description => "convert - see help section [OUTPUT] for more information";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var output = args.Last().Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)

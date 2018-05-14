@@ -3,6 +3,7 @@ using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -11,7 +12,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "frequency2";
     public override string Description => "frequency2 [LAYER1] [LAYER2] - count token frequency on 2 layers";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new Frequency2LayerViewModel {Selection = selection};
       if (args != null && args.Length == 2)
@@ -21,7 +22,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       }
 
       vm.Analyse();
-      WriteTable(vm.GetDataTable());
+      writer.WriteTable(vm.GetDataTable());
     }
   }
 }

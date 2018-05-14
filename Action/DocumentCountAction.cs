@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -10,7 +11,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "how-many-documents";
     public override string Description => "how-many-documents - sum of all documents";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var dt = new DataTable();
       dt.Columns.Add("param", typeof(string));
@@ -20,7 +21,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       dt.Rows.Add("documents", (double)selection.CountDocuments);
       dt.EndLoadData();
 
-      WriteTable(dt);
+      writer.WriteTable(dt);
     }
   }
 }

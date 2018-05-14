@@ -2,6 +2,7 @@
 using System.Data;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -10,7 +11,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "layer-names";
     public override string Description => "layer-names - all available names for [LAYER]";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var dt = new DataTable();
       dt.Columns.Add("layernames", typeof(string));
@@ -20,7 +21,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       dt.Rows.Add(x);
       dt.EndLoadData();
 
-      WriteTable(dt);
+      writer.WriteTable(dt);
     }
   }
 }

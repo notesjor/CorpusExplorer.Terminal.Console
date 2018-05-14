@@ -4,6 +4,7 @@ using System.Linq;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
+using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -12,7 +13,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "vocabulary-complexity";
     public override string Description => "vocabulary-complexity [LAYER] - vocabulary complexity in [LAYER]";
 
-    public override void Execute(Selection selection, string[] args)
+    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new VocabularyComplexityViewModel { Selection = selection };
       if (args != null && args.Length == 1)
@@ -20,7 +21,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       vm.Analyse();
       var table = vm.GetDataTable();
 
-      WriteTable(table);
+      writer.WriteTable(table);
     }
   }
 }
