@@ -75,6 +75,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         {
           var source = ReadSources(session.sources, out deletePaths);
           var selections = GenerateSelections(source, session.queries);
+          var allGuid = source.SelectAll.Guid;
 
           Parallel.ForEach(session.tasks, Configuration.ParallelOptions, task =>
           {
@@ -85,9 +86,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               var action = actions[task.type];
 
               // Wenn eine Action alle Queries adressiert (query="*") dann durchlaufe alle Queries.
-              if (task.query == "*")
+              // + adressiert alle erstellten Queires und nicht ALL
+              if (task.query == "*" || task.query == "+")
                 Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
                 {
+                  if (task.query == "+" && selection.Value.First().Guid == allGuid)
+                    return;
+
                   Parallel.ForEach(selection.Value, sel =>
                   {
                     try
@@ -123,16 +128,24 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         // Bereinige nicht mehr benötigte Dateien
         finally
         {
-          foreach (var p in deletePaths)
+          try
           {
-            try
-            {
-              File.Delete(p);
-            }
-            catch
-            {
-              // ignore
-            }
+            if (deletePaths != null)
+              foreach (var p in deletePaths)
+              {
+                try
+                {
+                  File.Delete(p);
+                }
+                catch
+                {
+                  // ignore
+                }
+              }
+          }
+          catch
+          {
+            // ignore
           }
         }
       });
@@ -178,43 +191,57 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static void ExecuteTask(AbstractAction action, task task, Dictionary<string, AbstractTableWriter> formats,
       Selection selection, string scriptFilename)
     {
-      var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
-
-      // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
-      if (File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
-        return;
-
-      // Reporting für Konsole
-      ExecuteTaskReport(selection.Displayname, task.type, outputPath, false);
-
-      // Ist der Task vom Typ query oder convert, dann muss ist format ein AbstractExporter
-      if (task.type == "query" || task.type == "convert")
+      try
       {
-        var exporters = Configuration.AddonExporters.GetDictionary();
-        if (!exporters.ContainsKey(task.output.format))
+        var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
+
+        // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
+        if (File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
           return;
 
-        exporters[task.output.format].Export(selection, outputPath);
-      }
-      // Andernfalls ist format ein AbstractTableWriter
-      else
-      {
-        var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
-        if (!formats.ContainsKey(formatKey))
-          return;
+        // Reporting für Konsole
+        ExecuteTaskReport(selection.Displayname, task.type, outputPath, false);
 
-        // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-        var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter;
-        using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-        using (var bs = new BufferedStream(fs))
+        // Ist der Task vom Typ query oder convert, dann muss ist format ein AbstractExporter
+        if (task.type == "query" || task.type == "convert")
         {
-          format.OutputStream = bs;
-          action.Execute(selection, task.arguments, format);
+          var exporters = Configuration.AddonExporters.GetDictionary();
+          if (!exporters.ContainsKey(task.output.format))
+            return;
+
+          exporters[task.output.format].Export(selection, outputPath);
+        }
+        // Andernfalls ist format ein AbstractTableWriter
+        else
+        {
+          var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
+          if (!formats.ContainsKey(formatKey))
+            return;
+
+          // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+          var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter;
+          using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+          using (var bs = new BufferedStream(fs))
+          {
+            format.OutputStream = bs;
+            action.Execute(selection, task.arguments, format);
+          }
+        }
+
+        // Reporting für Konsole
+        ExecuteTaskReport(selection.Displayname, task.type, outputPath, true);
+      }
+      catch (Exception ex)
+      {
+        try
+        {
+          File.AppendAllLines("error.log", new[] { $"{selection.Displayname} - {action.Action} - {task.type}", ex.Message, ex.StackTrace });
+        }
+        catch
+        {
+          // ignore
         }
       }
-
-      // Reporting für Konsole
-      ExecuteTaskReport(selection.Displayname, task.type, outputPath, true);
     }
 
     /// <summary>
@@ -244,10 +271,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             _executeTaskList.Add(key, done);
 
           // Liste ausgeben
+          System.Console.ForegroundColor = ConsoleColor.Gray;
           ConsoleHelper.PrintHeader();
           System.Console.WriteLine("..:: CURRENT TASKS ::..");
           foreach (var t in _executeTaskList)
           {
+            System.Console.ForegroundColor = t.Value ? ConsoleColor.Green : ConsoleColor.Yellow;
             System.Console.WriteLine($"{t.Key} ... {(t.Value ? "done" : "running")}");
           }
         }
@@ -266,7 +295,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <returns>Auflistung mit allen Abfragen</returns>
     private static Dictionary<string, Selection[]> GenerateSelections(Project source, queries queries)
     {
-      var res = new Dictionary<string, Selection[]> { { "", new[] { source.ToSelection() } } };
+      var all = source.SelectAll;
+      all.Displayname = "ALL";
+      var res = new Dictionary<string, Selection[]> { { "", new[] { all } } };
 
       foreach (var item in queries.Items)
       {
@@ -303,7 +334,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static void GenerateSelections_SingleQuery(query query, ref Dictionary<string, Selection[]> res, Selection all)
     {
       var key = query.name ?? string.Empty;
-      if (key == "" || key == "*" || res.ContainsKey(key))
+      if (key == "" || key == "*" || key == "+" || res.ContainsKey(key))
         return;
       res.Add(key, GenerateSelections_Compile(all, query.Text.CleanXmlValue(), query.name));
     }
@@ -317,7 +348,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static void GenerateSelections_QueryBuilder(queryBuilder queryBuilder, ref Dictionary<string, Selection[]> res, Selection all)
     {
       var key = queryBuilder.name ?? string.Empty;
-      if (key == "" || key == "*" || queryBuilder.value == null)
+      if (key == "" || key == "*" || key == "+" || queryBuilder.value == null)
         return;
       foreach (var v in queryBuilder.value)
       {
@@ -339,7 +370,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static void GenerateSelections_QueryGroup(queryGroup queryGroup, ref Dictionary<string, Selection[]> res, Selection all)
     {
       var key = queryGroup.name ?? string.Empty;
-      if (key == "" || key == "*" || res.ContainsKey(key))
+      if (key == "" || key == "*" || key == "+" || res.ContainsKey(key))
         return;
 
       // Erzeuge erste Abfrage

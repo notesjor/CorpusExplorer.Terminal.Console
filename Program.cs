@@ -100,26 +100,36 @@ namespace CorpusExplorer.Terminal.Console
       if (args[0].StartsWith("F:"))
       {
         _writer = _formats.ContainsKey(args[0]) ? _formats[args[0]] : _formats.First().Value;
-        
+
         var list = new List<string>(args);
         list.RemoveAt(0);
         args = list.ToArray();
       }
 
       if (args[0].StartsWith("FILE:"))
+      {
         ExecuteSkript(args);
-      else if (args[0].StartsWith("DEBUG:"))
+        return;
+      }
+      if (args[0].StartsWith("DEBUG:"))
+      {
         DebugSkript(args);
-      else if (args[0].ToLowerInvariant() == "shell")
+        return;
+      }
+      if (args[0].ToLowerInvariant() == "shell")
+      {
         ExecuteShell();
-      else if (args.Length == 1 && File.Exists(args[0]))
+        _writer.Dispose();
+        return;
+      }
+      if (args.Length == 1 && File.Exists(args[0]))
       {
         args[0] = "FILE:" + args[0];
         ExecuteSkript(args);
+        return;
       }
-      else
-        ExecuteDirect(args);
 
+      ExecuteDirect(args);
       _writer.Dispose();
     }
 
@@ -207,17 +217,18 @@ namespace CorpusExplorer.Terminal.Console
         XmlScriptProcessor.Process(path, _actions, _formats);
         return true;
       }
-      catch
+      catch (Exception ex)
       {
+        File.AppendAllLines("error.log", new[] { ex.Message, ex.StackTrace });
         return false;
       }
     }
 
     private static void StartProcessCec(string argument)
     {
-      if(string.IsNullOrEmpty(argument))
+      if (string.IsNullOrEmpty(argument))
         return;
-      if(argument.StartsWith("#"))
+      if (argument.StartsWith("#"))
       {
         System.Console.WriteLine(argument);
         return;
@@ -225,7 +236,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (argument.Contains(" > "))
       {
-        var split = argument.Split(new[] {" > "}, StringSplitOptions.None).ToList();
+        var split = argument.Split(new[] { " > " }, StringSplitOptions.None).ToList();
         argument = split[0];
 
         var process = Process.Start(new ProcessStartInfo
@@ -259,7 +270,7 @@ namespace CorpusExplorer.Terminal.Console
         process.WaitForExit();
 
         System.Console.Out.Write(res);
-      }      
+      }
     }
 
     private static void ExecuteDirect(string[] args)
@@ -273,7 +284,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (!_actions.ContainsKey(task))
         return;
-      
+
       System.Console.OutputEncoding = Configuration.Encoding;
       var temp = args.ToList();
       temp.RemoveAt(0); // CorpusFile (no longer needed)
@@ -484,7 +495,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query XSDate::DATE;C;10 ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine("DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster");
       System.Console.WriteLine("DATE;Y = Year-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster");
-      System.Console.WriteLine("DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster");      
+      System.Console.WriteLine("DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query XSDate::DATE;YMD ExporterCec6#C:\\mycorpus.cec6");
 
       System.Console.WriteLine();
