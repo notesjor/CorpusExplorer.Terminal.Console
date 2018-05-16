@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Data;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;

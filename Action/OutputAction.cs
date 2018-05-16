@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CorpusExplorer.Sdk.Ecosystem.Model;
@@ -17,7 +16,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var output = args.Last().Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+      var output = args.Last().Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
       var exporters = Configuration.AddonExporters.GetDictionary();

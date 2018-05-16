@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace CorpusExplorer.Terminal.Console.Helper
 {
@@ -14,6 +13,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
         if (!dictionary.ContainsKey(key))
           dictionary.Add(key, pair.Value);
       }
+
       return dictionary;
     }
 
@@ -26,10 +26,12 @@ namespace CorpusExplorer.Terminal.Console.Helper
         if (!dictionary.ContainsKey(key))
           dictionary.Add(key, unknown);
       }
+
       return dictionary;
     }
 
-    public static Dictionary<string, string> GetDictionaryForScriptEditor<T>(this IEnumerable<KeyValuePair<string, T>> dic)
+    public static Dictionary<string, string> GetDictionaryForScriptEditor<T>(
+      this IEnumerable<KeyValuePair<string, T>> dic)
     {
       var dictionary = new Dictionary<string, string>();
       foreach (var pair in dic)
@@ -38,6 +40,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
         if (!dictionary.ContainsKey(key))
           dictionary.Add(key, pair.Key);
       }
+
       return dictionary;
     }
   }

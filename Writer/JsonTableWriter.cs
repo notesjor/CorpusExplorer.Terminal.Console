@@ -22,7 +22,7 @@ namespace CorpusExplorer.Terminal.Console.Writer
       foreach (var c in columns)
         tmp.Append(c.Value == typeof(string) ? $"\"{c.Key}\": \"{{{c.Key}}}\"," : $"\"{c.Key}\": {{{c.Key}}},");
       tmp.Remove(tmp.Length - 1, 1);
-      tmp.Append("},");      
+      tmp.Append("},");
       var template = tmp.ToString();
       tmp.Clear();
 
@@ -39,12 +39,14 @@ namespace CorpusExplorer.Terminal.Console.Writer
           if (val == null)
             tmp.Replace(marks[column.Key], column.Value == typeof(string) ? string.Empty : "null");
           else
-            tmp.Replace(marks[column.Key], column.Value == typeof(string) ? val.ToString() : val.ToString().Replace(",", "."));
+            tmp.Replace(marks[column.Key],
+              column.Value == typeof(string) ? val.ToString() : val.ToString().Replace(",", "."));
         }
 
         stb.Append(tmp);
         tmp.Clear();
       }
+
       stb.Remove(stb.Length - 1, 1);
       stb.Append("]");
 

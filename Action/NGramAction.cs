@@ -1,5 +1,4 @@
-﻿using CorpusExplorer.Sdk.Blocks;
-using CorpusExplorer.Sdk.Model;
+﻿using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Writer.Abstract;
@@ -13,7 +12,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new NgramViewModel { Selection = selection };
+      var vm = new NgramViewModel {Selection = selection};
       if (args == null || args.Length == 0)
         vm.NGramSize = 5;
       if (args.Length >= 1)

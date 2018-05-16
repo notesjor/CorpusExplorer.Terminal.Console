@@ -14,18 +14,16 @@ namespace CorpusExplorer.Terminal.Console.Writer
       foreach (DataRow x in table.Rows)
       {
         var r = new string[table.Columns.Count];
-        for (var i = 0; i < table.Columns.Count; i++)
-        {
-          r[i] = x[i] == null ? "" : EnsureValue(x[i].ToString());
-        }
+        for (var i = 0; i < table.Columns.Count; i++) r[i] = x[i] == null ? "" : EnsureValue(x[i].ToString());
 
         WriteOutput($"{string.Join("\t", r)}\r\n");
       }
     }
-    
+
     private string EnsureValue(string value)
     {
-      return value.Replace("\t", "").Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ").Replace("  ", " ").Replace("  ", " ").Replace("  ", " ");
+      return value.Replace("\t", "").Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ").Replace("  ", " ")
+        .Replace("  ", " ").Replace("  ", " ");
     }
   }
 }

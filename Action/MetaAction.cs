@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
@@ -14,7 +12,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new CorpusWeightUnlimmitedViewModel { Selection = selection };
+      var vm = new CorpusWeightUnlimmitedViewModel {Selection = selection};
       vm.Analyse();
       writer.WriteTable(vm.GetDataTable());
     }

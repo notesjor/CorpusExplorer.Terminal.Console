@@ -1,39 +1,39 @@
-﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks/>
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-  [System.SerializableAttribute()]
-  [System.Diagnostics.DebuggerStepThroughAttribute()]
-  [System.ComponentModel.DesignerCategoryAttribute("code")]
-  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-  [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-  public partial class import {
-    
+  /// <remarks />
+  [GeneratedCode("xsd", "4.6.1055.0")]
+  [Serializable]
+  [DebuggerStepThrough]
+  [DesignerCategory("code")]
+  [XmlType(AnonymousType = true)]
+  [XmlRoot(Namespace = "", IsNullable = false)]
+  public class import
+  {
     private object[] itemsField;
-    
+
     private string typeField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("directory", typeof(directory))]
-    [System.Xml.Serialization.XmlElementAttribute("file", typeof(file))]
-    public object[] Items {
-      get {
-        return this.itemsField;
-      }
-      set {
-        this.itemsField = value;
-      }
+
+    /// <remarks />
+    [XmlElement("directory", typeof(directory))]
+    [XmlElement("file", typeof(file))]
+    public object[] Items
+    {
+      get => itemsField;
+      set => itemsField = value;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string type {
-      get {
-        return this.typeField;
-      }
-      set {
-        this.typeField = value;
-      }
+
+    /// <remarks />
+    [XmlAttribute(DataType = "NCName")]
+    public string type
+    {
+      get => typeField;
+      set => typeField = value;
     }
   }
 }

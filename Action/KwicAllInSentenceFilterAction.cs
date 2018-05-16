@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CorpusExplorer.Sdk.Utils.Filter.Abstract;
+﻿using CorpusExplorer.Sdk.Utils.Filter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
@@ -12,6 +11,9 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Description =>
       "kwic-sentence [LAYER] [TEXT] - [TEXT] = space separated tokens - a sentence must contains all token";
 
-    protected override AbstractFilterQuery GetQuery() => new FilterQuerySingleLayerAllInOneSentence();
+    protected override AbstractFilterQuery GetQuery()
+    {
+      return new FilterQuerySingleLayerAllInOneSentence();
+    }
   }
 }

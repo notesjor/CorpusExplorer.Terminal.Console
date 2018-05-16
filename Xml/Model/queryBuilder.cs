@@ -1,51 +1,48 @@
-﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks/>
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-  [System.SerializableAttribute()]
-  [System.Diagnostics.DebuggerStepThroughAttribute()]
-  [System.ComponentModel.DesignerCategoryAttribute("code")]
-  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-  [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-  public partial class queryBuilder {
-    
-    private string[] valueField;
-    
+  /// <remarks />
+  [GeneratedCode("xsd", "4.6.1055.0")]
+  [Serializable]
+  [DebuggerStepThrough]
+  [DesignerCategory("code")]
+  [XmlType(AnonymousType = true)]
+  [XmlRoot(Namespace = "", IsNullable = false)]
+  public class queryBuilder
+  {
     private string nameField;
-    
+
     private string prefixField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("value")]
-    public string[] value {
-      get {
-        return this.valueField;
-      }
-      set {
-        this.valueField = value;
-      }
+
+    private string[] valueField;
+
+    /// <remarks />
+    [XmlAttribute(DataType = "NCName")]
+    public string name
+    {
+      get => nameField;
+      set => nameField = value;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string name {
-      get {
-        return this.nameField;
-      }
-      set {
-        this.nameField = value;
-      }
+
+    /// <remarks />
+    [XmlAttribute]
+    public string prefix
+    {
+      get => prefixField;
+      set => prefixField = value;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string prefix {
-      get {
-        return this.prefixField;
-      }
-      set {
-        this.prefixField = value;
-      }
+
+    /// <remarks />
+    [XmlElement("value")]
+    public string[] value
+    {
+      get => valueField;
+      set => valueField = value;
     }
   }
 }

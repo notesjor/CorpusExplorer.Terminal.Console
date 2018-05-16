@@ -29,8 +29,8 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
           q.LayerQueries = queries;
           break;
       }
-      
-      var vm = new TextLiveSearchViewModel { Selection = selection };
+
+      var vm = new TextLiveSearchViewModel {Selection = selection};
       vm.AddQuery(query);
       vm.Analyse();
 

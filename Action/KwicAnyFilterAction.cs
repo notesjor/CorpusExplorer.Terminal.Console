@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CorpusExplorer.Sdk.Utils.Filter.Abstract;
+﻿using CorpusExplorer.Sdk.Utils.Filter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
@@ -12,6 +11,9 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Description =>
       "kwic-any [LAYER] [TEXT] - KWIC any occurrence - [TEXT] = space separated tokens";
 
-    protected override AbstractFilterQuery GetQuery() => new FilterQuerySingleLayerAnyMatch();
+    protected override AbstractFilterQuery GetQuery()
+    {
+      return new FilterQuerySingleLayerAnyMatch();
+    }
   }
 }

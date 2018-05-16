@@ -22,7 +22,8 @@ namespace CorpusExplorer.Terminal.Console.Action
       dt.Columns.Add("value", typeof(double));
 
       dt.BeginLoadData();
-      dt.Rows.Add("types", (double)new HashSet<string>(selection.GetLayers(args[0]).SelectMany(layer => layer.Values)).Count);
+      dt.Rows.Add("types",
+        (double) new HashSet<string>(selection.GetLayers(args[0]).SelectMany(layer => layer.Values)).Count);
       dt.EndLoadData();
 
       writer.WriteTable(dt);

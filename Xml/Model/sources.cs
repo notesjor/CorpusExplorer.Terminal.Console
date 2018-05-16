@@ -1,51 +1,48 @@
-﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks/>
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-  [System.SerializableAttribute()]
-  [System.Diagnostics.DebuggerStepThroughAttribute()]
-  [System.ComponentModel.DesignerCategoryAttribute("code")]
-  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-  [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-  public partial class sources {
-    
+  /// <remarks />
+  [GeneratedCode("xsd", "4.6.1055.0")]
+  [Serializable]
+  [DebuggerStepThrough]
+  [DesignerCategory("code")]
+  [XmlType(AnonymousType = true)]
+  [XmlRoot(Namespace = "", IsNullable = false)]
+  public class sources
+  {
     private annotate[] annotateField;
-    
+
     private import[] importField;
-    
+
     private string processingField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("annotate")]
-    public annotate[] annotate {
-      get {
-        return this.annotateField;
-      }
-      set {
-        this.annotateField = value;
-      }
+
+    /// <remarks />
+    [XmlElement("annotate")]
+    public annotate[] annotate
+    {
+      get => annotateField;
+      set => annotateField = value;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("import")]
-    public import[] import {
-      get {
-        return this.importField;
-      }
-      set {
-        this.importField = value;
-      }
+
+    /// <remarks />
+    [XmlElement("import")]
+    public import[] import
+    {
+      get => importField;
+      set => importField = value;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string processing {
-      get {
-        return this.processingField;
-      }
-      set {
-        this.processingField = value;
-      }
+
+    /// <remarks />
+    [XmlAttribute(DataType = "NCName")]
+    public string processing
+    {
+      get => processingField;
+      set => processingField = value;
     }
   }
 }

@@ -10,7 +10,9 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class CooccurrenceSelectedAction : AbstractAction
   {
     public override string Action => "cooccurrence-select";
-    public override string Description => "cooccurrence [LAYER1] [WORDS] - significant cooccurrences for all [LAYER] values. [WORDS] = space separated words";
+
+    public override string Description =>
+      "cooccurrence [LAYER1] [WORDS] - significant cooccurrences for all [LAYER] values. [WORDS] = space separated words";
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -26,7 +28,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       var res = new Dictionary<string, Dictionary<string, double[]>>();
       for (var i = 1; i < args.Length; i++)
       {
-        vm.LayerQueries = new[] { args[i] };
+        vm.LayerQueries = new[] {args[i]};
         vm.Analyse();
 
         res.Add(args[i], vm.FrequencySignificanceDictionary);
@@ -40,8 +42,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       tbl.BeginLoadData();
       foreach (var e in res)
-        foreach (var v in e.Value)
-          tbl.Rows.Add(e.Key, v.Key, v.Value[0], v.Value[1]);
+      foreach (var v in e.Value)
+        tbl.Rows.Add(e.Key, v.Key, v.Value[0], v.Value[1]);
 
       tbl.EndLoadData();
 

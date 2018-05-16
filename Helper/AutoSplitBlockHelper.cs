@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Blocks.SelectionCluster.Generator;
 using CorpusExplorer.Sdk.Model;
@@ -12,7 +8,8 @@ namespace CorpusExplorer.Terminal.Console.Helper
 {
   public static class AutoSplitBlockHelper
   {
-    public static SelectionClusterBlock RunAutoSplit(Selection selection, FilterQueryUnsupportedParserFeature query, object[] values)
+    public static SelectionClusterBlock RunAutoSplit(Selection selection, FilterQueryUnsupportedParserFeature query,
+      object[] values)
     {
       var block = selection.CreateBlock<SelectionClusterBlock>();
       var split = values[0].ToString().Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries);

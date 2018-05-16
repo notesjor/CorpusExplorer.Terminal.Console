@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Writer.Abstract;
@@ -18,7 +17,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       dt.BeginLoadData();
       foreach (var x in selection.LayerDisplaynames)
-      dt.Rows.Add(x);
+        dt.Rows.Add(x);
       dt.EndLoadData();
 
       writer.WriteTable(dt);

@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Writer
@@ -28,6 +27,7 @@ namespace CorpusExplorer.Terminal.Console.Writer
         var tag = c.Key.Replace(" ", "_");
         tmp.Append($"<{tag}>{{{c.Key}}}</{tag}>");
       }
+
       tmp.Append("</item>");
       var template = tmp.ToString();
       tmp.Clear();
@@ -54,6 +54,7 @@ namespace CorpusExplorer.Terminal.Console.Writer
         stb.Append(tmp);
         tmp.Clear();
       }
+
       stb.Append("</items>");
 
       WriteOutput(stb.ToString());

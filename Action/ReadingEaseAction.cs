@@ -12,7 +12,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new ReadingEaseViewModel { Selection = selection };
+      var vm = new ReadingEaseViewModel {Selection = selection};
       if (args != null && args.Length == 1)
         vm.LayerDisplayname = args[0];
       vm.Analyse();

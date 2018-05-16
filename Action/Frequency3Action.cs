@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
@@ -21,6 +19,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         vm.Layer2Displayname = args[1];
         vm.Layer3Displayname = args[2];
       }
+
       vm.Analyse();
 
       writer.WriteTable(vm.GetDataTable());

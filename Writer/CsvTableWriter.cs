@@ -1,7 +1,5 @@
 ﻿using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
-using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Writer
@@ -17,9 +15,7 @@ namespace CorpusExplorer.Terminal.Console.Writer
       {
         var r = new string[table.Columns.Count];
         for (var i = 0; i < table.Columns.Count; i++)
-        {
           r[i] = x[i] == null ? "\"\"" : $"\"{EnsureValue(x[i].ToString())}\"";
-        }
 
         WriteOutput($"{string.Join(";", r)}\r\n");
       }
@@ -27,7 +23,8 @@ namespace CorpusExplorer.Terminal.Console.Writer
 
     private string EnsureValue(string value)
     {
-      return value.Replace("\"", "''").Replace("\t", "").Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ").Replace("  ", " ").Replace("  ", " ").Replace("  ", " ");
+      return value.Replace("\"", "''").Replace("\t", "").Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ")
+        .Replace("  ", " ").Replace("  ", " ").Replace("  ", " ");
     }
   }
 }
