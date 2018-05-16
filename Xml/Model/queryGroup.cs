@@ -13,36 +13,58 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   [DesignerCategory("code")]
   [XmlType(AnonymousType = true)]
   [XmlRoot(Namespace = "", IsNullable = false)]
-  public class queryGroup
-  {
-    private string nameField;
-
-    private string operatorField;
-
+  public partial class queryGroup {
+    
     private query[] queryField;
-
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
-    public string name
-    {
-      get => nameField;
-      set => nameField = value;
+    
+    private string nameField;
+    
+    private string operatorField;
+    
+    private string prefixField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("query")]
+    public query[] query {
+      get {
+        return this.queryField;
+      }
+      set {
+        this.queryField = value;
+      }
     }
-
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
-    public string @operator
-    {
-      get => operatorField;
-      set => operatorField = value;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string name {
+      get {
+        return this.nameField;
+      }
+      set {
+        this.nameField = value;
+      }
     }
-
-    /// <remarks />
-    [XmlElement("query")]
-    public query[] query
-    {
-      get => queryField;
-      set => queryField = value;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string @operator {
+      get {
+        return this.operatorField;
+      }
+      set {
+        this.operatorField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string prefix {
+      get {
+        return this.prefixField;
+      }
+      set {
+        this.prefixField = value;
+      }
     }
   }
 }

@@ -35,7 +35,7 @@
 				<value>Anna Schmidt</value>
 				<value>Bernd</value>
 			</queryBuilder>
-			<queryGroup name="group" operator="and">
+			<queryGroup name="group" prefix="!M:Author::" operator="and">
 				<query>!M:Author::Jan</query>
 				<query>!M:Author::Jan</query>
 				<query>!M:Author::Jan</query>

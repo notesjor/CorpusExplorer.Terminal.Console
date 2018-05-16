@@ -532,6 +532,8 @@ public partial class queryGroup {
     
     private string operatorField;
     
+    private string prefixField;
+    
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("query")]
     public query[] query {
@@ -562,6 +564,17 @@ public partial class queryGroup {
         }
         set {
             this.operatorField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string prefix {
+        get {
+            return this.prefixField;
+        }
+        set {
+            this.prefixField = value;
         }
     }
 }

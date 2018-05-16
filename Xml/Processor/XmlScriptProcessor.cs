@@ -401,16 +401,18 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       if (key == "" || key == "*" || key == "+" || res.ContainsKey(key))
         return;
 
+      var prefix = string.IsNullOrEmpty(queryGroup.prefix) ? string.Empty : queryGroup.prefix;
+
       // Erzeuge erste Abfrage
       var qs = new List<query>(queryGroup.query);
-      var selection = GenerateSelections_Compile(all, qs[0].Text.CleanXmlValue(), qs[0].name).First()
+      var selection = GenerateSelections_Compile(all, $"{prefix}{qs[0].Text.CleanXmlValue()}", qs[0].name).First()
         .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
       qs.RemoveAt(0); // Entferne erste Abfrage aus der Liste
 
       // Führe alle Folgeabfragen aus.
       foreach (var query in qs)
       {
-        var temp = GenerateSelections_Compile(all.CreateTemporary(selection), query.Text.CleanXmlValue(), "").First()
+        var temp = GenerateSelections_Compile(all.CreateTemporary(selection), $"{prefix}{query.Text.CleanXmlValue()}", "").First()
           .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
         switch (queryGroup.@operator)
         {
