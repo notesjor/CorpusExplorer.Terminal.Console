@@ -50,6 +50,7 @@
     <Compile Include="Action\Abstract\AbstractFilterAction.cs" />
     <Compile Include="Action\Abstract\AbstractAction.cs" />
     <Compile Include="Action\BasicInformationAction.cs" />
+    <Compile Include="Action\CooccurrenceSelectedAction.cs" />
     <Compile Include="Action\DocumentCountAction.cs" />
     <Compile Include="Action\KwicAllInDocumentFilterAction.cs" />
     <Compile Include="Action\KwicAllInSentenceFilterAction.cs" />

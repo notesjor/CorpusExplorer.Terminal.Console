@@ -279,6 +279,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             System.Console.ForegroundColor = t.Value ? ConsoleColor.Green : ConsoleColor.Yellow;
             System.Console.WriteLine($"{t.Key} ... {(t.Value ? "done" : "running")}");
           }
+          System.Console.ForegroundColor = ConsoleColor.Gray;
         }
       }
       catch
