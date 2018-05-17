@@ -22,8 +22,8 @@ namespace CorpusExplorer.Terminal.Console.Writer
 
     private string EnsureValue(string value)
     {
-      return value.Replace("\t", "").Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ").Replace("  ", " ")
-        .Replace("  ", " ").Replace("  ", " ");
+      return value.Replace("\"", "''").Replace("\t", "").Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ")
+        .Replace("  ", " ").Replace("  ", " ").Replace("  ", " ");
     }
   }
 }
