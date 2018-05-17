@@ -38,6 +38,7 @@
         <xs:element ref="queries"/>
         <xs:element ref="tasks"/>
       </xs:sequence>
+      <xs:attribute name="override" type="xs:boolean"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="sources">

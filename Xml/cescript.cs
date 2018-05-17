@@ -102,6 +102,10 @@ public partial class session {
     
     private task[] tasksField;
     
+    private bool overrideField;
+    
+    private bool overrideFieldSpecified;
+    
     /// <remarks/>
     public sources sources {
         get {
@@ -130,6 +134,28 @@ public partial class session {
         }
         set {
             this.tasksField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool @override {
+        get {
+            return this.overrideField;
+        }
+        set {
+            this.overrideField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool overrideSpecified {
+        get {
+            return this.overrideFieldSpecified;
+        }
+        set {
+            this.overrideFieldSpecified = value;
         }
     }
 }

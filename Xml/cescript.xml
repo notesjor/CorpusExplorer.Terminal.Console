@@ -4,7 +4,7 @@
 	<meta key="b">2018</meta>
 </head>
 <sessions>
-	<session>
+	<session override="true">
 		<sources>
 			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
 				<file>C:/test.abc</file>

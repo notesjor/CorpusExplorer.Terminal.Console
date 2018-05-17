@@ -13,34 +13,69 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   [DesignerCategory("code")]
   [XmlType(AnonymousType = true)]
   [XmlRoot(Namespace = "", IsNullable = false)]
-  public class session
-  {
-    private queries queriesField;
-
+  public partial class session {
+    
     private sources sourcesField;
-
+    
+    private queries queriesField;
+    
     private task[] tasksField;
-
-    /// <remarks />
-    public queries queries
-    {
-      get => queriesField;
-      set => queriesField = value;
+    
+    private bool overrideField;
+    
+    private bool overrideFieldSpecified;
+    
+    /// <remarks/>
+    public sources sources {
+      get {
+        return this.sourcesField;
+      }
+      set {
+        this.sourcesField = value;
+      }
     }
-
-    /// <remarks />
-    public sources sources
-    {
-      get => sourcesField;
-      set => sourcesField = value;
+    
+    /// <remarks/>
+    public queries queries {
+      get {
+        return this.queriesField;
+      }
+      set {
+        this.queriesField = value;
+      }
     }
-
-    /// <remarks />
-    [XmlArrayItem("task", IsNullable = false)]
-    public task[] tasks
-    {
-      get => tasksField;
-      set => tasksField = value;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayItemAttribute("task", IsNullable=false)]
+    public task[] tasks {
+      get {
+        return this.tasksField;
+      }
+      set {
+        this.tasksField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool @override {
+      get {
+        return this.overrideField;
+      }
+      set {
+        this.overrideField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool overrideSpecified {
+      get {
+        return this.overrideFieldSpecified;
+      }
+      set {
+        this.overrideFieldSpecified = value;
+      }
     }
   }
 }
