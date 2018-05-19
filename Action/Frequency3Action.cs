@@ -22,7 +22,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       vm.Analyse();
 
-      writer.WriteTable(vm.GetDataTable());
+      writer.WriteTable(vm.GetNormalizedDataTable());
     }
   }
 }

@@ -50,12 +50,15 @@
     <Compile Include="Action\Abstract\AbstractFilterAction.cs" />
     <Compile Include="Action\Abstract\AbstractAction.cs" />
     <Compile Include="Action\BasicInformationAction.cs" />
+    <Compile Include="Action\ClusterAction.cs" />
     <Compile Include="Action\CooccurrenceSelectedAction.cs" />
     <Compile Include="Action\DocumentCountAction.cs" />
+    <Compile Include="Action\Frequency1SelectAction.cs" />
     <Compile Include="Action\KwicAllInDocumentFilterAction.cs" />
     <Compile Include="Action\KwicAllInSentenceFilterAction.cs" />
     <Compile Include="Action\KwicAnyFilterAction.cs" />
     <Compile Include="Action\KwicExactPhraseFilterAction.cs" />
+    <Compile Include="Action\KwicFirstAnyFilterAction.cs" />
     <Compile Include="Action\LayerNamesAction.cs" />
     <Compile Include="Action\LayerValuesAction.cs" />
     <Compile Include="Action\MetaCategoriesAction.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="Helper\AutoSplitBlockHelper.cs" />
     <Compile Include="Helper\AvailableAddonHelper.cs" />
     <Compile Include="Helper\ConsoleHelper.cs" />
+    <Compile Include="Helper\UnsupportedQueryParserFeatureHelper.cs" />
     <Compile Include="Helper\XmlValueHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +92,7 @@
     <Compile Include="Writer\XmlTableWriter.cs" />
     <Compile Include="Xml\Model\annotate.cs" />
     <Compile Include="Xml\Model\arguments.cs" />
+    <Compile Include="Xml\Model\binary.cs" />
     <Compile Include="Xml\Model\cescript.cs" />
     <Compile Include="Xml\Model\directory.cs" />
     <Compile Include="Xml\Model\file.cs" />

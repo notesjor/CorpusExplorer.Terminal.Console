@@ -169,31 +169,20 @@ public partial class session {
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class sources {
     
-    private annotate[] annotateField;
-    
-    private import[] importField;
+    private object[] itemsField;
     
     private string processingField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("annotate")]
-    public annotate[] annotate {
+    [System.Xml.Serialization.XmlElementAttribute("annotate", typeof(annotate))]
+    [System.Xml.Serialization.XmlElementAttribute("binary", typeof(binary))]
+    [System.Xml.Serialization.XmlElementAttribute("import", typeof(import))]
+    public object[] Items {
         get {
-            return this.annotateField;
+            return this.itemsField;
         }
         set {
-            this.annotateField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("import")]
-    public import[] import {
-        get {
-            return this.importField;
-        }
-        set {
-            this.importField = value;
+            this.itemsField = value;
         }
     }
     
@@ -379,6 +368,55 @@ public partial class file {
         }
         set {
             this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class binary {
+    
+    private string nameField;
+    
+    private string typeField;
+    
+    private string[] textField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string type {
+        get {
+            return this.typeField;
+        }
+        set {
+            this.typeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public string[] Text {
+        get {
+            return this.textField;
+        }
+        set {
+            this.textField = value;
         }
     }
 }

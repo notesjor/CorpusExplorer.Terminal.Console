@@ -21,36 +21,35 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var a = args?.ToArray();
-      if (a == null || a.Length != 2)
+      if (args == null || args.Length != 2)
         return;
 
       Selection sub;
-      if (a[0].StartsWith("FILE:"))
+      if (args[0].StartsWith("FILE:"))
       {
-        var lines = File.ReadAllLines(a[0].Replace("FILE:", string.Empty), Configuration.Encoding);
+        var lines = File.ReadAllLines(args[0].Replace("FILE:", string.Empty), Configuration.Encoding);
         var queries = lines.Select(QueryParser.Parse);
         sub = queries.Aggregate(selection,
-          (current, q) => current.Create(new[] {q}, Path.GetFileNameWithoutExtension(a[1])));
+          (current, q) => current.Create(new[] {q}, Path.GetFileNameWithoutExtension(args[1])));
       }
       else
       {
-        var query = QueryParser.Parse(a[0]);
+        var query = QueryParser.Parse(args[0]);
         if (query is FilterQueryUnsupportedParserFeature)
         {
-          var s = a[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
+          var s = args[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
           if (s.Length != 2)
             return;
 
-          UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature) query, a[1], writer);
+          UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature) query, args[1], writer);
           return;
         }
 
-        sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(a[1]));
+        sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(args[1]));
       }
 
       var export = new OutputAction();
-      export.Execute(sub, new[] {a[1]}, writer);
+      export.Execute(sub, new[] {args[1]}, writer);
     }
 
     private void UnsupportedParserFeatureAutosplit(Selection selection, FilterQueryUnsupportedParserFeature query,

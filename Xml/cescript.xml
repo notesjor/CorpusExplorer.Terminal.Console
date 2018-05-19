@@ -10,12 +10,7 @@
 				<file>C:/test.abc</file>
 				<directory filter=".cec6">C:/</directory>
 			</annotate>
-			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
-				<file>C:/test.abc</file>
-				<directory filter=".cec6">C:/</directory>
-				<file>C:/test.abc</file>
-				<directory filter=".cec6">C:/</directory>
-			</annotate>
+			<binary type="ImporterCec6" name="corpusDisplayname">AAEAAAD/////FAKE=</binary>
 			<import type="ImporterCec6">
 				<file delete="false">C:/test.abc</file>
 				<directory filter=".cec6" delete="true">C:/</directory>
@@ -25,7 +20,14 @@
 			<import type="ImporterCec6">
 				<file>C:/test.abc</file>
 				<directory filter=".cec6">C:/</directory>
-			</import>			
+			</import>
+			<binary type="ImporterCec6" name="corpusDisplayname">AAEAAAD/////AQAAAAAAAAAMAgAAAEZUZXN0Q29uc29sZSwgVmVyc2lvbj0yLjIwMTUuNy4yMywgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBwEAAAAAAQAAAAIAAAAEElRlc3RDb25zb2xlLlBlcnNvbgIAAAAJAwAAAAkEAAAABQMAAAASVGVzdENvbnNvbGUuUGVyc29uAgAAABU8TmFtZT5rX19CYWNraW5nRmllbGQUPEFnZT5rX19CYWNraW5nRmllbGQBAAgCAAAABgUAAAADSmFuEgAAAAEEAAAAAwAAAAYGAAAAB0NhcnN0ZW4VAAAACwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</binary>
+			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
+			</annotate>
 		</sources>
 		
 		<queries>

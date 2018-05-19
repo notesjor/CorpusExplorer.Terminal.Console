@@ -19,6 +19,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
 
     private import[] importField;
 
+    private binary[] binaryField;
+
     private string processingField;
 
     /// <remarks />
@@ -35,6 +37,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     {
       get => importField;
       set => importField = value;
+    }
+
+    [XmlElement("binary")]
+    public binary[] binary
+    {
+      get => binaryField;
+      set => binaryField = value;
     }
 
     /// <remarks />
