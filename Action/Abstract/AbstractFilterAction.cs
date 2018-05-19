@@ -17,26 +17,13 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
       var queries = new List<string>(args);
       queries.RemoveAt(0);
 
-      var query = GetQuery();
-      switch (query)
-      {
-        case AbstractFilterQuerySingleLayer q:
-          q.LayerDisplayname = args[0];
-          q.LayerQueries = queries;
-          break;
-        case FilterQuerySingleLayerExactPhrase q:
-          q.LayerDisplayname = args[0];
-          q.LayerQueries = queries;
-          break;
-      }
-
       var vm = new TextLiveSearchViewModel {Selection = selection};
-      vm.AddQuery(query);
+      vm.AddQuery(GetQuery(args[0], queries));
       vm.Analyse();
 
       writer.WriteTable(vm.GetDataTable());
     }
 
-    protected abstract AbstractFilterQuery GetQuery();
+    protected abstract AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries);
   }
 }

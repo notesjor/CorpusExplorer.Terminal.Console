@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Utils.Filter.Abstract;
+﻿using System.Collections.Generic;
+using CorpusExplorer.Sdk.Utils.Filter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
@@ -9,11 +10,11 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "kwic-sentence";
 
     public override string Description =>
-      "kwic-sentence [LAYER] [TEXT] - [TEXT] = space separated tokens - a sentence must contains all token";
+      "kwic-sentence [LAYER] [WORDS] - [WORDS] = space separated tokens - a sentence must contains all token";
 
-    protected override AbstractFilterQuery GetQuery()
+    protected override AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries)
     {
-      return new FilterQuerySingleLayerAllInOneSentence();
+      return new FilterQuerySingleLayerAllInOneSentence{LayerDisplayname = layerDisplayname, LayerQueries = queries};
     }
   }
 }
