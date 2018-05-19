@@ -9,6 +9,7 @@ using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.Filter;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
@@ -25,6 +26,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
     private static readonly object _executeTaskListLock = new object();
     private static string _errorLog;
+    private static readonly object _sourceLoadLock = new object();
+    private static readonly object _binaryLoadLock = new object();
+    private static readonly Dictionary<string, AbstractCorpusAdapter> _binaryCorpora = new Dictionary<string, AbstractCorpusAdapter>();
 
     /// <summary>
     ///   Überprüft, ob es sich bei der übergebenen Datei (path) um ein CEScript handelt.
@@ -76,7 +80,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         HashSet<string> deletePaths = null;
         try
         {
-          var source = ReadSources(session.sources, out deletePaths);
+          Project source;
+          lock (_sourceLoadLock)
+            source = ReadSources(session.sources, out deletePaths);
           var selections = GenerateSelections(source, session.queries);
           var allGuid = source.SelectAll.Guid;
           var allowOverride = session.@override;
@@ -172,7 +178,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
 
         // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
-        if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0) 
+        if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
           return;
 
         // Reporting für Konsole
@@ -572,7 +578,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
 
       // Wenn Import-Quellen vorhanden sind, dann lese diese ein.
-      // ReSharper disable once InvertIf
       if (sources.import != null)
       {
         var importers = Configuration.AddonImporters.GetDictionary();
@@ -589,6 +594,17 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           {
             LogError(ex);
           }
+      }
+
+      // Wenn Binärdaten übergeben werden, dann speichere diese und importiere die Dateien
+      // ReSharper disable once InvertIf
+      if (sources.binary != null)
+      {
+        var importers = Configuration.AddonImporters.GetDictionary();
+        foreach (var binary in sources.binary)
+        {
+          // TODO
+        }
       }
 
       return res;
@@ -635,7 +651,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       try
       {
-        File.AppendAllLines(_errorLog, additionalLine == null ? new[] {ex.Message, ex.StackTrace, "---"} : new[] {additionalLine, ex.Message, ex.StackTrace, "---"});
+        File.AppendAllLines(_errorLog, additionalLine == null ? new[] { ex.Message, ex.StackTrace, "---" } : new[] { additionalLine, ex.Message, ex.StackTrace, "---" });
       }
       catch
       {

@@ -36,6 +36,7 @@ namespace CorpusExplorer.Terminal.Console
       new LayerValuesAction(),
       new TypeCountAction(),
 
+      new Frequency1SelectAction(), 
       new Frequency1Action(),
       new Frequency2Action(),
       new Frequency3Action(),
@@ -53,7 +54,9 @@ namespace CorpusExplorer.Terminal.Console
       new KwicAllInDocumentFilterAction(),
       new KwicAllInSentenceFilterAction(),
       new KwicExactPhraseFilterAction(),
+      new KwicFirstAnyFilterAction(), 
 
+      new ClusterAction(),
       new OutputAction(),
       new FilterAction()
     }.ToDictionary(x => x.Action, x => x);
