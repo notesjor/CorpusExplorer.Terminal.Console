@@ -56,7 +56,7 @@ namespace CorpusExplorer.Terminal.Console
       new KwicExactPhraseFilterAction(),
       new KwicFirstAnyFilterAction(), 
 
-      new ClusterAction(),
+      // new ClusterAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
       new OutputAction(),
       new FilterAction()
     }.ToDictionary(x => x.Action, x => x);
@@ -74,7 +74,7 @@ namespace CorpusExplorer.Terminal.Console
         {"F:JSON", new JsonTableWriter()}
       };
 
-    private static AbstractTableWriter _writer;
+    private static AbstractTableWriter _writer = new TsvTableWriter();
 
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {
@@ -326,6 +326,7 @@ namespace CorpusExplorer.Terminal.Console
     private static void Main(string[] args)
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+      _actions.Add("cluster", new ClusterAction { _actions = _actions });
       Execute(args);
     }
 

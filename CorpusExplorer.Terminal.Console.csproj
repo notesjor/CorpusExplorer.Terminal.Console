@@ -85,6 +85,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Writer\Abstract\AbstractTableWriter.cs" />
+    <Compile Include="Writer\BypassTableWriter.cs" />
     <Compile Include="Writer\CsvTableWriter.cs" />
     <Compile Include="Writer\JsonTableWriter.cs" />
     <Compile Include="Writer\SqlTableWriter.cs" />

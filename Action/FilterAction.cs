@@ -34,14 +34,14 @@ namespace CorpusExplorer.Terminal.Console.Action
       }
       else
       {
+        var s = args[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
+        if (s.Length != 2)
+          return;
+
         var query = QueryParser.Parse(args[0]);
         if (query is FilterQueryUnsupportedParserFeature)
         {
-          var s = args[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
-          if (s.Length != 2)
-            return;
-
-          UnsupportedParserFeatureHandler(selection, (FilterQueryUnsupportedParserFeature) query, args[1], writer);
+          UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature) query, args[1], writer);
           return;
         }
 
@@ -50,76 +50,6 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       var export = new OutputAction();
       export.Execute(sub, new[] {args[1]}, writer);
-    }
-
-    private void UnsupportedParserFeatureAutosplit(Selection selection, FilterQueryUnsupportedParserFeature query,
-      string output, AbstractTableWriter writer)
-    {
-      var values = query.MetaValues?.ToArray();
-      if (values?.Length != 1)
-        return;
-
-      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
-      if (outputOptions.Length != 2)
-        return;
-
-      var block = AutoSplitBlockHelper.RunAutoSplit(selection, query, values);
-
-      var form = outputOptions[0];
-      var path = outputOptions[1];
-      var dir = Path.GetDirectoryName(path);
-      var nam = Path.GetFileNameWithoutExtension(path);
-      var ext = Path.GetExtension(path);
-
-      if (!Directory.Exists(dir))
-        Directory.CreateDirectory(dir);
-
-      var export = new OutputAction();
-      foreach (var cluster in block.GetSelectionClusters())
-        export.Execute(cluster,
-          new[] {$"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\""}, writer);
-    }
-
-    private void UnsupportedParserFeatureHandler(Selection selection, FilterQueryUnsupportedParserFeature query,
-      string output, AbstractTableWriter writer)
-    {
-      if (query.MetaLabel == "<:RANDOM:>")
-        UnsupportedParserRandomFeature(selection, query, output, writer);
-      else
-        UnsupportedParserFeatureAutosplit(selection, query, output, writer);
-    }
-
-    private void UnsupportedParserRandomFeature(Selection selection, FilterQueryUnsupportedParserFeature query,
-      string output, AbstractTableWriter writer)
-    {
-      var values = query.MetaValues?.ToArray();
-      if (values?.Length != 1)
-        return;
-
-      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
-      if (outputOptions.Length != 2)
-        return;
-
-      var block = selection.CreateBlock<RandomSelectionBlock>();
-      block.DocumentCount = int.Parse(values[0].ToString());
-      block.Calculate();
-
-      var export = new OutputAction();
-      export.Execute(block.RandomSelection, new[] {output}, writer);
-
-      var form = outputOptions[0];
-      var path = outputOptions[1];
-      var nam = Path.GetFileNameWithoutExtension(path);
-      var ext = Path.GetExtension(path);
-      var dir = Path.GetDirectoryName(path);
-      if (!Directory.Exists(dir))
-        Directory.CreateDirectory(dir);
-
-      var none = new HashSet<Guid>(block.RandomSelection.DocumentGuids);
-      var list = selection.DocumentGuids.Where(dsel => !none.Contains(dsel));
-      var nega = selection.CreateTemporary(list);
-
-      export.Execute(nega, new[] {$"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\""}, writer);
     }
   }
 }

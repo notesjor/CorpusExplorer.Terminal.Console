@@ -30,7 +30,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
 
       return string.IsNullOrEmpty(output)
         ? UnsupportedParserRandomFeatureToObject(block)
-        : UnsupportedParserRandomFeatureToFile(selection, writer, output, block);
+        : UnsupportedParserRandomFeatureToFile(writer, output, block);
     }
 
     private static IEnumerable<Selection> UnsupportedParserRandomFeatureToObject(RandomSelectionBlock block)
@@ -38,7 +38,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       return new[] { block.RandomSelection, block.RandomInvertSelection };
     }
 
-    private static IEnumerable<Selection> UnsupportedParserRandomFeatureToFile(Selection selection, AbstractTableWriter writer, string output, RandomSelectionBlock block)
+    private static IEnumerable<Selection> UnsupportedParserRandomFeatureToFile(AbstractTableWriter writer, string output, RandomSelectionBlock block)
     {
       var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
       if (outputOptions.Length != 2)
@@ -65,15 +65,11 @@ namespace CorpusExplorer.Terminal.Console.Helper
       if (values?.Length != 1)
         return null;
 
-      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
-      if (outputOptions.Length != 2)
-        return null;
-
       var block = AutoSplitBlockHelper.RunAutoSplit(selection, query, values);
 
       return string.IsNullOrEmpty(output)
         ? UnsupportedParserFeatureAutosplitToObject(block)
-        : UnsupportedParserFeatureAutosplitToFile(writer, outputOptions, block);
+        : UnsupportedParserFeatureAutosplitToFile(writer, output, block);
     }
 
     private static IEnumerable<Selection> UnsupportedParserFeatureAutosplitToObject(SelectionClusterBlock block)
@@ -81,8 +77,12 @@ namespace CorpusExplorer.Terminal.Console.Helper
       return block.GetSelectionClusters();
     }
 
-    private static IEnumerable<Selection> UnsupportedParserFeatureAutosplitToFile(AbstractTableWriter writer, string[] outputOptions, SelectionClusterBlock block)
+    private static IEnumerable<Selection> UnsupportedParserFeatureAutosplitToFile(AbstractTableWriter writer, string output, SelectionClusterBlock block)
     {
+      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+      if (outputOptions.Length != 2)
+        return null;
+
       var form = outputOptions[0];
       var path = outputOptions[1];
       var dir = Path.GetDirectoryName(path);
