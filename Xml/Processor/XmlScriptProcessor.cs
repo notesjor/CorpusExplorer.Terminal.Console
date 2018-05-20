@@ -276,6 +276,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       all.Displayname = "ALL";
       var res = new Dictionary<string, Selection[]> { { "", new[] { all } } };
 
+      if (queries?.Items == null) 
+        return res;
+
       foreach (var item in queries.Items)
         try
         {

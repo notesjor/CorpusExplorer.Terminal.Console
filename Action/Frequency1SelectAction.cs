@@ -19,8 +19,10 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new Frequency1LayerViewModel { Selection = selection };
-      if (args != null && args.Length == 1)
-        vm.LayerDisplayname = args[0];
+      if (args == null || args.Length < 2)
+        return;
+
+      vm.LayerDisplayname = args[0];
       vm.Analyse();
 
       var lst = new List<string>(args);
@@ -29,18 +31,12 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       var div = vm.Frequency.Select(x => x.Value).Sum() / 1000000d;
 
-      switch (hsh.Count)
-      {
-        case 1 when hsh.ToArray()[0].StartsWith("FILE:"):
-          ExecuteFileQuery(writer, vm, div, hsh.ToArray()[0].Replace("FILE:", ""));
-          break;
-        case 1 when hsh.ToArray()[0].StartsWith("SDM:"):
-          ExecuteSdmFileQuery(writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
-          break;
-        default:
-          ExecuteSimpleQuery(writer, vm, div, hsh);
-          break;
-      }
+      if (hsh.Count == 1 && hsh.ToArray()[0].StartsWith("FILE:"))
+        ExecuteFileQuery(writer, vm, div, hsh.ToArray()[0].Replace("FILE:", ""));
+      else if (hsh.Count == 1 && hsh.ToArray()[0].StartsWith("SDM:"))
+        ExecuteSdmFileQuery(writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
+      else
+        ExecuteSimpleQuery(writer, vm, div, hsh);
     }
 
     private void ExecuteFileQuery(AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, string path)
@@ -81,6 +77,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       var res = new DataTable();
 
+      res.Columns.Add("Kategorie", typeof(string));
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
       res.Columns.Add("Frequenz", typeof(double));
       res.Columns.Add("Frequenz (relativ)", typeof(double));
@@ -95,7 +92,7 @@ namespace CorpusExplorer.Terminal.Console.Action
           continue;
 
         if (vm.Frequency.ContainsKey(split[1]))
-          res.Rows.Add(split[0], vm.Frequency[split[1]], vm.Frequency[split[1]] / div, split[2]);
+          res.Rows.Add(split[0], split[1], vm.Frequency[split[1]], vm.Frequency[split[1]] / div, split[2]);
       }
 
       res.EndLoadData();
