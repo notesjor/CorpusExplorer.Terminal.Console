@@ -63,10 +63,16 @@ namespace CorpusExplorer.Terminal.Console.Helper
               block.ClusterGenerator = new SelectionClusterGeneratorDateTimeCenturyOnlyValue();
               break;
             case "DEC":
-              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeDecateOnlyValue();
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeDecadeOnlyValue();
               break;
             case "Y":
               block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearOnlyValue();
+              break;
+            case "YW":
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearWeekOnlyValue();
+              break;
+            case "YQ":
+              block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearQuarterOnlyValue();
               break;
             case "YM":
               block.ClusterGenerator = new SelectionClusterGeneratorDateTimeYearMonthOnlyValue();
