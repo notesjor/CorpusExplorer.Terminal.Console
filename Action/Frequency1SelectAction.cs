@@ -91,14 +91,27 @@ namespace CorpusExplorer.Terminal.Console.Action
         if (split.Length != 3)
           continue;
 
-        if (vm.Frequency.ContainsKey(split[1]))
-          res.Rows.Add(split[0], split[1], vm.Frequency[split[1]], vm.Frequency[split[1]] / div, split[2]);
+        var word = split[1];
+        if (word.StartsWith("*")) // Postfix
+          foreach (var w in GetSdmPostfixQuery(word.Substring(1), vm.Frequency))
+            res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
+        else if (word.EndsWith("*")) // Prefix
+          foreach (var w in GetSdmPrefixQuery(word.Substring(0, word.Length - 1), vm.Frequency))
+            res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
+        else if (vm.Frequency.ContainsKey(word))
+          res.Rows.Add(split[0], word, vm.Frequency[word], vm.Frequency[word] / div, split[2]);
       }
 
       res.EndLoadData();
 
       writer.WriteTable(res);
     }
+
+    private Dictionary<string, double> GetSdmPostfixQuery(string query, Dictionary<string, double> vm) 
+      => vm.Where(x => x.Key.EndsWith(query)).ToDictionary(x => x.Key, x => x.Value);
+
+    private Dictionary<string, double> GetSdmPrefixQuery(string query, Dictionary<string, double> vm) 
+      => vm.Where(x => x.Key.StartsWith(query)).ToDictionary(x => x.Key, x => x.Value);
 
     private static void ExecuteSimpleQuery(AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, HashSet<string> hsh)
     {
