@@ -1,7 +1,8 @@
-﻿using CorpusExplorer.Sdk.Model;
+﻿using System;
+using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
-using CorpusExplorer.Terminal.Console.Writer.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -12,13 +13,20 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new ReadingEaseViewModel {Selection = selection};
-      if (args != null && args.Length == 1)
-        vm.LayerDisplayname = args[0];
-      vm.Analyse();
-      var table = vm.GetDataTable();
+      try
+      {
+        var vm = new ReadingEaseViewModel {Selection = selection};
+        if (args != null && args.Length == 1)
+          vm.LayerDisplayname = args[0];
+        vm.Analyse();
+        var table = vm.GetDataTable();
 
-      writer.WriteTable(table);
+        writer.WriteTable(table);
+      }
+      catch (Exception ex)
+      {
+
+      }
     }
   }
 }

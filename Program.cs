@@ -11,13 +11,13 @@ using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
 using CorpusExplorer.Sdk.Model.Cache;
 using CorpusExplorer.Sdk.Model.Extension;
 using CorpusExplorer.Sdk.Utils.CorpusManipulation;
+using CorpusExplorer.Sdk.Utils.DataTableWriter;
+using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Builder;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Terminal.Console.Action;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
-using CorpusExplorer.Terminal.Console.Writer;
-using CorpusExplorer.Terminal.Console.Writer.Abstract;
 using CorpusExplorer.Terminal.Console.Xml.Processor;
 
 namespace CorpusExplorer.Terminal.Console

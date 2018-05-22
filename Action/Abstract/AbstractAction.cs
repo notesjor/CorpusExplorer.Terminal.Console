@@ -1,5 +1,5 @@
 ﻿using CorpusExplorer.Sdk.Model;
-using CorpusExplorer.Terminal.Console.Writer.Abstract;
+using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action.Abstract
 {
