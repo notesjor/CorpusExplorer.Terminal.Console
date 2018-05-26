@@ -21,7 +21,7 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
       vm.AddQuery(GetQuery(args[0], queries));
       vm.Analyse();
 
-      writer.WriteTable(vm.GetDataTable());
+      writer.WriteTable(vm.GetUniqueDataTable());
     }
 
     protected abstract AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries);

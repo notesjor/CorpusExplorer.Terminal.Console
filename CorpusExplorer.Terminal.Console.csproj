@@ -59,6 +59,7 @@
     <Compile Include="Action\KwicAnyFilterAction.cs" />
     <Compile Include="Action\KwicExactPhraseFilterAction.cs" />
     <Compile Include="Action\KwicFirstAnyFilterAction.cs" />
+    <Compile Include="Action\KwitFilterAction.cs" />
     <Compile Include="Action\LayerNamesAction.cs" />
     <Compile Include="Action\LayerValuesAction.cs" />
     <Compile Include="Action\MetaCategoriesAction.cs" />

@@ -55,6 +55,7 @@ namespace CorpusExplorer.Terminal.Console
       new KwicAllInSentenceFilterAction(),
       new KwicExactPhraseFilterAction(),
       new KwicFirstAnyFilterAction(), 
+      new KwitFilterAction(), 
 
       // new ClusterAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
       new OutputAction(),
