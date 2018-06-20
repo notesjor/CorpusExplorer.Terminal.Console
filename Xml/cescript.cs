@@ -507,6 +507,8 @@ public partial class query {
     
     private string nameField;
     
+    private string parentField;
+    
     private string[] textField;
     
     /// <remarks/>
@@ -517,6 +519,17 @@ public partial class query {
         }
         set {
             this.nameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string parent {
+        get {
+            return this.parentField;
+        }
+        set {
+            this.parentField = value;
         }
     }
     
@@ -545,6 +558,8 @@ public partial class queryBuilder {
     
     private string nameField;
     
+    private string parentField;
+    
     private string prefixField;
     
     /// <remarks/>
@@ -566,6 +581,17 @@ public partial class queryBuilder {
         }
         set {
             this.nameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string parent {
+        get {
+            return this.parentField;
+        }
+        set {
+            this.parentField = value;
         }
     }
     
@@ -595,6 +621,8 @@ public partial class queryGroup {
     private string nameField;
     
     private string operatorField;
+    
+    private string parentField;
     
     private string prefixField;
     
@@ -628,6 +656,17 @@ public partial class queryGroup {
         }
         set {
             this.operatorField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string parent {
+        get {
+            return this.parentField;
+        }
+        set {
+            this.parentField = value;
         }
     }
     

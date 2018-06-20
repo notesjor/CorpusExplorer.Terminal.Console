@@ -20,6 +20,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     private string nameField;
     
     private string operatorField;
+
+    private string parentField;
     
     private string prefixField;
     
@@ -53,6 +55,17 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
       }
       set {
         this.operatorField = value;
+      }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string parent {
+      get {
+        return this.parentField;
+      }
+      set {
+        this.parentField = value;
       }
     }
     

@@ -37,13 +37,13 @@
 				<value>Anna Schmidt</value>
 				<value>Bernd</value>
 			</queryBuilder>
-			<queryGroup name="group" prefix="!M:Author::" operator="and">
+			<queryGroup parent="q1" name="group" prefix="!M:Author::" operator="and">
 				<query>!M:Author::Jan</query>
 				<query>!M:Author::Jan</query>
 				<query>!M:Author::Jan</query>
 			</queryGroup>
-			<query>!M:Author::Jan</query>
-			<queryBuilder name="names_" prefix="!M:Author::">
+			<query parent="q1">!M:Author::Jan</query>
+			<queryBuilder parent="q1" name="names_" prefix="!M:Author::">
 				<value>Anna Schmidt</value>
 				<value>Bernd</value>
 			</queryBuilder>

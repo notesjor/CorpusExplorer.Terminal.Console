@@ -17,6 +17,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   {
     private string nameField;
 
+    private string parentField;
+
     private string prefixField;
 
     private string[] valueField;
@@ -27,6 +29,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     {
       get => nameField;
       set => nameField = value;
+    }
+
+    /// <remarks/>
+    [XmlAttributeAttribute(DataType="NCName")]
+    public string parent {
+      get => parentField;
+      set => parentField = value;
     }
 
     /// <remarks />

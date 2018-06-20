@@ -276,7 +276,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       all.Displayname = "ALL";
       var res = new Dictionary<string, Selection[]> { { "", new[] { all } } };
 
-      if (queries?.Items == null) 
+      if (queries?.Items == null)
         return res;
 
       foreach (var item in queries.Items)
@@ -285,13 +285,25 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           switch (item)
           {
             case query q:
-              GenerateSelections_SingleQuery(q, ref res, source.SelectAll);
+              if (string.IsNullOrWhiteSpace(q.parent))
+                GenerateSelections_SingleQuery(q, ref res, source.SelectAll);
+              else
+                foreach (var selection in res[q.parent])
+                  GenerateSelections_SingleQuery(q, ref res, selection, true);
               break;
             case queryBuilder b:
-              GenerateSelections_QueryBuilder(b, ref res, source.SelectAll);
+              if (string.IsNullOrWhiteSpace(b.parent))
+                GenerateSelections_QueryBuilder(b, ref res, source.SelectAll);
+              else
+                foreach (var selection in res[b.parent])
+                  GenerateSelections_QueryBuilder(b, ref res, selection, true);
               break;
             case queryGroup g:
-              GenerateSelections_QueryGroup(g, ref res, source.SelectAll);
+              if (string.IsNullOrWhiteSpace(g.parent))
+                GenerateSelections_QueryGroup(g, ref res, source.SelectAll);
+              else
+                foreach (var selection in res[g.parent])
+                  GenerateSelections_QueryGroup(g, ref res, selection, true);
               break;
           }
         }
@@ -376,11 +388,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="queryBuilder">QueryBuilder</param>
     /// <param name="res">Rückgabeliste</param>
     /// <param name="all">Schnappschuss: Alle Dokumente</param>
+    /// <param name="useSelectionDisplaynameAsPrefix">Stellt dem Namen des aktuell erzeugten Query den ParentDisplayname voran.</param>
     private static void GenerateSelections_QueryBuilder(queryBuilder queryBuilder,
-      ref Dictionary<string, Selection[]> res, Selection all)
+      ref Dictionary<string, Selection[]> res, Selection all, bool useSelectionDisplaynameAsPrefix = false)
     {
       var key = queryBuilder.name ?? string.Empty;
-      if (key == "" || key == "*" || key == "+" || queryBuilder.value == null)
+      if (key == "" || key == "*" || key == "+")
+        return;
+      if (useSelectionDisplaynameAsPrefix)
+        key = $"{all.Displayname}_{key}";
+      if (res.ContainsKey(key))
         return;
       foreach (var v in queryBuilder.value)
       {
@@ -399,11 +416,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="queryGroup">QueryGroup</param>
     /// <param name="res">Rückgabeliste</param>
     /// <param name="all">Schnappschuss: Alle Dokumente</param>
+    /// <param name="useSelectionDisplaynameAsPrefix">Stellt dem Namen des aktuell erzeugten Query den ParentDisplayname voran.</param>
     private static void GenerateSelections_QueryGroup(queryGroup queryGroup, ref Dictionary<string, Selection[]> res,
-      Selection all)
+      Selection all, bool useSelectionDisplaynameAsPrefix = false)
     {
       var key = queryGroup.name ?? string.Empty;
-      if (key == "" || key == "*" || key == "+" || res.ContainsKey(key))
+      if (key == "" || key == "*" || key == "+")
+        return;
+      if (useSelectionDisplaynameAsPrefix)
+        key = $"{all.Displayname}_{key}";
+      if (res.ContainsKey(key))
         return;
 
       var prefix = string.IsNullOrEmpty(queryGroup.prefix) ? string.Empty : queryGroup.prefix;
@@ -476,11 +498,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="query">Einzelabfrage</param>
     /// <param name="res">Rückgabeliste</param>
     /// <param name="all">Schnappschuss: Alle Dokumente</param>
+    /// <param name="useSelectionDisplaynameAsPrefix">Stellt dem Namen des aktuell erzeugten Query den ParentDisplayname voran.</param>
     private static void GenerateSelections_SingleQuery(query query, ref Dictionary<string, Selection[]> res,
-      Selection all)
+      Selection all, bool useSelectionDisplaynameAsPrefix = false)
     {
       var key = query.name ?? string.Empty;
-      if (key == "" || key == "*" || key == "+" || res.ContainsKey(key))
+      if (key == "" || key == "*" || key == "+")
+        return;
+      if (useSelectionDisplaynameAsPrefix)
+        key = $"{all.Displayname}_{key}";
+      if (res.ContainsKey(key))
         return;
       res.Add(key, GenerateSelections_Compile(all, query.Text.CleanXmlValue(), query.name));
     }
