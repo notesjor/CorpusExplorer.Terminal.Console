@@ -19,7 +19,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         vm.NGramSize = int.Parse(args[0]);
       if (args.Length == 2)
         vm.LayerDisplayname = args[1];
-      vm.Analyse();
+      vm.Execute();
 
       writer.WriteTable(vm.GetDataTable());
     }

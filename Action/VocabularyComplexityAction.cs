@@ -15,7 +15,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       var vm = new VocabularyComplexityViewModel {Selection = selection};
       if (args != null && args.Length == 1)
         vm.LayerDisplayname = args[0];
-      vm.Analyse();
+      vm.Execute();
       var table = vm.GetDataTable();
 
       writer.WriteTable(table);

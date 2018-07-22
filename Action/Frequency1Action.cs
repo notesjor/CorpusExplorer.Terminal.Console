@@ -16,7 +16,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       var vm = new Frequency1LayerViewModel { Selection = selection };
       if (args != null && args.Length == 1)
         vm.LayerDisplayname = args[0];
-      vm.Analyse();
+      vm.Execute();
 
       writer.WriteTable(vm.GetNormalizedDataTable());
     }

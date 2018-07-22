@@ -23,7 +23,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         return;
 
       vm.LayerDisplayname = args[0];
-      vm.Analyse();
+      vm.Execute();
 
       var lst = new List<string>(args);
       lst.RemoveAt(0);

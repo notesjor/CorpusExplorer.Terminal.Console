@@ -15,7 +15,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       var vm = new CooccurrenceViewModel {Selection = selection};
       if (args != null && args.Length == 1)
         vm.LayerDisplayname = args[0];
-      vm.Analyse();
+      vm.Execute();
 
       writer.WriteTable(vm.GetFullDataTable());
     }

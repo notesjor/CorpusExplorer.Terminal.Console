@@ -13,7 +13,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new CorpusWeightUnlimmitedViewModel {Selection = selection};
-      vm.Analyse();
+      vm.Execute();
       writer.WriteTable(vm.GetDataTable());
     }
   }

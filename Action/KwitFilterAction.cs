@@ -33,7 +33,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         AutoJoin = true,
         HighlightCooccurrences = false
       };
-      vm.Analyse();
+      vm.Execute();
 
       writer.WriteDirectThroughStream(Convert(vm.DiscoveredConnections.ToArray()));
     }

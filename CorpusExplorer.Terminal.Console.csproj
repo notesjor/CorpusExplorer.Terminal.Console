@@ -51,6 +51,7 @@
     <Compile Include="Action\Abstract\AbstractAction.cs" />
     <Compile Include="Action\BasicInformationAction.cs" />
     <Compile Include="Action\ClusterAction.cs" />
+    <Compile Include="Action\CollocateAction.cs" />
     <Compile Include="Action\CooccurrenceSelectedAction.cs" />
     <Compile Include="Action\DocumentCountAction.cs" />
     <Compile Include="Action\Frequency1SelectAction.cs" />

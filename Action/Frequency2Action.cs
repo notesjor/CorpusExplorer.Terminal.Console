@@ -19,7 +19,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         vm.Layer2Displayname = args[1];
       }
 
-      vm.Analyse();
+      vm.Execute();
       writer.WriteTable(vm.GetNormalizedDataTable());
     }
   }

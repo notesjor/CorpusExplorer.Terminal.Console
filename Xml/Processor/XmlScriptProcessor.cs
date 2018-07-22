@@ -95,37 +95,46 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 return;
               var action = actions[task.type];
 
-              // Wenn eine Action alle Queries adressiert (query="*") dann durchlaufe alle Queries.
-              // + adressiert alle erstellten Queires und nicht ALL
-              if (task.query == "*" || task.query == "+")
+              var query = task.query ?? string.Empty;
+              var taskSelections = new List<Selection>();
+              // ReSharper disable once ConvertIfStatementToSwitchStatement
+              if (query == "*") // Alle Queries
+                taskSelections.AddRange(selections.SelectMany(x => x.Value));
+              else if (query == "+") // Alle Queries außer SELECTALL
               {
-                Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
+                var first = selections.First().Key;
+                taskSelections.AddRange(selections.Where(x => x.Key != first).SelectMany(x => x.Value));
+              }
+              else if (query.StartsWith("*")) // Alle Queries die auf query enden
+              {
+                var q = query.Substring(1);
+                foreach (var x in selections)
+                  if (x.Key.EndsWith(q))
+                    taskSelections.AddRange(x.Value);
+              }
+              else if (query.EndsWith("*")) // Alle Queries die auf query beginnen
+              {
+                var q = query.Substring(0, query.Length - 1);
+                foreach (var x in selections)
+                  if (x.Key.StartsWith(q))
+                    taskSelections.AddRange(x.Value);
+              }
+              else if (!selections.ContainsKey(query)) // Wenn kein Query verfügbar breche ab
+                return;
+              else // Einzelquery
+                taskSelections.AddRange(selections[query]);
+
+              Parallel.ForEach(taskSelections, Configuration.ParallelOptions, selection =>
+              {
+                try
                 {
-                  if (task.query == "+" && selection.Value.First().Guid == allGuid)
-                    return;
-
-                  Parallel.ForEach(selection.Value, sel =>
-                  {
-                    try
-                    {
-                      ExecuteTask(action, task, formats, sel, scriptFilename, allowOverride);
-                    }
-                    catch (Exception ex)
-                    {
-                      LogError(ex);
-                    }
-                  });
-                });
-              }
-              // Wird nur ein bestimmter Query adressiert, dann werte nur diesen aus.
-              else
-              {
-                if (!selections.ContainsKey(task.query ?? string.Empty))
-                  return;
-
-                var selection = selections[task.query ?? string.Empty];
-                Parallel.ForEach(selection, sel => { ExecuteTask(action, task, formats, sel, scriptFilename, allowOverride); });
-              }
+                  ExecuteTask(action, task, formats, selection, scriptFilename, allowOverride);
+                }
+                catch (Exception ex)
+                {
+                  LogError(ex);
+                }
+              });
             }
             catch (Exception ex)
             {
@@ -624,17 +633,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           {
             LogError(ex);
           }
-      }
-
-      // Wenn Binärdaten übergeben werden, dann speichere diese und importiere die Dateien
-      // ReSharper disable once InvertIf
-      if (sources.binary != null)
-      {
-        var importers = Configuration.AddonImporters.GetDictionary();
-        foreach (var binary in sources.binary)
-        {
-          // TODO
-        }
       }
 
       return res;

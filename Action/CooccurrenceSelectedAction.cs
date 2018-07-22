@@ -29,7 +29,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       for (var i = 1; i < args.Length; i++)
       {
         vm.LayerQueries = new[] {args[i]};
-        vm.Analyse();
+        vm.Execute();
 
         res.Add(args[i], vm.FrequencySignificanceDictionary);
       }

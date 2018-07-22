@@ -19,7 +19,7 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
 
       var vm = new TextLiveSearchViewModel {Selection = selection};
       vm.AddQuery(GetQuery(args[0], queries));
-      vm.Analyse();
+      vm.Execute();
 
       writer.WriteTable(vm.GetUniqueDataTable());
     }
