@@ -1,28 +1,40 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class sessions
-  {
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [XmlType(AnonymousType=true)]
+  [XmlRoot(Namespace="", IsNullable=false)]
+  public partial class sessions {
+    
     private session[] sessionField;
-
-    /// <remarks />
+    
+    private string modeField;
+    
+    /// <remarks/>
     [XmlElement("session")]
-    public session[] session
-    {
-      get => sessionField;
-      set => sessionField = value;
+    public session[] session {
+      get {
+        return this.sessionField;
+      }
+      set {
+        this.sessionField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlAttribute(DataType="NCName")]
+    public string mode {
+      get {
+        return this.modeField;
+      }
+      set {
+        this.modeField = value;
+      }
     }
   }
 }

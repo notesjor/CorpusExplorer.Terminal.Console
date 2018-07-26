@@ -1,58 +1,66 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class directory
-  {
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [XmlType(AnonymousType=true)]
+  [XmlRoot(Namespace="", IsNullable=false)]
+  public partial class directory {
+    
     private bool deleteField;
-
+    
     private bool deleteFieldSpecified;
-
+    
     private string filterField;
-
+    
     private string valueField;
-
-    /// <remarks />
-    [XmlAttribute]
-    public bool delete
-    {
-      get => deleteField;
-      set => deleteField = value;
+    
+    /// <remarks/>
+    [XmlAttribute()]
+    public bool delete {
+      get {
+        return this.deleteField;
+      }
+      set {
+        this.deleteField = value;
+      }
     }
-
-    /// <remarks />
-    [XmlIgnore]
-    public bool deleteSpecified
-    {
-      get => deleteFieldSpecified;
-      set => deleteFieldSpecified = value;
+    
+    /// <remarks/>
+    [XmlIgnore()]
+    public bool deleteSpecified {
+      get {
+        return this.deleteFieldSpecified;
+      }
+      set {
+        this.deleteFieldSpecified = value;
+      }
     }
-
-    /// <remarks />
-    [XmlAttribute(DataType = "NMTOKEN")]
-    public string filter
-    {
-      get => filterField;
-      set => filterField = value;
+    
+    /// <remarks/>
+    [XmlAttribute(DataType="NMTOKEN")]
+    public string filter {
+      get {
+        return this.filterField;
+      }
+      set {
+        this.filterField = value;
+      }
     }
-
-    /// <remarks />
-    [XmlText(DataType = "anyURI")]
-    public string Value
-    {
-      get => valueField;
-      set => valueField = value;
+    
+    /// <remarks/>
+    [XmlText(DataType="anyURI")]
+    public string Value {
+      get {
+        return this.valueField;
+      }
+      set {
+        this.valueField = value;
+      }
     }
   }
 }

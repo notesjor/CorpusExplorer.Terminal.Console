@@ -16,6 +16,7 @@ using CorpusExplorer.Sdk.Utils.Filter;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
+using CorpusExplorer.Terminal.Console.Xml.Extensions;
 using CorpusExplorer.Terminal.Console.Xml.Model;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Processor
@@ -75,99 +76,108 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       ConsoleHelper.PrintHeader();
 
-      Parallel.ForEach(script.sessions, Configuration.ParallelOptions, session =>
+      if (!string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode == "synchron")
+        foreach (var session in script.sessions.session)
+          ExecuteSession(actions, formats, session, scriptFilename);
+      else
+        Parallel.ForEach(script.sessions.session, Configuration.ParallelOptions, session =>
+        {
+          ExecuteSession(actions, formats, session, scriptFilename);
+        });
+    }
+
+    private static void ExecuteSession(Dictionary<string, AbstractAction> actions, Dictionary<string, AbstractTableWriter> formats, session session, string scriptFilename)
+    {
+      HashSet<string> deletePaths = null;
+      try
       {
-        HashSet<string> deletePaths = null;
-        try
-        {
-          Project source;
-          lock (_sourceLoadLock)
-            source = ReadSources(session.sources, out deletePaths);
-          var selections = GenerateSelections(source, session.queries);
-          var allGuid = source.SelectAll.Guid;
-          var allowOverride = session.@override;
+        Project source;
+        lock (_sourceLoadLock)
+          source = ReadSources(session.sources, out deletePaths);
+        var selections = GenerateSelections(source, session.queries);
+        var allGuid = source.SelectAll.Guid;
+        var allowOverride = session.@override;
 
-          Parallel.ForEach(session.tasks, Configuration.ParallelOptions, task =>
-          {
-            try
-            {
-              if (!actions.ContainsKey(task.type))
-                return;
-              var action = actions[task.type];
-
-              var query = task.query ?? string.Empty;
-              var taskSelections = new List<Selection>();
-              // ReSharper disable once ConvertIfStatementToSwitchStatement
-              if (query == "*") // Alle Queries
-                taskSelections.AddRange(selections.SelectMany(x => x.Value));
-              else if (query == "+") // Alle Queries außer SELECTALL
-              {
-                var first = selections.First().Key;
-                taskSelections.AddRange(selections.Where(x => x.Key != first).SelectMany(x => x.Value));
-              }
-              else if (query.StartsWith("*")) // Alle Queries die auf query enden
-              {
-                var q = query.Substring(1);
-                foreach (var x in selections)
-                  if (x.Key.EndsWith(q))
-                    taskSelections.AddRange(x.Value);
-              }
-              else if (query.EndsWith("*")) // Alle Queries die auf query beginnen
-              {
-                var q = query.Substring(0, query.Length - 1);
-                foreach (var x in selections)
-                  if (x.Key.StartsWith(q))
-                    taskSelections.AddRange(x.Value);
-              }
-              else if (!selections.ContainsKey(query)) // Wenn kein Query verfügbar breche ab
-                return;
-              else // Einzelquery
-                taskSelections.AddRange(selections[query]);
-
-              Parallel.ForEach(taskSelections, Configuration.ParallelOptions, selection =>
-              {
-                try
-                {
-                  ExecuteTask(action, task, formats, selection, scriptFilename, allowOverride);
-                }
-                catch (Exception ex)
-                {
-                  LogError(ex);
-                }
-              });
-            }
-            catch (Exception ex)
-            {
-              LogError(ex);
-            }
-          });
-        }
-        catch (Exception ex)
-        {
-          LogError(ex);
-        }
-        // Bereinige nicht mehr benötigte Dateien
-        finally
+        Parallel.ForEach(session.tasks, Configuration.ParallelOptions, task =>
         {
           try
           {
-            if (deletePaths != null)
-              foreach (var p in deletePaths)
-                try
-                {
-                  File.Delete(p);
-                }
-                catch (Exception ex)
-                {
-                  LogError(ex);
-                }
+            if (!actions.ContainsKey(task.type))
+              return;
+            var action = actions[task.type];
+
+            var query = task.query ?? string.Empty;
+            var taskSelections = new List<Selection>();
+            // ReSharper disable once ConvertIfStatementToSwitchStatement
+            if (query == "*") // Alle Queries
+              taskSelections.AddRange(selections.SelectMany(x => x.Value));
+            else if (query == "+") // Alle Queries außer SELECTALL
+            {
+              var first = selections.First().Key;
+              taskSelections.AddRange(selections.Where(x => x.Key != first).SelectMany(x => x.Value));
+            }
+            else if (query.StartsWith("*")) // Alle Queries die auf query enden
+            {
+              var q = query.Substring(1);
+              foreach (var x in selections)
+                if (x.Key.EndsWith(q))
+                  taskSelections.AddRange(x.Value);
+            }
+            else if (query.EndsWith("*")) // Alle Queries die auf query beginnen
+            {
+              var q = query.Substring(0, query.Length - 1);
+              foreach (var x in selections)
+                if (x.Key.StartsWith(q))
+                  taskSelections.AddRange(x.Value);
+            }
+            else if (!selections.ContainsKey(query)) // Wenn kein Query verfügbar breche ab
+              return;
+            else // Einzelquery
+              taskSelections.AddRange(selections[query]);
+
+            Parallel.ForEach(taskSelections, Configuration.ParallelOptions, selection =>
+            {
+              try
+              {
+                ExecuteTask(action, task, formats, selection, scriptFilename, allowOverride);
+              }
+              catch (Exception ex)
+              {
+                LogError(ex);
+              }
+            });
           }
           catch (Exception ex)
           {
             LogError(ex);
           }
+        });
+      }
+      catch (Exception ex)
+      {
+        LogError(ex);
+      }
+      // Bereinige nicht mehr benötigte Dateien
+      finally
+      {
+        try
+        {
+          if (deletePaths != null)
+            foreach (var p in deletePaths)
+              try
+              {
+                File.Delete(p);
+              }
+              catch (Exception ex)
+              {
+                LogError(ex);
+              }
         }
-      });
+        catch (Exception ex)
+        {
+          LogError(ex);
+        }
+      }
     }
 
     /// <summary>
@@ -579,12 +589,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       deletePaths = new HashSet<string>();
 
       // Wenn zu annotierendes Material vorhanden ist, dann lese dieses ein.
-      if (sources.annotate != null)
+      if (sources.annotate().Any())
       {
         var scrapers = Configuration.AddonScrapers.GetDictionary();
         var taggers = Configuration.AddonTaggers.GetDictionary();
 
-        foreach (var annotate in sources.annotate)
+        foreach (var annotate in sources.annotate())
           try
           {
             if (!scrapers.ContainsKey(annotate.type))
@@ -617,10 +627,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
 
       // Wenn Import-Quellen vorhanden sind, dann lese diese ein.
-      if (sources.import != null)
+      if (sources.import().Any())
       {
         var importers = Configuration.AddonImporters.GetDictionary();
-        foreach (var import in sources.import)
+        foreach (var import in sources.import())
           try
           {
             if (!importers.ContainsKey(import.type))

@@ -26,7 +26,7 @@ public partial class cescript {
     
     private meta[] headField;
     
-    private session[] sessionsField;
+    private sessions sessionsField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("meta", IsNullable=false)]
@@ -40,8 +40,7 @@ public partial class cescript {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("session", IsNullable=false)]
-    public session[] sessions {
+    public sessions sessions {
         get {
             return this.sessionsField;
         }
@@ -83,6 +82,42 @@ public partial class meta {
         }
         set {
             this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class sessions {
+    
+    private session[] sessionField;
+    
+    private string modeField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("session")]
+    public session[] session {
+        get {
+            return this.sessionField;
+        }
+        set {
+            this.sessionField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string mode {
+        get {
+            return this.modeField;
+        }
+        set {
+            this.modeField = value;
         }
     }
 }
@@ -175,7 +210,6 @@ public partial class sources {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("annotate", typeof(annotate))]
-    [System.Xml.Serialization.XmlElementAttribute("binary", typeof(binary))]
     [System.Xml.Serialization.XmlElementAttribute("import", typeof(import))]
     public object[] Items {
         get {
@@ -368,55 +402,6 @@ public partial class file {
         }
         set {
             this.valueField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class binary {
-    
-    private string nameField;
-    
-    private string typeField;
-    
-    private string[] textField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string name {
-        get {
-            return this.nameField;
-        }
-        set {
-            this.nameField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string type {
-        get {
-            return this.typeField;
-        }
-        set {
-            this.typeField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlTextAttribute()]
-    public string[] Text {
-        get {
-            return this.textField;
-        }
-        set {
-            this.textField = value;
         }
     }
 }
@@ -798,29 +783,6 @@ public partial class head {
         }
         set {
             this.metaField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class sessions {
-    
-    private session[] sessionField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("session")]
-    public session[] session {
-        get {
-            return this.sessionField;
-        }
-        set {
-            this.sessionField = value;
         }
     }
 }

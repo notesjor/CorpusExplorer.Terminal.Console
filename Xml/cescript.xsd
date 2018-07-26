@@ -29,6 +29,7 @@
       <xs:sequence>
         <xs:element maxOccurs="unbounded" ref="session"/>
       </xs:sequence>
+      <xs:attribute name="mode" use="required" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="session">
@@ -45,7 +46,6 @@
     <xs:complexType>
       <xs:choice maxOccurs="unbounded">
         <xs:element ref="annotate"/>
-        <xs:element ref="binary"/>
         <xs:element ref="import"/>
       </xs:choice>
       <xs:attribute name="processing" type="xs:NCName"/>
@@ -59,12 +59,6 @@
       </xs:choice>
       <xs:attribute name="language" use="required" type="xs:NCName"/>
       <xs:attribute name="tagger" use="required" type="xs:NCName"/>
-      <xs:attribute name="type" use="required" type="xs:NCName"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="binary">
-    <xs:complexType mixed="true">
-      <xs:attribute name="name" use="required" type="xs:NCName"/>
       <xs:attribute name="type" use="required" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>

@@ -3,7 +3,7 @@
 	<meta key="a">Hallo</meta>
 	<meta key="b">2018</meta>
 </head>
-<sessions>
+<sessions mode="synchron">
 	<session override="true">
 		<sources>
 			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">

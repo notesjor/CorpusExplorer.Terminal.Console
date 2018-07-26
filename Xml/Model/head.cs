@@ -1,28 +1,27 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class head
-  {
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [XmlType(AnonymousType=true)]
+  [XmlRoot(Namespace="", IsNullable=false)]
+  public partial class head {
+    
     private meta[] metaField;
-
-    /// <remarks />
+    
+    /// <remarks/>
     [XmlElement("meta")]
-    public meta[] meta
-    {
-      get => metaField;
-      set => metaField = value;
+    public meta[] meta {
+      get {
+        return this.metaField;
+      }
+      set {
+        this.metaField = value;
+      }
     }
   }
 }

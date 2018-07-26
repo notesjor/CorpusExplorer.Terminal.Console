@@ -1,57 +1,66 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class queryBuilder
-  {
-    private string nameField;
-
-    private string parentField;
-
-    private string prefixField;
-
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [XmlType(AnonymousType=true)]
+  [XmlRoot(Namespace="", IsNullable=false)]
+  public partial class queryBuilder {
+    
     private string[] valueField;
-
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
-    public string name
-    {
-      get => nameField;
-      set => nameField = value;
-    }
-
+    
+    private string nameField;
+    
+    private string parentField;
+    
+    private string prefixField;
+    
     /// <remarks/>
-    [XmlAttributeAttribute(DataType="NCName")]
-    public string parent {
-      get => parentField;
-      set => parentField = value;
-    }
-
-    /// <remarks />
-    [XmlAttribute]
-    public string prefix
-    {
-      get => prefixField;
-      set => prefixField = value;
-    }
-
-    /// <remarks />
     [XmlElement("value")]
-    public string[] value
-    {
-      get => valueField;
-      set => valueField = value;
+    public string[] value {
+      get {
+        return this.valueField;
+      }
+      set {
+        this.valueField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlAttribute(DataType="NCName")]
+    public string name {
+      get {
+        return this.nameField;
+      }
+      set {
+        this.nameField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlAttribute(DataType="NCName")]
+    public string parent {
+      get {
+        return this.parentField;
+      }
+      set {
+        this.parentField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlAttribute()]
+    public string prefix {
+      get {
+        return this.prefixField;
+      }
+      set {
+        this.prefixField = value;
+      }
     }
   }
 }

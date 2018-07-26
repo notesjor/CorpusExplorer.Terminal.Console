@@ -1,18 +1,14 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [XmlType(AnonymousType=true)]
+  [XmlRoot(Namespace="", IsNullable=false)]
   public partial class queryGroup {
     
     private query[] queryField;
@@ -20,13 +16,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     private string nameField;
     
     private string operatorField;
-
+    
     private string parentField;
     
     private string prefixField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("query")]
+    [XmlElement("query")]
     public query[] query {
       get {
         return this.queryField;
@@ -37,7 +33,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    [XmlAttribute(DataType="NCName")]
     public string name {
       get {
         return this.nameField;
@@ -48,7 +44,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    [XmlAttribute(DataType="NCName")]
     public string @operator {
       get {
         return this.operatorField;
@@ -57,9 +53,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
         this.operatorField = value;
       }
     }
-
+    
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    [XmlAttribute(DataType="NCName")]
     public string parent {
       get {
         return this.parentField;
@@ -70,7 +66,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [XmlAttribute()]
     public string prefix {
       get {
         return this.prefixField;

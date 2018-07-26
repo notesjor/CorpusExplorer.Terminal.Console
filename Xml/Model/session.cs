@@ -1,18 +1,14 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [XmlType(AnonymousType=true)]
+  [XmlRoot(Namespace="", IsNullable=false)]
   public partial class session {
     
     private sources sourcesField;
@@ -46,7 +42,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("task", IsNullable=false)]
+    [XmlArrayItem("task", IsNullable=false)]
     public task[] tasks {
       get {
         return this.tasksField;
@@ -57,7 +53,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [XmlAttribute()]
     public bool @override {
       get {
         return this.overrideField;
@@ -68,7 +64,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    [XmlIgnore()]
     public bool overrideSpecified {
       get {
         return this.overrideFieldSpecified;
