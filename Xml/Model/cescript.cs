@@ -27,6 +27,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   public partial class cescript {
     
     private meta[] headField;
+
+    private decimal versionField;
     
     private sessions sessionsField;
     
@@ -48,6 +50,17 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
       }
       set {
         this.sessionsField = value;
+      }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public decimal version {
+      get {
+        return this.versionField;
+      }
+      set {
+        this.versionField = value;
       }
     }
   }

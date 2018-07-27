@@ -58,6 +58,7 @@ namespace CorpusExplorer.Terminal.Console
       new KwitFilterAction(), 
 
       // new ClusterAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
+      // new GroupSelectionAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
       new OutputAction(),
       new FilterAction()
     }.ToDictionary(x => x.Action, x => x);
@@ -328,6 +329,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
       _actions.Add("cluster", new ClusterAction { _actions = _actions });
+      _actions.Add("group", new GroupSelectionAction {_actions = _actions});
       Execute(args);
     }
 

@@ -6,6 +6,7 @@
         <xs:element ref="head"/>
         <xs:element ref="sessions"/>
       </xs:sequence>
+      <xs:attribute name="version" use="required" type="xs:decimal"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="head">
