@@ -203,18 +203,21 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           else
           {
             var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
-            if (!formats.ContainsKey(formatKey))
+            if (!formats.ContainsKey(formatKey) || formats[formatKey] == null)
               return;
 
             // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-            if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
-              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-              using (var bs = new BufferedStream(fs))
-              {
-                format.OutputStream = bs;
-                foreach (var selection in selections)
-                  action.Execute(selection, task.arguments, format);
-              }
+            using (var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter)
+              if (format != null)
+                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+                using (var bs = new BufferedStream(fs))
+                {
+                  format.OutputStream = bs;
+                  Parallel.ForEach(selections, Configuration.ParallelOptions,
+                    // ReSharper disable once AccessToDisposedClosure
+                    // ReSharper disable once ImplicitlyCapturedClosure
+                    selection => action.Execute(selection, task.arguments, format));
+                }
           }
 
           // Reporting für Konsole
@@ -222,7 +225,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
         else
         {
-          foreach (var selection in selections)
+          Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
           {
             var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
 
@@ -246,11 +249,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             else
             {
               var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
-              if (!formats.ContainsKey(formatKey))
+              if (!formats.ContainsKey(formatKey) || formats[formatKey] == null)
                 return;
-  
+
               // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-            if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
+              using (var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter)
+                if (format != null)
                 using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
                 using (var bs = new BufferedStream(fs))
                 {
@@ -261,8 +265,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
             // Reporting für Konsole
             ExecuteTaskReport(selection.Displayname, task.type, outputPath, true);
-          }
-        }        
+          });
+        }
       }
       catch (Exception ex)
       {
