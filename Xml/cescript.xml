@@ -4,7 +4,7 @@
 	<meta key="b">2018</meta>
 </head>
 <sessions mode="synchron">
-	<session override="true">
+	<session override="true" mode="synchron">
 		<sources>
 			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
 				<file>C:/test.abc</file>
@@ -51,8 +51,8 @@
 			<task type="convert">
 				<output format="ExporterCec6">C:/test.cec6</output>
 			</task>
-			<task type="basic-information" query="q1">
-				<output format="TSV">C:/{input}_{query}.tsv</output>
+			<task type="basic-information" mode="merge">
+				<output format="TSV">C:/basic-information.tsv</output>
 			</task>
 			<task type="frequency2">
 				<output format="TSV">C:/f.tsv</output>

@@ -486,17 +486,13 @@ namespace CorpusExplorer.Terminal.Console
 
     private static bool ProcessXmlScript(string path)
     {
-      if (!XmlScriptProcessor.IsXmlScript(path))
-        return false;
-
       try
       {
         XmlScriptProcessor.Process(path, _actions, _formats);
         return true;
       }
-      catch (Exception ex)
+      catch
       {
-        File.AppendAllLines("error.log", new[] {ex.Message, ex.StackTrace});
         return false;
       }
     }

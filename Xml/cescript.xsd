@@ -40,6 +40,7 @@
         <xs:element ref="queries"/>
         <xs:element ref="tasks"/>
       </xs:sequence>
+      <xs:attribute name="mode" type="xs:NCName"/>
       <xs:attribute name="override" type="xs:boolean"/>
     </xs:complexType>
   </xs:element>
@@ -117,6 +118,7 @@
         <xs:element ref="output"/>
         <xs:element minOccurs="0" ref="arguments"/>
       </xs:sequence>
+      <xs:attribute name="mode" type="xs:NCName"/>
       <xs:attribute name="query" type="xs:NCName"/>
       <xs:attribute name="type" use="required" type="xs:NCName"/>
     </xs:complexType>

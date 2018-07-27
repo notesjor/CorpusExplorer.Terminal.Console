@@ -16,6 +16,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     private queries queriesField;
     
     private task[] tasksField;
+
+    private string modeField;
     
     private bool overrideField;
     
@@ -49,6 +51,17 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
       }
       set {
         this.tasksField = value;
+      }
+    }
+
+    /// <remarks/>
+    [XmlAttributeAttribute(DataType="NCName")]
+    public string mode {
+      get {
+        return this.modeField;
+      }
+      set {
+        this.modeField = value;
       }
     }
     

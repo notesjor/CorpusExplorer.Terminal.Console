@@ -14,6 +14,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     private output outputField;
     
     private string[] argumentsField;
+
+    private string modeField;
     
     private string queryField;
     
@@ -37,6 +39,17 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
       }
       set {
         this.argumentsField = value;
+      }
+    }
+
+    /// <remarks/>
+    [XmlAttributeAttribute(DataType="NCName")]
+    public string mode {
+      get {
+        return this.modeField;
+      }
+      set {
+        this.modeField = value;
       }
     }
     
