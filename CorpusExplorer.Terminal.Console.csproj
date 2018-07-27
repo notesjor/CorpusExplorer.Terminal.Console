@@ -55,7 +55,6 @@
     <Compile Include="Action\CooccurrenceSelectedAction.cs" />
     <Compile Include="Action\DocumentCountAction.cs" />
     <Compile Include="Action\Frequency1SelectAction.cs" />
-    <Compile Include="Action\GroupSelectionAction.cs" />
     <Compile Include="Action\KwicAllInDocumentFilterAction.cs" />
     <Compile Include="Action\KwicAllInSentenceFilterAction.cs" />
     <Compile Include="Action\KwicAnyFilterAction.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="Helper\AutoSplitBlockHelper.cs" />
     <Compile Include="Helper\AvailableAddonHelper.cs" />
     <Compile Include="Helper\ConsoleHelper.cs" />
-    <Compile Include="Helper\DataTableMergerHelper.cs" />
     <Compile Include="Helper\UnsupportedQueryParserFeatureHelper.cs" />
     <Compile Include="Helper\XmlValueHelper.cs" />
     <Compile Include="Program.cs" />

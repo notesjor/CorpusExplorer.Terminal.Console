@@ -32,14 +32,14 @@ namespace CorpusExplorer.Terminal.Console.Action
       var div = vm.Frequency.Select(x => x.Value).Sum() / 1000000d;
 
       if (hsh.Count == 1 && hsh.ToArray()[0].StartsWith("FILE:"))
-        ExecuteFileQuery(writer, vm, div, hsh.ToArray()[0].Replace("FILE:", ""));
+        ExecuteFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("FILE:", ""));
       else if (hsh.Count == 1 && hsh.ToArray()[0].StartsWith("SDM:"))
-        ExecuteSdmFileQuery(writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
+        ExecuteSdmFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
       else
-        ExecuteSimpleQuery(writer, vm, div, hsh);
+        ExecuteSimpleQuery(selection.Displayname, writer, vm, div, hsh);
     }
 
-    private void ExecuteFileQuery(AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, string path)
+    private void ExecuteFileQuery(string tid, AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, string path)
     {
       var lines = File.ReadAllLines(path, Configuration.Encoding);
 
@@ -68,10 +68,10 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       res.EndLoadData();
 
-      writer.WriteTable(res);
+      writer.WriteTable(tid, res);
     }
 
-    private void ExecuteSdmFileQuery(AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, string path)
+    private void ExecuteSdmFileQuery(string tid, AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, string path)
     {
       var lines = File.ReadAllLines(path, Configuration.Encoding);
 
@@ -104,7 +104,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       res.EndLoadData();
 
-      writer.WriteTable(res);
+      writer.WriteTable(tid, res);
     }
 
     private Dictionary<string, double> GetSdmPostfixQuery(string query, Dictionary<string, double> vm) 
@@ -113,7 +113,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     private Dictionary<string, double> GetSdmPrefixQuery(string query, Dictionary<string, double> vm) 
       => vm.Where(x => x.Key.StartsWith(query)).ToDictionary(x => x.Key, x => x.Value);
 
-    private static void ExecuteSimpleQuery(AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, HashSet<string> hsh)
+    private static void ExecuteSimpleQuery(string tid, AbstractTableWriter writer, Frequency1LayerViewModel vm, double div, HashSet<string> hsh)
     {
       var res = new DataTable();
 
@@ -129,7 +129,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       res.EndLoadData();
 
-      writer.WriteTable(res);
+      writer.WriteTable(tid, res);
     }
   }
 }

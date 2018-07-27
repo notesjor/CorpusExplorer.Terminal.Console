@@ -26,7 +26,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         (double) new HashSet<string>(selection.GetLayers(args[0]).SelectMany(layer => layer.Values)).Count);
       dt.EndLoadData();
 
-      writer.WriteTable(dt);
+      writer.WriteTable(selection.Displayname, dt);
     }
   }
 }

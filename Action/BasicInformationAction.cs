@@ -23,7 +23,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       dt.Rows.Add("documents", (double) selection.CountDocuments);
       dt.EndLoadData();
 
-      writer.WriteTable(dt);
+      writer.WriteTable(selection.Displayname, dt);
     }
   }
 }

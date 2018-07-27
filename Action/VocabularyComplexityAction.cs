@@ -18,7 +18,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       vm.Execute();
       var table = vm.GetDataTable();
 
-      writer.WriteTable(table);
+      writer.WriteTable(selection.Displayname, table);
     }
   }
 }

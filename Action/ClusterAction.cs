@@ -37,18 +37,11 @@ namespace CorpusExplorer.Terminal.Console.Action
       if (!_actions.ContainsKey(task))
         return;
 
-      var dt = new DataTable();
-      dt.Columns.Add("CLUSTER", typeof(string));
-
       nargs.RemoveAt(0);
       foreach (var s in selections)
       {
-        var bypass = new BypassTableWriter();
-        _actions[task].Execute(s, nargs.ToArray(), bypass);
-        DataTableMergerHelper.MergeDataTables(s.Displayname, ref dt, ref bypass);
+        _actions[task].Execute(s, nargs.ToArray(), writer);
       }
-
-      writer.WriteTable(dt);
     }
   }
 }

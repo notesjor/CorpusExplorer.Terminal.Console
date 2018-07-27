@@ -12,6 +12,7 @@ using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
 using CorpusExplorer.Sdk.Model.Extension;
 using CorpusExplorer.Sdk.Utils.CorpusManipulation;
+using CorpusExplorer.Sdk.Utils.DataTableWriter;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.Filter;
@@ -53,7 +54,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       ConsoleHelper.PrintHeader();
 
-      if (!string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode == "synchron")
+      if (!string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync"))
         foreach (var session in script.sessions.session)
           ExecuteSession(actions, formats, session, scriptFilename);
       else
@@ -76,7 +77,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         var selections = GenerateSelections(source, session.queries);
         var allowOverride = session.@override;
 
-        if (!string.IsNullOrEmpty(session.mode) && session.mode == "synchron")
+        if (!string.IsNullOrEmpty(session.mode) && session.mode.StartsWith("sync"))
           foreach (var task in session.tasks)
             ExecuteSessionTask(actions, formats, scriptFilename, task, selections, allowOverride);
         else
@@ -178,43 +179,90 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       try
       {
-        var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, query, task.type);
-
-        // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
-        if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
-          return;
-
-        // Reporting für Konsole
-        ExecuteTaskReport(query, task.type, outputPath, false);
-
-        // Ist der Task vom Typ query oder convert, dann muss ist format ein AbstractExporter
-        if (task.type == "query" || task.type == "convert")
+        if (!string.IsNullOrEmpty(task.mode) && task.mode == "merge")
         {
-          var exporters = Configuration.AddonExporters.GetDictionary();
-          if (!exporters.ContainsKey(task.output.format))
+          var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, query, task.type);
+
+          // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
+          if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
             return;
 
-          exporters[task.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
+          // Reporting für Konsole
+          ExecuteTaskReport(query, task.type, outputPath, false);
+
+          // Ist der Task vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
+          if (task.type == "query" || task.type == "convert")
+          {
+            var exporters = Configuration.AddonExporters.GetDictionary();
+            if (!exporters.ContainsKey(task.output.format))
+              return;
+
+            exporters[task.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
+          }
+          // Andernfalls ist format vom Typ AbstractTableWriter
+          else
+          {
+            var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
+            if (!formats.ContainsKey(formatKey))
+              return;
+
+            // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+            if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
+              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+              using (var bs = new BufferedStream(fs))
+              {
+                format.OutputStream = bs;
+                foreach (var selection in selections)
+                  action.Execute(selection, task.arguments, format);
+              }
+          }
+
+          // Reporting für Konsole
+          ExecuteTaskReport(query, task.type, outputPath, true);
         }
-        // Andernfalls ist format ein AbstractTableWriter
         else
         {
-          var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
-          if (!formats.ContainsKey(formatKey))
-            return;
+          foreach (var selection in selections)
+          {
+            var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
 
-          // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-          if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
-            using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-            using (var bs = new BufferedStream(fs))
+            // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
+            if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
+              return;
+
+            // Reporting für Konsole
+            ExecuteTaskReport(selection.Displayname, task.type, outputPath, false);
+
+            // Ist der Task vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
+            if (task.type == "query" || task.type == "convert")
             {
-              format.OutputStream = bs;
-              action.Execute(selection, task.arguments, format);
-            }
-        }
+              var exporters = Configuration.AddonExporters.GetDictionary();
+              if (!exporters.ContainsKey(task.output.format))
+                return;
 
-        // Reporting für Konsole
-        ExecuteTaskReport(query, task.type, outputPath, true);
+              exporters[task.output.format].Export(selection.ToCorpus(), outputPath); // ToDo: Multi-File outout
+            }
+            // Andernfalls ist format vom Typ AbstractTableWriter
+            else
+            {
+              var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
+              if (!formats.ContainsKey(formatKey))
+                return;
+  
+              // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+            if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
+                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+                using (var bs = new BufferedStream(fs))
+                {
+                  format.OutputStream = bs;
+                  action.Execute(selection, task.arguments, format);
+                }
+            }
+
+            // Reporting für Konsole
+            ExecuteTaskReport(selection.Displayname, task.type, outputPath, true);
+          }
+        }        
       }
       catch (Exception ex)
       {

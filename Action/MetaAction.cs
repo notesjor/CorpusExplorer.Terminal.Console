@@ -14,7 +14,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     {
       var vm = new CorpusWeightUnlimmitedViewModel {Selection = selection};
       vm.Execute();
-      writer.WriteTable(vm.GetDataTable());
+      writer.WriteTable(selection.Displayname, vm.GetDataTable());
     }
   }
 }

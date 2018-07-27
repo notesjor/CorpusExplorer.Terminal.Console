@@ -58,7 +58,6 @@ namespace CorpusExplorer.Terminal.Console
       new KwitFilterAction(), 
 
       // new ClusterAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
-      // new GroupSelectionAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
       new OutputAction(),
       new FilterAction()
     }.ToDictionary(x => x.Action, x => x);
@@ -73,7 +72,8 @@ namespace CorpusExplorer.Terminal.Console
         {"F:CSV", new CsvTableWriter()},
         {"F:XML", new XmlTableWriter()},
         {"F:SQL", new SqlTableWriter()},
-        {"F:JSON", new JsonTableWriter()}
+        {"F:JSON", new JsonTableWriter()},
+        {"F:HTML", new HtmlTableWriter()}
       };
 
     private static AbstractTableWriter _writer = new TsvTableWriter();
@@ -329,7 +329,6 @@ namespace CorpusExplorer.Terminal.Console
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
       _actions.Add("cluster", new ClusterAction { _actions = _actions });
-      _actions.Add("group", new GroupSelectionAction {_actions = _actions});
       Execute(args);
     }
 

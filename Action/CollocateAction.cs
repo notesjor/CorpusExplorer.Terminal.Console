@@ -30,7 +30,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       };
       vm.Execute();
 
-      writer.WriteTable(vm.GetDataTable());
+      writer.WriteTable(selection.Displayname, vm.GetDataTable());
     }
   }
 }

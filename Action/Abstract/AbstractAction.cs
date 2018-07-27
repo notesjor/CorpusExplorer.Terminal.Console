@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Model;
+﻿using System.Collections.Generic;
+using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action.Abstract
@@ -9,6 +10,6 @@ namespace CorpusExplorer.Terminal.Console.Action.Abstract
 
     public abstract string Description { get; }
 
-    public abstract void Execute(Selection selection, string[] args, AbstractTableWriter writer);
+    public abstract void Execute(Selection selections, string[] args, AbstractTableWriter writer);
   }
 }

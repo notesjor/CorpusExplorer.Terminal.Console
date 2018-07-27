@@ -31,7 +31,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       dt.EndLoadData();
 
-      writer.WriteTable(dt);
+      writer.WriteTable(selection.Displayname, dt);
     }
   }
 }

@@ -21,7 +21,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         vm.LayerDisplayname = args[1];
       vm.Execute();
 
-      writer.WriteTable(vm.GetDataTable());
+      writer.WriteTable(selection.Displayname, vm.GetDataTable());
     }
   }
 }

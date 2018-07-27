@@ -20,7 +20,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       }
 
       vm.Execute();
-      writer.WriteTable(vm.GetNormalizedDataTable());
+      writer.WriteTable(selection.Displayname, vm.GetNormalizedDataTable());
     }
   }
 }
