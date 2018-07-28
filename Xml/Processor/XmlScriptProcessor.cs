@@ -448,15 +448,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       ref Dictionary<string, Selection[]> res, Selection all, bool useSelectionDisplaynameAsPrefix = false)
     {
       var key = queryBuilder.name ?? string.Empty;
-      if (key == "" || key == "*" || key == "+")
+      if (key == "*" || key == "+")
         return;
       if (useSelectionDisplaynameAsPrefix)
         key = $"{all.Displayname}_{key}";
-      if (res.ContainsKey(key))
-        return;
       foreach (var v in queryBuilder.value)
       {
-        var gname = (queryBuilder.name + v).Replace("\"", "");
+        var gname = (key + v).Replace("\"", "");
         if (res.ContainsKey(gname))
           continue;
         var gquery = queryBuilder.prefix + v;
@@ -499,6 +497,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         switch (queryGroup.@operator)
         {
           default:
+          // ReSharper disable once RedundantCaseLabel
           case "and": // Ergebnisse müssen mit allen Abfragen übereinstimmen
             var csels = selection.Keys.ToArray();
             foreach (var csel in csels)
