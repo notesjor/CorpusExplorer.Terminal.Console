@@ -166,7 +166,7 @@ namespace CorpusExplorer.Terminal.Console
       if (args[0].ToLowerInvariant() == "shell")
       {
         ExecuteShell();
-        _writer.Dispose();
+        _writer.Destroy();
         return;
       }
 
@@ -178,7 +178,7 @@ namespace CorpusExplorer.Terminal.Console
       }
 
       ExecuteDirect(args);
-      _writer.Dispose();
+      _writer.Destroy();
     }
 
     private static void ExecuteDirect(string[] args)

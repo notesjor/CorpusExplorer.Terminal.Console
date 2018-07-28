@@ -207,8 +207,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               return;
 
             // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-            using (var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter)
-              if (format != null)
+            if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
                 using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
                 using (var bs = new BufferedStream(fs))
                 {
@@ -217,6 +216,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     // ReSharper disable once AccessToDisposedClosure
                     // ReSharper disable once ImplicitlyCapturedClosure
                     selection => action.Execute(selection, task.arguments, format));
+                  format.Destroy();
                 }
           }
 
@@ -253,13 +253,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 return;
 
               // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-              using (var format = Activator.CreateInstance(formats[formatKey].GetType()) as AbstractTableWriter)
-                if (format != null)
+              if(Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
                 using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
                 using (var bs = new BufferedStream(fs))
                 {
                   format.OutputStream = bs;
                   action.Execute(selection, task.arguments, format);
+                  format.Destroy();
                 }
             }
 
