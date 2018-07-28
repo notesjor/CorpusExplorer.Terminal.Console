@@ -40,7 +40,6 @@
         <xs:element ref="queries"/>
         <xs:element ref="tasks"/>
       </xs:sequence>
-      <xs:attribute name="mode" type="xs:NCName"/>
       <xs:attribute name="override" type="xs:boolean"/>
     </xs:complexType>
   </xs:element>
@@ -110,6 +109,7 @@
       <xs:sequence>
         <xs:element maxOccurs="unbounded" ref="task"/>
       </xs:sequence>
+      <xs:attribute name="mode" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="task">

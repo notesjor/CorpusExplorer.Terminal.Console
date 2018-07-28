@@ -148,9 +148,7 @@ public partial class session {
     
     private queries queriesField;
     
-    private task[] tasksField;
-    
-    private string modeField;
+    private tasks tasksField;
     
     private bool overrideField;
     
@@ -177,24 +175,12 @@ public partial class session {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("task", IsNullable=false)]
-    public task[] tasks {
+    public tasks tasks {
         get {
             return this.tasksField;
         }
         set {
             this.tasksField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string mode {
-        get {
-            return this.modeField;
-        }
-        set {
-            this.modeField = value;
         }
     }
     
@@ -700,6 +686,42 @@ public partial class queryGroup {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class tasks {
+    
+    private task[] taskField;
+    
+    private string modeField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("task")]
+    public task[] task {
+        get {
+            return this.taskField;
+        }
+        set {
+            this.taskField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string mode {
+        get {
+            return this.modeField;
+        }
+        set {
+            this.modeField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class task {
     
     private output outputField;
@@ -822,29 +844,6 @@ public partial class head {
         }
         set {
             this.metaField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class tasks {
-    
-    private task[] taskField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("task")]
-    public task[] task {
-        get {
-            return this.taskField;
-        }
-        set {
-            this.taskField = value;
         }
     }
 }

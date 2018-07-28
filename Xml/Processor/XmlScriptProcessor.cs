@@ -77,11 +77,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         var selections = GenerateSelections(source, session.queries);
         var allowOverride = session.@override;
 
-        if (!string.IsNullOrEmpty(session.mode) && session.mode.StartsWith("sync"))
-          foreach (var task in session.tasks)
+        if (!string.IsNullOrEmpty(session.tasks.mode) && session.tasks.mode.StartsWith("sync"))
+          foreach (var task in session.tasks.task)
             ExecuteSessionTask(actions, formats, scriptFilename, task, selections, allowOverride);
         else
-          Parallel.ForEach(session.tasks, Configuration.ParallelOptions,
+          Parallel.ForEach(session.tasks.task, Configuration.ParallelOptions,
             task => { ExecuteSessionTask(actions, formats, scriptFilename, task, selections, allowOverride); });
       }
       catch (Exception ex)

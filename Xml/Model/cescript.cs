@@ -10,58 +10,50 @@
 
 using System.Xml.Serialization;
 
-namespace CorpusExplorer.Terminal.Console.Xml.Model
-{
 // 
 // Dieser Quellcode wurde automatisch generiert von xsd, Version=4.6.1055.0.
 // 
 
+namespace CorpusExplorer.Terminal.Console.Xml.Model
+{
 
   /// <remarks/>
   [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
   [System.SerializableAttribute()]
   [System.Diagnostics.DebuggerStepThroughAttribute()]
   [System.ComponentModel.DesignerCategoryAttribute("code")]
-  [XmlType(AnonymousType=true)]
-  [XmlRoot(Namespace="", IsNullable=false)]
-  public partial class cescript {
-    
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public partial class cescript
+  {
+
     private meta[] headField;
 
-    private decimal versionField;
-    
     private sessions sessionsField;
-    
+
+    private decimal versionField;
+
     /// <remarks/>
-    [XmlArrayItem("meta", IsNullable=false)]
-    public meta[] head {
-      get {
-        return this.headField;
-      }
-      set {
-        this.headField = value;
-      }
+    [System.Xml.Serialization.XmlArrayItemAttribute("meta", IsNullable = false)]
+    public meta[] head
+    {
+      get { return this.headField; }
+      set { this.headField = value; }
     }
-    
+
     /// <remarks/>
-    public sessions sessions {
-      get {
-        return this.sessionsField;
-      }
-      set {
-        this.sessionsField = value;
-      }
+    public sessions sessions
+    {
+      get { return this.sessionsField; }
+      set { this.sessionsField = value; }
     }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public decimal version {
-      get {
-        return this.versionField;
-      }
-      set {
-        this.versionField = value;
-      }
+    public decimal version
+    {
+      get { return this.versionField; }
+      set { this.versionField = value; }
     }
   }
 }

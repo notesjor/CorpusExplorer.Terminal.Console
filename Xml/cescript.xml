@@ -4,7 +4,7 @@
 	<meta key="b">2018</meta>
 </head>
 <sessions mode="synchron">
-	<session override="true" mode="synchron">
+	<session override="true">
 		<sources>
 			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
 				<file>C:/test.abc</file>
@@ -47,7 +47,7 @@
 			</queryBuilder>
 		</queries>
 		
-		<tasks>
+		<tasks mode="synchron">
 			<task type="convert">
 				<output format="ExporterCec6">C:/test.cec6</output>
 			</task>
