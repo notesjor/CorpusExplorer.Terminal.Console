@@ -44,6 +44,7 @@ namespace CorpusExplorer.Terminal.Console
       new CrossFrequencyAction(),
       new CooccurrenceAction(),
       new CooccurrenceSelectedAction(),
+      new StyleNgramAction(),
       new MetaAction(),
       new MetaDocumentAction(),
 
