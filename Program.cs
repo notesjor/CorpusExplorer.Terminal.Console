@@ -50,6 +50,7 @@ namespace CorpusExplorer.Terminal.Console
 
       new VocabularyComplexityAction(),
       new ReadingEaseAction(),
+      new StyleBurrowsDeltaAction(),
 
       new KwicAnyFilterAction(),
       new KwicAllInDocumentFilterAction(),
@@ -184,15 +185,14 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void ExecuteDirect(string[] args)
     {
+      var task = args[1].ToLowerInvariant();
+      if (!_actions.ContainsKey(task))
+        return;
+
       var corpus = LoadCorpus(args[0]);
       var selection = corpus?.ToSelection();
       if (selection == null || selection.CountToken == 0)
-        return;
-
-      var task = args[1].ToLowerInvariant();
-
-      if (!_actions.ContainsKey(task))
-        return;
+        return;      
 
       System.Console.OutputEncoding = Configuration.Encoding;
       var temp = args.ToList();
