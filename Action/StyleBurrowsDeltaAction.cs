@@ -10,7 +10,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "style-burrowsd";
 
     public override string Description =>
-      "style-burrowsd [META1] [META2] - compares [META1] with [META3] based on \"Burrows Delta\"";
+      "style-burrowsd [META1] [META2] - compares [META1] with [META2] based on \"Burrows Delta\"";
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -25,7 +25,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       };
       vm.Execute();
 
-      writer.WriteTable(selection.Displayname, vm.GetDataTable());
+      writer.WriteTable(selection.Displayname, vm.GetCrossDataTable());
     }
   }
 }

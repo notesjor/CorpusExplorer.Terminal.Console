@@ -53,6 +53,7 @@
     <Compile Include="Action\ClusterAction.cs" />
     <Compile Include="Action\CollocateAction.cs" />
     <Compile Include="Action\CooccurrenceSelectedAction.cs" />
+    <Compile Include="Action\MtldAction.cs" />
     <Compile Include="Action\StyleBurrowsDeltaAction.cs" />
     <Compile Include="Action\StyleNgramAction.cs" />
     <Compile Include="Action\DocumentCountAction.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Action\TokenCountAction.cs" />
     <Compile Include="Action\TypeCountAction.cs" />
     <Compile Include="Action\VocabularyComplexityAction.cs" />
+    <Compile Include="Action\VocdAction.cs" />
     <Compile Include="Helper\AutoSplitBlockHelper.cs" />
     <Compile Include="Helper\AvailableAddonHelper.cs" />
     <Compile Include="Helper\ConsoleHelper.cs" />

@@ -47,6 +47,8 @@ namespace CorpusExplorer.Terminal.Console
       new StyleNgramAction(),
       new MetaAction(),
       new MetaDocumentAction(),
+      new MtldAction(),
+      new VocdAction(),
 
       new VocabularyComplexityAction(),
       new ReadingEaseAction(),
