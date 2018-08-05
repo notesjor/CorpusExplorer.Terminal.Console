@@ -14,7 +14,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class Frequency1SelectAction : AbstractAction
   {
     public override string Action => "frequency1-select";
-    public override string Description => "frequency1-select [LAYER1] [WORDS] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens";
+    public override string Description => "frequency1-select [LAYER] [WORDS] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens";
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
