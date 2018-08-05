@@ -8,7 +8,7 @@ Der CorpusExplorer steht neben der offiziellen GUI (http://www.corpusexplorer.de
 ## Installation Linux/MacOS
 1. Installieren Sie mono (http://www.mono-project.com/download/) - Mindestversion 4.x
 2. Laden und entpacken Sie die folgende Datei: http://www.bitcutstudios.com/products/corpusexplorer/App.zip
-3. Stellen Sie allen Aufrufen ein "mono" voran - z. B. "mono cec.exe import#CorpusExplorerV5Importer#demo.cec5 frequency". Mono führt die cec.exe aus (die sich im entpackten Ordner - siehe 2. - befindet).
+3. Stellen Sie allen Aufrufen ein "mono" voran - z. B. "mono cec.exe import#ImporterCec6#demo.cec6 frequency". Mono führt die cec.exe aus (die sich im entpackten Ordner - siehe 2. - befindet).
 __Einschränkung Linux/MacOS__: Gegenwärtig ist es noch nicht möglich, den Befehl "annotate" auszuführen. Alle anderen Befehle funktionieren einwandfrei (getestet auf Debian 8 - Mono 5.0.1).
 
 ## Grundlegendes
@@ -20,11 +20,11 @@ cec.exe [INPUT] [TASK]
 ```
 - Bsp. für R: 
 ```R
-tbl <- read.table(pipe("cec.exe import#CorpusExplorerV5Importer#demo.cec5 frequency"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
+tbl <- read.table(pipe("cec.exe import#ImporterCec6#demo.cec6 frequency"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
 ```
 - Bsp. für Konsole zu CSV: 
 ```SHELL
-cec.exe import#CorpusExplorerV5Importer#demo.cec5 frequency > frequency.csv
+cec.exe import#ImporterCec6#demo.cec6 frequency > frequency.csv
 ```
 
 ### [INPUT]
@@ -51,12 +51,12 @@ cec.exe annotate#[SCRAPER]#[TAGGER]#[LANGUAGE]#[DIRECTORY] [TASK]
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [SCRAPER], [TAGGER] und [LANGUAGE] abzufragen.
 Es wird empfohlen, "annotate" immer in Kombination mit den [TASK]s "convert" oder "query" zu nutzen. Dadurch wird das fertig annotierte Korpus gespeichert und kann jederzeit mit "import" geladen werden, ohne das Korpus erneut zu annotieren. Bsp. Erzeuge Korpus
 ```SHELL
-cec.exe annotate#TwitterScraper#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec5#"C:/korpus.cec5"
+cec.exe annotate#TwitterScraper#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec5#"C:/korpus.cec6"
 ```
-Lade das erzeugte Korpus "C:/korpus.cec5" für weitere Berechnungen:
+Lade das erzeugte Korpus "C:/korpus.cec6" für weitere Berechnungen:
 ```SHELL
-cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" frequency > frequency.csv
-cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" cooccurrence > cooccurrence.csv
+cec.exe import#ImporterCec6#"C:/korpus.cec6" frequency > frequency.csv
+cec.exe import#ImporterCec6#"C:/korpus.cec6" cooccurrence > cooccurrence.csv
 ```
 Hinweis: Achten Sie darauf, dass sich in den Pfadangaben KEINE Leerzeichen befinden.
 
@@ -95,9 +95,10 @@ Für TASK können folgenden Befehle genutzt werden:
 - style-ngram [LAYER] [META] [N] [minFREQ] - Stilanalyse mittels N-Grammen. Siehe: n-gram
 - vocabulary-complexity [LAYER] - Berechnet verschiedene Vokabularkomplexitäten für [LAYER]
 - vocd [LAYER] [META] - Berechnet VOCD für [LAYER] automatische Clusterung basierend auf [META]
-Bsp.:
+
+#### Wie Sie einen [TASK] z. B. aus R aufrufen:
 ```R
-tbl <- read.table(pipe("cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" cooccurrence"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
+tbl <- read.table(pipe("cec.exe import#ImporterCec6#"C:/korpus.cec6" cooccurrence"), sep = "\t", header = TRUE, dec = ".", encoding = "UTF-8", quote = "")
 ```
 
 #### [TASK] query
@@ -143,7 +144,7 @@ Typ, Operator und Abfrageziel werden ohne trennende Leerzeichen geschrieben. Die
 
 Beispiele:
 ```SHELL
-cec.exe import#CorpusExplorerV5Importer#C:/input.cec5 query !T~Wort:>aber;kein ExporterCec6#C:/output.cec6
+cec.exe import#ImporterCec6#C:/input.cec6 query !T~Wort:>aber;kein ExporterCec6#C:/output.cec6
 ```
 Was bedeutet diese Abfrage? negiere (__!__) die Text-Abfrage (__T__) welche einen beliebigen Wert (__~__) aus der Liste (alles nach __:>__ - Trennung mittels ;) sucht. Gefunden werden also alle Dokumente, die weder __aber__ noch __kein__ enthalten.
 
@@ -167,11 +168,11 @@ Findet alle Dokumente, die im Volltext (__T__) (__Wort__-Layer) die Phrase (__§
 #### [TASK] ngram
 Erfordert, dass Sie ein N festlegen. Bsp. N = 5:
 ```R
-tbl <- read.table(pipe("cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" ngram 5"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
+tbl <- read.table(pipe("cec.exe import#ImporterCec6#"C:/korpus.cec6" ngram 5"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
 ```
 
 #### [TASK] convert
 Erlaubt es, ein bestehendes Korpus in einem der verfügbaren Export-Formate zu speichern.
 ```SHELL
-cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" convert ExporterCec6#corpusOut.cec6
+cec.exe import#ImporterCec6#"C:/korpus.cec6" convert ExporterCec6#corpusOut.cec6
 ```
