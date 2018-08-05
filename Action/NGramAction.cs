@@ -8,7 +8,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class NGramAction : AbstractAction
   {
     public override string Action => "n-gram";
-    public override string Description => "n-gram [N] [LAYER] [MIN] - [N] sized N-gram based on [LAYER]";
+    public override string Description => "n-gram [N] [LAYER] [minFREQ] - [N] sized N-gram based on [LAYER]";
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

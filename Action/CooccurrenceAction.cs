@@ -8,7 +8,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class CooccurrenceAction : AbstractAction
   {
     public override string Action => "cooccurrence";
-    public override string Description => "cooccurrence [LAYER1] [minSIGNI] [minFREQ] - significant cooccurrences for all [LAYER] values";
+    public override string Description => "cooccurrence [LAYER] [minSIGNI] [minFREQ] - significant cooccurrences for all [LAYER] values";
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

@@ -36,7 +36,7 @@ namespace CorpusExplorer.Terminal.Console
       new LayerValuesAction(),
       new TypeCountAction(),
 
-      new Frequency1SelectAction(), 
+      new Frequency1SelectAction(),
       new Frequency1Action(),
       new Frequency2Action(),
       new Frequency3Action(),
@@ -58,7 +58,7 @@ namespace CorpusExplorer.Terminal.Console
       new KwicAllInDocumentFilterAction(),
       new KwicAllInSentenceFilterAction(),
       new KwicExactPhraseFilterAction(),
-      new KwicFirstAnyFilterAction(), 
+      new KwicFirstAnyFilterAction(),
       new KwitFilterAction(), 
 
       // new ClusterAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
@@ -125,7 +125,7 @@ namespace CorpusExplorer.Terminal.Console
 
     private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
     {
-      var tmp = fileOrDirectory.Split(new[] {"|", "\""}, StringSplitOptions.RemoveEmptyEntries);
+      var tmp = fileOrDirectory.Split(new[] { "|", "\"" }, StringSplitOptions.RemoveEmptyEntries);
       var files = new List<string>();
       foreach (var x in tmp)
         if (x.IsDirectory())
@@ -144,7 +144,7 @@ namespace CorpusExplorer.Terminal.Console
       {
         PrintHelp();
         return;
-      }      
+      }
 
       if (args[0].StartsWith("F:"))
       {
@@ -194,7 +194,7 @@ namespace CorpusExplorer.Terminal.Console
       var corpus = LoadCorpus(args[0]);
       var selection = corpus?.ToSelection();
       if (selection == null || selection.CountToken == 0)
-        return;      
+        return;
 
       System.Console.OutputEncoding = Configuration.Encoding;
       var temp = args.ToList();
@@ -266,7 +266,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       // Scraper extrahieren Meta-/Textdaten
       var scrapers = Configuration.AddonScrapers.GetDictionary();
-      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries).ToList();
+      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries).ToList();
       if (split.Count != 5)
         return null;
 
@@ -305,7 +305,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       // Importer laden bestehende Korpora
       var importers = Configuration.AddonImporters.GetDictionary();
-      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
       if (split.Length != 3)
         return null;
 
@@ -320,7 +320,7 @@ namespace CorpusExplorer.Terminal.Console
         return res[0];
 
       // Falls mehrere Korpora importiert werden, füge diese zusammen
-      var merger = new CorpusMerger {CorpusBuilder = new CorpusBuilderWriteDirect()};
+      var merger = new CorpusMerger { CorpusBuilder = new CorpusBuilderWriteDirect() };
       foreach (var x in res)
         if (x != null)
           merger.Input(x);
@@ -459,7 +459,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("<: --- [TASK] --- :>");
       System.Console.WriteLine();
 
-      foreach (var action in _actions) System.Console.WriteLine($"[TASK] = {action.Value.Description}");
+      foreach (var action in _actions.OrderBy(x => x.Value.Action)) System.Console.WriteLine($"[TASK] = {action.Value.Description}");
 
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");
       System.Console.WriteLine();
@@ -511,7 +511,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (argument.Contains(" > "))
       {
-        var split = argument.Split(new[] {" > "}, StringSplitOptions.None).ToList();
+        var split = argument.Split(new[] { " > " }, StringSplitOptions.None).ToList();
         argument = split[0];
 
         var process = Process.Start(new ProcessStartInfo

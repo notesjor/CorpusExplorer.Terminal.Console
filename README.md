@@ -62,22 +62,39 @@ Hinweis: Achten Sie darauf, dass sich in den Pfadangaben KEINE Leerzeichen befin
 
 ### [TASK]
 Für TASK können folgenden Befehle genutzt werden:
-- frequency1 = Wort/Frequenz
-- frequency2 = POS/Wort/Frequenz
-- frequency3 = POS/Lemma/Wort/Frequenz
-- cooccurrence = Kookkurrenzanalyse
-- meta = Dokument-Metadaten
-- crossfrequency = Kreuzfrequenz
-- convert = Konvertiert unterschiedliche Korpusformate
-- query = Erlaubt es ein Korpus zu filtern und das Resultat zu speichern (siehe [QUERY])
-- ngram = Erzeugt eine N-Gramm-Liste
-- vocabularycomplexity = Berechnet die Vokabularkomplexität mit unterschiedlichen Verfahren
-- readingease = Berechnet verschiedene Lesbarkeits-Indices
-- layernames = Gibt die verfügbaren Layernamen zurück (wird z. B. für query benötigt)
-- metacategories = Gibt die verfügbaren Dokumentmetadaten-Kategorien zurück (wird z. B. für query benötigt)
-- many-token = Summe der Token
-- many-document = Summe der Dokumente
-- many-sentence = Summe der Sätze
+- basic-information - Gibt grundlegende Informationen aus Token/Sätze/Dokumente
+- cluster [QUERY] [TASK] [ARGUMENTS] - Erlaubt es einen [TASK] über ein Cluster auszuführen. Das Cluster wird durch [QUERY] erzeugt.
+- convert - Konvertiert Korpusdaten in ein anderes Format - siehe [OUTPUT]
+- cooccurrence [LAYER] [minSIGNI] [minFREQ] - Berechnet zu allen Worten in [LAYER] alle Kookkurrenzen. Erlaubt es optional ein Minimum für die Signifikanz [minSIGNI] und für die Frequenz [minFREQ] anzugeben. Standardwerte: [minSIGNI] = 0.9 / [minFREQ] = 1
+- cooccurrence-select [LAYER] [WORDS] - Ermittel die Kookkurrenzen zu einem bestimmten Suchwort/Phrase.
+- cross-frequency [LAYER] - Berechnet zu allen Worten in [LAYER] die Kreuzfrequenz.
+- frequency1 [LAYER] - Berechnet die Frequenzen für [LAYER]
+- frequency1-select [LAYER1] [WORDS] - Berechnet die Frequenzen für [LAYER]. Dabei werden nur die gegebenen [WORDS] gezählt (Leerzeichen getrennt). Anstelle von [WORDS] kann auch FILE:[FILE], also eine Datei mit einer Wortliste (pro Zeile ein Wort), angegeben werden - ODER - SDM:[FILE], also eine Datei mit einem SDM-Datei (Sentiment-Detection-Model).
+- frequency2 [LAYER1] [LAYER2] - Berechnet die Frequenzen über zwei Layer [LAYER1] [LAYER2]
+- frequency3 [LAYER1] [LAYER2] [LAYER3] - Berechnet die Frequenzen über drei Layer [LAYER1] [LAYER2] [LAYER3]
+- get-types [LAYER] - Auflistung aller Types (ohne Frequenz) im [LAYER]
+- how-many-documents - Anzahl der Dokumente
+- how-many-sentences - Anzahl der Sätze
+- how-many-tokens - Anzahl der Token
+- how-many-types [LAYER] - Anzahl der Types in [LAYER]
+- kwic-any [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER]
+- kwic-document [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Dokument vorkommen
+- kwic-first-any [LAYER] [WORD] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Das [WORD] muss in einem Dokument vorkommen plus ein beliebiges [WORDS]
+- kwic-phrase [LAYER] [WORDS] - [WORDS] = KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in exakt der gegebenen Reihenfolge vorkommen
+- kwic-sentence [LAYER] [WORDS] - [WORDS] = KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Satz vorkommen
+- kwit [LAYER] [WORDS] - [WORDS] = Spezielle KWIC-Analyse, die die Daten als GraphViz-DiGraph aufbereitet. Siehe: kwic-phrase
+- layer-names - Auflistung aller verfügbaren Layer
+- meta - Auflistung aller Metadaten + Token/Type/Dokument-Frequenz
+- meta-by-document - Auflistung aller Dokumente mit zugehörigen Metadaten
+- meta-categories - Auflistung aller verfügbaren Meta-Kategorien
+- mtld [LAYER] [META] - Berechnet MTLD für den [LAYER] automatische Clusterung basierend auf [META]
+- n-gram [N] [LAYER] [minFREQ] - Berechnet [N]-Gramme für [LAYER]. Optional: [minFREQ] = Mindestfrequenz
+- query - Führt eine Abfrage auf der aktuell geladenen Korpusmenge durch. Siehe [OUTPUT]
+- reading-ease [LAYER] - Berechnet verschiedene Lesbarkeitsindices für [LAYER]
+- style-burrowsd [META1] [META2] - Stilanalyse mittels Burrows-Delta. Vergleicht zwei Metaangaben miteinander
+- style-ngram [LAYER] [META] [N] [minFREQ] - Stilanalyse mittels N-Grammen. Siehe: n-gram
+- vocabulary-complexity [LAYER] - Berechnet verschiedene Vokabularkomplexitäten für [LAYER]
+- vocd [LAYER] [META] - Berechnet VOCD für [LAYER] automatische Clusterung basierend auf [META]
 Bsp.:
 ```R
 tbl <- read.table(pipe("cec.exe import#CorpusExplorerV5Importer#"C:/korpus.cec5" cooccurrence"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")

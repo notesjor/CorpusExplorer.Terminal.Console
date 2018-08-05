@@ -10,7 +10,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "kwic-first-any";
 
     public override string Description =>
-      "kwic-first-any [LAYER] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)";
+      "kwic-first-any [LAYER] [WORD] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)";
 
     protected override AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries)
     {

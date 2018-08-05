@@ -12,7 +12,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public override string Action => "cooccurrence-select";
 
     public override string Description =>
-      "cooccurrence-select [LAYER1] [WORDS] - significant cooccurrences for all [LAYER] values.";
+      "cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.";
 
     public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
