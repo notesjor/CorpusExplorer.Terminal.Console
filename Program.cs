@@ -481,6 +481,8 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("F:TSV - (standard output format) tab separated values");
       System.Console.WriteLine("F:CSV - ';' separated values");
       System.Console.WriteLine("F:JSON - JSON-array");
+      System.Console.WriteLine("F:XML - XML-Document");
+      System.Console.WriteLine("F:HTML - HTML5-Document");
       System.Console.WriteLine("F:SQL - SQL-statement");
       System.Console.WriteLine(
         "Example: cec.exe F:JSON import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");

@@ -22,9 +22,18 @@ cec.exe [INPUT] [TASK]
 ```R
 tbl <- read.table(pipe("cec.exe import#ImporterCec6#demo.cec6 frequency"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
 ```
-- Bsp. für Konsole zu CSV: 
+- Bsp. für Konsole: 
 ```SHELL
-cec.exe import#ImporterCec6#demo.cec6 frequency > frequency.csv
+cec.exe import#ImporterCec6#demo.cec6 frequency > frequency.tsv
+```
+- Bsp. für Konsole (andere Ausgabeformate): 
+```SHELL
+cec.exe F:TSV import#ImporterCec6#demo.cec6 frequency > frequency.tsv
+cec.exe F:CSV import#ImporterCec6#demo.cec6 frequency > frequency.csv
+cec.exe F:JSON import#ImporterCec6#demo.cec6 frequency > frequency.json
+cec.exe F:XML import#ImporterCec6#demo.cec6 frequency > frequency.xml
+cec.exe F:HTML import#ImporterCec6#demo.cec6 frequency > frequency.html
+cec.exe F:SQL import#ImporterCec6#demo.cec6 frequency > frequency.sql
 ```
 
 ### [INPUT]
@@ -36,12 +45,13 @@ Syntax für "import" (trennen Sie mehrere [FILES] mittels |):
 cec.exe import#[IMPORTER]#[FILES] [TASK]
 ```
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [IMPORTER] abzufragen.
-Bsp. für DTAbf und Weblicht:
+Bsp. für CEC6, DTAbf.TCF und Weblicht:
 ```SHELL
+cec.exe import#ImporterCec6#demo.cec6 [TASK]
 cec.exe import#DtaImporter#C:/DTAbf/doc01.tcf.xml [TASK]
 cec.exe import#WeblichtImporter#C:/Weblicht/page01.xml|C:/webL.xml [TASK]
 ```
-Hinweis: Achten Sie darauf, dass sich in den Pfadangaben KEINE Leerzeichen befinden.
+Hinweis: Einige Betriebssysteme (und Betriebssystemversionen) haben Problemen, wenn sich im Pfad Leerzeichen bedfinden. Vermeiden Sie daher soweit möglich Leerzeichen in Pfad und Dateinamen.
 
 #### [INPUT] - annotate
 Syntax für "annotate" (annotiert immer den gesamten Ordner):
@@ -49,16 +59,10 @@ Syntax für "annotate" (annotiert immer den gesamten Ordner):
 cec.exe annotate#[SCRAPER]#[TAGGER]#[LANGUAGE]#[DIRECTORY] [TASK]
 ```
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [SCRAPER], [TAGGER] und [LANGUAGE] abzufragen.
-Es wird empfohlen, "annotate" immer in Kombination mit den [TASK]s "convert" oder "query" zu nutzen. Dadurch wird das fertig annotierte Korpus gespeichert und kann jederzeit mit "import" geladen werden, ohne das Korpus erneut zu annotieren. Bsp. Erzeuge Korpus
+Es wird empfohlen, "annotate" immer in Kombination mit den [TASK]s "convert" oder "query" zu nutzen. Dadurch wird das fertig annotierte Korpus gespeichert und kann jederzeit mit "import" geladen werden, ohne das Korpus erneut zu annotieren. Bsp.:
 ```SHELL
-cec.exe annotate#TwitterScraper#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec5#"C:/korpus.cec6"
+cec.exe annotate#TwitterScraper#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec6#"C:/korpus.cec6"
 ```
-Lade das erzeugte Korpus "C:/korpus.cec6" für weitere Berechnungen:
-```SHELL
-cec.exe import#ImporterCec6#"C:/korpus.cec6" frequency > frequency.csv
-cec.exe import#ImporterCec6#"C:/korpus.cec6" cooccurrence > cooccurrence.csv
-```
-Hinweis: Achten Sie darauf, dass sich in den Pfadangaben KEINE Leerzeichen befinden.
 
 ### [TASK]
 Für TASK können folgenden Befehle genutzt werden:
@@ -96,11 +100,6 @@ Für TASK können folgenden Befehle genutzt werden:
 - vocabulary-complexity [LAYER] - Berechnet verschiedene Vokabularkomplexitäten für [LAYER]
 - vocd [LAYER] [META] - Berechnet VOCD für [LAYER] automatische Clusterung basierend auf [META]
 
-#### Wie Sie einen [TASK] z. B. aus R aufrufen:
-```R
-tbl <- read.table(pipe("cec.exe import#ImporterCec6#"C:/korpus.cec6" cooccurrence"), sep = "\t", header = TRUE, dec = ".", encoding = "UTF-8", quote = "")
-```
-
 #### [TASK] query
 Seit August 2017 nutzen alle CorpusExplorer-Terminals die selbe Abfragesyntax. D. h. Sie können auch aus der Windows-GUI Abfragen exportieren und in der Konsole nutzen.
 Beispiel der Abfragesyntax:
@@ -110,9 +109,9 @@ cec.exe [INPUT] query [QUERY] [EXPORT]
 ```
 
 Aus einer oder mehren Quellen (gleichen Typs) werden mittels [QUERY] alle passenden Dokumente ausgewählt und in [EXPORT] geschrieben.
-Aktuell können Sie nur ein einzelne Abfrage(gruppe) pro Kommandozeilenaufruf übergeben.
+Sie können immer nur ein einzelne Abfrage(gruppe) pro Kommandozeilenaufruf übergeben.
 Um mehrere hintereinander geschaltete Abfragen zu starten, rufen Sie entweder mehrfach hintereinander die Kommandozeile auf
-oder nutzen Sie anstelle von [QUERY] folgende Angabe > FILE:[FILENAME].
+oder nutzen Sie anstelle von [QUERY] folgende Angabe: FILE:[FILENAME]
 Damit wird es möglich, Abfrage aus einer zuvor gespeicherten *.ceusd zu laden.
 Bsp.:
 
@@ -125,7 +124,7 @@ Pro Zeile ist nur eine Abfrage(-gruppe) zulässig.
 ##### [TASK] query - Abfragesyntax
 
 Primäre Typen und deren Operatoren (geordnet nach Priorität):
-- ( = Beginnt eine Abfrage mit ( so muss das Ende der Zeile mit ) abgeschlossen werden. Dieser Typ definiert eine Abfragegruppe. Damit lassen sich mehrere Abfragen mittels OR/ODER verschachteln. Getrennt werden die Abfragen mit |.
+- ( = Beginnt eine Abfrage mit ( so muss das Ende der Zeile mit ) abgeschlossen werden. Dieser Typ definiert eine Abfragegruppe. Damit lassen sich mehrere Abfragen mittels OR verschachteln. Getrennt werden die Abfragen mit |.
 - ! = Negiert die folgende Abfrage
 - M = Abfrage von Metadaten
 	- ? = Übergbener Wert wird als Regex-Ausdruck interpretiert.
@@ -165,14 +164,8 @@ T§Wort:>den;Tag;nicht;vor;dem;Abend;loben
 ```
 Findet alle Dokumente, die im Volltext (__T__) (__Wort__-Layer) die Phrase (__§__) "den Tag nicht vor dem Abend loben" enthalten.
 
-#### [TASK] ngram
-Erfordert, dass Sie ein N festlegen. Bsp. N = 5:
-```R
-tbl <- read.table(pipe("cec.exe import#ImporterCec6#"C:/korpus.cec6" ngram 5"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
-```
-
 #### [TASK] convert
-Erlaubt es, ein bestehendes Korpus in einem der verfügbaren Export-Formate zu speichern.
+Erlaubt es, ein bestehendes Korpus in ein anderes Korpusformat zu konvertieren.
 ```SHELL
 cec.exe import#ImporterCec6#"C:/korpus.cec6" convert ExporterCec6#corpusOut.cec6
 ```
