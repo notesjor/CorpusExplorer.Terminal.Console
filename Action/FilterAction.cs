@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -14,12 +15,12 @@ using CorpusExplorer.Terminal.Console.Helper;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class FilterAction : AbstractAction
+  public class FilterAction : IAddonConsoleAction
   {
-    public override string Action => "query";
-    public override string Description => "query - see help section [OUTPUT] for more information";
+    public string Action => "query";
+    public string Description => "query - see help section [OUTPUT] for more information";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length != 2)
         return;

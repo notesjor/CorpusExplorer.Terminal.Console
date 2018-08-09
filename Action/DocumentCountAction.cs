@@ -1,16 +1,17 @@
 using System.Data;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class DocumentCountAction : AbstractAction
+  public class DocumentCountAction : IAddonConsoleAction
   {
-    public override string Action => "how-many-documents";
-    public override string Description => "how-many-documents - sum of all documents";
+    public string Action => "how-many-documents";
+    public string Description => "how-many-documents - sum of all documents";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var dt = new DataTable();
       dt.Columns.Add("param", typeof(string));

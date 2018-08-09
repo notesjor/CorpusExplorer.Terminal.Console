@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -8,14 +9,14 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class StyleNgramAction : AbstractAction
+  public class StyleNgramAction : IAddonConsoleAction
   {
-    public override string Action => "style-ngram";
+    public string Action => "style-ngram";
 
-    public override string Description =>
+    public string Description =>
       "style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length != 4)
         return;

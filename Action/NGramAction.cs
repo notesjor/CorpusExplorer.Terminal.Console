@@ -1,16 +1,17 @@
-﻿using CorpusExplorer.Sdk.Model;
+﻿using CorpusExplorer.Sdk.Addon;
+using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class NGramAction : AbstractAction
+  public class NGramAction : IAddonConsoleAction
   {
-    public override string Action => "n-gram";
-    public override string Description => "n-gram [N] [LAYER] [minFREQ] - [N] sized N-gram based on [LAYER]";
+    public string Action => "n-gram";
+    public string Description => "n-gram [N] [LAYER] [minFREQ] - [N] sized N-gram based on [LAYER]";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new NgramViewModel {Selection = selection};
       if (args.Length == 0)

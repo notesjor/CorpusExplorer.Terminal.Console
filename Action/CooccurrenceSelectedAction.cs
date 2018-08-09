@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -7,14 +8,14 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class CooccurrenceSelectedAction : AbstractAction
+  public class CooccurrenceSelectedAction : IAddonConsoleAction
   {
-    public override string Action => "cooccurrence-select";
+    public string Action => "cooccurrence-select";
 
-    public override string Description =>
+    public string Description =>
       "cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length < 2)
         return;

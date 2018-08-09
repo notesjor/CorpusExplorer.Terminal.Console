@@ -1,4 +1,5 @@
 ﻿using System;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -6,12 +7,12 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class ReadingEaseAction : AbstractAction
+  public class ReadingEaseAction : IAddonConsoleAction
   {
-    public override string Action => "reading-ease";
-    public override string Description => "reading-ease [LAYER] - reading ease of [LAYER]";
+    public string Action => "reading-ease";
+    public string Description => "reading-ease [LAYER] - reading ease of [LAYER]";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       try
       {

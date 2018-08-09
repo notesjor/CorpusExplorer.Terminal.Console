@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -5,12 +6,12 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class CooccurrenceAction : AbstractAction
+  public class CooccurrenceAction : IAddonConsoleAction
   {
-    public override string Action => "cooccurrence";
-    public override string Description => "cooccurrence [LAYER] [minSIGNI] [minFREQ] - significant cooccurrences for all [LAYER] values";
+    public string Action => "cooccurrence";
+    public string Description => "cooccurrence [LAYER] [minSIGNI] [minFREQ] - significant cooccurrences for all [LAYER] values";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new CooccurrenceViewModel {Selection = selection};
       if (args.Length >= 1)

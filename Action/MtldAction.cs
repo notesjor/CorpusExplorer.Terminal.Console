@@ -1,16 +1,17 @@
 ﻿using CorpusExplorer.Core.ViewModel;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class MtldAction : AbstractAction
+  public class MtldAction : IAddonConsoleAction
   {
-    public override string Action => "mtld";
-    public override string Description => "mtld [LAYER] [META] - calculates MTLD for [LAYER] clustered by [META]";
+    public string Action => "mtld";
+    public string Description => "mtld [LAYER] [META] - calculates MTLD for [LAYER] clustered by [META]";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args.Length != 2)
         return;

@@ -1,16 +1,17 @@
 ﻿using System.Data;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class BasicInformationAction : AbstractAction
+  public class BasicInformationAction : IAddonConsoleAction
   {
-    public override string Action => "basic-information";
-    public override string Description => "basic-information - basic information tokens/sentences/documents";
+    public string Action => "basic-information";
+    public string Description => "basic-information - basic information tokens/sentences/documents";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var dt = new DataTable();
       dt.Columns.Add("param", typeof(string));

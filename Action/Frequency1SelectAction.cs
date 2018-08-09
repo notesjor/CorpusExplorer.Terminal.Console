@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -11,12 +12,12 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class Frequency1SelectAction : AbstractAction
+  public class Frequency1SelectAction : IAddonConsoleAction
   {
-    public override string Action => "frequency1-select";
-    public override string Description => "frequency1-select [LAYER] [WORDS] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens";
+    public string Action => "frequency1-select";
+    public string Description => "frequency1-select [LAYER] [WORDS] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new Frequency1LayerViewModel { Selection = selection };
       if (args == null || args.Length < 2)

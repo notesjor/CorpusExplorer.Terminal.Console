@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -10,14 +11,14 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class KwitFilterAction : AbstractAction
+  public class KwitFilterAction : IAddonConsoleAction
   {
-    public override string Action => "kwit";
+    public string Action => "kwit";
 
-    public override string Description =>
+    public string Description =>
       "kwit [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length < 2)
         return;

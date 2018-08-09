@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -5,12 +6,12 @@ using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class Frequency3Action : AbstractAction
+  public class Frequency3Action : IAddonConsoleAction
   {
-    public override string Action => "frequency3";
-    public override string Description => "frequency3 [LAYER1] [LAYER2] [LAYER3] - count token frequency on 3 layers";
+    public string Action => "frequency3";
+    public string Description => "frequency3 [LAYER1] [LAYER2] [LAYER3] - count token frequency on 3 layers";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new Frequency3LayerViewModel {Selection = selection};
       if (args != null && args.Length == 3)

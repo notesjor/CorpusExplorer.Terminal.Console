@@ -1,16 +1,17 @@
 ﻿using System.Data;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class LayerNamesAction : AbstractAction
+  public class LayerNamesAction : IAddonConsoleAction
   {
-    public override string Action => "layer-names";
-    public override string Description => "layer-names - all available names for [LAYER]";
+    public string Action => "layer-names";
+    public string Description => "layer-names - all available names for [LAYER]";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var dt = new DataTable();
       dt.Columns.Add("layernames", typeof(string));

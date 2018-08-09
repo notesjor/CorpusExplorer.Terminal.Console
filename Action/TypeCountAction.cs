@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
-  public class TypeCountAction : AbstractAction
+  public class TypeCountAction : IAddonConsoleAction
   {
-    public override string Action => "how-many-types";
-    public override string Description => "how-many-types [LAYER] - sum of all [LAYER]-values (types)";
+    public string Action => "how-many-types";
+    public string Description => "how-many-types [LAYER] - sum of all [LAYER]-values (types)";
 
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length == 0)
         return;

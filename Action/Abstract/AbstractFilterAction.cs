@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Abstract;
@@ -6,9 +7,12 @@ using CorpusExplorer.Sdk.ViewModel;
 
 namespace CorpusExplorer.Terminal.Console.Action.Abstract
 {
-  public abstract class AbstractFilterAction : AbstractAction
+  public abstract class AbstractFilterAction : IAddonConsoleAction
   {
-    public override void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    public abstract string Action { get; }
+    public abstract string Description { get; }
+
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length < 2)
         return;
