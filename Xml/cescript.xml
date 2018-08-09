@@ -47,21 +47,21 @@
 			</queryBuilder>
 		</queries>
 		
-		<tasks mode="synchron">
-			<task type="convert">
+		<actions mode="synchron">
+			<action type="convert">
 				<output format="ExporterCec6">C:/test.cec6</output>
-			</task>
-			<task type="basic-information" mode="merge">
+			</action>
+			<action type="basic-information" mode="merge">
 				<output format="TSV">C:/basic-information.tsv</output>
-			</task>
-			<task type="frequency2">
+			</action>
+			<action type="frequency2">
 				<output format="TSV">C:/f.tsv</output>
 				<arguments>
 					<argument>POS</argument>
 					<argument>Lemma</argument>
 				</arguments>
-			</task>
-		</tasks>
+			</action>
+		</actions>
 	</session>
 	<session>	
 		<sources processing="merge"> <!-- processing = merge OR loop -->
@@ -93,21 +93,21 @@
 			<query name="q1">!M:Author::Jan</query>
 		</queries>
 		
-		<tasks>
-			<task type="convert">
+		<actions>
+			<action type="convert">
 				<output format="ExporterCec6">C:/test.cec6</output>
-			</task>
-			<task type="basic-information" query="q1">
+			</action>
+			<action type="basic-information" query="q1">
 				<output format="TSV">C:/{input}_{query}.tsv</output>
-			</task>
-			<task type="frequency2">
+			</action>
+			<action type="frequency2">
 				<output format="TSV">C:/f.tsv</output>
 				<arguments>
 					<argument>POS</argument>
 					<argument>Lemma</argument>
 				</arguments>
-			</task>
-		</tasks>
+			</action>
+		</actions>
 	</session>
 	</sessions>
 </cescript>

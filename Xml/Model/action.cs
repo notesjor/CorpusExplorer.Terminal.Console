@@ -9,21 +9,53 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [XmlType(AnonymousType=true)]
   [XmlRoot(Namespace="", IsNullable=false)]
-  public partial class queryGroup {
+  public partial class action {
     
-    private query[] queryField;
+    private output outputField;
     
-    private string nameField;
+    private string[] argumentsField;
     
-    private string operatorField;
+    private string modeField;
     
-    private string parentField;
+    private string queryField;
     
-    private string prefixField;
+    private string typeField;
     
     /// <remarks/>
-    [XmlElement("query")]
-    public query[] query {
+    public output output {
+      get {
+        return this.outputField;
+      }
+      set {
+        this.outputField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlArrayItem("argument", DataType="NCName", IsNullable=false)]
+    public string[] arguments {
+      get {
+        return this.argumentsField;
+      }
+      set {
+        this.argumentsField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlAttribute(DataType="NCName")]
+    public string mode {
+      get {
+        return this.modeField;
+      }
+      set {
+        this.modeField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlAttribute(DataType="NCName")]
+    public string query {
       get {
         return this.queryField;
       }
@@ -34,45 +66,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     
     /// <remarks/>
     [XmlAttribute(DataType="NCName")]
-    public string name {
+    public string type {
       get {
-        return this.nameField;
+        return this.typeField;
       }
       set {
-        this.nameField = value;
-      }
-    }
-    
-    /// <remarks/>
-    [XmlAttribute(DataType="NCName")]
-    public string @operator {
-      get {
-        return this.operatorField;
-      }
-      set {
-        this.operatorField = value;
-      }
-    }
-    
-    /// <remarks/>
-    [XmlAttribute(DataType="NCName")]
-    public string parent {
-      get {
-        return this.parentField;
-      }
-      set {
-        this.parentField = value;
-      }
-    }
-    
-    /// <remarks/>
-    [XmlAttribute()]
-    public string prefix {
-      get {
-        return this.prefixField;
-      }
-      set {
-        this.prefixField = value;
+        this.typeField = value;
       }
     }
   }

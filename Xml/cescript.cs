@@ -148,7 +148,7 @@ public partial class session {
     
     private queries queriesField;
     
-    private tasks tasksField;
+    private actions actionsField;
     
     private bool overrideField;
     
@@ -175,12 +175,12 @@ public partial class session {
     }
     
     /// <remarks/>
-    public tasks tasks {
+    public actions actions {
         get {
-            return this.tasksField;
+            return this.actionsField;
         }
         set {
-            this.tasksField = value;
+            this.actionsField = value;
         }
     }
     
@@ -686,20 +686,20 @@ public partial class queryGroup {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class tasks {
+public partial class actions {
     
-    private task[] taskField;
+    private action[] actionField;
     
     private string modeField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("task")]
-    public task[] task {
+    [System.Xml.Serialization.XmlElementAttribute("action")]
+    public action[] action {
         get {
-            return this.taskField;
+            return this.actionField;
         }
         set {
-            this.taskField = value;
+            this.actionField = value;
         }
     }
     
@@ -722,7 +722,7 @@ public partial class tasks {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class task {
+public partial class action {
     
     private output outputField;
     

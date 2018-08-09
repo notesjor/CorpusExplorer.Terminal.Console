@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
@@ -28,8 +29,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
   public static class XmlScriptProcessor
   {
     private static string _errorLog;
-    private static readonly Dictionary<string, bool> _executeTaskList = new Dictionary<string, bool>();
-    private static readonly object _executeTaskListLock = new object();
+    private static readonly Dictionary<string, bool> _executeActionList = new Dictionary<string, bool>();
+    private static readonly object _executeActionListLock = new object();
     private static readonly object _sourceLoadLock = new object();
 
     /// <summary>
@@ -41,7 +42,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     ///   Formate für Tabellenexport - Auflistung wird in CorpusExplorer.Terminal.Console.Program
     ///   festgelegt.
     /// </param>
-    public static void Process(string path, Dictionary<string, AbstractAction> actions,
+    public static void Process(string path, Dictionary<string, IAddonConsoleAction> actions,
       Dictionary<string, AbstractTableWriter> formats)
     {
       _errorLog = path + ".log";
@@ -62,7 +63,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           session => { ExecuteSession(actions, formats, session, scriptFilename); });
     }
 
-    private static void ExecuteSession(Dictionary<string, AbstractAction> actions,
+    private static void ExecuteSession(Dictionary<string, IAddonConsoleAction> actions,
       Dictionary<string, AbstractTableWriter> formats, session session, string scriptFilename)
     {
       HashSet<string> deletePaths = null;
@@ -77,12 +78,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         var selections = GenerateSelections(source, session.queries);
         var allowOverride = session.@override;
 
-        if (!string.IsNullOrEmpty(session.tasks.mode) && session.tasks.mode.StartsWith("sync"))
-          foreach (var task in session.tasks.task)
-            ExecuteSessionTask(actions, formats, scriptFilename, task, selections, allowOverride);
+        if (!string.IsNullOrEmpty(session.actions.mode) && session.actions.mode.StartsWith("sync"))
+          foreach (var action in session.actions.action)
+            ExecuteSessionAction(actions, formats, scriptFilename, action, selections, allowOverride);
         else
-          Parallel.ForEach(session.tasks.task, Configuration.ParallelOptions,
-            task => { ExecuteSessionTask(actions, formats, scriptFilename, task, selections, allowOverride); });
+          Parallel.ForEach(session.actions.action, Configuration.ParallelOptions,
+            action => { ExecuteSessionAction(actions, formats, scriptFilename, action, selections, allowOverride); });
       }
       catch (Exception ex)
       {
@@ -111,47 +112,47 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
-    private static void ExecuteSessionTask(Dictionary<string, AbstractAction> actions, Dictionary<string, AbstractTableWriter> formats, string scriptFilename, task task,
+    private static void ExecuteSessionAction(Dictionary<string, IAddonConsoleAction> actions, Dictionary<string, AbstractTableWriter> formats, string scriptFilename, action a,
       Dictionary<string, Selection[]> selections, bool allowOverride)
     {
       try
       {
-        if (!actions.ContainsKey(task.type))
+        if (!actions.ContainsKey(a.type))
           return;
-        var action = actions[task.type];
+        var action = actions[a.type];
 
-        var query = task.query ?? string.Empty;
-        var taskSelections = new List<Selection>();
+        var query = a.query ?? string.Empty;
+        var actionSelections = new List<Selection>();
         // ReSharper disable once ConvertIfStatementToSwitchStatement
         if (query == "*") // Alle Queries
-          taskSelections.AddRange(selections.SelectMany(x => x.Value));
+          actionSelections.AddRange(selections.SelectMany(x => x.Value));
         else if (query == "+") // Alle Queries außer SELECTALL
         {
           var first = selections.First().Key;
-          taskSelections.AddRange(selections.Where(x => x.Key != first).SelectMany(x => x.Value));
+          actionSelections.AddRange(selections.Where(x => x.Key != first).SelectMany(x => x.Value));
         }
         else if (query.StartsWith("*")) // Alle Queries die auf query enden
         {
           var q = query.Substring(1);
           foreach (var x in selections)
             if (x.Key.EndsWith(q))
-              taskSelections.AddRange(x.Value);
+              actionSelections.AddRange(x.Value);
         }
         else if (query.EndsWith("*")) // Alle Queries die auf query beginnen
         {
           var q = query.Substring(0, query.Length - 1);
           foreach (var x in selections)
             if (x.Key.StartsWith(q))
-              taskSelections.AddRange(x.Value);
+              actionSelections.AddRange(x.Value);
         }
         else if (!selections.ContainsKey(query)) // Wenn kein Query verfügbar breche ab
           return;
         else // Einzelquery
-          taskSelections.AddRange(selections[query]);
+          actionSelections.AddRange(selections[query]);
 
         try
         {
-          ExecuteTask(action, task, formats, taskSelections, query, scriptFilename, allowOverride);
+          ExecuteAction(action, a, formats, actionSelections, query, scriptFilename, allowOverride);
         }
         catch (Exception ex)
         {
@@ -165,44 +166,44 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     }
 
     /// <summary>
-    ///   Führe den Task aus.
+    ///   Führe eine Action aus.
     /// </summary>
     /// <param name="action">Action - siehe CorpusExplorer.Terminal.Console.Action</param>
-    /// <param name="task">Task (beinhaltet Information zum Ausführen und Speichern der Resulate)</param>
+    /// <param name="a">Action (beinhaltet Information zum Ausführen und Speichern der Resulate)</param>
     /// <param name="formats">Ausgabeformat</param>
     /// <param name="selections">Schnappschüsse</param>
     /// <param name="query">Query-Pattern, das zur auswahl der Schnappschüsse dient</param>
     /// <param name="scriptFilename">Name des CeScripts</param>
     /// <param name="allowOverride">Erlaubt das Überschreiben von exsistierenden Ausgabedateien</param>
-    private static void ExecuteTask(AbstractAction action, task task, Dictionary<string, AbstractTableWriter> formats,
+    private static void ExecuteAction(IAddonConsoleAction action, action a, Dictionary<string, AbstractTableWriter> formats,
       List<Selection> selections, string query, string scriptFilename, bool allowOverride)
     {
       try
       {
-        if (!string.IsNullOrEmpty(task.mode) && task.mode == "merge")
+        if (!string.IsNullOrEmpty(a.mode) && a.mode == "merge")
         {
-          var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, query, task.type);
+          var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, query, a.type);
 
-          // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
+          // Wurde eine Action bereits abgeschlossen? - Falls ja, breche ab.
           if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
             return;
 
           // Reporting für Konsole
-          ExecuteTaskReport(query, task.type, outputPath, false);
+          ExecuteActionReport(query, a.type, outputPath, false);
 
-          // Ist der Task vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
-          if (task.type == "query" || task.type == "convert")
+          // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
+          if (a.type == "query" || a.type == "convert")
           {
             var exporters = Configuration.AddonExporters.GetDictionary();
-            if (!exporters.ContainsKey(task.output.format))
+            if (!exporters.ContainsKey(a.output.format))
               return;
 
-            exporters[task.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
+            exporters[a.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
           }
           // Andernfalls ist format vom Typ AbstractTableWriter
           else
           {
-            var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
+            var formatKey = a.output.format.StartsWith("F:") ? a.output.format : $"F:{a.output.format}";
             if (!formats.ContainsKey(formatKey) || formats[formatKey] == null)
               return;
 
@@ -215,40 +216,40 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                   Parallel.ForEach(selections, Configuration.ParallelOptions,
                     // ReSharper disable once AccessToDisposedClosure
                     // ReSharper disable once ImplicitlyCapturedClosure
-                    selection => action.Execute(selection, task.arguments, format));
+                    selection => action.Execute(selection, a.arguments, format));
                   format.Destroy();
                 }
           }
 
           // Reporting für Konsole
-          ExecuteTaskReport(query, task.type, outputPath, true);
+          ExecuteActionReport(query, a.type, outputPath, true);
         }
         else
         {
           Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
           {
-            var outputPath = OutputPathBuilder(task.output.Value, scriptFilename, selection.Displayname, task.type);
+            var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, selection.Displayname, a.type);
 
-            // Wurde der Task bereits abgeschlossen? - Falls ja, breche ab.
+            // Wurde die Action bereits abgeschlossen? - Falls ja, breche ab.
             if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
               return;
 
             // Reporting für Konsole
-            ExecuteTaskReport(selection.Displayname, task.type, outputPath, false);
+            ExecuteActionReport(selection.Displayname, a.type, outputPath, false);
 
-            // Ist der Task vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
-            if (task.type == "query" || task.type == "convert")
+            // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
+            if (a.type == "query" || a.type == "convert")
             {
               var exporters = Configuration.AddonExporters.GetDictionary();
-              if (!exporters.ContainsKey(task.output.format))
+              if (!exporters.ContainsKey(a.output.format))
                 return;
 
-              exporters[task.output.format].Export(selection.ToCorpus(), outputPath); // ToDo: Multi-File outout
+              exporters[a.output.format].Export(selection.ToCorpus(), outputPath); // ToDo: Multi-File outout
             }
             // Andernfalls ist format vom Typ AbstractTableWriter
             else
             {
-              var formatKey = task.output.format.StartsWith("F:") ? task.output.format : $"F:{task.output.format}";
+              var formatKey = a.output.format.StartsWith("F:") ? a.output.format : $"F:{a.output.format}";
               if (!formats.ContainsKey(formatKey) || formats[formatKey] == null)
                 return;
 
@@ -258,19 +259,19 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 using (var bs = new BufferedStream(fs))
                 {
                   format.OutputStream = bs;
-                  action.Execute(selection, task.arguments, format);
+                  action.Execute(selection, a.arguments, format);
                   format.Destroy();
                 }
             }
 
             // Reporting für Konsole
-            ExecuteTaskReport(selection.Displayname, task.type, outputPath, true);
+            ExecuteActionReport(selection.Displayname, a.type, outputPath, true);
           });
         }
       }
       catch (Exception ex)
       {
-        LogError(ex, $"{query} - {action.Action} - {task.type}");
+        LogError(ex, $"{query} - {action.Action} - {a.type}");
       }
     }
 
@@ -278,33 +279,33 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     ///   Erzeugt eine Ausgabe auf der Konsole - Damit die Nutzer*in einen Überblick behält was aktuell passiert.
     /// </summary>
     /// <param name="selectionDisplayname">Schnappschussname</param>
-    /// <param name="taskType">Typ der Aufgabe</param>
+    /// <param name="actionType">Typ der Aufgabe</param>
     /// <param name="outputPath">Pfad der Ausgabedatei</param>
     /// <param name="done">Ist die Aufgabe erledigt?</param>
-    private static void ExecuteTaskReport(string selectionDisplayname, string taskType, string outputPath, bool done)
+    private static void ExecuteActionReport(string selectionDisplayname, string actionType, string outputPath, bool done)
     {
       try
       {
-        var key = $"{selectionDisplayname} > {taskType} > {Path.GetFileName(outputPath)}";
-        lock (_executeTaskListLock)
+        var key = $"{selectionDisplayname} > {actionType} > {Path.GetFileName(outputPath)}";
+        lock (_executeActionListLock)
         {
           // Entferne bereits erledigte Aufgaben
-          var keys = _executeTaskList.Keys.ToArray();
+          var keys = _executeActionList.Keys.ToArray();
           foreach (var k in keys)
-            if (_executeTaskList[k])
-              _executeTaskList.Remove(k);
+            if (_executeActionList[k])
+              _executeActionList.Remove(k);
 
           // Status aktualisieren
-          if (_executeTaskList.ContainsKey(key))
-            _executeTaskList[key] = done;
+          if (_executeActionList.ContainsKey(key))
+            _executeActionList[key] = done;
           else
-            _executeTaskList.Add(key, done);
+            _executeActionList.Add(key, done);
 
           // Liste ausgeben
           System.Console.ForegroundColor = ConsoleColor.Gray;
           ConsoleHelper.PrintHeader();
-          System.Console.WriteLine("..:: CURRENT TASKS ::..");
-          foreach (var t in _executeTaskList)
+          System.Console.WriteLine("..:: CURRENT ACTIONS ::..");
+          foreach (var t in _executeActionList)
           {
             System.Console.ForegroundColor = t.Value ? ConsoleColor.Green : ConsoleColor.Yellow;
             System.Console.WriteLine($"{t.Key} ... {(t.Value ? "done" : "running")}");

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -16,7 +17,6 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Builder;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Terminal.Console.Action;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Xml.Processor;
 
@@ -24,7 +24,7 @@ namespace CorpusExplorer.Terminal.Console
 {
   public class Program
   {
-    private static readonly Dictionary<string, AbstractAction> _actions = new AbstractAction[]
+    private static readonly Dictionary<string, IAddonConsoleAction> _actions = new IAddonConsoleAction[]
     {
       new BasicInformationAction(),
       new LayerNamesAction(),
@@ -138,8 +138,6 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void Execute(string[] args)
     {
-      CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
-
       if (args == null || args.Length == 0)
       {
         PrintHelp();
@@ -330,8 +328,24 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void Main(string[] args)
     {
+      ConsoleHelper.PrintHeader();
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+      CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
+
       _actions.Add("cluster", new ClusterAction { _actions = _actions });
+
+      if(Configuration.AddonConsoleActions != null)
+        foreach (var action in Configuration.AddonConsoleActions)
+        {
+          if (_actions.ContainsKey(action.Action))
+          {
+            System.Console.WriteLine($"WARN: Add-on Action already exsists - dublicate Name {action.Action}. Press ENTER to continue!");
+            System.Console.ReadLine();
+          }
+          else
+            _actions.Add(action.Action, action);
+        }
+
       Execute(args);
     }
 
@@ -343,7 +357,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Syntax for filtering:");
       System.Console.WriteLine("cec.exe [INPUT] [QUERY] [OUTPUT]");
       System.Console.WriteLine("Syntax for analytics (writes TSV-output to stdout):");
-      System.Console.WriteLine("cec.exe [F:FORMAT] [INPUT] [TASK]");
+      System.Console.WriteLine("cec.exe [F:FORMAT] [INPUT] [ACTION]");
       System.Console.WriteLine("Syntax for scripting:");
       System.Console.WriteLine("cec.exe FILE:[PATH]");
       System.Console.WriteLine("More detailed scripting errors:");
@@ -412,10 +426,10 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Second character [OPERATOR] (if you choose X):");
       System.Console.WriteLine("R = random selection | S = auto split by meta-data");
       System.Console.WriteLine(
-        "If you have chosen M - enter the name of the meta category (see [TASK] = meta-categories)");
+        "If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)");
       System.Console.WriteLine(
-        "If you have chosen XS - enter the name of the meta category (see [TASK] = meta-categories)");
-      System.Console.WriteLine("If you have chosen T - enter the layer name (see [TASK] = layer-names)");
+        "If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)");
+      System.Console.WriteLine("If you have chosen T - enter the layer name (see [ACTION] = layer-names)");
       System.Console.WriteLine("Enter the separator :: followed by the query");
       System.Console.WriteLine(
         "Example (query only): !M:Author::Jan - Finds all documents where \"Jan\" isn't an author");
@@ -456,19 +470,19 @@ namespace CorpusExplorer.Terminal.Console
 
       System.Console.WriteLine();
       System.Console.WriteLine();
-      System.Console.WriteLine("<: --- [TASK] --- :>");
+      System.Console.WriteLine("<: --- [ACTION] --- :>");
       System.Console.WriteLine();
 
-      foreach (var action in _actions.OrderBy(x => x.Value.Action)) System.Console.WriteLine($"[TASK] = {action.Value.Description}");
+      foreach (var action in _actions.OrderBy(x => x.Value.Action)) System.Console.WriteLine($"[ACTION] = {action.Value.Description}");
 
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");
       System.Console.WriteLine();
       System.Console.WriteLine();
       System.Console.WriteLine("<: --- [SCRIPTING] --- :>");
       System.Console.WriteLine();
-      System.Console.WriteLine("All tasks above can be stored in a file to build up a automatic process.");
+      System.Console.WriteLine("All actionss above can be stored in a file to build up a automatic process.");
       System.Console.WriteLine(
-        "In this case it's recommended to redirect the [TASK]-output to a file and not to stdout");
+        "In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout");
       System.Console.WriteLine("Example: import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort > output.csv");
 
       System.Console.WriteLine();
@@ -476,7 +490,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("<: --- [F:FORMAT] --- :>");
       System.Console.WriteLine();
       System.Console.WriteLine(
-        "If you use [TASK] or the scripting-mode [FILE: / DEBUG:], you can change the output format.");
+        "If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.");
       System.Console.WriteLine("You need to set one of the following tags as first parameter:");
       System.Console.WriteLine("F:TSV - (standard output format) tab separated values");
       System.Console.WriteLine("F:CSV - ';' separated values");

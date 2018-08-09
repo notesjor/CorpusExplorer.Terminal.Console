@@ -16,7 +16,7 @@ Der cec.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle ins
 
 Die Grundsyntax für den Konsolenaufruf lautet:
 ```SHELL
-cec.exe [INPUT] [TASK]
+cec.exe [INPUT] [ACTION]
 ```
 - Bsp. für R: 
 ```R
@@ -42,32 +42,32 @@ Es können zwei unterschiedliche INPUT-Quellen genutzt werden. "import" für ber
 #### [INPUT] - import
 Syntax für "import" (trennen Sie mehrere [FILES] mittels |):
 ```SHELL
-cec.exe import#[IMPORTER]#[FILES] [TASK]
+cec.exe import#[IMPORTER]#[FILES] [ACTION]
 ```
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [IMPORTER] abzufragen.
 Bsp. für CEC6, DTAbf.TCF und Weblicht:
 ```SHELL
-cec.exe import#ImporterCec6#demo.cec6 [TASK]
-cec.exe import#DtaImporter#C:/DTAbf/doc01.tcf.xml [TASK]
-cec.exe import#WeblichtImporter#C:/Weblicht/page01.xml|C:/webL.xml [TASK]
+cec.exe import#ImporterCec6#demo.cec6 [ACTION]
+cec.exe import#DtaImporter#C:/DTAbf/doc01.tcf.xml [ACTION]
+cec.exe import#WeblichtImporter#C:/Weblicht/page01.xml|C:/webL.xml [ACTION]
 ```
 Hinweis: Einige Betriebssysteme (und Betriebssystemversionen) haben Problemen, wenn sich im Pfad Leerzeichen bedfinden. Vermeiden Sie daher soweit möglich Leerzeichen in Pfad und Dateinamen.
 
 #### [INPUT] - annotate
 Syntax für "annotate" (annotiert immer den gesamten Ordner):
 ```SHELL
-cec.exe annotate#[SCRAPER]#[TAGGER]#[LANGUAGE]#[DIRECTORY] [TASK]
+cec.exe annotate#[SCRAPER]#[TAGGER]#[LANGUAGE]#[DIRECTORY] [ACTION]
 ```
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [SCRAPER], [TAGGER] und [LANGUAGE] abzufragen.
-Es wird empfohlen, "annotate" immer in Kombination mit den [TASK]s "convert" oder "query" zu nutzen. Dadurch wird das fertig annotierte Korpus gespeichert und kann jederzeit mit "import" geladen werden, ohne das Korpus erneut zu annotieren. Bsp.:
+Es wird empfohlen, "annotate" immer in Kombination mit den [ACTION]s "convert" oder "query" zu nutzen. Dadurch wird das fertig annotierte Korpus gespeichert und kann jederzeit mit "import" geladen werden, ohne das Korpus erneut zu annotieren. Bsp.:
 ```SHELL
 cec.exe annotate#TwitterScraper#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec6#"C:/korpus.cec6"
 ```
 
-### [TASK]
-Für TASK können folgenden Befehle genutzt werden:
+### [ACTION]
+Für ACTION können folgenden Befehle genutzt werden:
 - basic-information - Gibt grundlegende Informationen aus Token/Sätze/Dokumente
-- cluster [QUERY] [TASK] [ARGUMENTS] - Erlaubt es einen [TASK] über ein Cluster auszuführen. Das Cluster wird durch [QUERY] erzeugt.
+- cluster [QUERY] [ACTION] [ARGUMENTS] - Erlaubt es einen [ACTION] über ein Cluster auszuführen. Das Cluster wird durch [QUERY] erzeugt.
 - convert - Konvertiert Korpusdaten in ein anderes Format - siehe [OUTPUT]
 - cooccurrence [LAYER] [minSIGNI] [minFREQ] - Berechnet zu allen Worten in [LAYER] alle Kookkurrenzen. Erlaubt es optional ein Minimum für die Signifikanz [minSIGNI] und für die Frequenz [minFREQ] anzugeben. Standardwerte: [minSIGNI] = 0.9 / [minFREQ] = 1
 - cooccurrence-select [LAYER] [WORDS] - Ermittel die Kookkurrenzen zu einem bestimmten Suchwort/Phrase.
@@ -100,7 +100,7 @@ Für TASK können folgenden Befehle genutzt werden:
 - vocabulary-complexity [LAYER] - Berechnet verschiedene Vokabularkomplexitäten für [LAYER]
 - vocd [LAYER] [META] - Berechnet VOCD für [LAYER] automatische Clusterung basierend auf [META]
 
-#### [TASK] query
+#### [ACTION] query
 Seit August 2017 nutzen alle CorpusExplorer-Terminals die selbe Abfragesyntax. D. h. Sie können auch aus der Windows-GUI Abfragen exportieren und in der Konsole nutzen.
 Beispiel der Abfragesyntax:
 
@@ -121,7 +121,7 @@ cec.exe [INPUT] query FILE:C:/query.ceusd [EXPORT]
 
 Pro Zeile ist nur eine Abfrage(-gruppe) zulässig.
 
-##### [TASK] query - Abfragesyntax
+##### [ACTION] query - Abfragesyntax
 
 Primäre Typen und deren Operatoren (geordnet nach Priorität):
 - ( = Beginnt eine Abfrage mit ( so muss das Ende der Zeile mit ) abgeschlossen werden. Dieser Typ definiert eine Abfragegruppe. Damit lassen sich mehrere Abfragen mittels OR verschachteln. Getrennt werden die Abfragen mit |.
@@ -164,7 +164,7 @@ T§Wort:>den;Tag;nicht;vor;dem;Abend;loben
 ```
 Findet alle Dokumente, die im Volltext (__T__) (__Wort__-Layer) die Phrase (__§__) "den Tag nicht vor dem Abend loben" enthalten.
 
-#### [TASK] convert
+#### [ACTION] convert
 Erlaubt es, ein bestehendes Korpus in ein anderes Korpusformat zu konvertieren.
 ```SHELL
 cec.exe import#ImporterCec6#"C:/korpus.cec6" convert ExporterCec6#corpusOut.cec6

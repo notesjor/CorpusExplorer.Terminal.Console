@@ -38,7 +38,7 @@
       <xs:sequence>
         <xs:element ref="sources"/>
         <xs:element ref="queries"/>
-        <xs:element ref="tasks"/>
+        <xs:element ref="actions"/>
       </xs:sequence>
       <xs:attribute name="override" type="xs:boolean"/>
     </xs:complexType>
@@ -104,15 +104,15 @@
       <xs:attribute name="prefix" use="required"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="tasks">
+  <xs:element name="actions">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="task"/>
+        <xs:element maxOccurs="unbounded" ref="action"/>
       </xs:sequence>
       <xs:attribute name="mode" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="task">
+  <xs:element name="action">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="output"/>

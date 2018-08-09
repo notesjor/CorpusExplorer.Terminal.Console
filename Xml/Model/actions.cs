@@ -9,18 +9,31 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [XmlType(AnonymousType=true)]
   [XmlRoot(Namespace="", IsNullable=false)]
-  public partial class arguments {
+  public partial class actions {
     
-    private string[] argumentField;
+    private action[] actionField;
+    
+    private string modeField;
     
     /// <remarks/>
-    [XmlElement("argument", DataType="NCName")]
-    public string[] argument {
+    [XmlElement("action")]
+    public action[] action {
       get {
-        return this.argumentField;
+        return this.actionField;
       }
       set {
-        this.argumentField = value;
+        this.actionField = value;
+      }
+    }
+    
+    /// <remarks/>
+    [XmlAttribute(DataType="NCName")]
+    public string mode {
+      get {
+        return this.modeField;
+      }
+      set {
+        this.modeField = value;
       }
     }
   }
