@@ -14,7 +14,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     protected override AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries)
     {
-      return new FilterQuerySingleLayerAllInOneSentence{LayerDisplayname = layerDisplayname, LayerQueries = queries};
+      return new FilterQuerySingleLayerAllInOneSentence {LayerDisplayname = layerDisplayname, LayerQueries = queries};
     }
   }
 }

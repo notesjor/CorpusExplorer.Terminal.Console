@@ -9,7 +9,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
   public static class AutoSplitBlockHelper
   {
     public static SelectionClusterBlock RunAutoSplit(Selection selection, FilterQueryUnsupportedParserFeature query,
-      object[] values)
+                                                     object[] values)
     {
       var block = selection.CreateBlock<SelectionClusterBlock>();
       var split = values[0].ToString().Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries);

@@ -1,40 +1,38 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks/>
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-  [System.SerializableAttribute()]
-  [System.Diagnostics.DebuggerStepThroughAttribute()]
-  [System.ComponentModel.DesignerCategoryAttribute("code")]
-  [XmlType(AnonymousType=true)]
-  [XmlRoot(Namespace="", IsNullable=false)]
-  public partial class meta {
-    
+  /// <remarks />
+  [GeneratedCode("xsd", "4.6.1055.0")]
+  [Serializable]
+  [DebuggerStepThrough]
+  [DesignerCategory("code")]
+  [XmlType(AnonymousType = true)]
+  [XmlRoot(Namespace = "", IsNullable = false)]
+  public class meta
+  {
     private string keyField;
-    
+
     private string valueField;
-    
-    /// <remarks/>
-    [XmlAttribute(DataType="NCName")]
-    public string key {
-      get {
-        return this.keyField;
-      }
-      set {
-        this.keyField = value;
-      }
+
+    /// <remarks />
+    [XmlAttribute(DataType = "NCName")]
+    public string key
+    {
+      get => keyField;
+      set => keyField = value;
     }
-    
-    /// <remarks/>
-    [XmlText(DataType="NMTOKEN")]
-    public string Value {
-      get {
-        return this.valueField;
-      }
-      set {
-        this.valueField = value;
-      }
+
+    /// <remarks />
+    [XmlText(DataType = "NMTOKEN")]
+    public string Value
+    {
+      get => valueField;
+      set => valueField = value;
     }
   }
 }

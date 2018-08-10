@@ -10,16 +10,11 @@ using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
-using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
 using CorpusExplorer.Sdk.Model.Extension;
-using CorpusExplorer.Sdk.Utils.CorpusManipulation;
-using CorpusExplorer.Sdk.Utils.DataTableWriter;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.Filter;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
-using CorpusExplorer.Terminal.Console.Action;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Xml.Extensions;
 using CorpusExplorer.Terminal.Console.Xml.Model;
@@ -43,7 +38,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     ///   festgelegt.
     /// </param>
     public static void Process(string path, Dictionary<string, IAddonConsoleAction> actions,
-      Dictionary<string, AbstractTableWriter> formats)
+                               Dictionary<string, AbstractTableWriter> formats)
     {
       _errorLog = path + ".log";
       var script = LoadCeScript(path, out var scriptFilename);
@@ -60,11 +55,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           ExecuteSession(actions, formats, session, scriptFilename);
       else
         Parallel.ForEach(script.sessions.session, Configuration.ParallelOptions,
-          session => { ExecuteSession(actions, formats, session, scriptFilename); });
+                         session => { ExecuteSession(actions, formats, session, scriptFilename); });
     }
 
     private static void ExecuteSession(Dictionary<string, IAddonConsoleAction> actions,
-      Dictionary<string, AbstractTableWriter> formats, session session, string scriptFilename)
+                                       Dictionary<string, AbstractTableWriter> formats, session session,
+                                       string scriptFilename)
     {
       HashSet<string> deletePaths = null;
       try
@@ -83,7 +79,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             ExecuteSessionAction(actions, formats, scriptFilename, action, selections, allowOverride);
         else
           Parallel.ForEach(session.actions.action, Configuration.ParallelOptions,
-            action => { ExecuteSessionAction(actions, formats, scriptFilename, action, selections, allowOverride); });
+                           action =>
+                           {
+                             ExecuteSessionAction(actions, formats, scriptFilename, action, selections, allowOverride);
+                           });
       }
       catch (Exception ex)
       {
@@ -112,8 +111,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
-    private static void ExecuteSessionAction(Dictionary<string, IAddonConsoleAction> actions, Dictionary<string, AbstractTableWriter> formats, string scriptFilename, action a,
-      Dictionary<string, Selection[]> selections, bool allowOverride)
+    private static void ExecuteSessionAction(Dictionary<string, IAddonConsoleAction> actions,
+                                             Dictionary<string, AbstractTableWriter> formats, string scriptFilename,
+                                             action a,
+                                             Dictionary<string, Selection[]> selections, bool allowOverride)
     {
       try
       {
@@ -125,7 +126,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         var actionSelections = new List<Selection>();
         // ReSharper disable once ConvertIfStatementToSwitchStatement
         if (query == "*") // Alle Queries
+        {
           actionSelections.AddRange(selections.SelectMany(x => x.Value));
+        }
         else if (query == "+") // Alle Queries außer SELECTALL
         {
           var first = selections.First().Key;
@@ -146,9 +149,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               actionSelections.AddRange(x.Value);
         }
         else if (!selections.ContainsKey(query)) // Wenn kein Query verfügbar breche ab
+        {
           return;
+        }
         else // Einzelquery
+        {
           actionSelections.AddRange(selections[query]);
+        }
 
         try
         {
@@ -175,8 +182,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="query">Query-Pattern, das zur auswahl der Schnappschüsse dient</param>
     /// <param name="scriptFilename">Name des CeScripts</param>
     /// <param name="allowOverride">Erlaubt das Überschreiben von exsistierenden Ausgabedateien</param>
-    private static void ExecuteAction(IAddonConsoleAction action, action a, Dictionary<string, AbstractTableWriter> formats,
-      List<Selection> selections, string query, string scriptFilename, bool allowOverride)
+    private static void ExecuteAction(IAddonConsoleAction action, action a,
+                                      Dictionary<string, AbstractTableWriter> formats,
+                                      List<Selection> selections, string query, string scriptFilename,
+                                      bool allowOverride)
     {
       try
       {
@@ -198,7 +207,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             if (!exporters.ContainsKey(a.output.format))
               return;
 
-            exporters[a.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
+            exporters[a.output.format]
+             .Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
           }
           // Andernfalls ist format vom Typ AbstractTableWriter
           else
@@ -209,16 +219,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
             // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
             if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
-                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-                using (var bs = new BufferedStream(fs))
-                {
-                  format.OutputStream = bs;
-                  Parallel.ForEach(selections, Configuration.ParallelOptions,
-                    // ReSharper disable once AccessToDisposedClosure
-                    // ReSharper disable once ImplicitlyCapturedClosure
-                    selection => action.Execute(selection, a.arguments, format));
-                  format.Destroy();
-                }
+              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+              using (var bs = new BufferedStream(fs))
+              {
+                format.OutputStream = bs;
+                Parallel.ForEach(selections, Configuration.ParallelOptions,
+                                 // ReSharper disable once AccessToDisposedClosure
+                                 // ReSharper disable once ImplicitlyCapturedClosure
+                                 selection => action.Execute(selection, a.arguments, format));
+                format.Destroy();
+              }
           }
 
           // Reporting für Konsole
@@ -254,7 +264,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 return;
 
               // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-              if(Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
+              if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
                 using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
                 using (var bs = new BufferedStream(fs))
                 {
@@ -282,7 +292,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="actionType">Typ der Aufgabe</param>
     /// <param name="outputPath">Pfad der Ausgabedatei</param>
     /// <param name="done">Ist die Aufgabe erledigt?</param>
-    private static void ExecuteActionReport(string selectionDisplayname, string actionType, string outputPath, bool done)
+    private static void ExecuteActionReport(string selectionDisplayname, string actionType, string outputPath,
+                                            bool done)
     {
       try
       {
@@ -330,7 +341,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       var all = source.SelectAll;
       all.Displayname = "ALL";
-      var res = new Dictionary<string, Selection[]> { { "", new[] { all } } };
+      var res = new Dictionary<string, Selection[]> {{"", new[] {all}}};
 
       if (queries?.Items == null)
         return res;
@@ -384,9 +395,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         var filterQuery = QueryParser.Parse(query.CleanXmlValue());
         if (!(filterQuery is FilterQueryUnsupportedParserFeature))
-          return new[] { selection.Create(new[] { filterQuery }, key) };
+          return new[] {selection.Create(new[] {filterQuery}, key)};
 
-        var q = (FilterQueryUnsupportedParserFeature)filterQuery;
+        var q = (FilterQueryUnsupportedParserFeature) filterQuery;
         switch (q.MetaLabel)
         {
           case "<:RANDOM:>":
@@ -416,8 +427,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         (from csel in selection.CorporaGuids
          let corpus = selection.GetCorpus(csel)
          let dsels = new HashSet<Guid>(corpus.DocumentGuids)
-         select selection.Create(new Dictionary<Guid, HashSet<Guid>> { { csel, dsels } }, corpus.CorpusDisplayname))
-        .ToArray();
+         select selection.Create(new Dictionary<Guid, HashSet<Guid>> {{csel, dsels}}, corpus.CorpusDisplayname))
+       .ToArray();
     }
 
     /// <summary>
@@ -428,7 +439,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="values">Parameter</param>
     /// <returns>Neue Schnappschüsse</returns>
     private static Selection[] GenerateSelections_MetaSplit(Selection selection, FilterQueryUnsupportedParserFeature q,
-      IEnumerable<object> values)
+                                                            IEnumerable<object> values)
     {
       var vs = values?.ToArray();
       if (vs?.Length != 1)
@@ -446,7 +457,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="all">Schnappschuss: Alle Dokumente</param>
     /// <param name="useSelectionDisplaynameAsPrefix">Stellt dem Namen des aktuell erzeugten Query den ParentDisplayname voran.</param>
     private static void GenerateSelections_QueryBuilder(queryBuilder queryBuilder,
-      ref Dictionary<string, Selection[]> res, Selection all, bool useSelectionDisplaynameAsPrefix = false)
+                                                        ref Dictionary<string, Selection[]> res, Selection all,
+                                                        bool useSelectionDisplaynameAsPrefix = false)
     {
       var key = queryBuilder.name ?? string.Empty;
       if (key == "*" || key == "+")
@@ -472,7 +484,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="all">Schnappschuss: Alle Dokumente</param>
     /// <param name="useSelectionDisplaynameAsPrefix">Stellt dem Namen des aktuell erzeugten Query den ParentDisplayname voran.</param>
     private static void GenerateSelections_QueryGroup(queryGroup queryGroup, ref Dictionary<string, Selection[]> res,
-      Selection all, bool useSelectionDisplaynameAsPrefix = false)
+                                                      Selection all, bool useSelectionDisplaynameAsPrefix = false)
     {
       var key = queryGroup.name ?? string.Empty;
       if (key == "" || key == "*" || key == "+")
@@ -487,14 +499,28 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       // Erzeuge erste Abfrage
       var qs = new List<query>(queryGroup.query);
       var selection = GenerateSelections_Compile(all, $"{prefix}{qs[0].Text.CleanXmlValue()}", qs[0].name).First()
-        .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
+                                                                                                          .CorporaAndDocumentGuids
+                                                                                                          .ToDictionary(x => x.Key,
+                                                                                                                        x =>
+                                                                                                                          new
+                                                                                                                            HashSet
+                                                                                                                            <Guid
+                                                                                                                            >(x
+                                                                                                                               .Value));
       qs.RemoveAt(0); // Entferne erste Abfrage aus der Liste
 
       // Führe alle Folgeabfragen aus.
       foreach (var query in qs)
       {
         var temp = GenerateSelections_Compile(all, $"{prefix}{query.Text.CleanXmlValue()}", "").First()
-          .CorporaAndDocumentGuids.ToDictionary(x => x.Key, x => new HashSet<Guid>(x.Value));
+                                                                                               .CorporaAndDocumentGuids
+                                                                                               .ToDictionary(x => x.Key,
+                                                                                                             x =>
+                                                                                                               new
+                                                                                                                 HashSet
+                                                                                                                 <Guid
+                                                                                                                 >(x
+                                                                                                                    .Value));
         switch (queryGroup.@operator)
         {
           default:
@@ -530,7 +556,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
       }
 
-      res.Add(key, new[] { all.Create(selection, key) });
+      res.Add(key, new[] {all.Create(selection, key)});
     }
 
     /// <summary>
@@ -544,7 +570,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       var block = selection.CreateBlock<RandomSelectionBlock>();
       block.DocumentCount = int.Parse(values.First().ToString());
       block.Calculate();
-      return new[] { block.RandomSelection, block.RandomInvertSelection };
+      return new[] {block.RandomSelection, block.RandomInvertSelection};
     }
 
     /// <summary>
@@ -555,7 +581,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="all">Schnappschuss: Alle Dokumente</param>
     /// <param name="useSelectionDisplaynameAsPrefix">Stellt dem Namen des aktuell erzeugten Query den ParentDisplayname voran.</param>
     private static void GenerateSelections_SingleQuery(query query, ref Dictionary<string, Selection[]> res,
-      Selection all, bool useSelectionDisplaynameAsPrefix = false)
+                                                       Selection all, bool useSelectionDisplaynameAsPrefix = false)
     {
       var key = query.name ?? string.Empty;
       if (key == "" || key == "*" || key == "+")
@@ -598,9 +624,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       try
       {
         File.AppendAllLines(_errorLog,
-          additionalLine == null
-            ? new[] { ex.Message, ex.StackTrace, "---" }
-            : new[] { additionalLine, ex.Message, ex.StackTrace, "---" });
+                            additionalLine == null
+                              ? new[] {ex.Message, ex.StackTrace, "---"}
+                              : new[] {additionalLine, ex.Message, ex.StackTrace, "---"});
       }
       catch
       {
@@ -619,8 +645,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static string OutputPathBuilder(string path, string scriptFilename, string selectionName, string action)
     {
       var res = path.Replace("{all}", "{script}_{selection}_{action}").Replace("{script}", scriptFilename)
-        .Replace("{selection}", selectionName == "*" ? "ALL" : selectionName).Replace("{action}", action)
-        .EnsureFileName();
+                    .Replace("{selection}", selectionName == "*" ? "ALL" : selectionName).Replace("{action}", action)
+                    .EnsureFileName();
       var dir = Path.GetDirectoryName(res);
       if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
@@ -657,9 +683,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             var scraper = scrapers[annotate.type];
             scraper.Input.Enqueue(SearchFiles(annotate.Items, ref deletePaths));
             scraper.Execute();
-            var cleaner1 = new StandardCleanup { Input = scraper.Output };
+            var cleaner1 = new StandardCleanup {Input = scraper.Output};
             cleaner1.Execute();
-            var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
+            var cleaner2 = new RegexXmlMarkupCleanup {Input = cleaner1.Output};
             cleaner2.Execute();
 
             // Annotiere das Textmaterial

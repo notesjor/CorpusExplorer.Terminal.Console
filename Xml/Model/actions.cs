@@ -1,40 +1,38 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks/>
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-  [System.SerializableAttribute()]
-  [System.Diagnostics.DebuggerStepThroughAttribute()]
-  [System.ComponentModel.DesignerCategoryAttribute("code")]
-  [XmlType(AnonymousType=true)]
-  [XmlRoot(Namespace="", IsNullable=false)]
-  public partial class actions {
-    
+  /// <remarks />
+  [GeneratedCode("xsd", "4.6.1055.0")]
+  [Serializable]
+  [DebuggerStepThrough]
+  [DesignerCategory("code")]
+  [XmlType(AnonymousType = true)]
+  [XmlRoot(Namespace = "", IsNullable = false)]
+  public class actions
+  {
     private action[] actionField;
-    
+
     private string modeField;
-    
-    /// <remarks/>
+
+    /// <remarks />
     [XmlElement("action")]
-    public action[] action {
-      get {
-        return this.actionField;
-      }
-      set {
-        this.actionField = value;
-      }
+    public action[] action
+    {
+      get => actionField;
+      set => actionField = value;
     }
-    
-    /// <remarks/>
-    [XmlAttribute(DataType="NCName")]
-    public string mode {
-      get {
-        return this.modeField;
-      }
-      set {
-        this.modeField = value;
-      }
+
+    /// <remarks />
+    [XmlAttribute(DataType = "NCName")]
+    public string mode
+    {
+      get => modeField;
+      set => modeField = value;
     }
   }
 }

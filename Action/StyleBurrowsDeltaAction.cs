@@ -2,7 +2,6 @@ using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -17,7 +16,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     {
       if (args == null || args.Length != 2)
         return;
-      
+
       var vm = new ClusterMetadataByBurrowsDeltaViewModel
       {
         Selection = selection,

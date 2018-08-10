@@ -7,7 +7,6 @@ using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -56,10 +55,10 @@ namespace CorpusExplorer.Terminal.Console.Action
 
         var a = Filter(connection.Item1);
         var b = Filter(connection.Item3);
-        var p = ((double)connection.Item2 / max) * 25d;
+        var p = (double) connection.Item2 / max * 25d;
         if (p < 1)
           p = 1;
-        var w = (int)p;
+        var w = (int) p;
 
         stb.AppendLine($"\t\"{a}\" -> \"{b}\" [ label=\"{connection.Item2}\" penwidth={p.ToString(CultureInfo.CurrentCulture).Replace(",", ".")} weight={w} ];");
       }

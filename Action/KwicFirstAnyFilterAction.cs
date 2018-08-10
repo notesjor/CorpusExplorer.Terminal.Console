@@ -14,7 +14,11 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     protected override AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries)
     {
-      return new FilterQuerySingleLayerFirstAndAnyOtherMatch{LayerDisplayname = layerDisplayname, LayerQueries = queries};
+      return new FilterQuerySingleLayerFirstAndAnyOtherMatch
+      {
+        LayerDisplayname = layerDisplayname,
+        LayerQueries = queries
+      };
     }
   }
 }

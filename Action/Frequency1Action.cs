@@ -1,9 +1,7 @@
 ﻿using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
-using CorpusExplorer.Sdk.Properties;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -14,7 +12,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new Frequency1LayerViewModel { Selection = selection };
+      var vm = new Frequency1LayerViewModel {Selection = selection};
       if (args != null && args.Length == 1)
         vm.LayerDisplayname = args[0];
       vm.Execute();

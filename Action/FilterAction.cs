@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CorpusExplorer.Sdk.Addon;
-using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Ecosystem.Model;
-using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 
 namespace CorpusExplorer.Terminal.Console.Action
@@ -31,7 +27,7 @@ namespace CorpusExplorer.Terminal.Console.Action
         var lines = File.ReadAllLines(args[0].Replace("FILE:", string.Empty), Configuration.Encoding);
         var queries = lines.Select(QueryParser.Parse);
         sub = queries.Aggregate(selection,
-          (current, q) => current.Create(new[] {q}, Path.GetFileNameWithoutExtension(args[1])));
+                                (current, q) => current.Create(new[] {q}, Path.GetFileNameWithoutExtension(args[1])));
       }
       else
       {
@@ -42,7 +38,8 @@ namespace CorpusExplorer.Terminal.Console.Action
         var query = QueryParser.Parse(args[0]);
         if (query is FilterQueryUnsupportedParserFeature)
         {
-          UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature) query, args[1], writer);
+          UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature) query, args[1],
+                                                     writer);
           return;
         }
 

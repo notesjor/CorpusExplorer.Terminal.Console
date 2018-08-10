@@ -5,7 +5,6 @@ using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 
 namespace CorpusExplorer.Terminal.Console.Action

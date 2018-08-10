@@ -4,7 +4,6 @@ using System.Linq;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
-using CorpusExplorer.Terminal.Console.Action.Abstract;
 
 namespace CorpusExplorer.Terminal.Console.Action
 {
@@ -24,7 +23,7 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       dt.BeginLoadData();
       dt.Rows.Add("types",
-        (double) new HashSet<string>(selection.GetLayers(args[0]).SelectMany(layer => layer.Values)).Count);
+                  (double) new HashSet<string>(selection.GetLayers(args[0]).SelectMany(layer => layer.Values)).Count);
       dt.EndLoadData();
 
       writer.WriteTable(selection.Displayname, dt);
