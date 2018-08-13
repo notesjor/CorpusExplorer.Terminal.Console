@@ -438,15 +438,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="q">Abfrage</param>
     /// <param name="values">Parameter</param>
     /// <returns>Neue Schnappschüsse</returns>
-    private static Selection[] GenerateSelections_MetaSplit(Selection selection, FilterQueryUnsupportedParserFeature q,
-                                                            IEnumerable<object> values)
+    private static Selection[] GenerateSelections_MetaSplit(Selection selection, FilterQueryUnsupportedParserFeature q, IEnumerable<object> values)
     {
       var vs = values?.ToArray();
-      if (vs?.Length != 1)
-        return null;
-
-      var block = AutoSplitBlockHelper.RunAutoSplit(selection, q, vs);
-      return block.GetSelectionClusters().ToArray();
+      return vs?.Length != 1 ? null : AutoSplitBlockHelper.RunAutoSplit(selection, q, vs).ToArray();
     }
 
     /// <summary>

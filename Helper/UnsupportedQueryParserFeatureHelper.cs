@@ -39,18 +39,18 @@ namespace CorpusExplorer.Terminal.Console.Helper
 
     private static IEnumerable<Selection> UnsupportedParserRandomFeatureToObject(RandomSelectionBlock block)
     {
-      return new[] {block.RandomSelection, block.RandomInvertSelection};
+      return new[] { block.RandomSelection, block.RandomInvertSelection };
     }
 
     private static IEnumerable<Selection> UnsupportedParserRandomFeatureToFile(
       AbstractTableWriter writer, string output, RandomSelectionBlock block)
     {
-      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
       if (outputOptions.Length != 2)
         return null;
 
       var export = new OutputAction();
-      export.Execute(block.RandomSelection, new[] {output}, writer);
+      export.Execute(block.RandomSelection, new[] { output }, writer);
 
       var form = outputOptions[0];
       var path = outputOptions[1];
@@ -60,7 +60,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       if (!Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
-      export.Execute(block.RandomInvertSelection, new[] {$"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\""},
+      export.Execute(block.RandomInvertSelection, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\"" },
                      writer);
       return null;
     }
@@ -72,22 +72,15 @@ namespace CorpusExplorer.Terminal.Console.Helper
       if (values?.Length != 1)
         return null;
 
-      var block = AutoSplitBlockHelper.RunAutoSplit(selection, query, values);
+      var selections = AutoSplitBlockHelper.RunAutoSplit(selection, query, values);
 
-      return string.IsNullOrEmpty(output)
-               ? UnsupportedParserFeatureAutosplitToObject(block)
-               : UnsupportedParserFeatureAutosplitToFile(writer, output, block);
-    }
-
-    private static IEnumerable<Selection> UnsupportedParserFeatureAutosplitToObject(SelectionClusterBlock block)
-    {
-      return block.GetSelectionClusters();
+      return string.IsNullOrEmpty(output) ? selections : UnsupportedParserFeatureAutosplitToFile(writer, output, selections);
     }
 
     private static IEnumerable<Selection> UnsupportedParserFeatureAutosplitToFile(
-      AbstractTableWriter writer, string output, SelectionClusterBlock block)
+      AbstractTableWriter writer, string output, IEnumerable<Selection> selections)
     {
-      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
       if (outputOptions.Length != 2)
         return null;
 
@@ -101,10 +94,8 @@ namespace CorpusExplorer.Terminal.Console.Helper
         Directory.CreateDirectory(dir);
 
       var export = new OutputAction();
-      foreach (var cluster in block.GetSelectionClusters())
-        export.Execute(cluster,
-                       new[] {$"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\""},
-                       writer);
+      foreach (var cluster in selections)
+        export.Execute(cluster, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\"" }, writer);
 
       return null;
     }

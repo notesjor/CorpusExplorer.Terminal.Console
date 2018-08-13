@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Blocks.SelectionCluster.Generator;
 using CorpusExplorer.Sdk.Model;
@@ -8,14 +10,20 @@ namespace CorpusExplorer.Terminal.Console.Helper
 {
   public static class AutoSplitBlockHelper
   {
-    public static SelectionClusterBlock RunAutoSplit(Selection selection, FilterQueryUnsupportedParserFeature query,
-                                                     object[] values)
+    public static IEnumerable<Selection> RunAutoSplit(Selection selection, FilterQueryUnsupportedParserFeature query, object[] values)
     {
       var block = selection.CreateBlock<SelectionClusterBlock>();
-      var split = values[0].ToString().Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries);
-      if (split.Length < 1 || split.Length > 3)
+      var split = values[0].ToString().Split(new[] {";"}, StringSplitOptions.RemoveEmptyEntries).ToList();
+      if (split.Count < 1 || split.Count > 4)
         return null;
 
+      var window = 0;
+      if (split[0].StartsWith("WINDOW"))
+      {
+        window = int.Parse(split[0].Replace("WINDOW", ""));
+        split.RemoveAt(0);
+      }
+      
       switch (split[0])
       {
         case "TEXT":
@@ -26,7 +34,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
         case "INT":
         case "int":
         case "Int":
-          if (split.Length != 2)
+          if (split.Count != 2)
             return null;
           block.ClusterGenerator = new SelectionClusterGeneratorIntegerRange
           {
@@ -50,7 +58,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
           switch (split[1])
           {
             case "CLUSTER":
-              if (split.Length != 3)
+              if (split.Count != 3)
                 return null;
               block.ClusterGenerator = new SelectionClusterGeneratorDateTimeRange
               {
@@ -96,7 +104,8 @@ namespace CorpusExplorer.Terminal.Console.Helper
 
       block.MetadataKey = query.MetaLabel;
       block.Calculate();
-      return block;
+
+      return window > 1 ? block.GetSelectionClusters() : block.GetSelectionClustersWindowed(window);
     }
   }
 }
