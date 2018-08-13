@@ -473,6 +473,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine();
       System.Console.WriteLine("<: --- [ACTION] --- :>");
       System.Console.WriteLine();
+      System.Console.WriteLine("Most actions accept arguments. [ARG] is a requiered argument. {ARG} is an optional argument.");
 
       foreach (var action in _actions.OrderBy(x => x.Value.Action))
         System.Console.WriteLine($"[ACTION] = {action.Value.Description}");

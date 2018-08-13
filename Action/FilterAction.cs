@@ -14,7 +14,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class FilterAction : IAddonConsoleAction
   {
     public string Action => "query";
-    public string Description => "query - see help section [OUTPUT] for more information";
+    public string Description => "query [QUERY] - see help section [OUTPUT] for more information";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

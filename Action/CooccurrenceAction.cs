@@ -10,7 +10,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public string Action => "cooccurrence";
 
     public string Description =>
-      "cooccurrence [LAYER] [minSIGNI] [minFREQ] - significant cooccurrences for all [LAYER] values";
+      "cooccurrence [LAYER] {minSIGNI} {minFREQ} - significant cooccurrences for all [LAYER] values";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

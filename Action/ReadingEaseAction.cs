@@ -9,7 +9,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class ReadingEaseAction : IAddonConsoleAction
   {
     public string Action => "reading-ease";
-    public string Description => "reading-ease [LAYER] - reading ease of [LAYER]";
+    public string Description => "reading-ease {LAYER} - reading ease of [LAYER]";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

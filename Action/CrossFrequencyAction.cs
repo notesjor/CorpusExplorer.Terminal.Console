@@ -8,7 +8,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class CrossFrequencyAction : IAddonConsoleAction
   {
     public string Action => "cross-frequency";
-    public string Description => "cross-frequency [LAYER] - calculates the cross-frequency based on [LAYER]";
+    public string Description => "cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER]";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

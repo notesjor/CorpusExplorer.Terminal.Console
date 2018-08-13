@@ -16,7 +16,7 @@ namespace CorpusExplorer.Terminal.Console.Action
     public string Action => "frequency1-select";
 
     public string Description =>
-      "frequency1-select [LAYER] [WORDS] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens";
+      "frequency1-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

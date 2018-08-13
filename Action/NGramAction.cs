@@ -7,8 +7,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class NGramAction : IAddonConsoleAction
   {
-    public string Action => "n-gram";
-    public string Description => "n-gram [N] [LAYER] [minFREQ] - [N] sized N-gram based on [LAYER]";
+    public string Action => "ngram";
+    public string Description => "ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on [LAYER]";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

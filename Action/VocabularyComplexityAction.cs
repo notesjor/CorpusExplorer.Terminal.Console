@@ -8,7 +8,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class VocabularyComplexityAction : IAddonConsoleAction
   {
     public string Action => "vocabulary-complexity";
-    public string Description => "vocabulary-complexity [LAYER] - vocabulary complexity in [LAYER]";
+    public string Description => "vocabulary-complexity {LAYER} - vocabulary complexity in [LAYER]";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

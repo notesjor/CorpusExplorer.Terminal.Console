@@ -8,7 +8,7 @@ namespace CorpusExplorer.Terminal.Console.Action
   public class Frequency2Action : IAddonConsoleAction
   {
     public string Action => "frequency2";
-    public string Description => "frequency2 [LAYER1] [LAYER2] - count token frequency on 2 layers";
+    public string Description => "frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
