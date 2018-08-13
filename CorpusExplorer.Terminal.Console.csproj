@@ -53,6 +53,7 @@
     <Compile Include="Action\CollocateAction.cs" />
     <Compile Include="Action\CooccurrenceSelectedAction.cs" />
     <Compile Include="Action\MtldAction.cs" />
+    <Compile Include="Action\NgramSelectedAction.cs" />
     <Compile Include="Action\StyleBurrowsDeltaAction.cs" />
     <Compile Include="Action\StyleNgramAction.cs" />
     <Compile Include="Action\DocumentCountAction.cs" />

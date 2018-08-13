@@ -41,6 +41,7 @@ namespace CorpusExplorer.Terminal.Console
       new Frequency2Action(),
       new Frequency3Action(),
       new NGramAction(),
+      new NGramSelectedAction(),
       new CrossFrequencyAction(),
       new CooccurrenceAction(),
       new CooccurrenceSelectedAction(),
