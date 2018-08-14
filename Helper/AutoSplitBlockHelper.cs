@@ -105,7 +105,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       block.MetadataKey = query.MetaLabel;
       block.Calculate();
 
-      return window > 1 ? block.GetSelectionClusters() : block.GetSelectionClustersWindowed(window);
+      return window > 1 ? block.GetSelectionClustersWindowed(window) : block.GetSelectionClusters();
     }
   }
 }
