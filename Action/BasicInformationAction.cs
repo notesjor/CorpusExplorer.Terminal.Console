@@ -13,7 +13,9 @@ namespace CorpusExplorer.Terminal.Console.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var token = (double) selection.CountToken;
+      var token = (double)selection.CountToken;
+      var documents = (double)selection.CountDocuments;
+      var sentences = (double)selection.CountSentences;
 
       var dt = new DataTable();
       dt.Columns.Add("param", typeof(string));
@@ -21,20 +23,26 @@ namespace CorpusExplorer.Terminal.Console.Action
 
       dt.BeginLoadData();
       dt.Rows.Add("tokens", token);
-      dt.Rows.Add("tokens-factor", 1000000.0 / selection.CountToken);
-      dt.Rows.Add("sentences", (double) selection.CountSentences);
-      dt.Rows.Add("documents", (double) selection.CountDocuments);
+      dt.Rows.Add("token-factor", 1000000.0 / token);
+      dt.Rows.Add("sentences", sentences);
+      dt.Rows.Add("documents", documents);
 
       try
       {
         var types = selection.GetLayerValues("Wort").Count();
         dt.Rows.Add("types", types);
-        dt.Rows.Add("TTR", types / token);
+        dt.Rows.Add("TTR (type/token-ratio)", types / token);
+        dt.Rows.Add("TSR (type/sentence-ratio)", types / sentences);
+        dt.Rows.Add("TDR (type/document-ratio)", types / documents);
       }
       catch
       {
         // ignore
       }
+
+      dt.Rows.Add("ToSR (token/sentence-ratio)", token / sentences);
+      dt.Rows.Add("ToDR (token/document-ratio)", token / documents);
+      dt.Rows.Add("SDR (sentence/document-ratio)", sentences / documents);
 
       dt.EndLoadData();
 
