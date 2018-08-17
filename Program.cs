@@ -45,6 +45,7 @@ namespace CorpusExplorer.Terminal.Console
       new CrossFrequencyAction(),
       new CooccurrenceAction(),
       new CooccurrenceSelectedAction(),
+      new CollocateAction(),
       new StyleNgramAction(),
       new MetaAction(),
       new MetaDocumentAction(),
@@ -87,7 +88,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       try
       {
-        var dll = args.Name.Substring(0, args.Name.IndexOf(",")) + ".dll";
+        var dll = args.Name.Substring(0, args.Name.IndexOf(",", StringComparison.Ordinal)) + ".dll";
         var path = Path.Combine(
                                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                 @"CorpusExplorer\App",
@@ -216,6 +217,9 @@ namespace CorpusExplorer.Terminal.Console
       {
         System.Console.Write("cec.exe ");
         var command = System.Console.ReadLine();
+        if (command == null)
+          continue;
+
         switch (command)
         {
           case "quit":
@@ -332,7 +336,7 @@ namespace CorpusExplorer.Terminal.Console
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
       CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
 
-      _actions.Add("cluster", new ClusterAction {_actions = _actions});
+      _actions.Add("cluster", new ClusterAction {Actions = _actions});
 
       if (Configuration.AddonConsoleActions != null)
         foreach (var action in Configuration.AddonConsoleActions)
@@ -407,7 +411,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
       System.Console.WriteLine("Filtered [OUTPUT]:");
-      foreach (var x in exporter) System.Console.WriteLine($"[OUTPUT] = query [QUERY] {x.Key}#[FILE]");
+      foreach (var x in exporter) System.Console.WriteLine("[OUTPUT] = query [QUERY] {x.Key}#[FILE]");
       System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query  ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
@@ -461,7 +465,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Most actions accept arguments. [ARG] is a requiered argument. {ARG} is an optional argument.");
 
       foreach (var action in _actions.OrderBy(x => x.Value.Action))
-        System.Console.WriteLine($"[ACTION] = {action.Value.Description}");
+        System.Console.WriteLine("[ACTION] = {action.Value.Description}");
 
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");
       System.Console.WriteLine();
@@ -525,8 +529,9 @@ namespace CorpusExplorer.Terminal.Console
           StandardOutputEncoding = Configuration.Encoding,
           UseShellExecute = false
         });
-        var res = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
+
+        var res = process?.StandardOutput.ReadToEnd();
+        process?.WaitForExit();
 
         File.WriteAllText(split[1], res, Configuration.Encoding);
       }
@@ -542,8 +547,8 @@ namespace CorpusExplorer.Terminal.Console
           StandardOutputEncoding = Configuration.Encoding,
           UseShellExecute = false
         });
-        var res = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
+        var res = process?.StandardOutput.ReadToEnd();
+        process?.WaitForExit();
 
         System.Console.Out.Write(res);
       }

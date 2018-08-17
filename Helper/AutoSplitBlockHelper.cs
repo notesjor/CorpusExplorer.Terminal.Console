@@ -50,7 +50,6 @@ namespace CorpusExplorer.Terminal.Console.Helper
             Ranges = int.Parse(split[1]),
             AutoDetectMinMax = true
           };
-          ;
           break;
         case "DATE":
         case "date":
@@ -65,7 +64,6 @@ namespace CorpusExplorer.Terminal.Console.Helper
                 Ranges = int.Parse(split[2]),
                 AutoDetectMinMax = true
               };
-              ;
               break;
             case "CEN":
               block.ClusterGenerator = new SelectionClusterGeneratorDateTimeCenturyOnlyValue();

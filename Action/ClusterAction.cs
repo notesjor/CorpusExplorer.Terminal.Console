@@ -10,7 +10,8 @@ namespace CorpusExplorer.Terminal.Console.Action
 {
   public class ClusterAction : IAddonConsoleAction
   {
-    internal Dictionary<string, IAddonConsoleAction> _actions;
+    // ReSharper disable once MemberCanBePrivate.Global
+    public Dictionary<string, IAddonConsoleAction> Actions { get; set; }
     public string Action => "cluster";
 
     public string Description =>
@@ -33,11 +34,11 @@ namespace CorpusExplorer.Terminal.Console.Action
       var nargs = new List<string>(args);
       nargs.RemoveAt(0);
       var task = nargs[0];
-      if (!_actions.ContainsKey(task))
+      if (!Actions.ContainsKey(task))
         return;
 
       nargs.RemoveAt(0);
-      foreach (var s in selections) _actions[task].Execute(s, nargs.ToArray(), writer);
+      foreach (var s in selections) Actions[task].Execute(s, nargs.ToArray(), writer);
     }
   }
 }

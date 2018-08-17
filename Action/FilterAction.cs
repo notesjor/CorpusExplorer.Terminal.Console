@@ -36,10 +36,9 @@ namespace CorpusExplorer.Terminal.Console.Action
           return;
 
         var query = QueryParser.Parse(args[0]);
-        if (query is FilterQueryUnsupportedParserFeature)
+        if (query is FilterQueryUnsupportedParserFeature feature)
         {
-          UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature) query, args[1],
-                                                     writer);
+          UnsupportedQueryParserFeatureHelper.Handle(selection, feature, args[1], writer);
           return;
         }
 

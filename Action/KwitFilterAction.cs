@@ -38,7 +38,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       writer.WriteDirectThroughStream(Convert(vm.DiscoveredConnections.ToArray()));
     }
 
-    public string Convert(Tuple<string, int, string>[] connections)
+    private string Convert(Tuple<string, int, string>[] connections)
     {
       if (connections == null || connections.Length == 0)
         return string.Empty;

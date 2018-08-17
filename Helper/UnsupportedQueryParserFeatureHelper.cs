@@ -57,7 +57,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       var nam = Path.GetFileNameWithoutExtension(path);
       var ext = Path.GetExtension(path);
       var dir = Path.GetDirectoryName(path);
-      if (!Directory.Exists(dir))
+      if (dir != null && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
       export.Execute(block.RandomInvertSelection, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\"" },
@@ -90,7 +90,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       var nam = Path.GetFileNameWithoutExtension(path);
       var ext = Path.GetExtension(path);
 
-      if (!Directory.Exists(dir))
+      if (dir != null && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
       var export = new OutputAction();

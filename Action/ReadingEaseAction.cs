@@ -1,5 +1,4 @@
-﻿using System;
-using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -23,8 +22,9 @@ namespace CorpusExplorer.Terminal.Console.Action
 
         writer.WriteTable(selection.Displayname, table);
       }
-      catch (Exception ex)
+      catch
       {
+        // ignore
       }
     }
   }
