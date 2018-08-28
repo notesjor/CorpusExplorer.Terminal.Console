@@ -78,6 +78,8 @@ namespace CorpusExplorer.Terminal.Console
         {"F:CSV", new CsvTableWriter()},
         {"F:XML", new XmlTableWriter()},
         {"F:SQL", new SqlTableWriter()},
+        {"F:SQLSCHEMA", new SqlSchemaOnlyTableWriter()},
+        {"F:SQLDATA", new SqlDataOnlyTableWriter()},
         {"F:JSON", new JsonTableWriter()},
         {"F:HTML", new HtmlTableWriter()}
       };

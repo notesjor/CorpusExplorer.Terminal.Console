@@ -52,6 +52,9 @@
     <Compile Include="Action\ClusterAction.cs" />
     <Compile Include="Action\CollocateAction.cs" />
     <Compile Include="Action\CooccurrenceSelectedAction.cs" />
+    <Compile Include="Action\GetDocumentAllLayersAction.cs" />
+    <Compile Include="Action\GetDocumentDisplaynamesAction.cs" />
+    <Compile Include="Action\GetDocumentMetadataAction.cs" />
     <Compile Include="Action\MtldAction.cs" />
     <Compile Include="Action\NgramSelectedAction.cs" />
     <Compile Include="Action\StyleBurrowsDeltaAction.cs" />

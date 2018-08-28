@@ -24,7 +24,7 @@ namespace CorpusExplorer.Terminal.Console.Action
       dt.BeginLoadData();
       foreach (var pair in selection.DocumentMetadata)
       {
-        var items = new List<object> {pair.Key.ToString()};
+        var items = new List<object> { pair.Key.ToString() };
         items.AddRange(columns.Select(column => pair.Value.ContainsKey(column.Key) ? pair.Value[column.Key] : null));
         dt.Rows.Add(items.ToArray());
       }
