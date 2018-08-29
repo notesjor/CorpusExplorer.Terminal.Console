@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using CorpusExplorer.Sdk.Addon;
+using CorpusExplorer.Sdk.Action;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -16,7 +16,6 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Builder;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
-using CorpusExplorer.Terminal.Console.Action;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Xml.Processor;
 
@@ -24,52 +23,7 @@ namespace CorpusExplorer.Terminal.Console
 {
   public class Program
   {
-    private static readonly Dictionary<string, IAddonConsoleAction> _actions = new IAddonConsoleAction[]
-    {
-      new BasicInformationAction(),
-      new LayerNamesAction(),
-      new MetaCategoriesAction(),
-
-      new DocumentCountAction(),
-      new SentenceCountAction(),
-      new TokenCountAction(),
-      new LayerValuesAction(),
-      new TypeCountAction(),
-
-      new Frequency1SelectAction(),
-      new Frequency1Action(),
-      new Frequency2Action(),
-      new Frequency3Action(),
-      new NGramAction(),
-      new NGramSelectedAction(),
-      new CrossFrequencyAction(),
-      new CooccurrenceAction(),
-      new CooccurrenceSelectedAction(),
-      new CollocateAction(),
-      new StyleNgramAction(),
-      new MetaAction(),
-      new MetaDocumentAction(),
-      new MtldAction(),
-      new VocdAction(),
-      new GetDocumentAllLayersAction(),
-      new GetDocumentDisplaynamesAction(),
-      new GetDocumentMetadataAction(),
-
-      new VocabularyComplexityAction(),
-      new ReadingEaseAction(),
-      new StyleBurrowsDeltaAction(),
-
-      new KwicAnyFilterAction(),
-      new KwicAllInDocumentFilterAction(),
-      new KwicAllInSentenceFilterAction(),
-      new KwicExactPhraseFilterAction(),
-      new KwicFirstAnyFilterAction(),
-      new KwitFilterAction(),
-
-      // new ClusterAction() <- Wird in Main(string[] args) hinzugefügt und verknüpft
-      new OutputAction(),
-      new FilterAction()
-    }.ToDictionary(x => x.Action, x => x);
+    // private static readonly Dictionary<string, IAddonConsoleAction> _actions = new Dictionary<string, IAddonConsoleAction>();
 
     private static readonly string _appPath =
       Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "cec.exe");
@@ -132,7 +86,7 @@ namespace CorpusExplorer.Terminal.Console
 
     private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
     {
-      var tmp = fileOrDirectory.Split(new[] {"|", "\""}, StringSplitOptions.RemoveEmptyEntries);
+      var tmp = fileOrDirectory.Split(new[] { "|", "\"" }, StringSplitOptions.RemoveEmptyEntries);
       var files = new List<string>();
       foreach (var x in tmp)
         if (x.IsDirectory())
@@ -193,7 +147,8 @@ namespace CorpusExplorer.Terminal.Console
     private static void ExecuteDirect(string[] args)
     {
       var task = args[1].ToLowerInvariant();
-      if (!_actions.ContainsKey(task))
+      var action = Configuration.GetConsoleAction(task);
+      if (action == null)
         return;
 
       var corpus = LoadCorpus(args[0]);
@@ -205,7 +160,7 @@ namespace CorpusExplorer.Terminal.Console
       var temp = args.ToList();
       temp.RemoveAt(0); // CorpusFile (no longer needed)
       temp.RemoveAt(0); // Action (no longer needed)
-      _actions[task].Execute(selection, temp.ToArray(), _writer);
+      action.Execute(selection, temp.ToArray(), _writer);
     }
 
     private static void ExecuteShell()
@@ -274,7 +229,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       // Scraper extrahieren Meta-/Textdaten
       var scrapers = Configuration.AddonScrapers.GetDictionary();
-      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries).ToList();
+      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries).ToList();
       if (split.Count != 5)
         return null;
 
@@ -313,7 +268,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       // Importer laden bestehende Korpora
       var importers = Configuration.AddonImporters.GetDictionary();
-      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
       if (split.Length != 3)
         return null;
 
@@ -328,7 +283,7 @@ namespace CorpusExplorer.Terminal.Console
         return res[0];
 
       // Falls mehrere Korpora importiert werden, füge diese zusammen
-      var merger = new CorpusMerger {CorpusBuilder = new CorpusBuilderWriteDirect()};
+      var merger = new CorpusMerger { CorpusBuilder = new CorpusBuilderWriteDirect() };
       foreach (var x in res)
         if (x != null)
           merger.Input(x);
@@ -340,22 +295,6 @@ namespace CorpusExplorer.Terminal.Console
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
       CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
-
-      _actions.Add("cluster", new ClusterAction {Actions = _actions});
-
-      if (Configuration.AddonConsoleActions != null)
-        foreach (var action in Configuration.AddonConsoleActions)
-          if (_actions.ContainsKey(action.Action))
-          {
-            System.Console
-                  .WriteLine($"WARN: Add-on Action already exsists - dublicate Name {action.Action}. Press ENTER to continue!");
-            System.Console.ReadLine();
-          }
-          else
-          {
-            _actions.Add(action.Action, action);
-          }
-
       Execute(args);
     }
 
@@ -469,7 +408,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine();
       System.Console.WriteLine("Most actions accept arguments. [ARG] is a requiered argument. {ARG} is an optional argument.");
 
-      foreach (var action in _actions.OrderBy(x => x.Value.Action))
+      foreach (var action in Configuration.AddonConsoleActions.OrderBy(x => x.Action))
         System.Console.WriteLine("[ACTION] = {action.Value.Description}");
 
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");
@@ -500,7 +439,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       try
       {
-        XmlScriptProcessor.Process(path, _actions, _formats);
+        XmlScriptProcessor.Process(path, _formats);
         return true;
       }
       catch
@@ -521,7 +460,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (argument.Contains(" > "))
       {
-        var split = argument.Split(new[] {" > "}, StringSplitOptions.None).ToList();
+        var split = argument.Split(new[] { " > " }, StringSplitOptions.None).ToList();
         argument = split[0];
 
         var process = Process.Start(new ProcessStartInfo
