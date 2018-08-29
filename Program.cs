@@ -51,6 +51,9 @@ namespace CorpusExplorer.Terminal.Console
       new MetaDocumentAction(),
       new MtldAction(),
       new VocdAction(),
+      new GetDocumentAllLayersAction(),
+      new GetDocumentDisplaynamesAction(),
+      new GetDocumentMetadataAction(),
 
       new VocabularyComplexityAction(),
       new ReadingEaseAction(),
