@@ -350,12 +350,16 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine();
       var exporter = Configuration.AddonExporters.GetDictionary();
       System.Console.WriteLine("Direct [OUTPUT]:");
-      foreach (var x in exporter) System.Console.WriteLine($"[OUTPUT] = convert {x.Key}#[FILE]");
+      foreach (var x in exporter) 
+        System.Console.WriteLine($"[OUTPUT] = convert {x.Key}#[FILE]");
+      
       System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
       System.Console.WriteLine("Filtered [OUTPUT]:");
-      foreach (var x in exporter) System.Console.WriteLine("[OUTPUT] = query [QUERY] {x.Key}#[FILE]");
+      foreach (var x in exporter) 
+        System.Console.WriteLine($"[OUTPUT] = query [QUERY] {x.Key}#[FILE]");
+
       System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query  ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
@@ -409,7 +413,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Most actions accept arguments. [ARG] is a requiered argument. {ARG} is an optional argument.");
 
       foreach (var action in Configuration.AddonConsoleActions.OrderBy(x => x.Action))
-        System.Console.WriteLine("[ACTION] = {action.Value.Description}");
+        System.Console.WriteLine($"[ACTION] = {action.Description}");
 
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 frequency3 POS Lemma Wort");
       System.Console.WriteLine();
