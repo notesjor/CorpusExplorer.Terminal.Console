@@ -23,7 +23,7 @@ namespace CorpusExplorer.Terminal.Console
 {
   public class Program
   {
-    // private static readonly Dictionary<string, IAddonConsoleAction> _actions = new Dictionary<string, IAddonConsoleAction>();
+    // private static readonly Dictionary<string, IAction> _actions = new Dictionary<string, IAction>();
 
     private static readonly string _appPath =
       Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "cec.exe");

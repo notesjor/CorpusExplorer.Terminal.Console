@@ -24,9 +24,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
   public static class XmlScriptProcessor
   {
     private static string _errorLog;
-    private static readonly Dictionary<string, bool> _executeActionList = new Dictionary<string, bool>();
+    private static readonly Dictionary<Guid, ExecuteActionItem> _executeActionList = new Dictionary<Guid, ExecuteActionItem>();
     private static readonly object _executeActionListLock = new object();
     private static readonly object _sourceLoadLock = new object();
+
+    private class ExecuteActionItem
+    {
+      public string DisplayName { get; set; }
+      public bool Done { get; set; }
+    }
 
     /// <summary>
     ///   Verarbeitete ein CEScript
@@ -54,6 +60,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       else
         Parallel.ForEach(script.sessions.session, Configuration.ParallelOptions,
                          session => { ExecuteSession(formats, session, scriptFilename); });
+
+      ConsoleHelper.PrintHeader();
+      System.Console.WriteLine("--- SCRIPT SUCCESSFULLY EXECUTED ---");
     }
 
     private static void ExecuteSession(Dictionary<string, AbstractTableWriter> formats, session session, string scriptFilename)
@@ -177,11 +186,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="query">Query-Pattern, das zur auswahl der Schnappschüsse dient</param>
     /// <param name="scriptFilename">Name des CeScripts</param>
     /// <param name="allowOverride">Erlaubt das Überschreiben von exsistierenden Ausgabedateien</param>
-    private static void ExecuteAction(IAddonConsoleAction action, action a,
+    private static void ExecuteAction(IAction action, action a,
                                       Dictionary<string, AbstractTableWriter> formats,
                                       List<Selection> selections, string query, string scriptFilename,
                                       bool allowOverride)
     {
+      var taskGuid = Guid.NewGuid();
       try
       {
         if (!string.IsNullOrEmpty(a.mode) && a.mode == "merge")
@@ -193,7 +203,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             return;
 
           // Reporting für Konsole
-          ExecuteActionReport(query, a.type, outputPath, false);
+          ExecuteActionReport(taskGuid, query, a.type, outputPath, false);
 
           // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
           if (a.type == "query" || a.type == "convert")
@@ -227,7 +237,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           }
 
           // Reporting für Konsole
-          ExecuteActionReport(query, a.type, outputPath, true);
+          ExecuteActionReport(taskGuid, query, a.type, outputPath, true);
         }
         else
         {
@@ -240,7 +250,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               return;
 
             // Reporting für Konsole
-            ExecuteActionReport(selection.Displayname, a.type, outputPath, false);
+            ExecuteActionReport(taskGuid, selection.Displayname, a.type, outputPath, false);
 
             // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
             if (a.type == "query" || a.type == "convert")
@@ -270,7 +280,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             }
 
             // Reporting für Konsole
-            ExecuteActionReport(selection.Displayname, a.type, outputPath, true);
+            ExecuteActionReport(taskGuid, selection.Displayname, a.type, outputPath, true);
           });
         }
       }
@@ -280,41 +290,53 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
+    private static bool _first = true;
+
     /// <summary>
     ///   Erzeugt eine Ausgabe auf der Konsole - Damit die Nutzer*in einen Überblick behält was aktuell passiert.
     /// </summary>
+    /// <param name="taskGuid">Eindeutiger GUID des Tasls</param>
     /// <param name="selectionDisplayname">Schnappschussname</param>
     /// <param name="actionType">Typ der Aufgabe</param>
     /// <param name="outputPath">Pfad der Ausgabedatei</param>
     /// <param name="done">Ist die Aufgabe erledigt?</param>
-    private static void ExecuteActionReport(string selectionDisplayname, string actionType, string outputPath,
-                                            bool done)
+    private static void ExecuteActionReport(Guid taskGuid, string selectionDisplayname, string actionType, string outputPath, bool done)
     {
       try
       {
-        var key = $"{selectionDisplayname} > {actionType} > {Path.GetFileName(outputPath)}";
+        var display = $"{(string.IsNullOrWhiteSpace(selectionDisplayname) ? "ALL" : selectionDisplayname)} > {actionType} > {Path.GetFileName(outputPath)}";
         lock (_executeActionListLock)
         {
           // Entferne bereits erledigte Aufgaben
           var keys = _executeActionList.Keys.ToArray();
           foreach (var k in keys)
-            if (_executeActionList[k])
+            if (_executeActionList[k].Done)
               _executeActionList.Remove(k);
 
           // Status aktualisieren
-          if (_executeActionList.ContainsKey(key))
-            _executeActionList[key] = done;
+          if (_executeActionList.ContainsKey(taskGuid))
+            _executeActionList[taskGuid].Done = done;
           else
-            _executeActionList.Add(key, done);
+            _executeActionList.Add(taskGuid, new ExecuteActionItem { DisplayName = display, Done = false });
 
-          // Liste ausgeben
-          System.Console.ForegroundColor = ConsoleColor.Gray;
-          ConsoleHelper.PrintHeader();
-          System.Console.WriteLine("..:: CURRENT ACTIONS ::..");
-          foreach (var t in _executeActionList)
+          if (done || _first)
           {
-            System.Console.ForegroundColor = t.Value ? ConsoleColor.Green : ConsoleColor.Yellow;
-            System.Console.WriteLine($"{t.Key} ... {(t.Value ? "done" : "running")}");
+            _first = false;
+
+            // Liste ausgeben
+            System.Console.ForegroundColor = ConsoleColor.Gray;
+            ConsoleHelper.PrintHeader();
+            System.Console.WriteLine("..:: CURRENT ACTIONS ::..");
+            foreach (var t in _executeActionList)
+            {
+              System.Console.ForegroundColor = t.Value.Done ? ConsoleColor.Green : ConsoleColor.Yellow;
+              System.Console.WriteLine($"{t.Value.DisplayName} ... {(t.Value.Done ? "done" : "running")}");
+            }
+          }
+          else
+          {
+            System.Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine($"{display} ... running");
           }
 
           System.Console.ForegroundColor = ConsoleColor.Gray;
