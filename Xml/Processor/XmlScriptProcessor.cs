@@ -54,12 +54,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       ConsoleHelper.PrintHeader();
 
-      if (!string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync"))
-        foreach (var session in script.sessions.session)
-          ExecuteSession(formats, session, scriptFilename);
-      else
-        Parallel.ForEach(script.sessions.session, Configuration.ParallelOptions,
-                         session => { ExecuteSession(formats, session, scriptFilename); });
+
+      Parallel.ForEach(script.sessions.session,
+                       !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
+                         ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
+                         : Configuration.ParallelOptions,
+                       session => { ExecuteSession(formats, session, scriptFilename); });
 
       ConsoleHelper.PrintHeader();
       System.Console.WriteLine("--- SCRIPT SUCCESSFULLY EXECUTED ---");
@@ -79,15 +79,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         var selections = GenerateSelections(source, session.queries);
         var allowOverride = session.@override;
 
-        if (!string.IsNullOrEmpty(session.actions.mode) && session.actions.mode.StartsWith("sync"))
-          foreach (var action in session.actions.action)
-            ExecuteSessionAction(formats, scriptFilename, action, selections, allowOverride);
-        else
-          Parallel.ForEach(session.actions.action, Configuration.ParallelOptions,
-                           action =>
-                           {
-                             ExecuteSessionAction(formats, scriptFilename, action, selections, allowOverride);
-                           });
+        Parallel.ForEach(session.actions.action,
+                         !string.IsNullOrEmpty(session.actions.mode) && session.actions.mode.StartsWith("sync")
+                           ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
+                           : Configuration.ParallelOptions,
+                         action => { ExecuteSessionAction(formats, scriptFilename, action, selections, allowOverride); });
       }
       catch (Exception ex)
       {
