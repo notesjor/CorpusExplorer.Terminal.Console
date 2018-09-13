@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CorpusExplorer.Terminal.Console</RootNamespace>
     <AssemblyName>cec</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,22 +36,35 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>CorpusExplorerNextSnKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RegexMatcher, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\packages\RegexMatcher.1.0.0\lib\RegexMatcher.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Watson, Version=1.2.11.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\packages\Watson.1.2.11\lib\Watson.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper\ConsoleHelper.cs" />
     <Compile Include="Helper\XmlValueHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Model\Request\ExecuteRequest.cs" />
+    <Compile Include="Web\Model\Response\Abstract\AbstractResponse.cs" />
+    <Compile Include="Web\Model\Response\AvailableActionsResponse.cs" />
+    <Compile Include="Web\WebService.cs" />
     <Compile Include="Xml\Extensions\SourcesExtension.cs" />
     <Compile Include="Xml\Model\action.cs" />
     <Compile Include="Xml\Model\actions.cs" />
@@ -75,6 +89,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="CorpusExplorerNextSnKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Core\CorpusExplorer.Core.csproj">
@@ -86,7 +101,9 @@
       <Name>CorpusExplorer.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Web\Model\Request\Abstract\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

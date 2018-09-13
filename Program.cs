@@ -17,6 +17,7 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Builder;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Terminal.Console.Helper;
+using CorpusExplorer.Terminal.Console.Web;
 using CorpusExplorer.Terminal.Console.Xml.Processor;
 
 namespace CorpusExplorer.Terminal.Console
@@ -114,6 +115,12 @@ namespace CorpusExplorer.Terminal.Console
         args = list.ToArray();
       }
 
+      if (args[0].StartsWith("PORT:"))
+      {
+        ExecuteWebservice(args);
+        return;
+      }
+
       if (args[0].StartsWith("FILE:"))
       {
         ExecuteSkript(args);
@@ -142,6 +149,21 @@ namespace CorpusExplorer.Terminal.Console
 
       ExecuteDirect(args);
       _writer.Destroy();
+    }
+
+    private static void ExecuteWebservice(string[] args)
+    {
+      ConsoleHelper.PrintHeader();
+
+      if (args.Length != 2)
+        PrintHelp();
+
+      WebService.Run(_writer, int.Parse(args[0].Replace("PORT:", "")), LoadCorpus(args[1]));
+
+      while (true)
+      {
+        System.Console.ReadLine();
+      }
     }
 
     private static void ExecuteDirect(string[] args)
@@ -305,7 +327,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("cec.exe [INPUT] [OUTPUT]");
       System.Console.WriteLine("Syntax for filtering:");
       System.Console.WriteLine("cec.exe [INPUT] [QUERY] [OUTPUT]");
-      System.Console.WriteLine("Syntax for analytics (writes TSV-output to stdout):");
+      System.Console.WriteLine("Syntax for analytics (writes output to stdout):");
       System.Console.WriteLine("cec.exe [F:FORMAT] [INPUT] [ACTION]");
       System.Console.WriteLine("Syntax for scripting:");
       System.Console.WriteLine("cec.exe FILE:[PATH]");
@@ -313,6 +335,8 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("cec.exe DEBUG:[PATH]");
       System.Console.WriteLine("To start interactive shell mode");
       System.Console.WriteLine("cec.exe SHELL");
+      System.Console.WriteLine("To start a web-service");
+      System.Console.WriteLine("cec.exe [F:FORMAT] PORT:62323 [INPUT]");
       System.Console.WriteLine();
       System.Console.WriteLine();
       System.Console.WriteLine("<: --- [INPUT] --- :>");
@@ -350,14 +374,14 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine();
       var exporter = Configuration.AddonExporters.GetDictionary();
       System.Console.WriteLine("Direct [OUTPUT]:");
-      foreach (var x in exporter) 
+      foreach (var x in exporter)
         System.Console.WriteLine($"[OUTPUT] = convert {x.Key}#[FILE]");
-      
+
       System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
       System.Console.WriteLine("Filtered [OUTPUT]:");
-      foreach (var x in exporter) 
+      foreach (var x in exporter)
         System.Console.WriteLine($"[OUTPUT] = query [QUERY] {x.Key}#[FILE]");
 
       System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
