@@ -7,10 +7,13 @@ namespace CorpusExplorer.Terminal.WebOrbit.Model.Request
     [JsonProperty("action")]
     public string Action { get; set; }
 
+    [JsonProperty("selection")]
+    public string Selection { get; set; }
+
     [JsonProperty("arguments")]
     public string[] Arguments { get; set; }
 
     [JsonIgnore]
-    public string CacheKey => Arguments == null ? Action : string.Join("|", Action, Arguments);
+    public string CacheKey => Arguments == null ? $">{Action.Replace(">", "")}" : string.Join("|", Action.Replace(">", ""), Arguments);
   }
 }

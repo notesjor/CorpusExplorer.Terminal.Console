@@ -324,7 +324,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       ConsoleHelper.PrintHeader();
       System.Console.WriteLine("Syntax for annotation/conversion:");
-      System.Console.WriteLine("cec.exe [INPUT] [OUTPUT]");
+      System.Console.WriteLine("cec.exe [INPUT] convert [OUTPUT]");
       System.Console.WriteLine("Syntax for filtering:");
       System.Console.WriteLine("cec.exe [INPUT] [QUERY] [OUTPUT]");
       System.Console.WriteLine("Syntax for analytics (writes output to stdout):");

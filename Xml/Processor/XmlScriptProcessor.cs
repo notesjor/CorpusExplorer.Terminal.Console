@@ -219,17 +219,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               return;
 
             // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-            if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
-              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-              using (var bs = new BufferedStream(fs))
-              {
-                format.OutputStream = bs;
-                Parallel.ForEach(selections, Configuration.ParallelOptions,
-                                 // ReSharper disable once AccessToDisposedClosure
-                                 // ReSharper disable once ImplicitlyCapturedClosure
-                                 selection => action.Execute(selection, a.arguments, format));
-                format.Destroy();
-              }
+            using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+            using (var bs = new BufferedStream(fs))
+            {
+              var format = formats[formatKey].Clone(bs);
+              Parallel.ForEach(selections, Configuration.ParallelOptions,
+                               // ReSharper disable once AccessToDisposedClosure
+                               // ReSharper disable once ImplicitlyCapturedClosure
+                               selection => action.Execute(selection, a.arguments, format));
+              format.Destroy();
+            }
           }
 
           // Reporting für Konsole
@@ -265,14 +264,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 return;
 
               // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-              if (Activator.CreateInstance(formats[formatKey].GetType()) is AbstractTableWriter format)
-                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-                using (var bs = new BufferedStream(fs))
-                {
-                  format.OutputStream = bs;
-                  action.Execute(selection, a.arguments, format);
-                  format.Destroy();
-                }
+              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+              using (var bs = new BufferedStream(fs))
+              {
+                var format = formats[formatKey].Clone(bs);
+                action.Execute(selection, a.arguments, format);
+                format.Destroy();
+              }
             }
 
             // Reporting für Konsole
