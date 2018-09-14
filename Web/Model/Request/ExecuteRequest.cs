@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace CorpusExplorer.Terminal.WebOrbit.Model.Request
 {
@@ -13,7 +14,7 @@ namespace CorpusExplorer.Terminal.WebOrbit.Model.Request
     [JsonProperty("arguments")]
     public string[] Arguments { get; set; }
 
-    [JsonIgnore]
-    public string CacheKey => Arguments == null ? $">{Action.Replace(">", "")}" : string.Join("|", Action.Replace(">", ""), Arguments);
+    [JsonProperty("guids")]
+    public Guid[] DocumentGuids { get; set; }
   }
 }
