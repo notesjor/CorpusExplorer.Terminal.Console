@@ -16,7 +16,7 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.WebOrbit.Model.Request;
 using CorpusExplorer.Terminal.WebOrbit.Model.Response;
 using Newtonsoft.Json;
-using WatsonWebserver;
+using Tfres;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -34,10 +34,10 @@ namespace CorpusExplorer.Terminal.Console.Web
       _writer = writer;
       _mime = writer.MimeType;
 
-      var s = new Server("127.0.0.1", port, false, DefaultRoute, false);
+      var s = new Server("127.0.0.1", port, DefaultRoute);
 
-      s.AddStaticRoute("get", "/actions/", GetAvailableActionsRoute);
-      s.AddStaticRoute("post", "/execute/", GetExecuteRoute);
+      s.AddEndpoint(HttpVerb.GET, "/actions/", GetAvailableActionsRoute);
+      s.AddEndpoint(HttpVerb.POST, "/execute/", GetExecuteRoute);
     }
 
     private static HttpResponse GetExecuteRoute(HttpRequest req)
@@ -46,13 +46,16 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         var er = JsonConvert.DeserializeObject<ExecuteRequest>(Encoding.UTF8.GetString(req.Data));
         if (er == null)
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"), true);
+          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"));
 
         var a = Configuration.GetConsoleAction(er.Action);
         if (a == null)
           return null;
 
         var selection = _corpus.ToSelection();
+        if (er.DocumentGuids != null && er.DocumentGuids.Length > 0)
+          selection = selection.CreateTemporary(er.DocumentGuids);
+
         using (var ms = new MemoryStream())
         {
           var writer = _writer.Clone(ms);
@@ -60,12 +63,12 @@ namespace CorpusExplorer.Terminal.Console.Web
           writer.Destroy(false);
 
           ms.Seek(0, SeekOrigin.Begin);
-          return new HttpResponse(req, true, 200, null, _mime, Encoding.UTF8.GetString(ms.ToArray()), true);
+          return new HttpResponse(req, true, 200, null, _mime, Encoding.UTF8.GetString(ms.ToArray()));
         }
       }
       catch (Exception ex)
       {
-        return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message), true);
+        return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
       }
     }
 
@@ -75,7 +78,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         try
         {
           if (_availableActions != null)
-            return new HttpResponse(req, true, 200, null, _mime, _availableActions, true);
+            return new HttpResponse(req, true, 200, null, _mime, _availableActions);
 
           var res = new AvailableActionsResponse
           {
@@ -89,11 +92,11 @@ namespace CorpusExplorer.Terminal.Console.Web
           };
           _availableActions = JsonConvert.SerializeObject(res);
 
-          return new HttpResponse(req, true, 200, null, _mime, _availableActions, true);
+          return new HttpResponse(req, true, 200, null, _mime, _availableActions);
         }
         catch (Exception ex)
         {
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message), true);
+          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
         }
     }
 
@@ -112,7 +115,7 @@ namespace CorpusExplorer.Terminal.Console.Web
 
     private static HttpResponse DefaultRoute(HttpRequest req)
     {
-      return new HttpResponse(req, true, 200, null, "text/plain", "CorpusExplorer-Endpoint (Version 1.0.0)", true);
+      return new HttpResponse(req, true, 200, null, "text/plain", "CorpusExplorer-Endpoint (Version 1.0.0)");
     }
   }
 }

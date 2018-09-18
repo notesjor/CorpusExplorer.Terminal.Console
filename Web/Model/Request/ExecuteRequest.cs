@@ -8,9 +8,6 @@ namespace CorpusExplorer.Terminal.WebOrbit.Model.Request
     [JsonProperty("action")]
     public string Action { get; set; }
 
-    [JsonProperty("selection")]
-    public string Selection { get; set; }
-
     [JsonProperty("arguments")]
     public string[] Arguments { get; set; }
 
