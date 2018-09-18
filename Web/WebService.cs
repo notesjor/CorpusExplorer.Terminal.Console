@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
@@ -17,6 +18,8 @@ using CorpusExplorer.Terminal.WebOrbit.Model.Request;
 using CorpusExplorer.Terminal.WebOrbit.Model.Response;
 using Newtonsoft.Json;
 using Tfres;
+using HttpRequest = Tfres.HttpRequest;
+using HttpResponse = Tfres.HttpResponse;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -44,7 +47,7 @@ namespace CorpusExplorer.Terminal.Console.Web
     {
       try
       {
-        var er = JsonConvert.DeserializeObject<ExecuteRequest>(Encoding.UTF8.GetString(req.Data));
+        var er = req.PostData<ExecuteRequest>();
         if (er == null)
           return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"));
 
