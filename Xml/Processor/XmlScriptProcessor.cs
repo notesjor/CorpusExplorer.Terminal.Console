@@ -45,16 +45,23 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     public static void Process(string path, Dictionary<string, AbstractTableWriter> formats)
     {
       _errorLog = path + ".log";
-      var script = LoadCeScript(path, out var scriptFilename);
-      if (script == null)
+
+      string scriptFilename = null;
+      cescript script = null;
+      try
       {
-        System.Console.WriteLine("XML Parser Error 001");
-        return;
+        script = CeScriptHelper.LoadCeScript(path, out scriptFilename);
+      }
+      catch (Exception ex)
+      {
+        System.Console.WriteLine("E001: XML Parser Error");
+        System.Console.WriteLine(ex.Message);
+        LogError(ex);
+        throw ex;
       }
 
       ConsoleHelper.PrintHeader();
-
-
+      
       Parallel.ForEach(script.sessions.session,
                        !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
                          ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
@@ -597,32 +604,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       if (res.ContainsKey(key))
         return;
       res.Add(key, GenerateSelections_Compile(all, query.Text.CleanXmlValue(), query.name));
-    }
-
-    /// <summary>
-    ///   Lade/Deserialisere das CeScrpit
-    /// </summary>
-    /// <param name="path">Pfad</param>
-    /// <param name="scriptFilename">Gibt den Dateinamen ohne Erweiterung zurück</param>
-    /// <returns>CeScript</returns>
-    private static cescript LoadCeScript(string path, out string scriptFilename)
-    {
-      cescript script = null;
-      scriptFilename = Path.GetFileNameWithoutExtension(path);
-      try
-      {
-        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-        {
-          var se = new XmlSerializer(typeof(cescript));
-          script = se.Deserialize(fs) as cescript;
-        }
-      }
-      catch (Exception ex)
-      {
-        LogError(ex);
-      }
-
-      return script;
     }
 
     private static void LogError(Exception ex, string additionalLine = null)

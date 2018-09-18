@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 
-[assembly: AssemblyTitle("CorpusExplorer.Port.RProgramming.Api")]
+[assembly: AssemblyTitle("CorpusExplorer.Terminal.Console")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CorpusExplorer.Port.RProgramming.Api")]
+[assembly: AssemblyProduct("CorpusExplorer.Terminal.Console")]
 [assembly: AssemblyCopyright("Copyright © 2017 by Jan Oliver Rüdiger")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

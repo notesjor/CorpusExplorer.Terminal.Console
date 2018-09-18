@@ -52,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\CeScriptHelper.cs" />
     <Compile Include="Helper\ConsoleHelper.cs" />
+    <Compile Include="Helper\CorpusLoadHelper.cs" />
     <Compile Include="Helper\XmlValueHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

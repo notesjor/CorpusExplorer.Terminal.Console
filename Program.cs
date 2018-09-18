@@ -85,19 +85,6 @@ namespace CorpusExplorer.Terminal.Console
         }
     }
 
-    private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
-    {
-      var tmp = fileOrDirectory.Split(new[] { "|", "\"" }, StringSplitOptions.RemoveEmptyEntries);
-      var files = new List<string>();
-      foreach (var x in tmp)
-        if (x.IsDirectory())
-          files.AddRange(Directory.GetFiles(x, "*.*"));
-        else
-          files.Add(x);
-
-      return files;
-    }
-
     private static void Execute(string[] args)
     {
       if (args == null || args.Length == 0)
@@ -158,7 +145,7 @@ namespace CorpusExplorer.Terminal.Console
       if (args.Length != 2)
         PrintHelp();
 
-      WebService.Run(_writer, int.Parse(args[0].Replace("PORT:", "")), LoadCorpus(args[1]));
+      WebService.Run(_writer, int.Parse(args[0].Replace("PORT:", "")), args[1]);
 
       while (true)
       {
@@ -173,7 +160,7 @@ namespace CorpusExplorer.Terminal.Console
       if (action == null)
         return;
 
-      var corpus = LoadCorpus(args[0]);
+      var corpus = CorpusLoadHelper.LoadCorpus(args[0]);
       var selection = corpus?.ToSelection();
       if (selection == null || selection.CountToken == 0)
         return;
@@ -236,81 +223,6 @@ namespace CorpusExplorer.Terminal.Console
 
       foreach (var line in lines)
         StartProcessCec(line);
-    }
-
-    private static AbstractCorpusAdapter LoadCorpus(string path)
-    {
-      return path.StartsWith("annotate#")
-               ? LoadCorpusAnnotate(path)
-               : (path.StartsWith("import#")
-                    ? LoadCorpusImport(path)
-                    : null);
-    }
-
-    private static AbstractCorpusAdapter LoadCorpusAnnotate(string path)
-    {
-      // Scraper extrahieren Meta-/Textdaten
-      var scrapers = Configuration.AddonScrapers.GetDictionary();
-      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-      if (split.Count != 5)
-        return null;
-
-      split.RemoveAt(0); // entfernt annotate#
-      if (!scrapers.ContainsKey(split[0]))
-        return null;
-
-      var scraper = scrapers[split[0]];
-      // Cleaner bereinigen Meta-/Textdaten
-      var cleaner = new StandardCleanup();
-      split.RemoveAt(0); // entfernt [SCRAPER]
-
-      // Tagger annotieren Textdaten
-      var taggers = Configuration.AddonTaggers.GetDictionary();
-      if (!taggers.ContainsKey(split[0]))
-        return null;
-
-      var tagger = taggers[split[0]];
-      split.RemoveAt(0); // entfernt [TAGGER]
-      tagger.LanguageSelected = split[0];
-      split.RemoveAt(0); // entfernt [LANGUAGE]
-      var files = Directory.GetFiles(split[0].Replace("\"", ""), "*.*", SearchOption.TopDirectoryOnly);
-
-      // Nachdem alle Informationen vorliegen, arbeite die Dateien ab.
-      scraper.Input.Enqueue(files);
-      scraper.Execute();
-      cleaner.Input.Enqueue(scraper.Output);
-      cleaner.Execute();
-      tagger.Input.Enqueue(cleaner.Output);
-      tagger.Execute();
-
-      return tagger.Output.FirstOrDefault();
-    }
-
-    private static AbstractCorpusAdapter LoadCorpusImport(string path)
-    {
-      // Importer laden bestehende Korpora
-      var importers = Configuration.AddonImporters.GetDictionary();
-      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
-      if (split.Length != 3)
-        return null;
-
-      if (!importers.ContainsKey(split[1]))
-        return null;
-      var importer = importers[split[1]];
-
-      var files = DetectFileOrDirectoryPaths(split[2]);
-
-      var res = importer.Execute(files).ToArray();
-      if (res.Length == 1)
-        return res[0];
-
-      // Falls mehrere Korpora importiert werden, füge diese zusammen
-      var merger = new CorpusMerger { CorpusBuilder = new CorpusBuilderWriteDirect() };
-      foreach (var x in res)
-        if (x != null)
-          merger.Input(x);
-      merger.Execute();
-      return merger.Output.FirstOrDefault();
     }
 
     private static void Main(string[] args)
