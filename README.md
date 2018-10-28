@@ -35,6 +35,11 @@ cec.exe F:XML import#ImporterCec6#demo.cec6 frequency > frequency.xml
 cec.exe F:HTML import#ImporterCec6#demo.cec6 frequency > frequency.html
 cec.exe F:SQL import#ImporterCec6#demo.cec6 frequency > frequency.sql
 ```
+- Bsp. für REST-Aufruf (Maturity Level 2) - Erlaubt es ein Korpus als REST-Webservice zu hosten
+cec.exe [F:FORMAT] PORT:[PORT] [INPUT]
+```SHELL
+cec.exe F:JSON PORT:3535 import#ImporterCec6#demo.cec6
+```
 
 ### [INPUT]
 Es können zwei unterschiedliche INPUT-Quellen genutzt werden. "import" für bereits annotiertes Korpusmaterial oder "annotate", um einen Annotationsprozess anzustoßen. 
@@ -65,17 +70,21 @@ cec.exe annotate#TwitterScraper#ClassicTreeTagger#Deutsch#"C:/korpus" convert Ex
 ```
 
 ### [ACTION]
-Für ACTION können folgenden Befehle genutzt werden:
+Für ACTION können folgenden Befehle genutzt werden (Argumente in [] sind verpflichtend, Argumente in {} sind optional.):
 - basic-information - Gibt grundlegende Informationen aus Token/Sätze/Dokumente
-- cluster [QUERY] [ACTION] [ARGUMENTS] - Erlaubt es einen [ACTION] über ein Cluster auszuführen. Das Cluster wird durch [QUERY] erzeugt.
-- convert - Konvertiert Korpusdaten in ein anderes Format - siehe [OUTPUT]
-- cooccurrence [LAYER] [minSIGNI] [minFREQ] - Berechnet zu allen Worten in [LAYER] alle Kookkurrenzen. Erlaubt es optional ein Minimum für die Signifikanz [minSIGNI] und für die Frequenz [minFREQ] anzugeben. Standardwerte: [minSIGNI] = 0.9 / [minFREQ] = 1
+- cluster [QUERY] [ACTION] {ARGUMENTS} - Erlaubt es einen [ACTION] über ein Cluster auszuführen. Das Cluster wird durch [QUERY] erzeugt.
+- cluster-list [QUERY] - Führt die gleiche Analyse durch wie "cluster", doch werden die Cluster als Liste ausgegeben und nicht zur weiteren Auswertung herangezogen.
+- convert [OUTPUT] - Konvertiert Korpusdaten in ein anderes Format - siehe [OUTPUT]
+- cooccurrence [LAYER] {minSIGNI} {minFREQ} - Berechnet zu allen Worten in [LAYER] alle Kookkurrenzen. Erlaubt es optional ein Minimum für die Signifikanz [minSIGNI] und für die Frequenz [minFREQ] anzugeben. Standardwerte: [minSIGNI] = 0.9 / [minFREQ] = 1
 - cooccurrence-select [LAYER] [WORDS] - Ermittel die Kookkurrenzen zu einem bestimmten Suchwort/Phrase.
-- cross-frequency [LAYER] - Berechnet zu allen Worten in [LAYER] die Kreuzfrequenz.
-- frequency1 [LAYER] - Berechnet die Frequenzen für [LAYER]
+- cross-frequency {LAYER} - Berechnet zu allen Worten in [LAYER] die Kreuzfrequenz (Standardlayer = Wort).
+- frequency1 {LAYER} - Berechnet die Frequenzen für [LAYER] (Standardlayer = Wort).
 - frequency1-select [LAYER1] [WORDS] - Berechnet die Frequenzen für [LAYER]. Dabei werden nur die gegebenen [WORDS] gezählt (Leerzeichen getrennt). Anstelle von [WORDS] kann auch FILE:[FILE], also eine Datei mit einer Wortliste (pro Zeile ein Wort), angegeben werden - ODER - SDM:[FILE], also eine Datei mit einem SDM-Datei (Sentiment-Detection-Model).
-- frequency2 [LAYER1] [LAYER2] - Berechnet die Frequenzen über zwei Layer [LAYER1] [LAYER2]
-- frequency3 [LAYER1] [LAYER2] [LAYER3] - Berechnet die Frequenzen über drei Layer [LAYER1] [LAYER2] [LAYER3]
+- frequency2 {LAYER1} {LAYER2} - Berechnet die Frequenzen über zwei Layer [LAYER1] [LAYER2] (Standardlayer = POS / Wort)
+- frequency3 {LAYER1} {LAYER2} {LAYER3} - Berechnet die Frequenzen über drei Layer [LAYER1] [LAYER2] [LAYER3]  (Standardlayer = POS / Lemma / Wort)
+- get-document [GUID] {LAYER} - Gibt alle Layer-Daten für das gewünschte Dokumente (GUID) zurück (Standardlayer = Wort).
+- get-document-displaynames - Gibt alle Dokumente als GUID/Dokumentname zurück.
+- get-document-metadata [GUID] - Gibt alle Metadaten eines Dokuments (GUID) zurück.
 - get-types [LAYER] - Auflistung aller Types (ohne Frequenz) im [LAYER]
 - how-many-documents - Anzahl der Dokumente
 - how-many-sentences - Anzahl der Sätze
@@ -83,17 +92,22 @@ Für ACTION können folgenden Befehle genutzt werden:
 - how-many-types [LAYER] - Anzahl der Types in [LAYER]
 - kwic-any [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER]
 - kwic-document [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Dokument vorkommen
-- kwic-first-any [LAYER] [WORD] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Das [WORD] muss in einem Dokument vorkommen plus ein beliebiges [WORDS]
-- kwic-phrase [LAYER] [WORDS] - [WORDS] = KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in exakt der gegebenen Reihenfolge vorkommen
-- kwic-sentence [LAYER] [WORDS] - [WORDS] = KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Satz vorkommen
+- kwic-first-any [LAYER] [WORD] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Das [WORD] muss in einem Dokument vorkommen plus ein beliebiges [WORDS]
+- kwic-phrase [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in exakt der gegebenen Reihenfolge vorkommen
+- kwic-sentence [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Satz vorkommen
+- kwic-sig [LAYER] [WORDS] - KWIC-Analyse die wie kwic-phrase funktioniert aber zusätzliche Signifikanzdaten bietet.
 - kwit [LAYER] [WORDS] - [WORDS] = Spezielle KWIC-Analyse, die die Daten als GraphViz-DiGraph aufbereitet. Siehe: kwic-phrase
 - layer-names - Auflistung aller verfügbaren Layer
 - meta - Auflistung aller Metadaten + Token/Type/Dokument-Frequenz
 - meta-by-document - Auflistung aller Dokumente mit zugehörigen Metadaten
 - meta-categories - Auflistung aller verfügbaren Meta-Kategorien
 - mtld [LAYER] [META] - Berechnet MTLD für den [LAYER] automatische Clusterung basierend auf [META]
-- n-gram [N] [LAYER] [minFREQ] - Berechnet [N]-Gramme für [LAYER]. Optional: [minFREQ] = Mindestfrequenz
-- query - Führt eine Abfrage auf der aktuell geladenen Korpusmenge durch. Siehe [OUTPUT]
+- ner [NERFILE] - Führt eine Named-Entity-Recognition mithilfe das zuvor ermittelten Wörterbuchs durch.
+- n-gram [N] {LAYER} {minFREQ} - Berechnet [N]-Gramme für [LAYER] (Standardlayer = Wort). Optional: {minFREQ} = Mindestfrequenz / Standardwert: 1
+- n-gram-selected [N] [LAYER] [minFREQ] [WORDS] - Gibt alle [N]-Gramme für [LAYER] mit einer Mindestfrequenz [minFREQ] aus, die [WORDS] enthalten.
+- position-frequency [LAYER] [WORD] - Gibt die Links-/Rechtsfrequenz zu [WORD] in [LAYER] aus.
+- query [QUERY] - Führt eine Abfrage auf der aktuell geladenen Korpusmenge durch. Siehe [OUTPUT]
+- query-list [QUERY] [NAME] - Funktioniert wie query, nur dass das Ergebnis eine Liste mit den Ergebnissen ist und nicht ein Subkorpus.
 - reading-ease [LAYER] - Berechnet verschiedene Lesbarkeitsindices für [LAYER]
 - style-burrowsd [META1] [META2] - Stilanalyse mittels Burrows-Delta. Vergleicht zwei Metaangaben miteinander
 - style-ngram [LAYER] [META] [N] [minFREQ] - Stilanalyse mittels N-Grammen. Siehe: n-gram
