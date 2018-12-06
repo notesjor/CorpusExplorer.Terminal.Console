@@ -309,6 +309,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("( = starts with (case sensitive) | ) = ends with (case sensitive)");
       System.Console.WriteLine("Second character [OPERATOR] (if you choose T):");
       System.Console.WriteLine("~ = any match | - = all in one document | = = all in one sentence | § = exact phrase");
+      System.Console.WriteLine("? = regEx value | F = regEx fulltext-search (very slow) | 1 = first plus any other match");
       System.Console.WriteLine("Second character [OPERATOR] (if you choose X):");
       System.Console.WriteLine("R = random selection | S = auto split by meta-data");
       System.Console.WriteLine("If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)");
