@@ -285,19 +285,14 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("<: --- [OUTPUT] --- :>");
       System.Console.WriteLine();
       var exporter = Configuration.AddonExporters.GetDictionary();
-      System.Console.WriteLine("Direct [OUTPUT]:");
+      System.Console.WriteLine("[OUTPUT-EXPORTER] - for query or convert:");
       foreach (var x in exporter)
-        System.Console.WriteLine($"[OUTPUT] = convert {x.Key}#[FILE]");
+        System.Console.WriteLine($"[OUTPUT] = {x.Key}#[FILE]");
 
       System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
-      System.Console.WriteLine();
-      System.Console.WriteLine("Filtered [OUTPUT]:");
-      foreach (var x in exporter)
-        System.Console.WriteLine($"[OUTPUT] = query [QUERY] {x.Key}#[FILE]");
+      System.Console.WriteLine("Example 'convert': cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
+      System.Console.WriteLine("Example 'query': cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query !M:Author::Jan ExporterCec6#C:\\mycorpus.cec6");
 
-      System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query  ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
       System.Console.WriteLine("[QUERY]:");
       System.Console.WriteLine("A preceding ! inverts the entiere query");

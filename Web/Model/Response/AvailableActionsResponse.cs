@@ -12,7 +12,7 @@ namespace CorpusExplorer.Terminal.WebOrbit.Model.Response
     public class AvailableActionsResponseItem
     {
       public string action { get; set; }
-      public string describtion { get; set; }
+      public string description { get; set; }
     }
 
     public AvailableActionsResponseItem[] Items{get;set;}

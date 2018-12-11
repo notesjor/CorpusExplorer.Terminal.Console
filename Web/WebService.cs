@@ -24,6 +24,7 @@ using CorpusExplorer.Terminal.WebOrbit.Model.Request;
 using CorpusExplorer.Terminal.WebOrbit.Model.Response;
 using Newtonsoft.Json;
 using Tfres;
+using Tfres.Documentation;
 using HttpRequest = Tfres.HttpRequest;
 using HttpResponse = Tfres.HttpResponse;
 
@@ -37,6 +38,8 @@ namespace CorpusExplorer.Terminal.Console.Web
     private static AbstractCorpusAdapter _corpus;
     private static Dictionary<string, string> _cache = new Dictionary<string, string>();
     private static string _mime;
+    private static string _documentation;
+    private static string _url;
 
     public static void Run(AbstractTableWriter writer, int port, string file)
     {
@@ -55,7 +58,8 @@ namespace CorpusExplorer.Terminal.Console.Web
       _writer = writer;
       _mime = writer.MimeType;
 
-      System.Console.Write($"SERVER http://127.0.0.1:{port}/ ...");
+      _url = $"http://127.0.0.1:{port}/";
+      System.Console.Write($"SERVER {_url} ...");
       var s = new Server("127.0.0.1", port, DefaultRoute);
       s.AddEndpoint(HttpVerb.GET, "/actions/", GetAvailableActionsRoute);
       s.AddEndpoint(HttpVerb.POST, "/execute/", GetExecuteRoute);
@@ -73,7 +77,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (_cache.Count > 0 && (er.DocumentGuids == null || er.DocumentGuids.Length == 0))
         {
           var key = GetCacheKey(er.Action, er.Arguments);
-          if(_cache.ContainsKey(key))
+          if (_cache.ContainsKey(key))
             return new HttpResponse(req, true, 200, null, _mime, _cache[key]);
         }
 
@@ -116,7 +120,7 @@ namespace CorpusExplorer.Terminal.Console.Web
                                                                  AvailableActionsResponseItem
                                                                {
                                                                  action = action.Action,
-                                                                 describtion = action.Description
+                                                                 description = action.Description
                                                                }).ToArray()
           };
           _availableActions = JsonConvert.SerializeObject(res);
@@ -144,7 +148,62 @@ namespace CorpusExplorer.Terminal.Console.Web
 
     private static HttpResponse DefaultRoute(HttpRequest req)
     {
-      return new HttpResponse(req, true, 200, null, "text/plain", "CorpusExplorer-Endpoint (Version 1.0.0)");
+      return new HttpResponse(req, true, 200, null, "application/json", Documentation);
+    }
+
+    private static string Documentation
+    {
+      get
+      {
+        if (_documentation != null)
+          return _documentation;
+
+        var doc = new SericeDocumentation
+        {
+          Description = "CorpusExplorer-Endpoint (Version 1.0.0)",
+          Url = _url,
+          Endpoints = new[]
+          {
+            new ServiceEndpoint
+            {
+              Url = $"{_url}actions/",
+              AllowedVerbs = new[] {"GET"},
+              Arguments = null,
+              Description = $"Shows all available Actions for {_url}execute/",
+              ReturnValue = new[]
+              {
+                new ServiceParameter
+                  {Name = "action", Type = "string", Description = "The name of the action"},
+                new ServiceParameter
+                  {Name = "description", Type = "string", Description = "Short description - action and parameter"},
+              }
+            },
+            new ServiceEndpoint
+            {
+              Url = $"{_url}execute/",
+              AllowedVerbs = new[] {"POST"},
+              Arguments = new[]
+              {
+                new ServiceArgument
+                  {Name = "action", Type = "string", Description = "name of the action to execute", IsRequired = true},
+                new ServiceArgument
+                  {Name = "arguments", Type = "key-value", Description = "example: {'key1':'value1', 'key2':'value2', 'key3':'value3'}", IsRequired = true},
+                new ServiceArgument
+                  {Name = "guids", Type = "array of guids (as string)", Description = "example: ['guid1', 'guid2', 'guid3']", IsRequired = false},
+              },
+              Description = $"Shows all available Actions for {_url}execute/",
+              ReturnValue = new[]
+              {
+                new ServiceParameter
+                  {Name = "table", Type = "table (rows > array of objects)", Description = "execution result"},
+              }
+            },
+          }
+        };
+        
+        _documentation = JsonConvert.SerializeObject(doc);
+        return _documentation;
+      }
     }
 
     private static AbstractCorpusAdapter GetCorpusFromScript(string path)
