@@ -27,7 +27,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
     private static AbstractCorpusAdapter LoadCorpusAnnotate(string path)
     {
       // Scraper extrahieren Meta-/Textdaten
-      var scrapers = Configuration.AddonScrapers.GetDictionary();
+      var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
       var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries).ToList();
       if (split.Count != 5)
         return null;
@@ -42,7 +42,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       split.RemoveAt(0); // entfernt [SCRAPER]
 
       // Tagger annotieren Textdaten
-      var taggers = Configuration.AddonTaggers.GetDictionary();
+      var taggers = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
       if (!taggers.ContainsKey(split[0]))
         return null;
 
@@ -66,7 +66,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
     private static AbstractCorpusAdapter LoadCorpusImport(string path)
     {
       // Importer laden bestehende Korpora
-      var importers = Configuration.AddonImporters.GetDictionary();
+      var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
       var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
       if (split.Length != 3)
         return null;

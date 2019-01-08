@@ -56,6 +56,7 @@
     <Compile Include="CooccurrenceAction.cs" />
     <Compile Include="CooccurrenceSelectedAction.cs" />
     <Compile Include="CrossFrequencyAction.cs" />
+    <Compile Include="CooccurrenceProfileAction.cs" />
     <Compile Include="DocumentCountAction.cs" />
     <Compile Include="Frequency1Action.cs" />
     <Compile Include="Frequency1SelectAction.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="GetDocumentAction.cs" />
     <Compile Include="GetDocumentDisplaynamesAction.cs" />
     <Compile Include="GetDocumentMetadataAction.cs" />
+    <Compile Include="Helper\UnsupportedQueryParserFeatureHelper.cs" />
     <Compile Include="KwicAllInDocumentFilterAction.cs" />
     <Compile Include="KwicAllInSentenceFilterAction.cs" />
     <Compile Include="KwicAnyFilterAction.cs" />
@@ -94,7 +96,14 @@
     <Compile Include="VocdAction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="CorpusExplorerNextSnKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
+      <Project>{DC1B5A58-29DA-476D-89F8-E73A1DB11E52}</Project>
+      <Name>CorpusExplorer.Sdk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -19,7 +19,7 @@ namespace CorpusExplorer.Sdk.Action
       var output = args.Last().Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
-      var exporters = Configuration.AddonExporters.GetDictionary();
+      var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
       if (!exporters.ContainsKey(output[0]))
         return;
 

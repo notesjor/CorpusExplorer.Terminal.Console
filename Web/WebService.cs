@@ -18,9 +18,9 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Terminal.Console.Helper;
+using CorpusExplorer.Terminal.Console.Web.Model.Request;
 using CorpusExplorer.Terminal.Console.Xml.Extensions;
 using CorpusExplorer.Terminal.Console.Xml.Model;
-using CorpusExplorer.Terminal.WebOrbit.Model.Request;
 using CorpusExplorer.Terminal.WebOrbit.Model.Response;
 using Newtonsoft.Json;
 using Tfres;
@@ -83,7 +83,7 @@ namespace CorpusExplorer.Terminal.Console.Web
 
         var a = Configuration.GetConsoleAction(er.Action);
         if (a == null)
-          return null;
+          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "action not available"));
 
         var selection = _corpus.ToSelection();
         if (er.DocumentGuids != null && er.DocumentGuids.Length > 0)
@@ -302,8 +302,8 @@ namespace CorpusExplorer.Terminal.Console.Web
       // Wenn zu annotierendes Material vorhanden ist, dann lese dieses ein.
       if (sources.annotate().Any())
       {
-        var scrapers = Configuration.AddonScrapers.GetDictionary();
-        var taggers = Configuration.AddonTaggers.GetDictionary();
+        var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
+        var taggers = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
 
         foreach (var annotate in sources.annotate())
           try
@@ -340,7 +340,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       // Wenn Import-Quellen vorhanden sind, dann lese diese ein.
       if (sources.import().Any())
       {
-        var importers = Configuration.AddonImporters.GetDictionary();
+        var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
         foreach (var import in sources.import())
           try
           {

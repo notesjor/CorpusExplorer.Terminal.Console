@@ -211,7 +211,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
           if (a.type == "query" || a.type == "convert")
           {
-            var exporters = Configuration.AddonExporters.GetDictionary();
+            var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
             if (!exporters.ContainsKey(a.output.format))
               return;
 
@@ -257,7 +257,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
             if (a.type == "query" || a.type == "convert")
             {
-              var exporters = Configuration.AddonExporters.GetDictionary();
+              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
               if (!exporters.ContainsKey(a.output.format))
                 return;
 
@@ -655,8 +655,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       // Wenn zu annotierendes Material vorhanden ist, dann lese dieses ein.
       if (sources.annotate().Any())
       {
-        var scrapers = Configuration.AddonScrapers.GetDictionary();
-        var taggers = Configuration.AddonTaggers.GetDictionary();
+        var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
+        var taggers = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
 
         foreach (var annotate in sources.annotate())
           try
@@ -693,7 +693,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       // Wenn Import-Quellen vorhanden sind, dann lese diese ein.
       if (sources.import().Any())
       {
-        var importers = Configuration.AddonImporters.GetDictionary();
+        var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
         foreach (var import in sources.import())
           try
           {
