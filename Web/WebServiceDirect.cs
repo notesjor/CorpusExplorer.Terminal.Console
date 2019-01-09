@@ -103,7 +103,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"));
 
         var aCheck = Configuration.GetConsoleAction(er.Action);
-        if (aCheck == null)
+        if (aCheck == null || !IsValidAction(er.Action))
           return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "action not available"));
 
         if (!File.Exists($"corpora/{er.CorpusId}.cec6"))
@@ -150,7 +150,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           var res = new AvailableActionsResponse
           {
             Items = Configuration.AddonConsoleActions
-                                 .Where(action => action.Action != "cluster" || action.Action != "convert" || action.Action != "query")
+                                 .Where(action => IsValidAction(action.Action))
                                  .Select(action =>
                                            new AvailableActionsResponse.
                                              AvailableActionsResponseItem
@@ -167,6 +167,11 @@ namespace CorpusExplorer.Terminal.Console.Web
         {
           return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
         }
+    }
+
+    private static bool IsValidAction(string action)
+    {
+      return !action.Contains("cluster") || action != "convert" || action != "query";
     }
 
     private static string WriteError(AbstractTableWriter prototype, string message)
