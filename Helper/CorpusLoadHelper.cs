@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
@@ -19,16 +17,16 @@ namespace CorpusExplorer.Terminal.Console.Helper
     {
       return path.StartsWith("annotate#")
                ? LoadCorpusAnnotate(path)
-               : (path.StartsWith("import#")
-                    ? LoadCorpusImport(path)
-                    : null);
+               : path.StartsWith("import#")
+                 ? LoadCorpusImport(path)
+                 : null;
     }
 
     private static AbstractCorpusAdapter LoadCorpusAnnotate(string path)
     {
       // Scraper extrahieren Meta-/Textdaten
       var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
-      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries).ToList();
       if (split.Count != 5)
         return null;
 
@@ -67,7 +65,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
     {
       // Importer laden bestehende Korpora
       var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
-      var split = path.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
       if (split.Length != 3)
         return null;
 
@@ -82,7 +80,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
         return res[0];
 
       // Falls mehrere Korpora importiert werden, füge diese zusammen
-      var merger = new CorpusMerger { CorpusBuilder = new CorpusBuilderWriteDirect() };
+      var merger = new CorpusMerger {CorpusBuilder = new CorpusBuilderWriteDirect()};
       foreach (var x in res)
         if (x != null)
           merger.Input(x);
@@ -92,7 +90,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
 
     private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
     {
-      var tmp = fileOrDirectory.Split(new[] { "|", "\"" }, StringSplitOptions.RemoveEmptyEntries);
+      var tmp = fileOrDirectory.Split(new[] {"|", "\""}, StringSplitOptions.RemoveEmptyEntries);
       var files = new List<string>();
       foreach (var x in tmp)
         if (x.IsDirectory())

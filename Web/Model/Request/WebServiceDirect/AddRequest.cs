@@ -18,6 +18,8 @@ namespace CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect
     public AddRequestDocument[] Documents { get; set; }
 
     public Dictionary<string, object>[] GetDocumentArray()
-      => Documents.Select(x => x.GetDictionary()).ToArray();
+    {
+      return Documents.Select(x => x.GetDictionary()).ToArray();
+    }
   }
 }

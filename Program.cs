@@ -140,19 +140,16 @@ namespace CorpusExplorer.Terminal.Console
       switch (args.Length)
       {
         case 1:
-          WebServiceDirect.Run(_writer, int.Parse(args[0].Replace("PORT:", "")));
+          var wsd = new WebServiceDirect(_writer, int.Parse(args[0].Replace("PORT:", "")));
+          wsd.Run();
           break;
         case 2:
-          WebService.Run(_writer, int.Parse(args[0].Replace("PORT:", "")), args[1]);
+          var ws = new WebService(_writer, int.Parse(args[0].Replace("PORT:", "")), args[1]);
+          ws.Run();
           break;
         default:
           PrintHelp();
           break;
-      }
-
-      while (true)
-      {
-        System.Console.ReadLine();
       }
     }
 
@@ -293,8 +290,10 @@ namespace CorpusExplorer.Terminal.Console
         System.Console.WriteLine($"[OUTPUT] = {x.Key}#[FILE]");
 
       System.Console.WriteLine("Note: [FILE] = any file you like to store the output");
-      System.Console.WriteLine("Example 'convert': cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
-      System.Console.WriteLine("Example 'query': cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query !M:Author::Jan ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("Example 'convert': cec.exe import#ImporterCec5#C:\\mycorpus.cec5 convert ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("Example 'query': cec.exe import#ImporterCec5#C:\\mycorpus.cec5 query !M:Author::Jan ExporterCec6#C:\\mycorpus.cec6");
 
       System.Console.WriteLine();
       System.Console.WriteLine("[QUERY]:");
@@ -305,52 +304,71 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine();
       System.Console.WriteLine("Second character [OPERATOR] (if you choose M):");
       System.Console.WriteLine("  ? = regEx | : = contains (case sensitive) | . = contains (not case sensitive)");
-      System.Console.WriteLine("  = = match exact (case sensitive) | - = match exact (not case sensitive) | ! = is empty");
+      System.Console
+            .WriteLine("  = = match exact (case sensitive) | - = match exact (not case sensitive) | ! = is empty");
       System.Console.WriteLine("  ( = starts with (case sensitive) | ) = ends with (case sensitive)");
-      System.Console.WriteLine("If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)");
-      System.Console.WriteLine("Example (query only): !M:Author::Jan - Finds all documents where \"Jan\" isn't an author");
-      System.Console.WriteLine("Example (in action): cec.exe import#ImporterCec6#C:\\mycorpus.cec6 query !M:Author::Jan ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)");
+      System.Console
+            .WriteLine("Example (query only): !M:Author::Jan - Finds all documents where \"Jan\" isn't an author");
+      System.Console
+            .WriteLine("Example (in action): cec.exe import#ImporterCec6#C:\\mycorpus.cec6 query !M:Author::Jan ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
       System.Console.WriteLine("Second character [OPERATOR] (if you choose T):");
-      System.Console.WriteLine("  ~ = any match | - = all in one document | = = all in one sentence | § = exact phrase");
-      System.Console.WriteLine("  ? = regEx value | F = regEx fulltext-search (very slow) | 1 = first plus any other match");
+      System.Console
+            .WriteLine("  ~ = any match | - = all in one document | = = all in one sentence | § = exact phrase");
+      System.Console
+            .WriteLine("  ? = regEx value | F = regEx fulltext-search (very slow) | 1 = first plus any other match");
       System.Console.WriteLine("If you have chosen T - enter the layer name (see [ACTION] = layer-names)");
-      System.Console.WriteLine("Example (query only): T§Wort::OpenSource;Software - Finds all documents with the exact phrase \"OpensSource Software\"");
-      System.Console.WriteLine("Example (in action): cec.exe import#ImporterCec6#C:\\mycorpus.cec6 query T§Wort::OpenSource;Software ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("Example (query only): T§Wort::OpenSource;Software - Finds all documents with the exact phrase \"OpensSource Software\"");
+      System.Console
+            .WriteLine("Example (in action): cec.exe import#ImporterCec6#C:\\mycorpus.cec6 query T§Wort::OpenSource;Software ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine("Note 1: If you use several words in a T-query, then separate them with ;");
       System.Console.WriteLine("Note 2: You can also use a query file (*.ceusd) - use the FILE: prefix");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 query FILE:C:\\query.ceusd ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 query FILE:C:\\query.ceusd ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine();
       System.Console.WriteLine("Second character [OPERATOR] (if you choose X):");
       System.Console.WriteLine("  R = random selection | S = auto split by meta-data (use cluster for auto split)");
       System.Console.WriteLine("If you use XR for random selection you need to specify the document count");
       System.Console.WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 query XR::100 frequency1 Wort");
       System.Console.WriteLine("Note 4: XR will generate two outputs - the regular and the inverted output.");
-      System.Console.WriteLine("If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)");
+      System.Console
+            .WriteLine("If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)");
       System.Console.WriteLine();
       System.Console.WriteLine("Enter the separator :: followed by the query");
-      System.Console.WriteLine();      
-            
+      System.Console.WriteLine();
+
       System.Console.WriteLine("If you use XS you must specify the meta data type - TEXT, INT, FLOAT or DATE");
       System.Console.WriteLine("Note 5: XS will generate multiple outputs - based on clusters.");
       System.Console.WriteLine("TEXT generates for every entry a separate snapshot");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort");
+      System.Console
+            .WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort");
       System.Console.WriteLine("INT / FLOAT you need to set up a [CLUSTERSIZE]");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSYear::INT;10 ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSYear::INT;10 ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine("DATE;C;[CLUSTERSIZE] - generates [CLUSTERSIZE] clusters.");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSDate::DATE;C;10 ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSDate::DATE;C;10 ExporterCec6#C:\\mycorpus.cec6");
       System.Console.WriteLine("DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster / DATE;Y = Year-Cluster");
-      System.Console.WriteLine("DATE;YW = Week-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster");
-      System.Console.WriteLine("DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSDate::DATE;YMD ExporterCec6#C:\\mycorpus.cec6");
-      System.Console.WriteLine("WINDOW = Add WINDOW + SIZE as an prefix for each cluster argument to enable the rolling window feature");
-      System.Console.WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("DATE;YW = Week-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster");
+      System.Console
+            .WriteLine("DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster");
+      System.Console
+            .WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSDate::DATE;YMD ExporterCec6#C:\\mycorpus.cec6");
+      System.Console
+            .WriteLine("WINDOW = Add WINDOW + SIZE as an prefix for each cluster argument to enable the rolling window feature");
+      System.Console
+            .WriteLine("Example: cec.exe import#ImporterCec6#C:\\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD ExporterCec6#C:\\mycorpus.cec6");
 
       System.Console.WriteLine();
       System.Console.WriteLine();
       System.Console.WriteLine("<: --- [ACTION] --- :>");
       System.Console.WriteLine();
-      System.Console.WriteLine("Most actions accept arguments. [ARG] is a requiered argument. {ARG} is an optional argument.");
+      System.Console
+            .WriteLine("Most actions accept arguments. [ARG] is a requiered argument. {ARG} is an optional argument.");
 
       foreach (var action in Configuration.AddonConsoleActions.OrderBy(x => x.Action))
         System.Console.WriteLine($"[ACTION] = {action.Description}");
@@ -361,14 +379,16 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("<: --- [SCRIPTING] --- :>");
       System.Console.WriteLine();
       System.Console.WriteLine("All actionss above can be stored in a file to build up a automatic process.");
-      System.Console.WriteLine("In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout");
+      System.Console
+            .WriteLine("In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout");
       System.Console.WriteLine("Example: import#ImporterCec6#C:\\mycorpus.cec6 frequency3 POS Lemma Wort > output.csv");
 
       System.Console.WriteLine();
       System.Console.WriteLine();
       System.Console.WriteLine("<: --- [F:FORMAT] --- :>");
       System.Console.WriteLine();
-      System.Console.WriteLine("If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.");
+      System.Console
+            .WriteLine("If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.");
       System.Console.WriteLine("You need to set one of the following tags as first parameter:");
       System.Console.WriteLine("F:TSV - (standard output format) tab separated values");
       System.Console.WriteLine("F:CSV - ';' separated values");
@@ -376,7 +396,8 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("F:XML - XML-Document");
       System.Console.WriteLine("F:HTML - HTML5-Document");
       System.Console.WriteLine("F:SQL - SQL-statement");
-      System.Console.WriteLine("Example: cec.exe F:JSON import#ImporterCec6#C:\\mycorpus.cec6 frequency3 POS Lemma Wort");
+      System.Console
+            .WriteLine("Example: cec.exe F:JSON import#ImporterCec6#C:\\mycorpus.cec6 frequency3 POS Lemma Wort");
     }
 
     private static bool ProcessXmlScript(string path)
@@ -404,7 +425,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (argument.Contains(" > "))
       {
-        var split = argument.Split(new[] { " > " }, StringSplitOptions.None).ToList();
+        var split = argument.Split(new[] {" > "}, StringSplitOptions.None).ToList();
         argument = split[0];
 
         var process = Process.Start(new ProcessStartInfo

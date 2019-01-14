@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CorpusExplorer.Terminal.WebOrbit.Model.Response.Abstract
+﻿namespace CorpusExplorer.Terminal.Console.Web.Model.Response.Abstract
 {
   public abstract class AbstractResponse
   {

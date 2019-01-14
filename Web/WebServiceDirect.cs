@@ -1,91 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using CorpusExplorer.Sdk.Action;
-using CorpusExplorer.Sdk.Addon;
-using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
-using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus;
-using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
 using CorpusExplorer.Sdk.Model.Extension;
-using CorpusExplorer.Sdk.Utils.DataTableWriter;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Tagger.TreeTagger;
-using CorpusExplorer.Terminal.Console.Helper;
-using CorpusExplorer.Terminal.Console.Web.Model.Request;
+using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect;
-using CorpusExplorer.Terminal.Console.Xml.Extensions;
-using CorpusExplorer.Terminal.Console.Xml.Model;
-using CorpusExplorer.Terminal.WebOrbit.Model.Response;
+using CorpusExplorer.Terminal.Console.Web.Model.Response;
 using Newtonsoft.Json;
 using Tfres;
 using Tfres.Documentation;
-using HttpRequest = Tfres.HttpRequest;
-using HttpResponse = Tfres.HttpResponse;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
-  public static class WebServiceDirect
+  public class WebServiceDirect : AbstractWebService
   {
-    private static string _availableActions;
-    private static object _getAvailableActionsRouteLock = new object();
-    private static AbstractTableWriter _writer;
-    private static string _mime;
-    private static string _documentation;
-    private static string _url;
-    private static string _availableFormatExort;
-    private static object _getAvailableFormatExportRouteLock = new object();
-
-    public static void Run(AbstractTableWriter writer, int port)
+    public WebServiceDirect(AbstractTableWriter writer, int port) : base(writer, port)
     {
-      _writer = writer;
-      _mime = writer.MimeType;
-
-      _url = $"http://127.0.0.1:{port}/";
-      System.Console.Write($"SERVER {_url} ...");
-      var s = new Server("127.0.0.1", port, DefaultRoute);
-      s.AddEndpoint(HttpVerb.GET, "/actions/", GetAvailableActionsRoute);
-      s.AddEndpoint(HttpVerb.GET, "/exporters/", GetAvailableFormatExportRoute);
-      s.AddEndpoint(HttpVerb.POST, "/execute/", GetExecuteRoute);
-      s.AddEndpoint(HttpVerb.POST, "/add/", GetAddRoute);
-
-      if (!Directory.Exists("corpora"))
-        Directory.CreateDirectory("corpora");
-
-      System.Console.WriteLine("ready!");
     }
 
-    private static HttpResponse GetAddRoute(HttpRequest req)
+    private HttpResponse GetAddRoute(HttpRequest req)
     {
       try
       {
         var er = req.PostData<AddRequest>();
         if (er?.Documents == null || string.IsNullOrEmpty(er.Language))
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"));
+          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "no valid post-data"));
 
         return UseTagger(req, er.Language, er.GetDocumentArray(), true);
       }
       catch (Exception ex)
       {
-        return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
+        return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, ex.Message));
       }
     }
 
-    private static HttpResponse UseTagger(HttpRequest req, string language, Dictionary<string, object>[] docs, bool enableCleanup)
+    private HttpResponse UseTagger(HttpRequest req, string language, Dictionary<string, object>[] docs,
+                                   bool enableCleanup)
     {
       var tagger = new SimpleTreeTagger();
       var available = new HashSet<string>(tagger.LanguagesAvailabel);
       if (!available.Contains(language))
-        return new HttpResponse(req, false, 500, null, _mime,
-                                WriteError(_writer, $"wrong language selected - use: {string.Join(", ", available)}"));
+        return new HttpResponse(req, false, 500, null, Mime,
+                                WriteError(Writer, $"wrong language selected - use: {string.Join(", ", available)}"));
 
       if (enableCleanup)
       {
@@ -97,37 +61,39 @@ namespace CorpusExplorer.Terminal.Console.Web
         tagger.Input = cleaner2.Output;
       }
       else
+      {
         tagger.Input.Enqueue(docs);
+      }
 
       tagger.LanguageSelected = language;
       tagger.Execute();
       var corpus = tagger.Output.First();
       if (corpus == null || corpus.CountDocuments == 0 || corpus.CountToken == 0)
-        return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "tagging process failed"));
+        return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "tagging process failed"));
 
       corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
       return new HttpResponse(req, false, 500, null, "application/json",
                               $"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}");
     }
 
-    private static HttpResponse GetExecuteRoute(HttpRequest req)
+    protected override HttpResponse GetExecuteRoute(HttpRequest req)
     {
       try
       {
         var er = req.PostData<ExecuteRequest>();
         if (er == null)
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"));
+          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "no valid post-data"));
 
         var aCheck = Configuration.GetConsoleAction(er.Action);
         if (aCheck == null || !IsValidAction(er.Action))
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "action not available"));
+          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "action not available"));
 
         if (!File.Exists($"corpora/{er.CorpusId}.cec6"))
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "corpus not (longer) available"));
+          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "corpus not (longer) available"));
 
         var corpus = CorpusAdapterWriteDirect.Create($"corpora/{er.CorpusId}.cec6");
         if (corpus == null)
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "corpus not (longer) available"));
+          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "corpus not (longer) available"));
 
         var selection = corpus.ToSelection();
         var a = new ClusterAction();
@@ -141,160 +107,108 @@ namespace CorpusExplorer.Terminal.Console.Web
 
         using (var ms = new MemoryStream())
         {
-          var writer = _writer.Clone(ms);
+          var writer = Writer.Clone(ms);
           a.Execute(selection, args.ToArray(), writer);
           writer.Destroy(false);
 
           ms.Seek(0, SeekOrigin.Begin);
-          return new HttpResponse(req, true, 200, null, _mime, Encoding.UTF8.GetString(ms.ToArray()));
+          return new HttpResponse(req, true, 200, null, Mime, Encoding.UTF8.GetString(ms.ToArray()));
         }
       }
       catch (Exception ex)
       {
-        return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
+        return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, ex.Message));
       }
+    }    
+
+    protected override Server ConfigureServer(Server server)
+    {
+      server.AddEndpoint(HttpVerb.POST, "/add/", GetAddRoute);
+
+      if (!Directory.Exists("corpora"))
+        Directory.CreateDirectory("corpora");
+
+      return server;
     }
 
-    private static HttpResponse GetAvailableActionsRoute(HttpRequest req)
-    {
-      lock (_getAvailableActionsRouteLock)
-        try
-        {
-          if (_availableActions != null)
-            return new HttpResponse(req, true, 200, null, _mime, _availableActions);
-
-          var res = new AvailableActionsResponse
-          {
-            Items = Configuration.AddonConsoleActions
-                                 .Where(action => IsValidAction(action.Action))
-                                 .Select(action =>
-                                           new AvailableActionsResponse.
-                                             AvailableActionsResponseItem
-                                           {
-                                             action = action.Action,
-                                             description = action.Description
-                                           }).ToArray()
-          };
-          _availableActions = JsonConvert.SerializeObject(res);
-
-          return new HttpResponse(req, true, 200, null, _mime, _availableActions);
-        }
-        catch (Exception ex)
-        {
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
-        }
-    }
-
-    private static HttpResponse GetAvailableFormatExportRoute(HttpRequest req)
-    {
-      lock (_getAvailableFormatExportRouteLock)
-        try
-        {
-          if (_availableFormatExort != null)
-            return new HttpResponse(req, true, 200, null, _mime, _availableFormatExort);
-
-          _availableFormatExort = JsonConvert.SerializeObject(Configuration.AddonExporters
-                                                                           .Select(x => x.Key)
-                                                                           .ToArray());
-
-          return new HttpResponse(req, true, 200, null, _mime, _availableFormatExort);
-        }
-        catch (Exception ex)
-        {
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
-        }
-    }
-
-    private static bool IsValidAction(string action)
-    {
-      return !action.Contains("cluster") || action != "convert" || action != "query";
-    }
-
-    private static string WriteError(AbstractTableWriter prototype, string message)
-    {
-      using (var ms = new MemoryStream())
+    protected override AvailableActionsResponse InitializeExportActionList()
+      => new AvailableActionsResponse
       {
-        var writer = prototype.Clone(ms);
-        writer.WriteError(message);
-        writer.Destroy(false);
+        Items = (from action in Configuration.AddonConsoleActions
+                 where action.Action == "convert" || action.Action == "query"
+                 select new AvailableActionsResponse.AvailableActionsResponseItem
+                 {
+                   action = action.Action,
+                   description = action.Description
+                 }).ToArray()
+      };
 
-        ms.Seek(0, SeekOrigin.Begin);
-        return Encoding.UTF8.GetString(ms.ToArray());
-      }
-    }
-
-    private static HttpResponse DefaultRoute(HttpRequest req)
-    {
-      return new HttpResponse(req, true, 200, null, "application/json", Documentation);
-    }
-
-    private static string Documentation
-    {
-      get
+    protected override AvailableActionsResponse InitializeExecuteActionList()
+      => new AvailableActionsResponse
       {
-        if (_documentation != null)
-          return _documentation;
+        Items = (from action in Configuration.AddonConsoleActions
+                 where !action.Action.Contains("cluster") || action.Action != "convert" || action.Action != "query"
+                 select new AvailableActionsResponse.AvailableActionsResponseItem
+                 {
+                   action = action.Action,
+                   description = action.Description
+                 }).ToArray()
+      };
 
-        var doc = new SericeDocumentation
+    protected override SericeDocumentation GetDocumentation()
+    {
+      return new SericeDocumentation
+      {
+        Description = "CorpusExplorer-Endpoint (Version 1.0.0)",
+        Url = Url,
+        Endpoints = new[]
         {
-          Description = "CorpusExplorer-Endpoint (Version 1.0.0)",
-          Url = _url,
-          Endpoints = new[]
+          new ServiceEndpoint
           {
-            new ServiceEndpoint
+            Url = $"{Url}add/",
+            AllowedVerbs = new[] {"POST"},
+            Arguments = null,
+            Description = "Adds/analyzes a new corpus",
+            ReturnValue = new[]
             {
-              Url = $"{_url}add/",
-              AllowedVerbs = new[] {"POST"},
-              Arguments = null,
-              Description = "Adds/analyzes a new corpus",
-              ReturnValue = new[]
+              new ServiceParameter
+                {Name = "language", Type = "string", Description = "the language of all documents"},
+              new ServiceParameter
               {
-                new ServiceParameter
-                  {Name = "language", Type = "string", Description = "the language of all documents"},
-                new ServiceParameter
-                  {Name = "documents", Type = "array of objects", Description = "text = document-text / meta = key/value dictionary - example: {\"text\":\"annotate this text\",\"meta\":{\"Author\":\"Jan\",\"Integer\":5,\"Date\":\"2019-01-08T21:32:01.0194747+01:00\"}}"},
+                Name = "documents", Type = "array of objects",
+                Description =
+                  "text = document-text / meta = key/value dictionary - example: {\"text\":\"annotate this text\",\"meta\":{\"Author\":\"Jan\",\"Integer\":5,\"Date\":\"2019-01-08T21:32:01.0194747+01:00\"}}"
               }
-            },
-            new ServiceEndpoint
+            }
+          },
+          new ServiceEndpoint
+          {
+            Url = $"{Url}execute/",
+            AllowedVerbs = new[] {"POST"},
+            Arguments = new[]
             {
-              Url = $"{_url}actions/",
-              AllowedVerbs = new[] {"GET"},
-              Arguments = null,
-              Description = $"Shows all available Actions for {_url}execute/",
-              ReturnValue = new[]
+              new ServiceArgument
               {
-                new ServiceParameter
-                  {Name = "action", Type = "string", Description = "The name of the action"},
-                new ServiceParameter
-                  {Name = "description", Type = "string", Description = "Short description - action and parameter"},
-              }
-            },
-            new ServiceEndpoint
-            {
-              Url = $"{_url}execute/",
-              AllowedVerbs = new[] {"POST"},
-              Arguments = new[]
-              {
-                new ServiceArgument
-                  {Name = "corpusId", Type = "string", Description = $"the id of the corpus you added via {_url}add/", IsRequired = true},
-                new ServiceArgument
-                  {Name = "action", Type = "string", Description = "name of the action to execute", IsRequired = true},
-                new ServiceArgument
-                  {Name = "arguments", Type = "key-value", Description = "example: {'key1':'value1', 'key2':'value2', 'key3':'value3'}", IsRequired = true}
+                Name = "corpusId", Type = "string", Description = $"the id of the corpus you added via {Url}add/",
+                IsRequired = true
               },
-              Description = $"Shows all available Actions for {_url}execute/",
-              ReturnValue = new[]
+              new ServiceArgument
+                {Name = "action", Type = "string", Description = "name of the action to execute", IsRequired = true},
+              new ServiceArgument
               {
-                new ServiceParameter
-                  {Name = "table", Type = "table (rows > array of objects)", Description = "execution result"},
+                Name = "arguments", Type = "key-value",
+                Description = "example: {'key1':'value1', 'key2':'value2', 'key3':'value3'}", IsRequired = true
               }
             },
+            Description = $"Shows all available Actions for {Url}execute/",
+            ReturnValue = new[]
+            {
+              new ServiceParameter
+                {Name = "table", Type = "table (rows > array of objects)", Description = "execution result"}
+            }
           }
-        };
-
-        _documentation = JsonConvert.SerializeObject(doc);
-        return _documentation;
-      }
+        }
+      };
     }
   }
 }
