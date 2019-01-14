@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace CorpusExplorer.Terminal.Console.Web.Model.Request
+namespace CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect
 {
   [Serializable]
   public class AddRequest
   {
+    [JsonProperty("enableCleanup")]
+    public bool EnableCleanup { get; set; }
+
     [JsonProperty("language")]
     public string Language { get; set; }
 

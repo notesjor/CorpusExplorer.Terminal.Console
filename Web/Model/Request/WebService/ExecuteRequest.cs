@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace CorpusExplorer.Terminal.Console.Web.Model.Request
+namespace CorpusExplorer.Terminal.Console.Web.Model.Request.WebService
 {
   public class ExecuteRequest
   {

@@ -21,6 +21,7 @@ using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Tagger.TreeTagger;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Web.Model.Request;
+using CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect;
 using CorpusExplorer.Terminal.Console.Xml.Extensions;
 using CorpusExplorer.Terminal.Console.Xml.Model;
 using CorpusExplorer.Terminal.WebOrbit.Model.Response;
@@ -40,6 +41,8 @@ namespace CorpusExplorer.Terminal.Console.Web
     private static string _mime;
     private static string _documentation;
     private static string _url;
+    private static string _availableFormatExort;
+    private static object _getAvailableFormatExportRouteLock = new object();
 
     public static void Run(AbstractTableWriter writer, int port)
     {
@@ -50,6 +53,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       System.Console.Write($"SERVER {_url} ...");
       var s = new Server("127.0.0.1", port, DefaultRoute);
       s.AddEndpoint(HttpVerb.GET, "/actions/", GetAvailableActionsRoute);
+      s.AddEndpoint(HttpVerb.GET, "/exporters/", GetAvailableFormatExportRoute);
       s.AddEndpoint(HttpVerb.POST, "/execute/", GetExecuteRoute);
       s.AddEndpoint(HttpVerb.POST, "/add/", GetAddRoute);
 
@@ -67,26 +71,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (er?.Documents == null || string.IsNullOrEmpty(er.Language))
           return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"));
 
-        var tagger = new SimpleTreeTagger();
-        var available = new HashSet<string>(tagger.LanguagesAvailabel);
-        if (!available.Contains(er.Language))
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, $"wrong language selected - use: {string.Join(", ", available)}"));
-
-        var cleaner1 = new StandardCleanup();
-        cleaner1.Input.Enqueue(er.GetDocumentArray());
-        cleaner1.Execute();
-        var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
-        cleaner2.Execute();
-
-        tagger.Input = cleaner2.Output;
-        tagger.LanguageSelected = er.Language;
-        tagger.Execute();
-        var corpus = tagger.Output.First();
-        if (corpus == null || corpus.CountDocuments == 0 || corpus.CountToken == 0)
-          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "tagging process failed"));
-
-        corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
-        return new HttpResponse(req, false, 500, null, "application/json", $"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}");
+        return UseTagger(req, er.Language, er.GetDocumentArray(), true);
       }
       catch (Exception ex)
       {
@@ -94,11 +79,42 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
+    private static HttpResponse UseTagger(HttpRequest req, string language, Dictionary<string, object>[] docs, bool enableCleanup)
+    {
+      var tagger = new SimpleTreeTagger();
+      var available = new HashSet<string>(tagger.LanguagesAvailabel);
+      if (!available.Contains(language))
+        return new HttpResponse(req, false, 500, null, _mime,
+                                WriteError(_writer, $"wrong language selected - use: {string.Join(", ", available)}"));
+
+      if (enableCleanup)
+      {
+        var cleaner1 = new StandardCleanup();
+        cleaner1.Input.Enqueue(docs);
+        cleaner1.Execute();
+        var cleaner2 = new RegexXmlMarkupCleanup {Input = cleaner1.Output};
+        cleaner2.Execute();
+        tagger.Input = cleaner2.Output;
+      }
+      else
+        tagger.Input.Enqueue(docs);
+
+      tagger.LanguageSelected = language;
+      tagger.Execute();
+      var corpus = tagger.Output.First();
+      if (corpus == null || corpus.CountDocuments == 0 || corpus.CountToken == 0)
+        return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "tagging process failed"));
+
+      corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
+      return new HttpResponse(req, false, 500, null, "application/json",
+                              $"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}");
+    }
+
     private static HttpResponse GetExecuteRoute(HttpRequest req)
     {
       try
       {
-        var er = req.PostData<DirectExecuteRequest>();
+        var er = req.PostData<ExecuteRequest>();
         if (er == null)
           return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, "no valid post-data"));
 
@@ -162,6 +178,26 @@ namespace CorpusExplorer.Terminal.Console.Web
           _availableActions = JsonConvert.SerializeObject(res);
 
           return new HttpResponse(req, true, 200, null, _mime, _availableActions);
+        }
+        catch (Exception ex)
+        {
+          return new HttpResponse(req, false, 500, null, _mime, WriteError(_writer, ex.Message));
+        }
+    }
+
+    private static HttpResponse GetAvailableFormatExportRoute(HttpRequest req)
+    {
+      lock (_getAvailableFormatExportRouteLock)
+        try
+        {
+          if (_availableFormatExort != null)
+            return new HttpResponse(req, true, 200, null, _mime, _availableFormatExort);
+
+          _availableFormatExort = JsonConvert.SerializeObject(Configuration.AddonExporters
+                                                                           .Select(x => x.Key)
+                                                                           .ToArray());
+
+          return new HttpResponse(req, true, 200, null, _mime, _availableFormatExort);
         }
         catch (Exception ex)
         {

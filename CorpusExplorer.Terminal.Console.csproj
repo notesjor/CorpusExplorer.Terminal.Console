@@ -58,10 +58,11 @@
     <Compile Include="Helper\XmlValueHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web\Model\Request\AddRequest.cs" />
-    <Compile Include="Web\Model\Request\AddRequestDocument.cs" />
-    <Compile Include="Web\Model\Request\DirectExecuteRequest.cs" />
-    <Compile Include="Web\Model\Request\ExecuteRequest.cs" />
+    <Compile Include="Web\Model\Request\WebServiceDirect\AddRequest.cs" />
+    <Compile Include="Web\Model\Request\WebServiceDirect\AddRequestDocument.cs" />
+    <Compile Include="Web\Model\Request\WebServiceDirect\ConvertRequest.cs" />
+    <Compile Include="Web\Model\Request\WebServiceDirect\ExecuteRequest.cs" />
+    <Compile Include="Web\Model\Request\WebService\ExecuteRequest.cs" />
     <Compile Include="Web\Model\Response\Abstract\AbstractResponse.cs" />
     <Compile Include="Web\Model\Response\AvailableActionsResponse.cs" />
     <Compile Include="Web\WebServiceDirect.cs" />

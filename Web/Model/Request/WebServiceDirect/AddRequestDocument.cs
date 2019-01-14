@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
-namespace CorpusExplorer.Terminal.Console.Web.Model.Request
+namespace CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect
 {
   [Serializable]
   [JsonObject("document")]

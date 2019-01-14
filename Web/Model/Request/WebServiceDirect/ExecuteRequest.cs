@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace CorpusExplorer.Terminal.Console.Web.Model.Request
+namespace CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect
 {
-  public class DirectExecuteRequest
+  public class ExecuteRequest
   {
     [JsonProperty("corpusId")]
     public string CorpusId { get; set; }

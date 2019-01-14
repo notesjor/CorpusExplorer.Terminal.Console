@@ -19,6 +19,7 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Web.Model.Request;
+using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
 using CorpusExplorer.Terminal.Console.Xml.Extensions;
 using CorpusExplorer.Terminal.Console.Xml.Model;
 using CorpusExplorer.Terminal.WebOrbit.Model.Response;
