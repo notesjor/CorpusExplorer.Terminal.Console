@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CorpusExplorer.Sdk.Action;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus;
@@ -56,7 +57,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         var cleaner1 = new StandardCleanup();
         cleaner1.Input.Enqueue(docs);
         cleaner1.Execute();
-        var cleaner2 = new RegexXmlMarkupCleanup {Input = cleaner1.Output};
+        var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
         cleaner2.Execute();
         tagger.Input = cleaner2.Output;
       }
@@ -119,7 +120,12 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, ex.Message));
       }
-    }    
+    }
+
+    protected override HttpResponse GetExecuteExportRoute(HttpRequest arg)
+    {
+      throw new NotImplementedException();
+    }
 
     protected override Server ConfigureServer(Server server)
     {
@@ -147,13 +153,18 @@ namespace CorpusExplorer.Terminal.Console.Web
       => new AvailableActionsResponse
       {
         Items = (from action in Configuration.AddonConsoleActions
-                 where !action.Action.Contains("cluster") || action.Action != "convert" || action.Action != "query"
+                 where IsValidAction(action.Action)
                  select new AvailableActionsResponse.AvailableActionsResponseItem
                  {
                    action = action.Action,
                    description = action.Description
                  }).ToArray()
       };
+
+    private static bool IsValidAction(string action)
+    {
+      return !action.Contains("cluster") || action != "convert" || action != "query";
+    }
 
     protected override SericeDocumentation GetDocumentation()
     {

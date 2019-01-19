@@ -70,6 +70,9 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       while (true) System.Console.ReadLine();
     }
 
+    private HttpResponse DefaultRoute(HttpRequest req)
+      => new HttpResponse(req, true, 200, null, "application/json", _documentation);
+
     private HttpResponse GetExecuteActionsRoute(HttpRequest arg)
       => new HttpResponse(arg, true, 200, null, "application/json", _availableExecuteActions);
 
@@ -147,7 +150,6 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
 
     protected abstract HttpResponse GetExecuteRoute(HttpRequest req);
 
-    private HttpResponse DefaultRoute(HttpRequest req)
-      => new HttpResponse(req, true, 200, null, "application/json", _documentation);
+    protected abstract HttpResponse GetExecuteExportRoute(HttpRequest arg);
   }
 }

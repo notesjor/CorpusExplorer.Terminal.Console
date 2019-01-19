@@ -34,11 +34,6 @@ namespace CorpusExplorer.Terminal.Console.Web
       return server;
     }
 
-    private bool IsValidAction(string action)
-    {
-      return action != "convert" && action != "query";
-    }
-
     protected override HttpResponse GetExecuteRoute(HttpRequest req)
     {
       try
@@ -55,7 +50,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         }
 
         var a = Configuration.GetConsoleAction(er.Action);
-        if (a == null || !IsValidAction(er.Action))
+        if (a == null || er.Action == "convert" || er.Action == "query")
           return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "action not available"));
 
         var selection = _corpus.ToSelection();
@@ -78,11 +73,16 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
+    protected override HttpResponse GetExecuteExportRoute(HttpRequest arg)
+    {
+      throw new NotImplementedException();
+    }
+
     protected override AvailableActionsResponse InitializeExportActionList()
       => new AvailableActionsResponse
       {
         Items = (from action in Configuration.AddonConsoleActions
-                 where !IsValidAction(action.Action)
+                 where action.Action == "query"
                  select new AvailableActionsResponse.AvailableActionsResponseItem
                  {
                    action = action.Action,
@@ -94,7 +94,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       => new AvailableActionsResponse
       {
         Items = (from action in Configuration.AddonConsoleActions
-                 where IsValidAction(action.Action)
+                 where action.Action != "convert" && action.Action != "query"
                  select new AvailableActionsResponse.AvailableActionsResponseItem
                  {
                    action = action.Action,
