@@ -18,7 +18,7 @@ namespace CorpusExplorer.Terminal.Console.Web
   {
     private readonly AbstractCorpusAdapter _corpus;
 
-    public WebService(AbstractTableWriter writer, int port, string file) : base(writer, port)
+    public WebService(AbstractTableWriter writer, string ip, int port, string file, int timeout) : base(writer, ip, port, timeout)
     {
       System.Console.WriteLine("INIT WebService (mode: file)");
       System.Console.Write($"LOAD: {file}...");
@@ -40,11 +40,13 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         var er = req.PostData<ExecuteRequest>();
         if (er == null)
-          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "no valid post-data"));
+          return WriteError(req, "no valid post-data");
 
         var a = Configuration.GetConsoleAction(er.Action);
-        if (a == null || er.Action == "convert" || er.Action == "query")
-          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "action not available"));
+        if (a == null || !ExecuteActionFilter.Check(er.Action))
+          return WriteError(req, "action not available");
+        if (er.Action == "cluster" && !ExecuteActionFilter.Check(er.Arguments[1]))
+          return WriteError(req, "action not available");
 
         var selection = _corpus.ToSelection();
         if (er.DocumentGuids != null && er.DocumentGuids.Length > 0)
@@ -62,7 +64,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
       catch (Exception ex)
       {
-        return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, ex.Message));
+        return WriteError(req, ex.Message);
       }
     }
 

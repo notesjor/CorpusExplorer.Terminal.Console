@@ -65,7 +65,6 @@
     <Compile Include="Web\Model\Request\WebService\ExecuteRequest.cs" />
     <Compile Include="Web\Model\Response\Abstract\AbstractResponse.cs" />
     <Compile Include="Web\Model\Response\AvailableActionsResponse.cs" />
-    <Compile Include="Web\Model\WebJobManager.cs" />
     <Compile Include="Web\WebServiceDirect.cs" />
     <Compile Include="Web\WebService.cs" />
     <Compile Include="Xml\Extensions\SourcesExtension.cs" />

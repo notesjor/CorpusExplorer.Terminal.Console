@@ -97,7 +97,7 @@ namespace CorpusExplorer.Terminal.Console
         args = list.ToArray();
       }
 
-      if (args[0].StartsWith("PORT:"))
+      if (args[0].StartsWith("PORT:") || args[0].StartsWith("IP:"))
       {
         ExecuteWebservice(args);
         return;
@@ -137,19 +137,32 @@ namespace CorpusExplorer.Terminal.Console
     {
       ConsoleHelper.PrintHeader();
 
-      switch (args.Length)
+      var ip = "127.0.0.1";
+      var port = 2312;
+      var file = "";
+      var timeout = 30000;
+
+      foreach (var arg in args)
       {
-        case 1:
-          var wsd = new WebServiceDirect(_writer, int.Parse(args[0].Replace("PORT:", "")));
-          wsd.Run();
-          break;
-        case 2:
-          var ws = new WebService(_writer, int.Parse(args[0].Replace("PORT:", "")), args[1]);
-          ws.Run();
-          break;
-        default:
-          PrintHelp();
-          break;
+        if (arg.StartsWith("IP:"))
+          ip = arg.Replace("IP:", "");
+        else if (arg.StartsWith("PORT:"))
+          port = int.Parse(arg.Replace("PORT:", ""));
+        else if (arg.StartsWith("TIMEOUT:"))
+          timeout = int.Parse(arg.Replace("TIMEOUT:", ""));
+        else
+          file = arg;
+      }
+
+      if (string.IsNullOrEmpty(file) || !file.Contains("#"))
+      {
+        var ws = new WebServiceDirect(_writer, ip, port, timeout);
+        ws.Run();
+      }
+      else
+      {
+        var ws = new WebService(_writer, ip, port, file, timeout);
+        ws.Run();
       }
     }
 
@@ -240,7 +253,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("Syntax for filtering:");
       System.Console.WriteLine("cec.exe [INPUT] [QUERY] [OUTPUT]");
       System.Console.WriteLine("Syntax for analytics (writes output to stdout):");
-      System.Console.WriteLine("cec.exe [F:FORMAT] [INPUT] [ACTION]");
+      System.Console.WriteLine("cec.exe {F:FORMAT} [INPUT] [ACTION]");
       System.Console.WriteLine("Syntax for scripting:");
       System.Console.WriteLine("cec.exe FILE:[PATH]");
       System.Console.WriteLine("More detailed scripting errors:");
@@ -248,7 +261,7 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine("To start interactive shell mode");
       System.Console.WriteLine("cec.exe SHELL");
       System.Console.WriteLine("To start a web-service");
-      System.Console.WriteLine("cec.exe [F:FORMAT] PORT:62323 [INPUT]");
+      System.Console.WriteLine("cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:30000} {INPUT}");
       System.Console.WriteLine();
       System.Console.WriteLine();
       System.Console.WriteLine("<: --- [INPUT] --- :>");
@@ -425,7 +438,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (argument.Contains(" > "))
       {
-        var split = argument.Split(new[] {" > "}, StringSplitOptions.None).ToList();
+        var split = argument.Split(new[] { " > " }, StringSplitOptions.None).ToList();
         argument = split[0];
 
         var process = Process.Start(new ProcessStartInfo

@@ -14,6 +14,7 @@ using CorpusExplorer.Sdk.Utils.DocumentProcessing.Tagger.TreeTagger;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect;
+using Newtonsoft.Json;
 using Tfres;
 using Tfres.Documentation;
 
@@ -21,12 +22,44 @@ namespace CorpusExplorer.Terminal.Console.Web
 {
   public class WebServiceDirect : AbstractWebService
   {
-    public WebServiceDirect(AbstractTableWriter writer, int port) : base(writer, port)
+    private string _availableLanguages;
+
+    public WebServiceDirect(AbstractTableWriter writer, string ip, int port, int timeout) : base(writer, ip, port, timeout)
     {
+      _availableLanguages = JsonConvert.SerializeObject(InitializeAvailableLanguagesList());
+    }
+
+    private string[] InitializeAvailableLanguagesList()
+    {
+      return new SimpleTreeTagger().LanguagesAvailabel.ToArray();
+    }
+
+    private HttpResponse AvailableLanguagesRoute(HttpRequest arg)
+    {
+      try
+      {
+        return LimitExecuteTime(() => new HttpResponse(arg, true, 200, null, "application/json", _availableLanguages));
+      }
+      catch (Exception ex)
+      {
+        return WriteError(arg, ex.Message);
+      }
     }
 
     protected override ActionFilter ExecuteActionFilter
       => new ActionFilter(false, "convert", "query", "cluster");
+
+    private HttpResponse AddRoute(HttpRequest req)
+    {
+      try
+      {
+        return LimitExecuteTime(() => GetAddRoute(req));
+      }
+      catch(Exception ex)
+      {
+        return WriteError(req, ex.Message);
+      }
+    }
 
     private HttpResponse GetAddRoute(HttpRequest req)
     {
@@ -34,13 +67,15 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         var er = req.PostData<AddRequest>();
         if (er?.Documents == null || string.IsNullOrEmpty(er.Language))
-          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "no valid post-data"));
+          return WriteError(req, "invalid post-data");
+        if (er.Documents.Length > 100 || er.Documents.Sum(x=>x.Text.Length) / 5000 < 100)
+          return WriteError(req, "this service is only up to 100 documents/pages");
 
         return UseTagger(req, er.Language, er.GetDocumentArray(), true);
       }
       catch (Exception ex)
       {
-        return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, ex.Message));
+        return WriteError(req, ex.Message);
       }
     }
 
@@ -50,8 +85,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       var tagger = new SimpleTreeTagger();
       var available = new HashSet<string>(tagger.LanguagesAvailabel);
       if (!available.Contains(language))
-        return new HttpResponse(req, false, 500, null, Mime,
-                                WriteError(Writer, $"wrong language selected - use: {string.Join(", ", available)}"));
+        return WriteError(req, $"wrong language selected - use: {string.Join(", ", available)}");
 
       if (enableCleanup)
       {
@@ -71,7 +105,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       tagger.Execute();
       var corpus = tagger.Output.First();
       if (corpus == null || corpus.CountDocuments == 0 || corpus.CountToken == 0)
-        return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "tagging process failed"));
+        return WriteError(req, "tagging process failed");
 
       corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
       return new HttpResponse(req, false, 500, null, "application/json",
@@ -84,18 +118,18 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         var er = req.PostData<ExecuteRequest>();
         if (er == null)
-          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "no valid post-data"));
+          return WriteError(req, "no valid post-data");
 
         var aCheck = Configuration.GetConsoleAction(er.Action);
         if (aCheck == null || !ExecuteActionFilter.Check(er.Action))
-          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "action not available"));
+          return WriteError(req, "action unavailable");
 
         if (!File.Exists($"corpora/{er.CorpusId}.cec6"))
-          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "corpus not (longer) available"));
+          return WriteError(req, "corpus unavailable");
 
         var corpus = CorpusAdapterWriteDirect.Create($"corpora/{er.CorpusId}.cec6");
         if (corpus == null)
-          return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "corpus not (longer) available"));
+          return WriteError(req, "corpus unavailable");
 
         var selection = corpus.ToSelection();
         var a = new ClusterAction();
@@ -119,13 +153,14 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
       catch (Exception ex)
       {
-        return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, ex.Message));
+        return WriteError(req, ex.Message);
       }
     }
 
     protected override Server ConfigureServer(Server server)
     {
-      server.AddEndpoint(HttpVerb.POST, "/add/", GetAddRoute);
+      server.AddEndpoint(HttpVerb.GET, "/add/languages/", AvailableLanguagesRoute);
+      server.AddEndpoint(HttpVerb.POST, "/add/", AddRoute);
 
       if (!Directory.Exists("corpora"))
         Directory.CreateDirectory("corpora");
@@ -137,10 +172,22 @@ namespace CorpusExplorer.Terminal.Console.Web
     {
       return new SericeDocumentation
       {
-        Description = "CorpusExplorer-Endpoint (Version 1.0.0)",
+        Description = "CorpusExplorer-Free100-Endpoint (Version 1.0.0)",
         Url = Url,
         Endpoints = new[]
         {
+          new ServiceEndpoint
+          {
+            Url = $"{Url}add/langauges/",
+            AllowedVerbs = new[] {"GET"},
+            Arguments = null,
+            Description = $"lists all available languages for {Url}add/",
+            ReturnValue = new[]
+            {
+              new ServiceParameter
+                {Name = "languages", Type = "string array", Description = "all available languages"}
+            }
+          },
           new ServiceEndpoint
           {
             Url = $"{Url}add/",
