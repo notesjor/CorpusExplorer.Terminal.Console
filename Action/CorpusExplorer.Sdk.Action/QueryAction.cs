@@ -27,11 +27,11 @@ namespace CorpusExplorer.Sdk.Action
         var lines = File.ReadAllLines(args[0].Replace("FILE:", string.Empty), Configuration.Encoding);
         var queries = lines.Select(QueryParser.Parse);
         sub = queries.Aggregate(selection,
-                                (current, q) => current.Create(new[] { q }, Path.GetFileNameWithoutExtension(args[1])));
+                                (current, q) => current.Create(new[] {q}, Path.GetFileNameWithoutExtension(args[1])));
       }
       else
       {
-        var s = args[0].Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+        var s = args[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
         if (s.Length != 2)
           return;
 
@@ -42,11 +42,11 @@ namespace CorpusExplorer.Sdk.Action
           return;
         }
 
-        sub = selection.Create(new[] { query }, Path.GetFileNameWithoutExtension(args[1]));
+        sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(args[1]));
       }
 
       var export = new ConvertAction();
-      export.Execute(sub, new[] { args[1] }, writer);
+      export.Execute(sub, new[] {args[1]}, writer);
     }
   }
 }

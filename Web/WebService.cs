@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
@@ -9,8 +7,8 @@ using CorpusExplorer.Sdk.Model.Extension;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
+using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
-using CorpusExplorer.Terminal.Console.Web.Model.Response;
 using Tfres;
 using Tfres.Documentation;
 
@@ -18,7 +16,6 @@ namespace CorpusExplorer.Terminal.Console.Web
 {
   public class WebService : AbstractWebService
   {
-    private readonly Dictionary<string, string> _cache = new Dictionary<string, string>();
     private readonly AbstractCorpusAdapter _corpus;
 
     public WebService(AbstractTableWriter writer, int port, string file) : base(writer, port)
@@ -28,6 +25,9 @@ namespace CorpusExplorer.Terminal.Console.Web
       _corpus = CorpusLoadHelper.LoadCorpus(file);
       System.Console.WriteLine("ok!");
     }
+
+    protected override ActionFilter ExecuteActionFilter
+      => new ActionFilter(false, "convert", "query");
 
     protected override Server ConfigureServer(Server server)
     {
@@ -41,13 +41,6 @@ namespace CorpusExplorer.Terminal.Console.Web
         var er = req.PostData<ExecuteRequest>();
         if (er == null)
           return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "no valid post-data"));
-
-        if (_cache.Count > 0 && (er.DocumentGuids == null || er.DocumentGuids.Length == 0))
-        {
-          var key = GetCacheKey(er.Action, er.Arguments);
-          if (_cache.ContainsKey(key))
-            return new HttpResponse(req, true, 200, null, Mime, _cache[key]);
-        }
 
         var a = Configuration.GetConsoleAction(er.Action);
         if (a == null || er.Action == "convert" || er.Action == "query")
@@ -72,35 +65,6 @@ namespace CorpusExplorer.Terminal.Console.Web
         return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, ex.Message));
       }
     }
-
-    protected override HttpResponse GetExecuteExportRoute(HttpRequest arg)
-    {
-      throw new NotImplementedException();
-    }
-
-    protected override AvailableActionsResponse InitializeExportActionList()
-      => new AvailableActionsResponse
-      {
-        Items = (from action in Configuration.AddonConsoleActions
-                 where action.Action == "query"
-                 select new AvailableActionsResponse.AvailableActionsResponseItem
-                 {
-                   action = action.Action,
-                   description = action.Description
-                 }).ToArray()
-      };
-
-    protected override AvailableActionsResponse InitializeExecuteActionList()
-      => new AvailableActionsResponse
-      {
-        Items = (from action in Configuration.AddonConsoleActions
-                 where action.Action != "convert" && action.Action != "query"
-                 select new AvailableActionsResponse.AvailableActionsResponseItem
-                 {
-                   action = action.Action,
-                   description = action.Description
-                 }).ToArray()
-      };
 
     protected override SericeDocumentation GetDocumentation()
     {
@@ -138,11 +102,6 @@ namespace CorpusExplorer.Terminal.Console.Web
           }
         }
       };
-    }
-
-    private string GetCacheKey(string action, params string[] parameters)
-    {
-      return parameters == null ? action : string.Join("|", action, parameters);
     }
   }
 }

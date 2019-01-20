@@ -13,9 +13,9 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var token = (double)selection.CountToken;
-      var documents = (double)selection.CountDocuments;
-      var sentences = (double)selection.CountSentences;
+      var token = (double) selection.CountToken;
+      var documents = (double) selection.CountDocuments;
+      var sentences = (double) selection.CountSentences;
 
       var dt = new DataTable();
       dt.Columns.Add("param", typeof(string));
@@ -31,7 +31,7 @@ namespace CorpusExplorer.Sdk.Action
       {
         var types = selection.GetLayerValues("Wort").Count();
         dt.Rows.Add("types", types);
-        dt.Rows.Add("TTR (type/token-ratio)", types / token);
+        dt.Rows.Add("TTR (type/token-ratio)", types    / token);
         dt.Rows.Add("TSR (type/sentence-ratio)", types / sentences);
         dt.Rows.Add("TDR (type/document-ratio)", types / documents);
       }
@@ -40,8 +40,8 @@ namespace CorpusExplorer.Sdk.Action
         // ignore
       }
 
-      dt.Rows.Add("ToSR (token/sentence-ratio)", token / sentences);
-      dt.Rows.Add("ToDR (token/document-ratio)", token / documents);
+      dt.Rows.Add("ToSR (token/sentence-ratio)", token       / sentences);
+      dt.Rows.Add("ToDR (token/document-ratio)", token       / documents);
       dt.Rows.Add("SDR (sentence/document-ratio)", sentences / documents);
 
       dt.EndLoadData();

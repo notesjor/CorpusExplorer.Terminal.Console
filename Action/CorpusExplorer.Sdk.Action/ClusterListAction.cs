@@ -23,7 +23,8 @@ namespace CorpusExplorer.Sdk.Action
       if (!(query is FilterQueryUnsupportedParserFeature))
         return;
 
-      var selections = UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature)query);
+      var selections =
+        UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature) query);
       if (selections == null)
         return;
 

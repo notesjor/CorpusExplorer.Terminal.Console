@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CorpusExplorer.Sdk.Action;
-using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus;
@@ -13,9 +12,8 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Tagger.TreeTagger;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
+using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect;
-using CorpusExplorer.Terminal.Console.Web.Model.Response;
-using Newtonsoft.Json;
 using Tfres;
 using Tfres.Documentation;
 
@@ -26,6 +24,9 @@ namespace CorpusExplorer.Terminal.Console.Web
     public WebServiceDirect(AbstractTableWriter writer, int port) : base(writer, port)
     {
     }
+
+    protected override ActionFilter ExecuteActionFilter
+      => new ActionFilter(false, "convert", "query", "cluster");
 
     private HttpResponse GetAddRoute(HttpRequest req)
     {
@@ -57,7 +58,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         var cleaner1 = new StandardCleanup();
         cleaner1.Input.Enqueue(docs);
         cleaner1.Execute();
-        var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
+        var cleaner2 = new RegexXmlMarkupCleanup {Input = cleaner1.Output};
         cleaner2.Execute();
         tagger.Input = cleaner2.Output;
       }
@@ -86,7 +87,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "no valid post-data"));
 
         var aCheck = Configuration.GetConsoleAction(er.Action);
-        if (aCheck == null || !IsValidAction(er.Action))
+        if (aCheck == null || !ExecuteActionFilter.Check(er.Action))
           return new HttpResponse(req, false, 500, null, Mime, WriteError(Writer, "action not available"));
 
         if (!File.Exists($"corpora/{er.CorpusId}.cec6"))
@@ -122,11 +123,6 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
-    protected override HttpResponse GetExecuteExportRoute(HttpRequest arg)
-    {
-      throw new NotImplementedException();
-    }
-
     protected override Server ConfigureServer(Server server)
     {
       server.AddEndpoint(HttpVerb.POST, "/add/", GetAddRoute);
@@ -135,35 +131,6 @@ namespace CorpusExplorer.Terminal.Console.Web
         Directory.CreateDirectory("corpora");
 
       return server;
-    }
-
-    protected override AvailableActionsResponse InitializeExportActionList()
-      => new AvailableActionsResponse
-      {
-        Items = (from action in Configuration.AddonConsoleActions
-                 where action.Action == "convert" || action.Action == "query"
-                 select new AvailableActionsResponse.AvailableActionsResponseItem
-                 {
-                   action = action.Action,
-                   description = action.Description
-                 }).ToArray()
-      };
-
-    protected override AvailableActionsResponse InitializeExecuteActionList()
-      => new AvailableActionsResponse
-      {
-        Items = (from action in Configuration.AddonConsoleActions
-                 where IsValidAction(action.Action)
-                 select new AvailableActionsResponse.AvailableActionsResponseItem
-                 {
-                   action = action.Action,
-                   description = action.Description
-                 }).ToArray()
-      };
-
-    private static bool IsValidAction(string action)
-    {
-      return !action.Contains("cluster") || action != "convert" || action != "query";
     }
 
     protected override SericeDocumentation GetDocumentation()

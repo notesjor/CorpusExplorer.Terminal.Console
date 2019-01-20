@@ -10,6 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   public class KwicSignificantFilterAction : IAction
   {
     public string Action => "kwic-sig";
+
     public string Description =>
       "kwic-sig [LAYER] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens";
 
@@ -27,7 +28,7 @@ namespace CorpusExplorer.Sdk.Action
         HighlightBodyStart = "<div>",
         HighlightBodyEnd = "</div>"
       };
-      vm.AddQuery(new FilterQuerySingleLayerAnyMatch { LayerDisplayname = args[0], LayerQueries = queries });
+      vm.AddQuery(new FilterQuerySingleLayerAnyMatch {LayerDisplayname = args[0], LayerQueries = queries});
       vm.Execute();
 
       writer.WriteTable(selection.Displayname, vm.GetDataTable());

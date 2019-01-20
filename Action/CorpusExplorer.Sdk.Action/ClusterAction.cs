@@ -34,7 +34,7 @@ namespace CorpusExplorer.Sdk.Action
       nargs.RemoveAt(0);
       var task = nargs[0];
       var action = Configuration.GetConsoleAction(task);
-      if (action==null)
+      if (action == null)
         return;
 
       nargs.RemoveAt(0);

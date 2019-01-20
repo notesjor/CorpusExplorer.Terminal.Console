@@ -11,7 +11,9 @@ namespace CorpusExplorer.Sdk.Action
   public class GetDocumentAction : IAction
   {
     public string Action => "get-document";
-    public string Description => "get-document [GUID] {LAYER} - get all layer-information for specific [GUID] document. Use {LAYER} to filter output.";
+
+    public string Description =>
+      "get-document [GUID] {LAYER} - get all layer-information for specific [GUID] document. Use {LAYER} to filter output.";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

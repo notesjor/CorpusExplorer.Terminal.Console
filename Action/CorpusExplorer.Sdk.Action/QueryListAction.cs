@@ -12,14 +12,16 @@ namespace CorpusExplorer.Sdk.Action
   public class QueryListAction : IAction
   {
     public string Action => "query-list";
-    public string Description => "query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.";
+
+    public string Description =>
+      "query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length != 3)
         return;
 
-      var s = args[0].Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+      var s = args[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
       if (s.Length != 2)
         return;
 
@@ -30,7 +32,7 @@ namespace CorpusExplorer.Sdk.Action
         return;
       }
 
-      var sub = selection.Create(new[] { query }, Path.GetFileNameWithoutExtension(args[1]));
+      var sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(args[1]));
 
       writer.WriteTable(args[2], sub.GetDocumentGuidAndDisplaynamesAsDataTable());
     }

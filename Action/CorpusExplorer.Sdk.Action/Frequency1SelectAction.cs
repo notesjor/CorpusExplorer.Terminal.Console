@@ -98,17 +98,21 @@ namespace CorpusExplorer.Sdk.Action
 
         var word = split[1];
         if (word.StartsWith("*")) // Postfix
+        {
           foreach (var w in GetSdmPostfixQuery(word.Substring(1), vm.Frequency))
           {
             res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
             match += w.Value;
           }
+        }
         else if (word.EndsWith("*")) // Prefix
+        {
           foreach (var w in GetSdmPrefixQuery(word.Substring(0, word.Length - 1), vm.Frequency))
           {
             res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
             match += w.Value;
           }
+        }
         else if (vm.Frequency.ContainsKey(word))
         {
           res.Rows.Add(split[0], word, vm.Frequency[word], vm.Frequency[word] / div, split[2]);

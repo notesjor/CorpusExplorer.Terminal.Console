@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect
 {
-  public class ConvertRequest
+  public class ExportRequest
   {
     [JsonProperty("corpusId")]
     public string CorpusId { get; set; }
@@ -13,5 +13,8 @@ namespace CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect
 
     [JsonProperty("outputFormat")]
     public string OutputFormat { get; set; }
+
+    [JsonProperty("action")]
+    public string Action { get; set; }
   }
 }

@@ -8,7 +8,9 @@ namespace CorpusExplorer.Sdk.Action
   public class CooccurrenceProfileAction : IAction
   {
     public string Action => "cooccurrence-profile";
-    public string Description => "cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER].";
+
+    public string Description =>
+      "cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER].";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

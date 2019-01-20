@@ -47,8 +47,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +57,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Abstract\AbstractWebService.cs" />
+    <Compile Include="Web\Model\ActionFilter.cs" />
     <Compile Include="Web\Model\Request\WebServiceDirect\AddRequest.cs" />
     <Compile Include="Web\Model\Request\WebServiceDirect\AddRequestDocument.cs" />
-    <Compile Include="Web\Model\Request\WebServiceDirect\ConvertRequest.cs" />
+    <Compile Include="Web\Model\Request\WebServiceDirect\ExportRequest.cs" />
     <Compile Include="Web\Model\Request\WebServiceDirect\ExecuteRequest.cs" />
     <Compile Include="Web\Model\Request\WebService\ExecuteRequest.cs" />
     <Compile Include="Web\Model\Response\Abstract\AbstractResponse.cs" />

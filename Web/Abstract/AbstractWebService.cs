@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
-using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
+using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Response;
-using Microsoft.SqlServer.Server;
 using Newtonsoft.Json;
 using Tfres;
 using Tfres.Documentation;
@@ -17,11 +14,9 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
 {
   public abstract class AbstractWebService
   {
-    private string _availableExecuteActions;
-    private string _availableExportActions;
-    private string _availableExportFormats;
-    private string _documentation;
     private readonly int _port;
+    private string _availableExecuteActions;
+    private string _documentation;
 
     protected AbstractWebService(AbstractTableWriter writer, int port)
     {
@@ -33,25 +28,37 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       InitializeDefaultParameter();
     }
 
-    private void InitializeDefaultParameter()
-    {
-      _availableExecuteActions = JsonConvert.SerializeObject(InitializeExecuteActionList());
-      _availableExportActions = JsonConvert.SerializeObject(InitializeExportActionList());
-      _availableExportFormats = JsonConvert.SerializeObject(InitializeExportFormatsList());
-    }
-
-    private string[] InitializeExportFormatsList()
-      => Configuration.AddonExporters.GetReflectedTypeNameDictionary().Keys.ToArray();
-
-    protected abstract AvailableActionsResponse InitializeExportActionList();
-
-    protected abstract AvailableActionsResponse InitializeExecuteActionList();
+    protected abstract ActionFilter ExecuteActionFilter { get; }
 
     protected AbstractTableWriter Writer { get; }
 
     protected string Mime { get; }
 
     protected string Url { get; }
+
+    private void InitializeDefaultParameter()
+    {
+      _availableExecuteActions = JsonConvert.SerializeObject(InitializeExecuteActionList());
+    }
+
+    private AvailableActionsResponse InitializeExecuteActionList()
+    {
+      return ActionFilterToResponse(ExecuteActionFilter);
+    }
+
+    private AvailableActionsResponse ActionFilterToResponse(ActionFilter actionFilter)
+    {
+      return new AvailableActionsResponse
+      {
+        Items = (from action in Configuration.AddonConsoleActions
+                 where actionFilter.Check(action.Action)
+                 select new AvailableActionsResponse.AvailableActionsResponseItem
+                 {
+                   action = action.Action,
+                   description = action.Description
+                 }).ToArray()
+      };
+    }
 
     public void Run()
     {
@@ -61,9 +68,6 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       var s = new Server("127.0.0.1", _port, DefaultRoute);
       s.AddEndpoint(HttpVerb.GET, "/execute/actions/", GetExecuteActionsRoute);
       s.AddEndpoint(HttpVerb.POST, "/execute/", GetExecuteRoute);
-      s.AddEndpoint(HttpVerb.GET, "/export/formats/", GetExportFormatsRoute);
-      s.AddEndpoint(HttpVerb.POST, "/export/", GetExecuteExportRoute);
-      s.AddEndpoint(HttpVerb.GET, "/export/actions/", GetExportActionsRoute);
       s = ConfigureServer(s);
       System.Console.WriteLine(s != null ? "ready!" : "error!");
 
@@ -71,16 +75,14 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     }
 
     private HttpResponse DefaultRoute(HttpRequest req)
-      => new HttpResponse(req, true, 200, null, "application/json", _documentation);
+    {
+      return new HttpResponse(req, true, 200, null, "application/json", _documentation);
+    }
 
     private HttpResponse GetExecuteActionsRoute(HttpRequest arg)
-      => new HttpResponse(arg, true, 200, null, "application/json", _availableExecuteActions);
-
-    private HttpResponse GetExportActionsRoute(HttpRequest arg)
-      => new HttpResponse(arg, true, 200, null, "application/json", _availableExecuteActions);
-
-    private HttpResponse GetExportFormatsRoute(HttpRequest arg)
-      => new HttpResponse(arg, true, 200, null, "application/json", _availableExportFormats);
+    {
+      return new HttpResponse(arg, true, 200, null, "application/json", _availableExecuteActions);
+    }
 
     private SericeDocumentation AppendDefaultDocumentation(SericeDocumentation getDocumentation)
     {
@@ -149,7 +151,5 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     protected abstract Server ConfigureServer(Server server);
 
     protected abstract HttpResponse GetExecuteRoute(HttpRequest req);
-
-    protected abstract HttpResponse GetExecuteExportRoute(HttpRequest arg);
   }
 }

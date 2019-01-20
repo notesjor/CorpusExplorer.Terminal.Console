@@ -38,18 +38,18 @@ namespace CorpusExplorer.Sdk.Helper
 
     private static IEnumerable<Selection> UnsupportedParserRandomFeatureToObject(RandomSelectionBlock block)
     {
-      return new[] { block.RandomSelection, block.RandomInvertSelection };
+      return new[] {block.RandomSelection, block.RandomInvertSelection};
     }
 
     private static IEnumerable<Selection> UnsupportedParserRandomFeatureToFile(
       AbstractTableWriter writer, string output, RandomSelectionBlock block)
     {
-      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
       if (outputOptions.Length != 2)
         return null;
 
       var export = new ConvertAction();
-      export.Execute(block.RandomSelection, new[] { output }, writer);
+      export.Execute(block.RandomSelection, new[] {output}, writer);
 
       var form = outputOptions[0];
       var path = outputOptions[1];
@@ -59,7 +59,7 @@ namespace CorpusExplorer.Sdk.Helper
       if (dir != null && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
-      export.Execute(block.RandomInvertSelection, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\"" },
+      export.Execute(block.RandomInvertSelection, new[] {$"{form}#\"{Path.Combine(dir, $"{nam}_inverse{ext}")}\""},
                      writer);
       return null;
     }
@@ -73,13 +73,15 @@ namespace CorpusExplorer.Sdk.Helper
 
       var selections = AutoSplitBlockHelper.RunAutoSplit(selection, query, values);
 
-      return string.IsNullOrEmpty(output) ? selections : UnsupportedParserFeatureAutosplitToFile(writer, output, selections);
+      return string.IsNullOrEmpty(output)
+               ? selections
+               : UnsupportedParserFeatureAutosplitToFile(writer, output, selections);
     }
 
     private static IEnumerable<Selection> UnsupportedParserFeatureAutosplitToFile(
       AbstractTableWriter writer, string output, IEnumerable<Selection> selections)
     {
-      var outputOptions = output.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
       if (outputOptions.Length != 2)
         return null;
 
@@ -94,7 +96,9 @@ namespace CorpusExplorer.Sdk.Helper
 
       var export = new ConvertAction();
       foreach (var cluster in selections)
-        export.Execute(cluster, new[] { $"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\"" }, writer);
+        export.Execute(cluster,
+                       new[] {$"{form}#\"{Path.Combine(dir, $"{nam}_{cluster.Displayname.EnsureFileName()}{ext}")}\""},
+                       writer);
 
       return null;
     }
