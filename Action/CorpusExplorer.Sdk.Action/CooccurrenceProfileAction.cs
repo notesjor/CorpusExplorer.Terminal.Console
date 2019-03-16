@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -9,8 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "cooccurrence-profile";
 
-    public string Description =>
-      "cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER].";
+    public string Description => Resources.DescCooccurrenceProfile;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

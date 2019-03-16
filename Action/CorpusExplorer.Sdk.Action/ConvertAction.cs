@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -12,7 +13,7 @@ namespace CorpusExplorer.Sdk.Action
   public class ConvertAction : IAction
   {
     public string Action => "convert";
-    public string Description => "convert - see help section [OUTPUT] for more information";
+    public string Description => Resources.DescConvert;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

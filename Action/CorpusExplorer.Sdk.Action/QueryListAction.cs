@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
@@ -13,8 +14,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "query-list";
 
-    public string Description =>
-      "query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.";
+    public string Description => Resources.DescQueryList;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

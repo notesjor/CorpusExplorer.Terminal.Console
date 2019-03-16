@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -11,8 +12,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "cluster-list";
 
-    public string Description =>
-      "cluster-list [QUERY] - works like cluster but returns clusters with document GUIDs.";
+    public string Description => Resources.DescClusterList;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

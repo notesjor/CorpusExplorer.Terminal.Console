@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -14,8 +15,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "kwit";
 
-    public string Description =>
-      "kwit [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order";
+    public string Description => Resources.DescKwit;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

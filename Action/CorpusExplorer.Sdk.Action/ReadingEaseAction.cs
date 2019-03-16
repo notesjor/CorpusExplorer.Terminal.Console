@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class ReadingEaseAction : IAction
   {
     public string Action => "reading-ease";
-    public string Description => "reading-ease {LAYER} - reading ease of [LAYER]";
+    public string Description => Resources.DescReadingEase;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

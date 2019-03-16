@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -9,7 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   public class GetDocumentMetadataAction : IAction
   {
     public string Action => "get-document-metadata";
-    public string Description => "get-document-metadata [GUID] - get all metadata for specific [GUID] document.";
+    public string Description => Resources.DescGetDocumentMetadata;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -23,11 +24,11 @@ namespace CorpusExplorer.Sdk.Action
       var columns = selection.GetDocumentMetadata(guid);
 
       var dt = new DataTable();
-      dt.Columns.Add("category", typeof(string));
-      dt.Columns.Add("value", typeof(string));
+      dt.Columns.Add(Resources.Category, typeof(string));
+      dt.Columns.Add(Resources.Value, typeof(string));
 
       dt.BeginLoadData();
-      dt.Rows.Add("GUID", args[0]);
+      dt.Rows.Add(Resources.Guid, args[0]);
       foreach (var pair in columns)
         dt.Rows.Add(pair.Key, pair.Value.ToString());
 

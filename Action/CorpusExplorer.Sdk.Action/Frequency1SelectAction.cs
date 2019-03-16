@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
@@ -15,8 +16,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "frequency1-select";
 
-    public string Description =>
-      "frequency1-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File";
+    public string Description => Resources.DescFrequency1Selected;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -49,8 +49,8 @@ namespace CorpusExplorer.Sdk.Action
       var res = new DataTable();
 
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
-      res.Columns.Add("Frequenz", typeof(double));
-      res.Columns.Add("Frequenz (relativ)", typeof(double));
+      res.Columns.Add(Resources.Frequency, typeof(double));
+      res.Columns.Add(Resources.FrequencyRel, typeof(double));
 
       res.BeginLoadData();
 
@@ -81,11 +81,11 @@ namespace CorpusExplorer.Sdk.Action
 
       var res = new DataTable();
 
-      res.Columns.Add("Kategorie", typeof(string));
+      res.Columns.Add(Resources.Category, typeof(string));
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
-      res.Columns.Add("Frequenz", typeof(double));
-      res.Columns.Add("Frequenz (relativ)", typeof(double));
-      res.Columns.Add("Wert", typeof(double));
+      res.Columns.Add(Resources.Frequency, typeof(double));
+      res.Columns.Add(Resources.FrequencyRel, typeof(double));
+      res.Columns.Add(Resources.Value, typeof(double));
 
       res.BeginLoadData();
       var match = 0d;
@@ -121,7 +121,7 @@ namespace CorpusExplorer.Sdk.Action
       }
 
       var other = vm.Selection.CountToken - match;
-      res.Rows.Add("OTHER", "TOKEN-COUNT", other, other / div, 0);
+      res.Rows.Add(Resources.Other, Resources.TokenCount, other, other / div, 0);
 
       res.EndLoadData();
 
@@ -144,8 +144,8 @@ namespace CorpusExplorer.Sdk.Action
       var res = new DataTable();
 
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
-      res.Columns.Add("Frequenz", typeof(double));
-      res.Columns.Add("Frequenz (relativ)", typeof(double));
+      res.Columns.Add(Resources.Frequency, typeof(double));
+      res.Columns.Add(Resources.FrequencyRel, typeof(double));
 
       res.BeginLoadData();
 

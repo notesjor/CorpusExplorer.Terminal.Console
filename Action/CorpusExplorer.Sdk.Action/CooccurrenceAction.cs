@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -9,8 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "cooccurrence";
 
-    public string Description =>
-      "cooccurrence [LAYER] {minSIGNI} {minFREQ} - significant cooccurrences for all [LAYER] values";
+    public string Description => Resources.DescCooccurrence;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

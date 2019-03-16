@@ -1,4 +1,5 @@
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -10,8 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "ngram-select";
 
-    public string Description =>
-      "ngram-select [N] [LAYER] [minFREQ] [WORDS] - all [N]-grams on [LAYER] containing [WORDS] .";
+    public string Description => Resources.DescNgramSelect;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

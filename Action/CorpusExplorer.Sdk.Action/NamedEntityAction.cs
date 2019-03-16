@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class NamedEntityAction : IAction
   {
     public string Action => "ner";
-    public string Description => "ner [NERFILE] - performs a named entity recorgnition";
+    public string Description => Resources.DescNer;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

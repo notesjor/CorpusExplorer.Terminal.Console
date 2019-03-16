@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -11,8 +12,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "cooccurrence-select";
 
-    public string Description =>
-      "cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.";
+    public string Description => Resources.DescCooccurrenceSelect;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -35,10 +35,10 @@ namespace CorpusExplorer.Sdk.Action
       }
 
       var tbl = new DataTable();
-      tbl.Columns.Add("Zeichenkette", typeof(string));
-      tbl.Columns.Add("Kookkurrenz", typeof(string));
-      tbl.Columns.Add("Frequenz", typeof(double));
-      tbl.Columns.Add("Signifikanz", typeof(double));
+      tbl.Columns.Add(Resources.WordA, typeof(string));
+      tbl.Columns.Add(Resources.WordB, typeof(string));
+      tbl.Columns.Add(Resources.Frequency, typeof(double));
+      tbl.Columns.Add(Resources.Significance, typeof(double));
 
       tbl.BeginLoadData();
       foreach (var e in res)

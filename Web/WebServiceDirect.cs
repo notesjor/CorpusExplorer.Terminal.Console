@@ -11,6 +11,7 @@ using CorpusExplorer.Sdk.Model.Extension;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Tagger.TreeTagger;
+using CorpusExplorer.Terminal.Console.Properties;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect;
@@ -67,9 +68,9 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         var er = req.PostData<AddRequest>();
         if (er?.Documents == null || string.IsNullOrEmpty(er.Language))
-          return WriteError(req, "invalid post-data");
+          return WriteError(req, Resources.WebErrorInvalidPostData);
         if (er.Documents.Length > 100 || er.Documents.Sum(x=>x.Text.Length) / 5000 < 100)
-          return WriteError(req, "this service is only up to 100 documents/pages");
+          return WriteError(req, Resources.WebErrorPostMax100Pages);
 
         return UseTagger(req, er.Language, er.GetDocumentArray(), true);
       }
@@ -85,7 +86,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       var tagger = new SimpleTreeTagger();
       var available = new HashSet<string>(tagger.LanguagesAvailabel);
       if (!available.Contains(language))
-        return WriteError(req, $"wrong language selected - use: {string.Join(", ", available)}");
+        return WriteError(req, string.Format(Resources.WebErrorWrongLanguage, string.Join(", ", available)));
 
       if (enableCleanup)
       {
@@ -105,7 +106,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       tagger.Execute();
       var corpus = tagger.Output.First();
       if (corpus == null || corpus.CountDocuments == 0 || corpus.CountToken == 0)
-        return WriteError(req, "tagging process failed");
+        return WriteError(req, Resources.WebErrorTaggingProcessError);
 
       corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
       return new HttpResponse(req, false, 500, null, "application/json",
@@ -118,18 +119,18 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         var er = req.PostData<ExecuteRequest>();
         if (er == null)
-          return WriteError(req, "no valid post-data");
+          return WriteError(req, Resources.WebErrorInvalidPostData);
 
         var aCheck = Configuration.GetConsoleAction(er.Action);
         if (aCheck == null || !ExecuteActionFilter.Check(er.Action))
-          return WriteError(req, "action unavailable");
+          return WriteError(req, Resources.WebErrorActionUnavailable);
 
         if (!File.Exists($"corpora/{er.CorpusId}.cec6"))
-          return WriteError(req, "corpus unavailable");
+          return WriteError(req, Resources.WebErrorCorpusUnavailable);
 
         var corpus = CorpusAdapterWriteDirect.Create($"corpora/{er.CorpusId}.cec6");
         if (corpus == null)
-          return WriteError(req, "corpus unavailable");
+          return WriteError(req, Resources.WebErrorCorpusUnavailable);
 
         var selection = corpus.ToSelection();
         var a = new ClusterAction();
@@ -181,11 +182,11 @@ namespace CorpusExplorer.Terminal.Console.Web
             Url = $"{Url}add/langauges/",
             AllowedVerbs = new[] {"GET"},
             Arguments = null,
-            Description = $"lists all available languages for {Url}add/",
+            Description = string.Format(Resources.WebHelpListAvailableLanguages, Url),
             ReturnValue = new[]
             {
               new ServiceParameter
-                {Name = "languages", Type = "string array", Description = "all available languages"}
+                {Name = "languages", Type = "string array", Description = Resources.WebHelpParameterLanguages}
             }
           },
           new ServiceEndpoint
@@ -193,16 +194,15 @@ namespace CorpusExplorer.Terminal.Console.Web
             Url = $"{Url}add/",
             AllowedVerbs = new[] {"POST"},
             Arguments = null,
-            Description = "Adds/analyzes a new corpus",
+            Description = Resources.WebHelpAddCorpus,
             ReturnValue = new[]
             {
               new ServiceParameter
-                {Name = "language", Type = "string", Description = "the language of all documents"},
+                {Name = "language", Type = "string", Description = Resources.WebHelpAddCorpusParameterLanguage},
               new ServiceParameter
               {
                 Name = "documents", Type = "array of objects",
-                Description =
-                  "text = document-text / meta = key/value dictionary - example: {\"text\":\"annotate this text\",\"meta\":{\"Author\":\"Jan\",\"Integer\":5,\"Date\":\"2019-01-08T21:32:01.0194747+01:00\"}}"
+                Description = Resources.WebHelpAddCorpusParameterDocuments
               }
             }
           },
@@ -210,26 +210,25 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             Url = $"{Url}execute/",
             AllowedVerbs = new[] {"POST"},
+            Description = string.Format(Resources.WebHelpExecute, Url),
             Arguments = new[]
             {
               new ServiceArgument
               {
-                Name = "corpusId", Type = "string", Description = $"the id of the corpus you added via {Url}add/",
+                Name = "corpusId", Type = "string", Description = string.Format(Resources.WebHelpExecuteParameterCorpusId, Url),
                 IsRequired = true
               },
               new ServiceArgument
-                {Name = "action", Type = "string", Description = "name of the action to execute", IsRequired = true},
+                {Name = "action", Type = "string", Description = Resources.WebHelpExecuteParameterAction, IsRequired = true},
               new ServiceArgument
               {
-                Name = "arguments", Type = "key-value",
-                Description = "example: {'key1':'value1', 'key2':'value2', 'key3':'value3'}", IsRequired = true
+                Name = "arguments", Type = "key-value", Description = Resources.WebHelpExecuteParameterArguments, IsRequired = true
               }
-            },
-            Description = $"Shows all available Actions for {Url}execute/",
+            },            
             ReturnValue = new[]
             {
               new ServiceParameter
-                {Name = "table", Type = "table (rows > array of objects)", Description = "execution result"}
+                {Name = "table", Type = "table (rows > array of objects)", Description = Resources.WebHelpExecuteResult}
             }
           }
         }

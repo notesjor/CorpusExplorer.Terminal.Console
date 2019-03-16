@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
@@ -12,8 +13,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "get-document";
 
-    public string Description =>
-      "get-document [GUID] {LAYER} - get all layer-information for specific [GUID] document. Use {LAYER} to filter output.";
+    public string Description => Resources.DescGetDocument;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -36,8 +36,8 @@ namespace CorpusExplorer.Sdk.Action
         filter = new HashSet<string>(fArgs);
 
       var dt = new DataTable();
-      dt.Columns.Add("layer", typeof(string));
-      dt.Columns.Add("content", typeof(string));
+      dt.Columns.Add(Resources.Layer, typeof(string));
+      dt.Columns.Add(Resources.Content, typeof(string));
 
       dt.BeginLoadData();
       foreach (var pair in layers)

@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class VocdAction : IAction
   {
     public string Action => "vocd";
-    public string Description => "vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]";
+    public string Description => Resources.DescVocd;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

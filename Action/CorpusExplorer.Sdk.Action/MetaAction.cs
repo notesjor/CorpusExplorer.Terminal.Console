@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class MetaAction : IAction
   {
     public string Action => "meta";
-    public string Description => "meta - lists all meta-categories, labels and token/type/document-count";
+    public string Description => Resources.DescMeta;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

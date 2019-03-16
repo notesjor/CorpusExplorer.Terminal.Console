@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -9,8 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "style-ngram";
 
-    public string Description =>
-      "style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram";
+    public string Description => Resources.DescStyleNGram;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ExecuteScript" xml:space="preserve">
+    <value>execute script: {0}</value>
+  </data>
+  <data name="PointPointPointOk" xml:space="preserve">
+    <value>...ok!</value>
+  </data>
+  <data name="BaseHelp" xml:space="preserve">
+    <value>help - to display command help
+FILE:[FILE] - to execute script
+SAVE:[FILE] - to save command history as script
+quit - to exit shell mode</value>
+  </data>
+  <data name="HelpModes" xml:space="preserve">
+    <value>Syntax for annotation/conversion:
+cec.exe [INPUT] convert [OUTPUT]
+Syntax for filtering:
+cec.exe [INPUT] [QUERY] [OUTPUT]
+Syntax for analytics (writes output to stdout):
+cec.exe {F:FORMAT} [INPUT] [ACTION]
+Syntax for scripting:
+cec.exe FILE:[PATH]
+More detailed scripting errors:
+cec.exe DEBUG:[PATH]
+To start interactive shell mode
+cec.exe SHELL
+To start a web-service
+cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:30000} {INPUT}
+</value>
+  </data>
+  <data name="HelpImportPattern" xml:space="preserve">
+    <value>[INPUT] = import#{0}#[FILES]</value>
+  </data>
+  <data name="HelpImportExample" xml:space="preserve">
+    <value>Note: [FILES] = separate files with &amp; - merges all files before processing
+Example: cec.exe import#ImporterCec5#C:\mycorpus1.cec5&amp;C:\mycorpus2.cec5 convert ExporterCec6#C:\mycorpus.cec6
+
+</value>
+  </data>
+  <data name="HelpImportHeader" xml:space="preserve">
+    <value>&lt;: --- [INPUT]-- - :&gt;
+
+Import corpus material - direct[INPUT]:</value>
+  </data>
+  <data name="HelpAnnotateHeader" xml:space="preserve">
+    <value>Annotate raw text - [INPUT]:</value>
+  </data>
+  <data name="HelpAnnotatePattern" xml:space="preserve">
+    <value>[INPUT] = annotate#{0}#[TAGGER]#[LANGUAGE]#[DIRECTORY]</value>
+  </data>
+  <data name="HelpAnnotateNote" xml:space="preserve">
+    <value>Note: [DIRECTORY] = any directory you like - all files will be processed</value>
+  </data>
+  <data name="HelpAnnotateTaggerHeader" xml:space="preserve">
+    <value>[TAGGER] &amp; [LANGUAGE]:</value>
+  </data>
+  <data name="HelpAnnotateTaggerPattern" xml:space="preserve">
+    <value>[TAGGER] = {0} </value>
+  </data>
+  <data name="HelpAnnotateTaggerLanguagePattern" xml:space="preserve">
+    <value>([LANGUAGE] = {0})</value>
+  </data>
+  <data name="HelpAnnotateExample" xml:space="preserve">
+    <value>Example: cec.exe annotate#DpxcScraper#SimpleTreeTagger#Deutsch#C:\dpxc\ convert ExporterCec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="HelpQueryClusterSyntax" xml:space="preserve">
+    <value>
+[QUERY]:
+A preceding ! inverts the entire query
+First character:
+M = Metadata -OR- T = (Full)Text -OR- X = Extended Features
+followed by configuration (see below), the :: separator and the values
+
+Second character [OPERATOR] (if you choose M):
+  ? = regEx | : = contains (case sensitive) | . = contains (not case sensitive)
+  = = match exact (case sensitive) | - = match exact (not case sensitive) | ! = is empty
+  ( = starts with (case sensitive) | ) = ends with (case sensitive)
+If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)
+Example (query only): !M:Author::Jan - Finds all documents where "Jan" isn't an author
+Example (in action): cec.exe import#ImporterCec6#C:\mycorpus.cec6 query !M:Author::Jan ExporterCec6#C:\mycorpus.cec6
+
+Second character [OPERATOR] (if you choose T):
+  ~ = any match | - = all in one document | = = all in one sentence | § = exact phrase
+  ? = regEx value | F = regEx fulltext-search (very slow) | 1 = first plus any other match
+If you have chosen T - enter the layer name (see [ACTION] = layer-names)
+Example (query only): T§Wort::OpenSource;Software - Finds all documents with the exact phrase "OpensSource Software"
+Example (in action): cec.exe import#ImporterCec6#C:\mycorpus.cec6 query T§Wort::OpenSource;Software ExporterCec6#C:\mycorpus.cec6
+Note 1: If you use several words in a T-query, then separate them with ;
+Note 2: You can also use a query file (*.ceusd) - use the FILE: prefix
+Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 query FILE:C:\query.ceusd ExporterCec6#C:\mycorpus.cec6
+
+Second character [OPERATOR] (if you choose X):
+  R = random selection | S = auto split by meta-data (use cluster for auto split)
+If you use XR for random selection you need to specify the document count
+Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 query XR::100 frequency1 Wort
+Note 4: XR will generate two outputs - the regular and the inverted output.
+If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)
+
+Enter the separator :: followed by the query
+If you use XS you must specify the meta data type - TEXT, INT, FLOAT or DATE
+Note 5: XS will generate multiple outputs - based on clusters.
+TEXT generates for every entry a separate snapshot
+Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort
+INT / FLOAT you need to set up a [CLUSTERSIZE]
+Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSYear::INT;10 ExporterCec6#C:\mycorpus.cec6
+DATE;C;[CLUSTERSIZE] - generates [CLUSTERSIZE] clusters.
+Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSDate::DATE;C;10 ExporterCec6#C:\mycorpus.cec6
+DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster / DATE;Y = Year-Cluster
+DATE;YW = Week-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster
+DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster
+Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSDate::DATE;YMD ExporterCec6#C:\mycorpus.cec6
+WINDOW = Add WINDOW + SIZE as an prefix for each cluster argument to enable the rolling window feature
+Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD ExporterCec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="HelpOutputHeader" xml:space="preserve">
+    <value>
+
+&lt;: --- [OUTPUT] --- :&gt;
+
+[OUTPUT-EXPORTER] - for query or convert:</value>
+  </data>
+  <data name="HelpOutputPattern" xml:space="preserve">
+    <value>[OUTPUT] = {0}#[FILE]</value>
+  </data>
+  <data name="HelpOutputExample" xml:space="preserve">
+    <value>Note: [FILE] = any file you like to store the output
+Example 'convert': cec.exe import#ImporterCec5#C:\mycorpus.cec5 convert ExporterCec6#C:\mycorpus.cec6
+Example 'query': cec.exe import#ImporterCec5#C:\mycorpus.cec5 query !M:Author::Jan ExporterCec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="HelpActionHeader" xml:space="preserve">
+    <value>
+
+&lt;: --- [ACTION] --- :&gt;
+
+Most actions accept arguments. [ARG] is a required argument. {ARG} is an optional argument.</value>
+  </data>
+  <data name="HelpActionPattern" xml:space="preserve">
+    <value>[ACTION] = {0}</value>
+  </data>
+  <data name="HelpActionExample" xml:space="preserve">
+    <value>Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+  </data>
+  <data name="HelpScripting" xml:space="preserve">
+    <value>
+
+&lt;: --- [SCRIPTING] --- :&gt;
+
+All actionss above can be stored in a file to build up a automatic process.
+In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout
+Example: import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv</value>
+  </data>
+  <data name="HelpFormat" xml:space="preserve">
+    <value>
+
+&lt;: --- [F:FORMAT] --- :&gt;
+
+If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.
+You need to set one of the following tags as first parameter:
+F:TSV - (standard output format) tab separated values
+F:CSV - ';' separated values
+F:JSON - JSON-array
+F:XML - XML-Document
+F:HTML - HTML5-Document
+F:SQL - SQL-statement
+F:SQLSCHEMA - SQL-statement (schema only)
+F:SQLDATA - SQL-statement (insert data only - no schema)
+Example: cec.exe F:JSON import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+  </data>
+  <data name="WebErrorInvalidPostData" xml:space="preserve">
+    <value>invalid post-data</value>
+  </data>
+  <data name="WebErrorPostMax100Pages" xml:space="preserve">
+    <value>this service is only up to 100 documents/pages</value>
+  </data>
+  <data name="WebErrorWrongLanguage" xml:space="preserve">
+    <value>wrong language selected - use: {0}</value>
+  </data>
+  <data name="WebErrorTaggingProcessError" xml:space="preserve">
+    <value>tagging process failed</value>
+  </data>
+  <data name="WebErrorActionUnavailable" xml:space="preserve">
+    <value>action unavailable</value>
+  </data>
+  <data name="WebErrorCorpusUnavailable" xml:space="preserve">
+    <value>corpus unavailable</value>
+  </data>
+  <data name="WebHelpListAvailableLanguages" xml:space="preserve">
+    <value>lists all available languages for {0}add/</value>
+  </data>
+  <data name="WebHelpParameterLanguages" xml:space="preserve">
+    <value>all available languages</value>
+  </data>
+  <data name="WebHelpAddCorpus" xml:space="preserve">
+    <value>Adds/analyzes a new corpus</value>
+  </data>
+  <data name="WebHelpAddCorpusParameterLanguage" xml:space="preserve">
+    <value>the language of all documents</value>
+  </data>
+  <data name="WebHelpAddCorpusParameterDocuments" xml:space="preserve">
+    <value>text = document-text / meta = key/value dictionary - example: {"text":"annotate this text","meta":{"Author":"Jan","Integer":5,"Date":"2019-01-08T21:32:01.0194747+01:00"}}</value>
+  </data>
+  <data name="WebHelpExecute" xml:space="preserve">
+    <value>Shows all available Actions for {0}execute/</value>
+  </data>
+  <data name="WebHelpExecuteParameterCorpusId" xml:space="preserve">
+    <value>the id of the corpus you added via {0}add/</value>
+  </data>
+  <data name="WebHelpExecuteParameterAction" xml:space="preserve">
+    <value>name of the action to execute</value>
+  </data>
+  <data name="WebHelpExecuteParameterArguments" xml:space="preserve">
+    <value>example: {'key1':'value1', 'key2':'value2', 'key3':'value3'}</value>
+  </data>
+  <data name="WebHelpExecuteResult" xml:space="preserve">
+    <value>execution result</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ok!</value>
+  </data>
+  <data name="WebInit" xml:space="preserve">
+    <value>INIT WebService (mode: file)
+LOAD: {0}...</value>
+  </data>
+  <data name="WebHelpExecuteParameterGuids" xml:space="preserve">
+    <value>example: ['guid1', 'guid2', 'guid3']</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>ready!</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>error!</value>
+  </data>
+  <data name="WebHelpListActions" xml:space="preserve">
+    <value>Lists of all available Actions for {0}execute/</value>
+  </data>
+  <data name="WebHelpActionsActionName" xml:space="preserve">
+    <value>The name of the action</value>
+  </data>
+  <data name="WebHelpActionsDescription" xml:space="preserve">
+    <value>Short description - action and parameter</value>
+  </data>
+  <data name="XmlScriptParserError001" xml:space="preserve">
+    <value>E001: XML Parser Error</value>
+  </data>
+  <data name="XmlScriptSuccess" xml:space="preserve">
+    <value>--- SCRIPT SUCCESSFULLY EXECUTED ---</value>
+  </data>
+  <data name="XmlScriptCurrentActions" xml:space="preserve">
+    <value>..:: CURRENT ACTIONS ::..</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>running</value>
+  </data>
+</root>

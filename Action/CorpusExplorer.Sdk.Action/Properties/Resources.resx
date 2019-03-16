@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+  <data name="DescBasicInformation" xml:space="preserve">
+    <value>basic-information - basic information tokens/sentences/documents</value>
+  </data>
+  <data name="Param" xml:space="preserve">
+    <value>param</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>value</value>
+  </data>
+  <data name="Tokens" xml:space="preserve">
+    <value>tokens</value>
+  </data>
+  <data name="TokenFactor" xml:space="preserve">
+    <value>token-factor</value>
+  </data>
+  <data name="Sentences" xml:space="preserve">
+    <value>sentences</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>documents</value>
+  </data>
+  <data name="Types" xml:space="preserve">
+    <value>types</value>
+  </data>
+  <data name="TTR" xml:space="preserve">
+    <value>TTR (type/token-ratio)</value>
+  </data>
+  <data name="TSR" xml:space="preserve">
+    <value>TSR (type/sentence-ratio)</value>
+  </data>
+  <data name="TDR" xml:space="preserve">
+    <value>TDR (type/document-ratio)</value>
+  </data>
+  <data name="ToSR" xml:space="preserve">
+    <value>ToSR (token/sentence-ratio)</value>
+  </data>
+  <data name="ToDR" xml:space="preserve">
+    <value>ToDR (token/document-ratio)</value>
+  </data>
+  <data name="SDR" xml:space="preserve">
+    <value>SDR (sentence/document-ratio)</value>
+  </data>
+  <data name="DescCluster" xml:space="preserve">
+    <value>cluster [QUERY] [TASK] {ARGUMENTS} - executes a [TASK] for every cluster (generated by [QUERY])</value>
+  </data>
+  <data name="DescClusterList" xml:space="preserve">
+    <value>cluster-list [QUERY] - works like cluster but returns clusters with document GUIDs.</value>
+  </data>
+  <data name="DescPositionFrequency" xml:space="preserve">
+    <value>position-frequency [LAYER1] [WORD] - left/right position of words around [WORD]</value>
+  </data>
+  <data name="DescConvert" xml:space="preserve">
+    <value>convert - see help section [OUTPUT] for more information</value>
+  </data>
+  <data name="DescCooccurrence" xml:space="preserve">
+    <value>cooccurrence [LAYER] {minSIGNI} {minFREQ} - significant cooccurrences for all [LAYER] values</value>
+  </data>
+  <data name="DescCooccurrenceProfile" xml:space="preserve">
+    <value>cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER].</value>
+  </data>
+  <data name="DescCooccurrenceSelect" xml:space="preserve">
+    <value>cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.</value>
+  </data>
+  <data name="DescCrossFrequency" xml:space="preserve">
+    <value>cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER]</value>
+  </data>
+  <data name="DescDocumentCount" xml:space="preserve">
+    <value>how-many-documents - sum of all documents</value>
+  </data>
+  <data name="DescFrequency1" xml:space="preserve">
+    <value>frequency1 {LAYER} - count token frequency on [LAYER]</value>
+  </data>
+  <data name="DescFrequency1Selected" xml:space="preserve">
+    <value>frequency1-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File</value>
+  </data>
+  <data name="DescFrequency2" xml:space="preserve">
+    <value>frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers</value>
+  </data>
+  <data name="DescFrequency3" xml:space="preserve">
+    <value>frequency3 {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers</value>
+  </data>
+  <data name="DescGetDocument" xml:space="preserve">
+    <value>get-document [GUID] {LAYER} - get all layer-information for specific [GUID] document. Use {LAYER} to filter output.</value>
+  </data>
+  <data name="DescGetDocumentDisplayname" xml:space="preserve">
+    <value>get-document-displaynames - get all document GUID / display-names.</value>
+  </data>
+  <data name="DescGetDocumentMetadata" xml:space="preserve">
+    <value>get-document-metadata [GUID] - get all metadata for specific [GUID] document.</value>
+  </data>
+  <data name="DescKwicAllInDocument" xml:space="preserve">
+    <value>kwic-document [LAYER] [WORDS] - [WORDS] = space separated tokens - a document must contains all token</value>
+  </data>
+  <data name="DescKwicAllInSentence" xml:space="preserve">
+    <value>kwic-sentence [LAYER] [WORDS] - [WORDS] = space separated tokens - a sentence must contains all token</value>
+  </data>
+  <data name="DescKwicAny" xml:space="preserve">
+    <value>kwic-any [LAYER] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens</value>
+  </data>
+  <data name="DescKwicPhrase" xml:space="preserve">
+    <value>kwic-phrase [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
+  </data>
+  <data name="DescKwicFirstAny" xml:space="preserve">
+    <value>kwic-first-any [LAYER] [WORD] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)</value>
+  </data>
+  <data name="DescKwicNer" xml:space="preserve">
+    <value>ner [NERFILE] - performs a named entity recorgnition + kwic-resuls</value>
+  </data>
+  <data name="DescKwicSig" xml:space="preserve">
+    <value>kwic-sig [LAYER] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens</value>
+  </data>
+  <data name="DescKwit" xml:space="preserve">
+    <value>kwit [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
+  </data>
+  <data name="DescLayerNames" xml:space="preserve">
+    <value>layer-names - all available names for [LAYER]</value>
+  </data>
+  <data name="DescLayerTypes" xml:space="preserve">
+    <value>get-types [LAYER] - list all [LAYER]-values (types)</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>type</value>
+  </data>
+  <data name="Layernames" xml:space="preserve">
+    <value>layernames</value>
+  </data>
+  <data name="Layer" xml:space="preserve">
+    <value>layer</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>content</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>category</value>
+  </data>
+  <data name="Guid" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>frequency</value>
+  </data>
+  <data name="FrequencyRel" xml:space="preserve">
+    <value>frequency (relativ)</value>
+  </data>
+  <data name="WordA" xml:space="preserve">
+    <value>Word (A)</value>
+  </data>
+  <data name="WordB" xml:space="preserve">
+    <value>Word (B)</value>
+  </data>
+  <data name="Significance" xml:space="preserve">
+    <value>Significance</value>
+  </data>
+  <data name="TokenCount" xml:space="preserve">
+    <value>TOKEN-COUNT</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>OTHER</value>
+  </data>
+  <data name="DescMeta" xml:space="preserve">
+    <value>meta - lists all meta-categories, labels and token/type/document-count</value>
+  </data>
+  <data name="DescMetaCategories" xml:space="preserve">
+    <value>meta-categories - all available names for meta categories</value>
+  </data>
+  <data name="DescMetaByDocument" xml:space="preserve">
+    <value>meta-by-document - list all documents with meta-data</value>
+  </data>
+  <data name="DescMtld" xml:space="preserve">
+    <value>mtld [LAYER] [META] - calculates MTLD for [LAYER] clustered by [META]</value>
+  </data>
+  <data name="DescNer" xml:space="preserve">
+    <value>ner [NERFILE] - performs a named entity recorgnition</value>
+  </data>
+  <data name="DescNgram" xml:space="preserve">
+    <value>ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on [LAYER]</value>
+  </data>
+  <data name="DescNgramSelect" xml:space="preserve">
+    <value>ngram-select [N] [LAYER] [minFREQ] [WORDS] - all [N]-grams on [LAYER] containing [WORDS] .</value>
+  </data>
+  <data name="DescQuery" xml:space="preserve">
+    <value>query [QUERY] - see help section [OUTPUT] for more information</value>
+  </data>
+  <data name="DescQueryList" xml:space="preserve">
+    <value>query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.</value>
+  </data>
+  <data name="DescReadingEase" xml:space="preserve">
+    <value>reading-ease {LAYER} - reading ease of [LAYER]</value>
+  </data>
+  <data name="DescHowManySentences" xml:space="preserve">
+    <value>how-many-sentences - sum of all sentences</value>
+  </data>
+  <data name="DescBurrowsDelta" xml:space="preserve">
+    <value>style-burrowsd [META1] [META2] - compares [META1] with [META2] based on "Burrows Delta"</value>
+  </data>
+  <data name="DescStyleNGram" xml:space="preserve">
+    <value>style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram</value>
+  </data>
+  <data name="DescHowManyToken" xml:space="preserve">
+    <value>how-many-tokens - sum of all tokens</value>
+  </data>
+  <data name="DescHowManyTypes" xml:space="preserve">
+    <value>how-many-types [LAYER] - sum of all [LAYER]-values (types)</value>
+  </data>
+  <data name="DescVocabularyComplexity" xml:space="preserve">
+    <value>vocabulary-complexity {LAYER} - vocabulary complexity in [LAYER]</value>
+  </data>
+  <data name="DescVocd" xml:space="preserve">
+    <value>vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]</value>
+  </data>
+</root>

@@ -1,16 +1,16 @@
-﻿using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
 
 namespace CorpusExplorer.Sdk.Action
 {
-  public class CollocateAction : IAction
+  public class PositionFrequencyAction : IAction
   {
     public string Action => "position-frequency";
 
-    public string Description =>
-      "position-frequency [LAYER1] [WORD] - left/right position of words around [WORD]";
+    public string Description => Resources.DescPositionFrequency;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

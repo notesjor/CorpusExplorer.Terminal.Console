@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -11,8 +12,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "kwic-sig";
 
-    public string Description =>
-      "kwic-sig [LAYER] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens";
+    public string Description => Resources.DescKwicSig;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

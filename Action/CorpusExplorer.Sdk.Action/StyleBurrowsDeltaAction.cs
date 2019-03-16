@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -9,8 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "style-burrowsd";
 
-    public string Description =>
-      "style-burrowsd [META1] [META2] - compares [META1] with [META2] based on \"Burrows Delta\"";
+    public string Description => Resources.DescBurrowsDelta;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

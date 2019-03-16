@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class CrossFrequencyAction : IAction
   {
     public string Action => "cross-frequency";
-    public string Description => "cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER]";
+    public string Description => Resources.DescCrossFrequency;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

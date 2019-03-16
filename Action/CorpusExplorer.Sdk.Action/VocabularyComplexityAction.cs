@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class VocabularyComplexityAction : IAction
   {
     public string Action => "vocabulary-complexity";
-    public string Description => "vocabulary-complexity {LAYER} - vocabulary complexity in [LAYER]";
+    public string Description => Resources.DescVocabularyComplexity;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

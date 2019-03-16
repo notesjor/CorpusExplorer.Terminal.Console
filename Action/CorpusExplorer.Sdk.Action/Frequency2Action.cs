@@ -1,3 +1,4 @@
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class Frequency2Action : IAction
   {
     public string Action => "frequency2";
-    public string Description => "frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers";
+    public string Description => Resources.DescFrequency2;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

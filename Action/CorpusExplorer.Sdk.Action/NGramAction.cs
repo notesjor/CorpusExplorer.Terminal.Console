@@ -1,4 +1,5 @@
-﻿using CorpusExplorer.Sdk.Addon;
+﻿using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -8,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class NGramAction : IAction
   {
     public string Action => "ngram";
-    public string Description => "ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on [LAYER]";
+    public string Description => Resources.DescNgram;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

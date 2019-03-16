@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -14,7 +15,7 @@ namespace CorpusExplorer.Sdk.Action
   public class QueryAction : IAction
   {
     public string Action => "query";
-    public string Description => "query [QUERY] - see help section [OUTPUT] for more information";
+    public string Description => Resources.DescQuery;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
