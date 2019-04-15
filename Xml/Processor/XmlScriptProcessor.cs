@@ -9,6 +9,7 @@ using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.Model.Cache;
 using CorpusExplorer.Sdk.Model.Extension;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
@@ -653,9 +654,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <returns>Project</returns>
     private static Project ReadSources(sources sources, out HashSet<string> deletePaths)
     {
-      var res = CorpusExplorerEcosystem.InitializeMinimal();
-      deletePaths = new HashSet<string>();
+      var res = CorpusExplorerEcosystem.InitializeMinimal(new CacheStrategyDisableCaching());
+      res.Clear();
+      GC.Collect();
 
+      deletePaths = new HashSet<string>();
+      
       // Wenn zu annotierendes Material vorhanden ist, dann lese dieses ein.
       if (sources.annotate().Any())
       {
@@ -737,7 +741,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 deletePaths.Add(i.Value);
               break;
             case directory i:
-              var files = Directory.GetFiles(i.Value, i.filter, SearchOption.TopDirectoryOnly);
+              var files = Directory.GetFiles(i.Value, ValidateSearchFilter(i.filter), SearchOption.TopDirectoryOnly);
               res.AddRange(files);
               if (i.delete)
                 foreach (var f in files)
@@ -751,6 +755,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
 
       return res;
+    }
+
+    private static string ValidateSearchFilter(string iFilter)
+    {
+      return iFilter.StartsWith("*") ? iFilter : iFilter.StartsWith(".") ? $"*{iFilter}" : $"*.{iFilter}";
     }
 
     private class ExecuteActionItem
