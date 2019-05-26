@@ -222,7 +222,7 @@ namespace CorpusExplorer.Terminal.Console.Web
                 {Name = "action", Type = "string", Description = Resources.WebHelpExecuteParameterAction, IsRequired = true},
               new ServiceArgument
               {
-                Name = "arguments", Type = "key-value", Description = Resources.WebHelpExecuteParameterArguments, IsRequired = true
+                Name = "arguments", Type = "string-array", Description = Resources.WebHelpExecuteParameterArguments, IsRequired = true
               }
             },            
             ReturnValue = new[]

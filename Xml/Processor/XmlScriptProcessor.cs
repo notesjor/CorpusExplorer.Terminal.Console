@@ -11,6 +11,7 @@ using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Model.Cache;
 using CorpusExplorer.Sdk.Model.Extension;
+using CorpusExplorer.Sdk.Terminal;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.DocumentProcessing.Cleanup;
 using CorpusExplorer.Sdk.Utils.Filter;
@@ -30,9 +31,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       new Dictionary<Guid, ExecuteActionItem>();
 
     private static readonly object _executeActionListLock = new object();
-    private static readonly object _sourceLoadLock = new object();
 
     private static bool _first = true;
+    private static TerminalController _terminal;
 
     /// <summary>
     ///   Verarbeitete ein CEScript
@@ -44,6 +45,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// </param>
     public static void Process(string path, Dictionary<string, AbstractTableWriter> formats)
     {
+      _terminal = CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
       _errorLog = path + ".log";
 
       string scriptFilename = null;
@@ -75,51 +77,46 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static void ExecuteSession(Dictionary<string, AbstractTableWriter> formats, session session,
                                        string scriptFilename)
     {
-      HashSet<string> deletePaths = null;
       try
       {
-        Project source;
-        lock (_sourceLoadLock)
+        if (session.sources.processing == "loop")
         {
-          source = ReadSources(session.sources, out deletePaths);
+          var project = ReadSources(session.sources);
+          foreach (var csel in project.CorporaGuids)
+          {
+            _terminal.ProjectNew(false);
+            var sub = _terminal.Project;
+            sub.Add(project.GetCorpus(csel));
+            sub.SelectAll.Displayname = project.GetCorpus(csel).CorpusDisplayname;
+            ExecuteSession(formats, session, scriptFilename, sub);
+          }
         }
+        else
+          using (var project = ReadSources(session.sources))
+            ExecuteSession(formats, session, scriptFilename, project);
+      }
+      catch
+      {
+        // ignore
+      }
+    }
 
-        var selections = GenerateSelections(source, session.queries);
+    private static void ExecuteSession(Dictionary<string, AbstractTableWriter> formats, session session, string scriptFilename, Project project)
+    {
+      try
+      {
+        var selections = GenerateSelections(project, session.queries);
         var allowOverride = session.@override;
 
         Parallel.ForEach(session.actions.action,
                          !string.IsNullOrEmpty(session.actions.mode) && session.actions.mode.StartsWith("sync")
                            ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
                            : Configuration.ParallelOptions,
-                         action =>
-                         {
-                           ExecuteSessionAction(formats, scriptFilename, action, selections, allowOverride);
-                         });
+                         action => { ExecuteSessionAction(formats, scriptFilename, action, selections, allowOverride); });
       }
       catch (Exception ex)
       {
         LogError(ex);
-      }
-      // Bereinige nicht mehr benötigte Dateien
-      finally
-      {
-        try
-        {
-          if (deletePaths != null)
-            foreach (var p in deletePaths)
-              try
-              {
-                File.Delete(p);
-              }
-              catch (Exception ex)
-              {
-                LogError(ex);
-              }
-        }
-        catch (Exception ex)
-        {
-          LogError(ex);
-        }
       }
     }
 
@@ -646,20 +643,22 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return res;
     }
 
+    private static object _readSourcesNewProjectLock = new object();
+
     /// <summary>
     ///   Liest die gewünschten Korpusquellen ein
     /// </summary>
     /// <param name="sources">Quellen</param>
-    /// <param name="deletePaths">Dateien die nach Ende der Session gelöscht werden sollen</param>
     /// <returns>Project</returns>
-    private static Project ReadSources(sources sources, out HashSet<string> deletePaths)
+    private static Project ReadSources(sources sources)
     {
-      var res = CorpusExplorerEcosystem.InitializeMinimal(new CacheStrategyDisableCaching());
-      res.Clear();
-      GC.Collect();
+      Project proj;
+      lock (_readSourcesNewProjectLock)
+      {
+        _terminal.ProjectNew(false);
+        proj = _terminal.Project;
+      }
 
-      deletePaths = new HashSet<string>();
-      
       // Wenn zu annotierendes Material vorhanden ist, dann lese dieses ein.
       if (sources.annotate().Any())
       {
@@ -676,7 +675,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
             // Extrahiere und bereinige die Dokumente
             var scraper = scrapers[annotate.type];
-            scraper.Input.Enqueue(SearchFiles(annotate.Items, ref deletePaths));
+            scraper.Input.Enqueue(SearchFiles(annotate.Items));
             scraper.Execute();
             var cleaner1 = new StandardCleanup { Input = scraper.Output };
             cleaner1.Execute();
@@ -690,7 +689,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             tagger.Execute();
 
             foreach (var corpus in tagger.Output)
-              res.Add(corpus);
+              proj.Add(corpus);
           }
           catch (Exception ex)
           {
@@ -708,8 +707,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             if (!importers.ContainsKey(import.type))
               continue;
 
-            foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items, ref deletePaths)))
-              res.Add(corpus);
+            foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items)))
+              proj.Add(corpus);
           }
           catch (Exception ex)
           {
@@ -717,16 +716,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           }
       }
 
-      return res;
+      return proj;
     }
 
     /// <summary>
     ///   Es gibt zwei mögliche Arten Quellen zu spezifizieren - als Datei oder komplette Order
     /// </summary>
     /// <param name="annotateItems">Quellen</param>
-    /// <param name="deletePaths">Dateien die nach Ende der Session gelöscht werden sollen</param>
     /// <returns>Dateien</returns>
-    private static IEnumerable<string> SearchFiles(object[] annotateItems, ref HashSet<string> deletePaths)
+    private static IEnumerable<string> SearchFiles(object[] annotateItems)
     {
       var res = new List<string>();
 
@@ -737,15 +735,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           {
             case file i:
               res.Add(i.Value);
-              if (i.delete)
-                deletePaths.Add(i.Value);
               break;
             case directory i:
               var files = Directory.GetFiles(i.Value, ValidateSearchFilter(i.filter), SearchOption.TopDirectoryOnly);
               res.AddRange(files);
-              if (i.delete)
-                foreach (var f in files)
-                  deletePaths.Add(f);
               break;
           }
         }

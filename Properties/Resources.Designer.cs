@@ -493,7 +493,7 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die example: {&apos;key1&apos;:&apos;value1&apos;, &apos;key2&apos;:&apos;value2&apos;, &apos;key3&apos;:&apos;value3&apos;} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die example: [&apos;POS&apos;, &apos;Lemma&apos;, &apos;Wort&apos;] ähnelt.
         /// </summary>
         public static string WebHelpExecuteParameterArguments {
             get {

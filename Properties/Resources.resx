@@ -327,7 +327,7 @@ Example: cec.exe F:JSON import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemm
     <value>name of the action to execute</value>
   </data>
   <data name="WebHelpExecuteParameterArguments" xml:space="preserve">
-    <value>example: {'key1':'value1', 'key2':'value2', 'key3':'value3'}</value>
+    <value>example: ['POS', 'Lemma', 'Wort']</value>
   </data>
   <data name="WebHelpExecuteResult" xml:space="preserve">
     <value>execution result</value>

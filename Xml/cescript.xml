@@ -11,8 +11,8 @@
 				<directory filter=".cec6">C:/</directory>
 			</annotate>
 			<import type="ImporterCec6">
-				<file delete="false">C:/test.abc</file>
-				<directory filter=".cec6" delete="true">C:/</directory>
+				<file>C:/test.abc</file>
+				<directory filter=".cec6">C:/</directory>
 				<file>C:/test.abc</file>
 				<directory filter=".cec6">C:/</directory>
 			</import>
