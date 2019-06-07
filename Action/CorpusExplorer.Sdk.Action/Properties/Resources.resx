@@ -207,7 +207,7 @@
     <value>ner [NERFILE] - performs a named entity recorgnition + kwic-resuls</value>
   </data>
   <data name="DescKwicSig" xml:space="preserve">
-    <value>kwic-sig [LAYER] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens</value>
+    <value>kwic-sig [LAYER] [y/n] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens - Enable HTML-Highlight [y/n]</value>
   </data>
   <data name="DescKwit" xml:space="preserve">
     <value>kwit [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
@@ -307,5 +307,8 @@
   </data>
   <data name="DescVocd" xml:space="preserve">
     <value>vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]</value>
+  </data>
+  <data name="DisambiguationeActionDescription" xml:space="preserve">
+    <value>disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER].</value>
   </data>
 </root>

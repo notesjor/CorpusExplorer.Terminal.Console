@@ -313,7 +313,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-sig [LAYER] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-sig [LAYER] [y/n] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens - Enable HTML-Highlight [y/n] ähnelt.
         /// </summary>
         internal static string DescKwicSig {
             get {
@@ -471,6 +471,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescVocd {
             get {
                 return ResourceManager.GetString("DescVocd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER]. ähnelt.
+        /// </summary>
+        internal static string DisambiguationeActionDescription {
+            get {
+                return ResourceManager.GetString("DisambiguationeActionDescription", resourceCulture);
             }
         }
         
