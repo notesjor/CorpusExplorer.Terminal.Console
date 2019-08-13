@@ -32,7 +32,7 @@ namespace CorpusExplorer.Sdk.Action
         return;
       }
 
-      var sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(args[1]));
+      var sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(args[1]), false);
 
       writer.WriteTable(args[2], sub.GetDocumentGuidAndDisplaynamesAsDataTable());
     }

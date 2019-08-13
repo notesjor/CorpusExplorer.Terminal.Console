@@ -28,7 +28,7 @@ namespace CorpusExplorer.Sdk.Action
         var lines = File.ReadAllLines(args[0].Replace("FILE:", string.Empty), Configuration.Encoding);
         var queries = lines.Select(QueryParser.Parse);
         sub = queries.Aggregate(selection,
-                                (current, q) => current.Create(new[] {q}, Path.GetFileNameWithoutExtension(args[1])));
+                                (current, q) => current.Create(new[] {q}, Path.GetFileNameWithoutExtension(args[1]), false));
       }
       else
       {
@@ -43,7 +43,7 @@ namespace CorpusExplorer.Sdk.Action
           return;
         }
 
-        sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(args[1]));
+        sub = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(args[1]), false);
       }
 
       var export = new ConvertAction();
