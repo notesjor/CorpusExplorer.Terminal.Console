@@ -36,10 +36,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>CorpusExplorerNextSnKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>CorpusExplorerNextSnKey2019.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -95,18 +95,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="CorpusExplorerNextSnKey.pfx" />
+    <None Include="CorpusExplorerNextSnKey2019.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Core\CorpusExplorer.Core.csproj">
-      <Project>{029fe5a6-9504-499a-9e0d-05754d44cbb1}</Project>
-      <Name>CorpusExplorer.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
-      <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>
-      <Name>CorpusExplorer.Sdk</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TfresWebserver\TefresWebserver\TFRES.csproj">
       <Project>{63f6b9f6-ff80-4764-bd45-109d549bf459}</Project>
       <Name>TFRES</Name>
@@ -114,6 +106,14 @@
     <ProjectReference Include="Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj">
       <Project>{693d7071-5091-481f-b404-ac4772a0df60}</Project>
       <Name>CorpusExplorer.Sdk.Action</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Core\CorpusExplorer.Core.csproj">
+      <Project>{029fe5a6-9504-499a-9e0d-05754d44cbb1}</Project>
+      <Name>CorpusExplorer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
+      <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>
+      <Name>CorpusExplorer.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

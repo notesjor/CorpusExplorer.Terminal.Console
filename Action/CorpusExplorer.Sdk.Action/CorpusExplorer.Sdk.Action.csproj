@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>CorpusExplorerNextSnKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>CorpusExplorerNextSnKey2019.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -103,11 +103,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CorpusExplorerNextSnKey.pfx" />
+    <None Include="CorpusExplorerNextSnKey2019.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Magisterarbeit\CorpusExplorerNext\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
-      <Project>{DC1B5A58-29DA-476D-89F8-E73A1DB11E52}</Project>
+    <ProjectReference Include="..\..\..\FuzzyHashing\Hyldahl.Hashing\Hyldahl.Hashing.csproj">
+      <Project>{6968101f-a3d4-4a14-a481-05e373cd5dc1}</Project>
+      <Name>Hyldahl.Hashing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
+      <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>
       <Name>CorpusExplorer.Sdk</Name>
     </ProjectReference>
   </ItemGroup>

@@ -28,17 +28,17 @@ namespace CorpusExplorer.Terminal.Console
     private static readonly Dictionary<string, AbstractTableWriter> _formats =
       new Dictionary<string, AbstractTableWriter>
       {
+        {"F:JSON", new JsonTableWriter()},
         {"F:TSV", new TsvTableWriter()},
         {"F:CSV", new CsvTableWriter()},
         {"F:XML", new XmlTableWriter()},
         {"F:SQL", new SqlTableWriter()},
         {"F:SQLSCHEMA", new SqlSchemaOnlyTableWriter()},
-        {"F:SQLDATA", new SqlDataOnlyTableWriter()},
-        {"F:JSON", new JsonTableWriter()},
+        {"F:SQLDATA", new SqlDataOnlyTableWriter()},        
         {"F:HTML", new HtmlTableWriter()}
       };
 
-    private static AbstractTableWriter _writer = new TsvTableWriter();
+    private static AbstractTableWriter _writer = new JsonTableWriter();
 
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {
@@ -92,6 +92,18 @@ namespace CorpusExplorer.Terminal.Console
       if (args[0].StartsWith("F:"))
       {
         _writer = _formats.ContainsKey(args[0]) ? _formats[args[0]] : _formats.First().Value;
+
+        var list = new List<string>(args);
+        list.RemoveAt(0);
+        args = list.ToArray();
+      }
+
+      if (args[0].StartsWith("FNT:"))
+      {
+        System.Console.WriteLine("hey");
+        var format = args[0].Replace("FNT:", "F:");
+        _writer = _formats.ContainsKey(format) ? _formats[format] : _formats.First().Value;
+        _writer.WriteTid = false;
 
         var list = new List<string>(args);
         list.RemoveAt(0);

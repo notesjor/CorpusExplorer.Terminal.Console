@@ -414,7 +414,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         var filterQuery = QueryParser.Parse(query.CleanXmlValue());
         if (!(filterQuery is FilterQueryUnsupportedParserFeature))
-          return new[] { selection.Create(new[] { filterQuery }, key) };
+          return new[] { selection.Create(new[] { filterQuery }, key, false) };
 
         var q = (FilterQueryUnsupportedParserFeature)filterQuery;
         switch (q.MetaLabel)
@@ -446,7 +446,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         (from csel in selection.CorporaGuids
          let corpus = selection.GetCorpus(csel)
          let dsels = new HashSet<Guid>(corpus.DocumentGuids)
-         select selection.Create(new Dictionary<Guid, HashSet<Guid>> { { csel, dsels } }, corpus.CorpusDisplayname))
+         select selection.Create(new Dictionary<Guid, HashSet<Guid>> { { csel, dsels } }, corpus.CorpusDisplayname, false))
        .ToArray();
     }
 
@@ -571,7 +571,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
       }
 
-      res.Add(key, new[] { all.Create(selection, key) });
+      res.Add(key, new[] { all.Create(selection, key, false) });
     }
 
     /// <summary>
