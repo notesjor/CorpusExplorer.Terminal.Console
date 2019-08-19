@@ -282,7 +282,8 @@ F:HTML - HTML5-Document
 F:SQL - SQL-statement
 F:SQLSCHEMA - SQL-statement (schema only)
 F:SQLDATA - SQL-statement (insert data only - no schema)
-Example: cec.exe F:JSON import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+Example: cec.exe F:JSON import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
+Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)</value>
   </data>
   <data name="WebErrorInvalidPostData" xml:space="preserve">
     <value>invalid post-data</value>
