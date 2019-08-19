@@ -142,6 +142,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (er.Arguments != null && er.Arguments.Length > 0)
           args.AddRange(er.Arguments);
 
+        string response;
         using (var ms = new MemoryStream())
         {
           var writer = Writer.Clone(ms);
@@ -149,8 +150,9 @@ namespace CorpusExplorer.Terminal.Console.Web
           writer.Destroy(false);
 
           ms.Seek(0, SeekOrigin.Begin);
-          return new HttpResponse(req, true, 200, null, Mime, Encoding.UTF8.GetString(ms.ToArray()));
+          response = Encoding.UTF8.GetString(ms.ToArray());          
         }
+        return new HttpResponse(req, true, 200, null, Mime, response);
       }
       catch (Exception ex)
       {

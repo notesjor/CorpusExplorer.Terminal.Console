@@ -100,7 +100,6 @@ namespace CorpusExplorer.Terminal.Console
 
       if (args[0].StartsWith("FNT:"))
       {
-        System.Console.WriteLine("hey");
         var format = args[0].Replace("FNT:", "F:");
         _writer = _formats.ContainsKey(format) ? _formats[format] : _formats.First().Value;
         _writer.WriteTid = false;
