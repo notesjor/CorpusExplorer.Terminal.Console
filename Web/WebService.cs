@@ -10,8 +10,9 @@ using CorpusExplorer.Terminal.Console.Properties;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
+using Microsoft.OpenApi.Models;
 using Tfres;
-using Tfres.Documentation;
+using System.Collections.Generic;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -70,38 +71,33 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
-    protected override SericeDocumentation GetDocumentation()
+    protected override OpenApiDocument GetDocumentation()
     {
-      return new SericeDocumentation
+      return new OpenApiDocument
       {
-        Description = "CorpusExplorer-Endpoint (Version 1.0.0)",
-        Url = Url,
-        Endpoints = new[]
+        Paths = new OpenApiPaths
         {
-          new ServiceEndpoint
-          {
-            Url = $"{Url}execute/",
-            AllowedVerbs = new[] {"POST"},
-            Description = string.Format(Resources.WebHelpExecute, Url),
-            Arguments = new[]
-            {
-              new ServiceArgument
-                {Name = "action", Type = "string", Description = Resources.WebHelpExecuteParameterAction, IsRequired = true},
-              new ServiceArgument
+          { 
+            $"{Url}execute/", new OpenApiPathItem{ 
+              Operations = new Dictionary<OperationType, OpenApiOperation>
               {
-                Name = "arguments", Type = "string-array",
-                Description = Resources.WebHelpExecuteParameterArguments, IsRequired = true
-              },
-              new ServiceArgument
-              {
-                Name = "guids", Type = "array of guids (as string)",
-                Description = Resources.WebHelpExecuteParameterGuids, IsRequired = false
-              }
-            },            
-            ReturnValue = new[]
-            {
-              new ServiceParameter
-                {Name = "table", Type = "table (rows > array of objects)", Description = Resources.WebHelpExecuteResult}
+                { 
+                  OperationType.Post, new OpenApiOperation
+                  {
+                    Description = string.Format(Resources.WebHelpExecute, Url),
+                    Parameters = new List<OpenApiParameter>
+                    {
+                      new OpenApiParameter{ Name = "action", Required = true, Description = Resources.WebHelpExecuteParameterAction},
+                      new OpenApiParameter{ Name = "arguments", Required = true, Description = Resources.WebHelpExecuteParameterArguments},
+                      new OpenApiParameter{ Name = "guids", Required = false, Description = Resources.WebHelpExecuteParameterGuids},
+                    },
+                    Responses = new OpenApiResponses
+                    {
+                      { "200", new OpenApiResponse{ Description = Resources.WebHelpExecuteResult } }
+                    } 
+                  }
+                }
+              } 
             }
           }
         }

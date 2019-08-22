@@ -15,9 +15,9 @@ using CorpusExplorer.Terminal.Console.Properties;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Tfres;
-using Tfres.Documentation;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -171,66 +171,72 @@ namespace CorpusExplorer.Terminal.Console.Web
       return server;
     }
 
-    protected override SericeDocumentation GetDocumentation()
+    protected override OpenApiDocument GetDocumentation()
     {
-      return new SericeDocumentation
+      return new OpenApiDocument
       {
-        Description = "CorpusExplorer-Free100-Endpoint (Version 1.0.0)",
-        Url = Url,
-        Endpoints = new[]
+        Paths = new OpenApiPaths
         {
-          new ServiceEndpoint
           {
-            Url = $"{Url}add/langauges/",
-            AllowedVerbs = new[] {"GET"},
-            Arguments = null,
-            Description = string.Format(Resources.WebHelpListAvailableLanguages, Url),
-            ReturnValue = new[]
-            {
-              new ServiceParameter
-                {Name = "languages", Type = "string array", Description = Resources.WebHelpParameterLanguages}
-            }
-          },
-          new ServiceEndpoint
-          {
-            Url = $"{Url}add/",
-            AllowedVerbs = new[] {"POST"},
-            Arguments = null,
-            Description = Resources.WebHelpAddCorpus,
-            ReturnValue = new[]
-            {
-              new ServiceParameter
-                {Name = "language", Type = "string", Description = Resources.WebHelpAddCorpusParameterLanguage},
-              new ServiceParameter
+            $"{Url}execute/", new OpenApiPathItem{
+              Operations = new Dictionary<OperationType, OpenApiOperation>
               {
-                Name = "documents", Type = "array of objects",
-                Description = Resources.WebHelpAddCorpusParameterDocuments
+                {
+                  OperationType.Post, new OpenApiOperation
+                  {
+                    Description = string.Format(Resources.WebHelpExecute, Url),
+                    Parameters = new List<OpenApiParameter>
+                    {
+                      new OpenApiParameter{ Name = "action", Required = true, Description = Resources.WebHelpExecuteParameterAction},
+                      new OpenApiParameter{ Name = "arguments", Required = true, Description = Resources.WebHelpExecuteParameterArguments},
+                      new OpenApiParameter{ Name = "corpusId", Required = true, Description = string.Format(Resources.WebHelpExecuteParameterCorpusId, Url)},
+                    },
+                    Responses = new OpenApiResponses
+                    {
+                      { "200", new OpenApiResponse{ Description = Resources.WebHelpExecuteResult } }
+                    }
+                  }
+                }
               }
             }
           },
-          new ServiceEndpoint
           {
-            Url = $"{Url}execute/",
-            AllowedVerbs = new[] {"POST"},
-            Description = string.Format(Resources.WebHelpExecute, Url),
-            Arguments = new[]
-            {
-              new ServiceArgument
+            $"{Url}add/langauges/", new OpenApiPathItem{
+              Operations = new Dictionary<OperationType, OpenApiOperation>
               {
-                Name = "corpusId", Type = "string", Description = string.Format(Resources.WebHelpExecuteParameterCorpusId, Url),
-                IsRequired = true
-              },
-              new ServiceArgument
-                {Name = "action", Type = "string", Description = Resources.WebHelpExecuteParameterAction, IsRequired = true},
-              new ServiceArgument
-              {
-                Name = "arguments", Type = "string-array", Description = Resources.WebHelpExecuteParameterArguments, IsRequired = true
+                {
+                  OperationType.Get, new OpenApiOperation
+                  {
+                    Description = string.Format(Resources.WebHelpListAvailableLanguages, Url),
+                    Responses = new OpenApiResponses
+                    {
+                      { "200", new OpenApiResponse{ Description = Resources.WebHelpParameterLanguages } }
+                    }
+                  }
+                }
               }
-            },            
-            ReturnValue = new[]
-            {
-              new ServiceParameter
-                {Name = "table", Type = "table (rows > array of objects)", Description = Resources.WebHelpExecuteResult}
+            } 
+          },
+          {
+            $"{Url}add/", new OpenApiPathItem{
+              Operations = new Dictionary<OperationType, OpenApiOperation>
+              {
+                {
+                  OperationType.Post, new OpenApiOperation
+                  {
+                    Description = Resources.WebHelpAddCorpus,
+                    Parameters = new List<OpenApiParameter>
+                    {
+                      new OpenApiParameter{ Name = "language", Required = true, Description = Resources.WebHelpAddCorpusParameterLanguage},
+                      new OpenApiParameter{ Name = "documents", Required = true, Description = Resources.WebHelpAddCorpusParameterDocuments}
+                    },
+                    Responses = new OpenApiResponses
+                    {
+                      { "200", new OpenApiResponse{ Description = "corpusId" } }
+                    }
+                  }
+                }
+              }
             }
           }
         }

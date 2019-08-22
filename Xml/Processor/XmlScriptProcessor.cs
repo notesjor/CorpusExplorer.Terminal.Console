@@ -39,11 +39,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     ///   Verarbeitete ein CEScript
     /// </summary>
     /// <param name="path">Pfad des CEScript</param>
-    /// <param name="formats">
-    ///   Formate für Tabellenexport - Auflistung wird in CorpusExplorer.Terminal.Console.Program
-    ///   festgelegt.
-    /// </param>
-    public static void Process(string path, Dictionary<string, AbstractTableWriter> formats)
+    public static void Process(string path)
     {
       _terminal = CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
       _errorLog = path + ".log";
@@ -68,14 +64,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                        !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
                          ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
                          : Configuration.ParallelOptions,
-                       session => { ExecuteSession(formats, session, scriptFilename); });
+                       session => { ExecuteSession(session, scriptFilename); });
 
       ConsoleHelper.PrintHeader();
       System.Console.WriteLine(Resources.XmlScriptSuccess);
     }
 
-    private static void ExecuteSession(Dictionary<string, AbstractTableWriter> formats, session session,
-                                       string scriptFilename)
+    private static void ExecuteSession(session session, string scriptFilename)
     {
       try
       {
@@ -88,12 +83,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             var sub = _terminal.Project;
             sub.Add(project.GetCorpus(csel));
             sub.SelectAll.Displayname = project.GetCorpus(csel).CorpusDisplayname;
-            ExecuteSession(formats, session, scriptFilename, sub);
+            ExecuteSession(session, scriptFilename, sub);
           }
         }
         else
           using (var project = ReadSources(session.sources))
-            ExecuteSession(formats, session, scriptFilename, project);
+            ExecuteSession(session, scriptFilename, project);
       }
       catch
       {
@@ -101,7 +96,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
-    private static void ExecuteSession(Dictionary<string, AbstractTableWriter> formats, session session, string scriptFilename, Project project)
+    private static void ExecuteSession(session session, string scriptFilename, Project project)
     {
       try
       {
@@ -112,7 +107,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                          !string.IsNullOrEmpty(session.actions.mode) && session.actions.mode.StartsWith("sync")
                            ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
                            : Configuration.ParallelOptions,
-                         action => { ExecuteSessionAction(formats, scriptFilename, action, selections, allowOverride); });
+                         action => { ExecuteSessionAction(scriptFilename, action, selections, allowOverride); });
       }
       catch (Exception ex)
       {
@@ -120,9 +115,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
-    private static void ExecuteSessionAction(Dictionary<string, AbstractTableWriter> formats, string scriptFilename,
-                                             action a,
-                                             Dictionary<string, Selection[]> selections, bool allowOverride)
+    private static void ExecuteSessionAction(string scriptFilename, action a, Dictionary<string, Selection[]> selections, bool allowOverride)
     {
       try
       {
@@ -167,7 +160,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
         try
         {
-          ExecuteAction(action, a, formats, actionSelections, query, scriptFilename, allowOverride);
+          ExecuteAction(action, a, actionSelections, query, scriptFilename, allowOverride);
         }
         catch (Exception ex)
         {
@@ -185,13 +178,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// </summary>
     /// <param name="action">Action - siehe CorpusExplorer.Terminal.Console.Action</param>
     /// <param name="a">Action (beinhaltet Information zum Ausführen und Speichern der Resulate)</param>
-    /// <param name="formats">Ausgabeformat</param>
     /// <param name="selections">Schnappschüsse</param>
     /// <param name="query">Query-Pattern, das zur auswahl der Schnappschüsse dient</param>
     /// <param name="scriptFilename">Name des CeScripts</param>
     /// <param name="allowOverride">Erlaubt das Überschreiben von exsistierenden Ausgabedateien</param>
     private static void ExecuteAction(IAction action, action a,
-                                      Dictionary<string, AbstractTableWriter> formats,
                                       List<Selection> selections, string query, string scriptFilename,
                                       bool allowOverride)
     {
@@ -222,15 +213,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           // Andernfalls ist format vom Typ AbstractTableWriter
           else
           {
-            var formatKey = a.output.format.StartsWith("F:") ? a.output.format : $"F:{a.output.format}";
-            if (!formats.ContainsKey(formatKey) || formats[formatKey] == null)
+            var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+            var format = Configuration.GetTableWriter(formatKey);
+            if (format == null)
               return;
 
             // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
             using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
             using (var bs = new BufferedStream(fs))
             {
-              var format = formats[formatKey].Clone(bs);
+              format = format.Clone(bs);
               Parallel.ForEach(selections, Configuration.ParallelOptions,
                                // ReSharper disable once AccessToDisposedClosure
                                // ReSharper disable once ImplicitlyCapturedClosure
@@ -267,15 +259,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             // Andernfalls ist format vom Typ AbstractTableWriter
             else
             {
-              var formatKey = a.output.format.StartsWith("F:") ? a.output.format : $"F:{a.output.format}";
-              if (!formats.ContainsKey(formatKey) || formats[formatKey] == null)
+              var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+              var format = Configuration.GetTableWriter(formatKey);
+              if (format == null)
                 return;
 
               // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
               using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
               using (var bs = new BufferedStream(fs))
               {
-                var format = formats[formatKey].Clone(bs);
+                format = format.Clone(bs);
                 action.Execute(selection, a.arguments, format);
                 format.Destroy();
               }

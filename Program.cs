@@ -25,19 +25,6 @@ namespace CorpusExplorer.Terminal.Console
     private static readonly string _appPath =
       Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "cec.exe");
 
-    private static readonly Dictionary<string, AbstractTableWriter> _formats =
-      new Dictionary<string, AbstractTableWriter>
-      {
-        {"F:JSON", new JsonTableWriter()},
-        {"F:TSV", new TsvTableWriter()},
-        {"F:CSV", new CsvTableWriter()},
-        {"F:XML", new XmlTableWriter()},
-        {"F:SQL", new SqlTableWriter()},
-        {"F:SQLSCHEMA", new SqlSchemaOnlyTableWriter()},
-        {"F:SQLDATA", new SqlDataOnlyTableWriter()},        
-        {"F:HTML", new HtmlTableWriter()}
-      };
-
     private static AbstractTableWriter _writer = new JsonTableWriter();
 
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -89,20 +76,9 @@ namespace CorpusExplorer.Terminal.Console
         return;
       }
 
-      if (args[0].StartsWith("F:"))
+      if (args[0].StartsWith("F:") || args[0].StartsWith("FNT:"))
       {
-        _writer = _formats.ContainsKey(args[0]) ? _formats[args[0]] : _formats.First().Value;
-
-        var list = new List<string>(args);
-        list.RemoveAt(0);
-        args = list.ToArray();
-      }
-
-      if (args[0].StartsWith("FNT:"))
-      {
-        var format = args[0].Replace("FNT:", "F:");
-        _writer = _formats.ContainsKey(format) ? _formats[format] : _formats.First().Value;
-        _writer.WriteTid = false;
+        _writer = Configuration.GetTableWriter(args[0]);
 
         var list = new List<string>(args);
         list.RemoveAt(0);
@@ -300,7 +276,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       try
       {
-        XmlScriptProcessor.Process(path, _formats);
+        XmlScriptProcessor.Process(path);
         return true;
       }
       catch
