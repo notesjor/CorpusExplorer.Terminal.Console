@@ -1,3 +1,4 @@
+using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;

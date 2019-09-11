@@ -25,7 +25,7 @@ namespace CorpusExplorer.Terminal.Console
     private static readonly string _appPath =
       Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "cec.exe");
 
-    private static AbstractTableWriter _writer = new JsonTableWriter();
+    private static AbstractTableWriter _writer = new TsvTableWriter();
 
     private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {

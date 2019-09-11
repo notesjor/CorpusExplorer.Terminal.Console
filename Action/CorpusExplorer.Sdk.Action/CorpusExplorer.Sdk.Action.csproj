@@ -51,6 +51,8 @@
     <Compile Include="BasicInformationAction.cs" />
     <Compile Include="ClusterAction.cs" />
     <Compile Include="ClusterListAction.cs" />
+    <Compile Include="CooccurrenceCrossAction.cs" />
+    <Compile Include="CooccurrenceCrossFullAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />
     <Compile Include="Frequency1RawAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
