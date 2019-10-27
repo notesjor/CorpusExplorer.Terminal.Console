@@ -54,9 +54,11 @@
     <Compile Include="CooccurrenceCrossAction.cs" />
     <Compile Include="CooccurrenceCrossFullAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />
+    <Compile Include="EditDistanceAction.cs" />
     <Compile Include="Frequency1RawAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />
+    <Compile Include="KeywordAction.cs" />
     <Compile Include="PositionFrequencyAction.cs" />
     <Compile Include="ConvertAction.cs" />
     <Compile Include="CooccurrenceAction.cs" />

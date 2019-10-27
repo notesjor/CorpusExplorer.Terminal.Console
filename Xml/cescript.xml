@@ -88,7 +88,7 @@
 			</import>			
 		</sources>
 		
-		<queries processing="all"> <!-- process = all, any OR loop -->
+		<queries>
 			<query>!M:Author::Jan</query>
 			<query name="q1">!M:Author::Jan</query>
 		</queries>

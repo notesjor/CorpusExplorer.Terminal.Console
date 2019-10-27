@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -226,6 +228,7 @@ namespace CorpusExplorer.Terminal.Console
     private static void Main(string[] args)
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+      Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
       CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
       Execute(args);
     }
