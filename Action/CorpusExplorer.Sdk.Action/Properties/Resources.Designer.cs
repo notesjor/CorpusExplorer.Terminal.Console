@@ -19,7 +19,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -493,6 +493,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die editdist [LAYER] - caculates the edit distance for all (to all) documents in [LAYER] ähnelt.
+        /// </summary>
+        internal static string editdist_desc {
+            get {
+                return ResourceManager.GetString("editdist_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die frequency ähnelt.
         /// </summary>
         internal static string Frequency {
@@ -516,6 +525,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string Guid {
             get {
                 return ResourceManager.GetString("Guid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile]. ähnelt.
+        /// </summary>
+        internal static string keyword_desc {
+            get {
+                return ResourceManager.GetString("keyword_desc", resourceCulture);
             }
         }
         

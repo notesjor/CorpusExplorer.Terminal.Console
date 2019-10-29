@@ -15,7 +15,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "editdist";
 
-    public string Description => "editdist [LAYER]";
+    public string Description => Resources.editdist_desc;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

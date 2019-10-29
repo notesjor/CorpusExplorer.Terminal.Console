@@ -53,8 +53,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       catch (Exception ex)
       {
         System.Console.WriteLine(Resources.XmlScriptParserError001);
-        System.Console.WriteLine(ex.Message);
         LogError(ex);
+        System.Console.ReadLine();
         throw ex;
       }
 
@@ -64,7 +64,17 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                        !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
                          ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
                          : Configuration.ParallelOptions,
-                       session => { ExecuteSession(session, scriptFilename); });
+                       session =>
+                       {
+                         try
+                         {
+                           ExecuteSession(session, scriptFilename);
+                         }
+                         catch (Exception ex)
+                         {
+                           LogError(ex);
+                         }
+                       });
 
       ConsoleHelper.PrintHeader();
       System.Console.WriteLine(Resources.XmlScriptSuccess);
@@ -76,18 +86,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         if (session.sources.processing == "loop")
         {
-          var project = ReadSources(session.sources);
-          foreach (var csel in project.CorporaGuids)
+          foreach (var source in session.sources.Items)
           {
             _terminal.ProjectNew(false);
-            var sub = _terminal.Project;
-            sub.Add(project.GetCorpus(csel));
-            sub.SelectAll.Displayname = project.GetCorpus(csel).CorpusDisplayname;
-            ExecuteSession(session, scriptFilename, sub);
+            using (var project = ReadSources(new[] { source }))
+              ExecuteSession(session, scriptFilename, project);
           }
         }
         else
-          using (var project = ReadSources(session.sources))
+          using (var project = ReadSources(session.sources.Items))
             ExecuteSession(session, scriptFilename, project);
       }
       catch
@@ -191,7 +198,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         if (!string.IsNullOrEmpty(a.mode) && a.mode == "merge")
         {
-          var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, query, a.type);
+          var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), query, a.type);
 
           // Wurde eine Action bereits abgeschlossen? - Falls ja, breche ab.
           if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
@@ -238,7 +245,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         {
           Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
           {
-            var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, selection.Displayname, a.type);
+            var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), selection.Displayname, a.type);
 
             // Wurde die Action bereits abgeschlossen? - Falls ja, breche ab.
             if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
@@ -283,6 +290,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         LogError(ex, $"{query} - {action.Action} - {a.type}");
       }
+    }
+
+    private static string CorpusNameBuilder(List<Selection> selections)
+    {
+      var hash = new HashSet<string>(selections.SelectMany(selection => selection.CorporaDisplaynames));
+      return hash.Count == 0 ? "NONE" : string.Join(";", hash);
     }
 
     /// <summary>
@@ -605,6 +618,14 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       try
       {
+        System.Console.WriteLine(ex.Message);
+        System.Console.WriteLine(ex.StackTrace);
+        if (ex.InnerException != null)
+        {
+          System.Console.WriteLine(ex.InnerException.Message);
+          System.Console.WriteLine(ex.InnerException.StackTrace);
+        }
+
         File.AppendAllLines(_errorLog,
                             additionalLine == null
                               ? new[] { ex.Message, ex.StackTrace, "---" }
@@ -624,10 +645,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="selectionName">Schnappschussname</param>
     /// <param name="action">Action</param>
     /// <returns>Ausgabepfad</returns>
-    private static string OutputPathBuilder(string path, string scriptFilename, string selectionName, string action)
+    private static string OutputPathBuilder(string path, string scriptFilename, string corpusName, string selectionName, string action)
     {
-      var res = path.Replace("{all}", "{script}_{selection}_{action}").Replace("{script}", scriptFilename)
-                    .Replace("{selection}", selectionName == "*" ? "ALL" : selectionName).Replace("{action}", action)
+      var res = path.Replace("{all}", "{script}_{corpus}_{selection}_{action}")
+                    .Replace("{script}", scriptFilename)
+                    .Replace("{corpus}", corpusName)
+                    .Replace("{selection}", selectionName == "*" ? "ALL" : selectionName)
+                    .Replace("{action}", action)
                     .EnsureFileName();
       var dir = Path.GetDirectoryName(res);
       if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
@@ -643,7 +667,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// </summary>
     /// <param name="sources">Quellen</param>
     /// <returns>Project</returns>
-    private static Project ReadSources(sources sources)
+    private static Project ReadSources(object[] sources)
     {
       Project proj;
       lock (_readSourcesNewProjectLock)
@@ -652,62 +676,59 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         proj = _terminal.Project;
       }
 
-      // Wenn zu annotierendes Material vorhanden ist, dann lese dieses ein.
-      if (sources.annotate().Any())
-      {
-        var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
-        var taggers = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
+      foreach (var source in sources)
+        switch (source)
+        {
+          case annotate annotate:
+            var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
+            var taggers = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
 
-        foreach (var annotate in sources.annotate())
-          try
-          {
-            if (!scrapers.ContainsKey(annotate.type))
-              continue;
-            if (!taggers.ContainsKey(annotate.tagger))
-              continue;
+            try
+            {
+              if (!scrapers.ContainsKey(annotate.type))
+                continue;
+              if (!taggers.ContainsKey(annotate.tagger))
+                continue;
 
-            // Extrahiere und bereinige die Dokumente
-            var scraper = scrapers[annotate.type];
-            scraper.Input.Enqueue(SearchFiles(annotate.Items));
-            scraper.Execute();
-            var cleaner1 = new StandardCleanup { Input = scraper.Output };
-            cleaner1.Execute();
-            var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
-            cleaner2.Execute();
+              // Extrahiere und bereinige die Dokumente
+              var scraper = scrapers[annotate.type];
+              scraper.Input.Enqueue(SearchFiles(annotate.Items));
+              scraper.Execute();
+              var cleaner1 = new StandardCleanup { Input = scraper.Output };
+              cleaner1.Execute();
+              var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
+              cleaner2.Execute();
 
-            // Annotiere das Textmaterial
-            var tagger = taggers[annotate.tagger];
-            tagger.LanguageSelected = annotate.language;
-            tagger.Input = cleaner2.Output;
-            tagger.Execute();
+              // Annotiere das Textmaterial
+              var tagger = taggers[annotate.tagger];
+              tagger.LanguageSelected = annotate.language;
+              tagger.Input = cleaner2.Output;
+              tagger.Execute();
 
-            foreach (var corpus in tagger.Output)
-              proj.Add(corpus);
-          }
-          catch (Exception ex)
-          {
-            LogError(ex);
-          }
-      }
+              foreach (var corpus in tagger.Output)
+                proj.Add(corpus);
+            }
+            catch (Exception ex)
+            {
+              LogError(ex);
+            }
+            break;
+          case import import:
+            var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
+            try
+            {
+              if (!importers.ContainsKey(import.type))
+                continue;
 
-      // Wenn Import-Quellen vorhanden sind, dann lese diese ein.
-      if (sources.import().Any())
-      {
-        var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
-        foreach (var import in sources.import())
-          try
-          {
-            if (!importers.ContainsKey(import.type))
-              continue;
-
-            foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items)))
-              proj.Add(corpus);
-          }
-          catch (Exception ex)
-          {
-            LogError(ex);
-          }
-      }
+              foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items)))
+                proj.Add(corpus);
+            }
+            catch (Exception ex)
+            {
+              LogError(ex);
+            }
+            break;
+        }
 
       return proj;
     }

@@ -311,4 +311,10 @@
   <data name="DisambiguationeActionDescription" xml:space="preserve">
     <value>disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER].</value>
   </data>
+  <data name="editdist_desc" xml:space="preserve">
+    <value>editdist [LAYER] - caculates the edit distance for all (to all) documents in [LAYER]</value>
+  </data>
+  <data name="keyword_desc" xml:space="preserve">
+    <value>keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile].</value>
+  </data>
 </root>

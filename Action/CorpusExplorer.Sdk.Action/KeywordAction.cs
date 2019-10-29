@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
@@ -15,7 +16,7 @@ namespace CorpusExplorer.Sdk.Action
   public class KeywordAction : IAction
   {
     public string Action => "keyword";
-    public string Description => "keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile].";
+    public string Description => Resources.keyword_desc;
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       try
