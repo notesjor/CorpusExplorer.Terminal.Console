@@ -89,8 +89,45 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           foreach (var source in session.sources.Items)
           {
             _terminal.ProjectNew(false);
-            using (var project = ReadSources(new[] { source }))
-              ExecuteSession(session, scriptFilename, project);
+            switch (source)
+            {
+              case annotate a:
+                using (var project = ReadSources(new[] { a }))
+                  ExecuteSession(session, scriptFilename, project);
+                break;
+              case import i:
+                foreach (var item in i.Items)
+                  switch (item)
+                  {
+                    case file f:
+                      using (var project = ReadSources(new[] { f }))
+                        ExecuteSession(session, scriptFilename, project);
+                      break;
+                    case directory d:
+                      var files = Directory.GetFiles(d.Value, d.filter);
+                      foreach (var file in files)
+                        using (var project = ReadSources(new []
+                        {
+                          new import
+                          {
+                            Items = new[]
+                            {
+                              new file
+                              {
+                                delete = d.delete, 
+                                Value = file
+                              }
+                            }, type = i.type
+                          }
+                        }))
+                        {
+                          
+                          ExecuteSession(session, scriptFilename, project);
+                        }
+                      break;
+                  }
+                break;
+            }
           }
         }
         else
