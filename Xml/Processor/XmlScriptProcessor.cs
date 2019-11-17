@@ -106,7 +106,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     case directory d:
                       var files = Directory.GetFiles(d.Value, d.filter);
                       foreach (var file in files)
-                        using (var project = ReadSources(new []
+                        using (var project = ReadSources(new[]
                         {
                           new import
                           {
@@ -114,14 +114,14 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                             {
                               new file
                               {
-                                delete = d.delete, 
+                                delete = d.delete,
                                 Value = file
                               }
                             }, type = i.type
                           }
                         }))
                         {
-                          
+
                           ExecuteSession(session, scriptFilename, project);
                         }
                       break;
@@ -244,34 +244,67 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           // Reporting für Konsole
           ExecuteActionReport(taskGuid, query, a.type, outputPath, false);
 
-          // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
-          if (a.type == "query" || a.type == "convert")
+          switch (a.type)
           {
-            var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-            if (!exporters.ContainsKey(a.output.format))
-              return;
-
-            exporters[a.output.format]
-             .Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
-          }
-          // Andernfalls ist format vom Typ AbstractTableWriter
-          else
-          {
-            var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
-            var format = Configuration.GetTableWriter(formatKey);
-            if (format == null)
-              return;
-
-            // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-            using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-            using (var bs = new BufferedStream(fs))
+            // Ist die Action vom Typ query, dann konvertiere Abfrage
+            case "query":
             {
-              format = format.Clone(bs);
-              Parallel.ForEach(selections, Configuration.ParallelOptions,
-                               // ReSharper disable once AccessToDisposedClosure
-                               // ReSharper disable once ImplicitlyCapturedClosure
-                               selection => action.Execute(selection, a.arguments, format));
-              format.Destroy();
+              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
+              if (!exporters.ContainsKey(a.output.format))
+                return;
+
+              exporters[a.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
+              break;
+            }
+            // Ist die Action vom Typ convert, dann konvertiere direkt
+            case "convert":
+            {
+              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
+              if (!exporters.ContainsKey(a.output.format))
+                return;
+
+              exporters[a.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
+              break;
+            }
+            case "cluster" when a.arguments[1] == "convert":
+            {
+              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
+              if (!exporters.ContainsKey(a.output.format))
+                return;
+
+              var qp = QueryParser.Parse(a.arguments[0]);
+              if (!(qp is FilterQueryUnsupportedParserFeature))
+                return;
+
+              var sel = UnsupportedQueryParserFeatureHelper.Handle(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)), (FilterQueryUnsupportedParserFeature)qp);
+              if (sel == null)
+                return;
+
+              foreach (var s in sel)
+                exporters[a.output.format].Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
+              break;
+            }
+            // Andernfalls ist format vom Typ AbstractTableWriter
+            default:
+            {
+              var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+              var format = Configuration.GetTableWriter(formatKey);
+              if (format == null)
+                return;
+
+              // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+              using (var bs = new BufferedStream(fs))
+              {
+                format = format.Clone(bs);
+                Parallel.ForEach(selections, Configuration.ParallelOptions,
+                                 // ReSharper disable once AccessToDisposedClosure
+                                 // ReSharper disable once ImplicitlyCapturedClosure
+                                 selection => action.Execute(selection, a.arguments, format));
+                format.Destroy();
+              }
+
+              break;
             }
           }
 
@@ -291,31 +324,66 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             // Reporting für Konsole
             ExecuteActionReport(taskGuid, selection.Displayname, a.type, outputPath, false);
 
-            // Ist die Action vom Typ query oder convert, dann muss ist format vom Typ AbstractExporter
-            if (a.type == "query" || a.type == "convert")
+            switch (a.type)
             {
-              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-              if (!exporters.ContainsKey(a.output.format))
-                return;
+              // Ist die Action vom Typ query, dann konvertiere Abfrage
+              case "query":
+                {
+                  var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
+                  if (!exporters.ContainsKey(a.output.format))
+                    return;
 
-              exporters[a.output.format].Export(selection.ToCorpus(), outputPath); // ToDo: Multi-File outout
-            }
-            // Andernfalls ist format vom Typ AbstractTableWriter
-            else
-            {
-              var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
-              var format = Configuration.GetTableWriter(formatKey);
-              if (format == null)
-                return;
+                  exporters[a.output.format].Export(selection.CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
+                  break;
+                }
+              // Ist die Action vom Typ convert, dann konvertiere direkt
+              case "convert":
+                {
+                  var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
+                  if (!exporters.ContainsKey(a.output.format))
+                    return;
 
-              // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-              using (var bs = new BufferedStream(fs))
-              {
-                format = format.Clone(bs);
-                action.Execute(selection, a.arguments, format);
-                format.Destroy();
-              }
+                  exporters[a.output.format].Export(selection.ToCorpus(), outputPath);
+                  break;
+                }
+              // Ist die Action vom Typ cluster UND ist die cluster-Action vom Typ convert, dann muss format vom Typ AbstractExporter sein
+              case "cluster" when a.arguments[1] == "convert":
+                {
+                  var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
+                  if (!exporters.ContainsKey(a.output.format))
+                    return;
+
+                  var qp = QueryParser.Parse(a.arguments[0]);
+                  if (!(qp is FilterQueryUnsupportedParserFeature))
+                    return;
+
+                  var sel = UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature)qp);
+                  if (sel == null)
+                    return;
+
+                  foreach (var s in sel)
+                    exporters[a.output.format].Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
+                  break;
+                }
+              // Andernfalls ist format vom Typ AbstractTableWriter
+              default:
+                {
+                  var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+                  var format = Configuration.GetTableWriter(formatKey);
+                  if (format == null)
+                    return;
+
+                  // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+                  using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+                  using (var bs = new BufferedStream(fs))
+                  {
+                    format = format.Clone(bs);
+                    action.Execute(selection, a.arguments, format);
+                    format.Destroy();
+                  }
+
+                  break;
+                }
             }
 
             // Reporting für Konsole
