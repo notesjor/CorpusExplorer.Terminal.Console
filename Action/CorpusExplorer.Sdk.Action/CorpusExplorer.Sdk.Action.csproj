@@ -53,6 +53,7 @@
     <Compile Include="ClusterListAction.cs" />
     <Compile Include="CooccurrenceCrossAction.cs" />
     <Compile Include="CooccurrenceCrossFullAction.cs" />
+    <Compile Include="CorrespondingValuesAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />
     <Compile Include="EditDistanceAction.cs" />
     <Compile Include="Frequency1RawAction.cs" />

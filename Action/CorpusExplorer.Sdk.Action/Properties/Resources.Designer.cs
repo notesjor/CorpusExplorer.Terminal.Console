@@ -79,6 +79,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2 ähnelt.
+        /// </summary>
+        internal static string CorrespondingValuesActionDescription {
+            get {
+                return ResourceManager.GetString("CorrespondingValuesActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die basic-information - basic information tokens/sentences/documents ähnelt.
         /// </summary>
         internal static string DescBasicInformation {
