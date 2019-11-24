@@ -3,7 +3,7 @@ Der CorpusExplorer steht neben der offiziellen GUI (http://www.corpusexplorer.de
 
 ## Installation Windows
 1. Installieren Sie den CorpusExplorer (http://www.bitcutstudios.com/products/corpusexplorer/standard/publish.htm)
-2. Fertig! (OPTIONAL) Installieren Sie eine aktuelle R-Version (http://ftp5.gwdg.de/pub/misc/cran/) WENN Sie den CorpusExplorer unter R nutzen möchten. Andernfalls können Sie auch auf die Windows-Konsole zurück greifen und die Programmausgabe mittels ">" in eine Datei (CSV) umleiten.
+2. Fertig! (OPTIONAL) Installieren Sie eine aktuelle R-Version (http://ftp5.gwdg.de/pub/misc/cran/) WENN Sie den CorpusExplorer unter R nutzen möchten. Andernfalls können Sie auch auf die Windows-Konsole zurückgreifen und die Programmausgabe mittels ">" in eine Datei (CSV) umleiten.
 
 ## Installation Linux/MacOS
 1. Installieren Sie mono (http://www.mono-project.com/download/) - Mindestversion 4.x
@@ -12,30 +12,38 @@ Der CorpusExplorer steht neben der offiziellen GUI (http://www.corpusexplorer.de
 __Einschränkung Linux/MacOS__: Gegenwärtig ist es noch nicht möglich, den Befehl "annotate" auszuführen. Alle anderen Befehle funktionieren einwandfrei (getestet auf Debian 8 - Mono 5.0.1).
 
 ## Grundlegendes
-Der cec.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle installierten Erweiterungen für den CorpusExplorer sind nutzbar. Rufen Sie cec.exe über die Konsole ohne Parameter auf, dann erhalten Sie alle verfügbaren Scraper, Importer, Tagger und Exporter. Erweiterungen für den CorpusExplorer finden Sie hier: http://notes.jan-oliver-ruediger.de/software/corpusexplorer-overview/corpusexplorer-v2-0/erweiterungen/
+Der cec.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle installierten Erweiterungen für den CorpusExplorer sind nutzbar. Rufen Sie cec.exe über die Konsole ohne Parameter auf, dann erhalten Sie alle verfügbaren Scraper, Importer, Tagger, Actions und Exporter. Erweiterungen für den CorpusExplorer finden Sie hier: http://notes.jan-oliver-ruediger.de/software/corpusexplorer-overview/corpusexplorer-v2-0/erweiterungen/
 
 Die Grundsyntax für den Konsolenaufruf lautet:
 ```SHELL
 cec.exe [INPUT] [ACTION]
 ```
+- Bsp. für Konsole/Shell: 
+```SHELL
+cec.exe import#ImporterCec6#demo.cec6 frequency3 > frequency.tsv
+```
+[INPUT] = import#ImporterCec6#demo.cec6  / Lese das Korpus demo.cec6 im CEC6-Format ein.
+[ACTION] = frequency3 / Berechne die Frequenz (Standardwerte: POS, Lemma, Wort)
+> = Leite die Ausgabe in die Datei frequency.tsv um.
 - Bsp. für R: 
 ```R
-tbl <- read.table(pipe("cec.exe import#ImporterCec6#demo.cec6 frequency"), sep = "\t", header = TRUE, dec = ",", encoding = "UTF-8", quote = "")
+tbl <- read.table(pipe("cec.exe import#ImporterCec6#demo.cec6 frequency3"), sep = "\t", header = TRUE, dec = ".", encoding = "UTF-8", quote = "")
 ```
-- Bsp. für Konsole: 
-```SHELL
-cec.exe import#ImporterCec6#demo.cec6 frequency > frequency.tsv
-```
+
 - Bsp. für Konsole (andere Ausgabeformate): 
 ```SHELL
-cec.exe F:TSV import#ImporterCec6#demo.cec6 frequency > frequency.tsv
-cec.exe F:CSV import#ImporterCec6#demo.cec6 frequency > frequency.csv
-cec.exe F:JSON import#ImporterCec6#demo.cec6 frequency > frequency.json
-cec.exe F:XML import#ImporterCec6#demo.cec6 frequency > frequency.xml
-cec.exe F:HTML import#ImporterCec6#demo.cec6 frequency > frequency.html
-cec.exe F:SQL import#ImporterCec6#demo.cec6 frequency > frequency.sql
+cec.exe F:TSV import#ImporterCec6#demo.cec6 frequency3 > frequency.tsv
+cec.exe F:CSV import#ImporterCec6#demo.cec6 frequency3 > frequency.csv
+cec.exe F:JSON import#ImporterCec6#demo.cec6 frequency3 > frequency.json
+cec.exe F:XML import#ImporterCec6#demo.cec6 frequency3 > frequency.xml
+cec.exe F:HTML import#ImporterCec6#demo.cec6 frequency3 > frequency.html
+cec.exe F:SQL import#ImporterCec6#demo.cec6 frequency3 > frequency.sql
 ```
-- Bsp. für REST-Aufruf (Maturity Level 2) - Erlaubt es ein Korpus als REST-Webservice zu hosten
+- Falls Sie keine TID-Spalte benötigen, können Sie anstelle von F: die Option FNT: verwenden. Bsp.:
+```SHELL
+cec.exe FNT:TSV import#ImporterCec6#demo.cec6 frequency3 > frequency.tsv
+```
+- Bsp. für REST-Aufruf (Maturity Level 2) - Erlaubt es, ein Korpus als REST-Webservice zu hosten
 cec.exe [F:FORMAT] PORT:[PORT] [INPUT]
 ```SHELL
 cec.exe F:JSON PORT:3535 import#ImporterCec6#demo.cec6
