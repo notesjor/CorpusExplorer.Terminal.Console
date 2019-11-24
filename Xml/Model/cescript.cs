@@ -30,7 +30,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     
     private sessions sessionsField;
     
-    private decimal versionField;
+    private string versionField;
     
     /// <remarks/>
     [XmlArrayItem("meta", IsNullable=false)]
@@ -55,7 +55,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     
     /// <remarks/>
     [XmlAttribute()]
-    public decimal version {
+    public string version {
       get {
         return this.versionField;
       }

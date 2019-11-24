@@ -317,4 +317,7 @@
   <data name="keyword_desc" xml:space="preserve">
     <value>keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile].</value>
   </data>
+  <data name="CorrespondingValuesActionDescription" xml:space="preserve">
+    <value>corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2</value>
+  </data>
 </root>
