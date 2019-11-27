@@ -320,4 +320,10 @@
   <data name="CorrespondingValuesActionDescription" xml:space="preserve">
     <value>corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2</value>
   </data>
+  <data name="MetaSelectedActionDescription" xml:space="preserve">
+    <value>meta-select [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n]</value>
+  </data>
+  <data name="MetaSelectedDomainActionDescriptionAdditional" xml:space="preserve">
+    <value> (reduces all URLs &gt; domain name only)</value>
+  </data>
 </root>

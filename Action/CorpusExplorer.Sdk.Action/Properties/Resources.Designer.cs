@@ -565,6 +565,24 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-select [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n] ähnelt.
+        /// </summary>
+        internal static string MetaSelectedActionDescription {
+            get {
+                return ResourceManager.GetString("MetaSelectedActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  (reduces all URLs &gt; domain name only) ähnelt.
+        /// </summary>
+        internal static string MetaSelectedDomainActionDescriptionAdditional {
+            get {
+                return ResourceManager.GetString("MetaSelectedDomainActionDescriptionAdditional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die OTHER ähnelt.
         /// </summary>
         internal static string Other {
