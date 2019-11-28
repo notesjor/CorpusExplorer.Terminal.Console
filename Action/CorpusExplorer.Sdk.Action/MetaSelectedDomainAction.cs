@@ -18,7 +18,7 @@ namespace CorpusExplorer.Sdk.Action
 
       var vm = new CorpusWeightUnlimmitedViewModel { Selection = selection };
       vm.Execute();
-      writer.WriteTable(selection.Displayname, vm.GetFilteredDataTable(args));
+      writer.WriteTable(selection.Displayname, vm.GetFilteredAndDomainShrinkedDataTable(args));
     }
   }
 }
