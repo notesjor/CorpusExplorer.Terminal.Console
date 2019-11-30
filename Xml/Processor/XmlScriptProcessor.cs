@@ -121,7 +121,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                           }
                         }))
                         {
-
                           ExecuteSession(session, scriptFilename, project);
                         }
                       break;
