@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;

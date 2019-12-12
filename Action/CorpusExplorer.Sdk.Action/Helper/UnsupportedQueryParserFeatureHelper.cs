@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CorpusExplorer.Sdk.Action;
 using CorpusExplorer.Sdk.Blocks;
+using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Queries;
 
-namespace CorpusExplorer.Sdk.Helper
+namespace CorpusExplorer.Sdk.Action.Helper
 {
   public static class UnsupportedQueryParserFeatureHelper
   {
