@@ -55,6 +55,7 @@
     <Compile Include="CooccurrenceCrossFullAction.cs" />
     <Compile Include="CorrespondingValuesAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />
+    <Compile Include="DocumentHashAction.cs" />
     <Compile Include="EditDistanceAction.cs" />
     <Compile Include="Frequency1RawAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
