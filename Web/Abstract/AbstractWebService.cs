@@ -54,22 +54,6 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     /// </summary>
     protected string Url { get; }
 
-    /// <summary>
-    /// Begrenzt die Ausführungszeit einer Funktion
-    /// </summary>
-    /// <param name="func">Funktion, deren Ausführungszeit begrenzt werden soll.</param>
-    /// <returns>Rückgabewert der Funktion</returns>
-    protected HttpResponse LimitExecuteTime(Func<HttpResponse> func)
-    {
-      var task = Task.Run(func);
-      if (_timeout == 0)
-        task.Wait();
-      else
-        task.Wait(_timeout);
-
-      return task.Result;
-    }
-
     private void InitializeDefaultParameter()
     {
       _availableExecuteActions = JsonConvert.SerializeObject(InitializeExecuteActionList());
@@ -111,16 +95,16 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       while (true) System.Console.ReadLine();
     }
 
-    private HttpResponse DefaultRoute(HttpRequest req)
+    private Task DefaultRoute(HttpContext req)
     {
-      return new HttpResponse(req, true, 200, null, "application/json", _documentation);
+      return req.Response.Send(Mime, _documentation);
     }
 
-    private HttpResponse ExecuteActionsRoute(HttpRequest arg)
+    private Task ExecuteActionsRoute(HttpContext arg)
     {
       try
       {
-        return LimitExecuteTime(() => new HttpResponse(arg, true, 200, null, "application/json", _availableExecuteActions));
+        return arg.Response.Send("application/json", _availableExecuteActions);
       }
       catch (Exception ex)
       {
@@ -171,7 +155,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     /// <param name="request">Ursprüngliche Abfrage</param>
     /// <param name="message">Nachricht</param>
     /// <returns>Fehlermeldung</returns>
-    protected HttpResponse WriteError(HttpRequest request, string message)
+    protected Task WriteError(HttpContext request, string message)
     {
       using (var ms = new MemoryStream())
       {
@@ -180,7 +164,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
         writer.Destroy(false);
 
         ms.Seek(0, SeekOrigin.Begin);
-        return new HttpResponse(request, false, 500, null, Mime, Encoding.UTF8.GetString(ms.ToArray()).Replace("\r\n", ""));
+        return request.Response.Send(Mime, Encoding.UTF8.GetString(ms.ToArray()).Replace("\r\n", ""));
       }
     }
 
@@ -197,13 +181,13 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     /// </summary>
     /// <param name="req">Anfrage</param>
     /// <returns>Ergebnis</returns>
-    protected abstract HttpResponse GetExecuteRoute(HttpRequest req);
+    protected abstract Task GetExecuteRoute(HttpContext req);
 
-    private HttpResponse ExecuteRoute(HttpRequest req)
+    private Task ExecuteRoute(HttpContext req)
     {
       try
       {
-        return LimitExecuteTime(() => GetExecuteRoute(req));
+        return GetExecuteRoute(req);
       }
       catch (Exception ex)
       {

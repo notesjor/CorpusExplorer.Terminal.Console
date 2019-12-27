@@ -13,6 +13,7 @@ using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
 using Microsoft.OpenApi.Models;
 using Tfres;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -35,7 +36,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       return server;
     }
 
-    protected override HttpResponse GetExecuteRoute(HttpRequest req)
+    protected override Task GetExecuteRoute(HttpContext req)
     {
       try
       {
@@ -61,9 +62,9 @@ namespace CorpusExplorer.Terminal.Console.Web
           writer.Destroy(false);
 
           ms.Seek(0, SeekOrigin.Begin);
-          response = Encoding.UTF8.GetString(ms.ToArray());          
+          response = Encoding.UTF8.GetString(ms.ToArray());
         }
-        return new HttpResponse(req, true, 200, null, Mime, response);
+        return req.Response.Send(Mime, response);
       }
       catch (Exception ex)
       {
@@ -77,11 +78,11 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         Paths = new OpenApiPaths
         {
-          { 
-            $"{Url}execute/", new OpenApiPathItem{ 
+          {
+            $"{Url}execute/", new OpenApiPathItem{
               Operations = new Dictionary<OperationType, OpenApiOperation>
               {
-                { 
+                {
                   OperationType.Post, new OpenApiOperation
                   {
                     Description = string.Format(Resources.WebHelpExecute, Url),
@@ -94,10 +95,10 @@ namespace CorpusExplorer.Terminal.Console.Web
                     Responses = new OpenApiResponses
                     {
                       { "200", new OpenApiResponse{ Description = Resources.WebHelpExecuteResult } }
-                    } 
+                    }
                   }
                 }
-              } 
+              }
             }
           }
         }

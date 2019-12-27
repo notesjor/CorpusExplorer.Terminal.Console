@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Action;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -35,11 +36,11 @@ namespace CorpusExplorer.Terminal.Console.Web
       return new SimpleTreeTagger().LanguagesAvailabel.ToArray();
     }
 
-    private HttpResponse AvailableLanguagesRoute(HttpRequest arg)
+    private Task AvailableLanguagesRoute(HttpContext arg)
     {
       try
       {
-        return LimitExecuteTime(() => new HttpResponse(arg, true, 200, null, "application/json", _availableLanguages));
+        return arg.Response.Send("application/json", _availableLanguages);
       }
       catch (Exception ex)
       {
@@ -50,11 +51,11 @@ namespace CorpusExplorer.Terminal.Console.Web
     protected override ActionFilter ExecuteActionFilter
       => new ActionFilter(false, "convert", "query", "cluster");
 
-    private HttpResponse AddRoute(HttpRequest req)
+    private Task AddRoute(HttpContext req)
     {
       try
       {
-        return LimitExecuteTime(() => GetAddRoute(req));
+        return GetAddRoute(req);
       }
       catch(Exception ex)
       {
@@ -62,7 +63,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
-    private HttpResponse GetAddRoute(HttpRequest req)
+    private Task GetAddRoute(HttpContext req)
     {
       try
       {
@@ -80,7 +81,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
-    private HttpResponse UseTagger(HttpRequest req, string language, Dictionary<string, object>[] docs,
+    private Task UseTagger(HttpContext req, string language, Dictionary<string, object>[] docs,
                                    bool enableCleanup)
     {
       var tagger = new SimpleTreeTagger();
@@ -109,11 +110,10 @@ namespace CorpusExplorer.Terminal.Console.Web
         return WriteError(req, Resources.WebErrorTaggingProcessError);
 
       corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
-      return new HttpResponse(req, false, 500, null, "application/json",
-                              $"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}");
+      return req.Response.Send("application/json", $"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}");
     }
 
-    protected override HttpResponse GetExecuteRoute(HttpRequest req)
+    protected override Task GetExecuteRoute(HttpContext req)
     {
       try
       {
@@ -152,7 +152,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           ms.Seek(0, SeekOrigin.Begin);
           response = Encoding.UTF8.GetString(ms.ToArray());          
         }
-        return new HttpResponse(req, true, 200, null, Mime, response);
+        return req.Response.Send(Mime, response);
       }
       catch (Exception ex)
       {
