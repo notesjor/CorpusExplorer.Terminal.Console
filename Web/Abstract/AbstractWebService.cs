@@ -97,14 +97,14 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
 
     private Task DefaultRoute(HttpContext req)
     {
-      return req.Response.Send(Mime, _documentation);
+      return req.Response.Send(_documentation, Mime);
     }
 
     private Task ExecuteActionsRoute(HttpContext arg)
     {
       try
       {
-        return arg.Response.Send("application/json", _availableExecuteActions);
+        return arg.Response.Send(_availableExecuteActions, "application/json");
       }
       catch (Exception ex)
       {
@@ -164,7 +164,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
         writer.Destroy(false);
 
         ms.Seek(0, SeekOrigin.Begin);
-        return request.Response.Send(Mime, Encoding.UTF8.GetString(ms.ToArray()).Replace("\r\n", ""));
+        return request.Response.Send(Encoding.UTF8.GetString(ms.ToArray()).Replace("\r\n", ""), Mime);
       }
     }
 

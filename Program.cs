@@ -228,8 +228,8 @@ namespace CorpusExplorer.Terminal.Console
     private static void Main(string[] args)
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-      Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
       CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
+      CultureInfo.DefaultThreadCurrentCulture = Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
       Execute(args);
     }
 

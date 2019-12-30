@@ -40,7 +40,7 @@ namespace CorpusExplorer.Terminal.Console.Web
     {
       try
       {
-        return arg.Response.Send("application/json", _availableLanguages);
+        return arg.Response.Send(_availableLanguages, "application/json");
       }
       catch (Exception ex)
       {
@@ -110,7 +110,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         return WriteError(req, Resources.WebErrorTaggingProcessError);
 
       corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
-      return req.Response.Send("application/json", $"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}");
+      return req.Response.Send($"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}", "application/json");
     }
 
     protected override Task GetExecuteRoute(HttpContext req)
@@ -152,7 +152,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           ms.Seek(0, SeekOrigin.Begin);
           response = Encoding.UTF8.GetString(ms.ToArray());          
         }
-        return req.Response.Send(Mime, response);
+        return req.Response.Send(response, Mime);
       }
       catch (Exception ex)
       {

@@ -54,7 +54,6 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (er.DocumentGuids != null && er.DocumentGuids.Length > 0)
           selection = selection.CreateTemporary(er.DocumentGuids);
 
-        string response;
         using (var ms = new MemoryStream())
         {
           var writer = Writer.Clone(ms);
@@ -62,9 +61,9 @@ namespace CorpusExplorer.Terminal.Console.Web
           writer.Destroy(false);
 
           ms.Seek(0, SeekOrigin.Begin);
-          response = Encoding.UTF8.GetString(ms.ToArray());
+          req.Response.ContentType = Mime;
+          return req.Response.Send(ms.Length, ms);
         }
-        return req.Response.Send(Mime, response);
       }
       catch (Exception ex)
       {
