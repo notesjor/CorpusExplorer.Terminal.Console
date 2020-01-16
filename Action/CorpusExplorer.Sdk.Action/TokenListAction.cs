@@ -1,4 +1,5 @@
 using System.Data;
+using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
@@ -6,19 +7,19 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Sdk.Action
 {
-  public class TokenCountAction : IAction
+  public class TokenListAction : IAction
   {
-    public string Action => "how-many-tokens";
-    public string Description => Resources.DescHowManyToken;
+    public string Action => "token-list";
+    public string Description => "token-list [LAYER] - list of all tokens in [LAYER]";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var dt = new DataTable();
-      dt.Columns.Add(Resources.Param, typeof(string));
-      dt.Columns.Add(Resources.Value, typeof(double));
+      dt.Columns.Add(Resources.Tokens, typeof(string));
 
       dt.BeginLoadData();
-      dt.Rows.Add(Resources.Tokens, (double)selection.CountToken);
+      foreach (var v in selection?.GetLayers(args[0])?.FirstOrDefault()?.Values)
+        dt.Rows.Add(v);
       dt.EndLoadData();
 
       writer.WriteTable(selection.Displayname, dt);
