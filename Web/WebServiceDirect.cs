@@ -26,7 +26,7 @@ namespace CorpusExplorer.Terminal.Console.Web
   {
     private string _availableLanguages;
 
-    public WebServiceDirect(AbstractTableWriter writer, string ip, int port, int timeout) : base(writer, ip, port, timeout)
+    public WebServiceDirect(AbstractTableWriter writer, string ip, int port, int timeout = 0) : base(writer, ip, port, false, timeout)
     {
       _availableLanguages = JsonConvert.SerializeObject(InitializeAvailableLanguagesList());
     }

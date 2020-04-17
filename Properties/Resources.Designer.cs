@@ -261,9 +261,10 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         ///cec.exe DEBUG:[PATH]
         ///To start interactive shell mode
         ///cec.exe SHELL
-        ///To start a web-service
-        ///cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:30000} {INPUT}
-        /// ähnelt.
+        ///To start a REST-WebService (no GUI)
+        ///cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}
+        ///To build a WebServer with HTML5/JS-GUI
+        ///cec.exe W [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string HelpModes {
             get {

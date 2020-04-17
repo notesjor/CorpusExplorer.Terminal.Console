@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
 using CorpusExplorer.Sdk.Model.Extension;
@@ -21,7 +20,7 @@ namespace CorpusExplorer.Terminal.Console.Web
   {
     private readonly AbstractCorpusAdapter _corpus;
 
-    public WebService(AbstractTableWriter writer, string ip, int port, string file, int timeout) : base(writer, ip, port, timeout)
+    public WebService(AbstractTableWriter writer, string ip, int port, string file, bool enableGui, int timeout = 0) : base(writer, ip, port, enableGui, timeout)
     {
       System.Console.Write(Resources.WebInit, file);
       _corpus = CorpusLoadHelper.LoadCorpus(file);

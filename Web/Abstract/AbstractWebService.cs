@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Ecosystem.Model;
@@ -21,17 +23,28 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     private readonly int _timeout;
     private string _availableExecuteActions;
     private string _documentation;
+    private string _path;
+    private bool _enableGui;
+    private byte[] _gui;
 
-    protected AbstractWebService(AbstractTableWriter writer, string ip, int port, int timeout)
+    protected AbstractWebService(AbstractTableWriter writer, string ip, int port, bool enableGui = false, int timeout = 0)
     {
       Writer = writer;
       _ip = ip;
       _port = port;
       _timeout = timeout;
+      _path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "webGUI");
+      _enableGui = enableGui;
+      _gui = BuildGui();
       Writer = writer;
       Mime = writer.MimeType;
       Url = $"http://{ip}:{port}/";
       InitializeDefaultParameter();
+    }
+
+    private byte[] BuildGui()
+    {
+      throw new NotImplementedException();
     }
 
     /// <summary>
@@ -86,7 +99,8 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       System.Console.Write($"SERVER {Url} ...");
       _documentation = OpenApiHelper.ConvertToJson(AppendDefaultDocumentation(GetDocumentation()));
 
-      var s = new Server(_ip, _port, DefaultRoute);
+      var s = new Server(_ip, _port, req => _enableGui ? WebGuiRoute(req) : OpenApiRoute(req)) { Timeout = _timeout };
+      s.AddEndpoint(HttpVerb.GET, "/openapi", OpenApiRoute);
       s.AddEndpoint(HttpVerb.GET, "/execute/actions/", ExecuteActionsRoute);
       s.AddEndpoint(HttpVerb.POST, "/execute/", ExecuteRoute);
       s = ConfigureServer(s);
@@ -95,7 +109,19 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       while (true) System.Console.ReadLine();
     }
 
-    private Task DefaultRoute(HttpContext req)
+    private Task WebGuiRoute(HttpContext req)
+    {
+      var path = req.Request.FullUrl.Replace(Url, "");
+      if (path.StartsWith("."))
+        return req.Response.Send(HttpStatusCode.BadRequest);
+
+      if (path.Length < 1 || path.StartsWith("index.html"))
+        return req.Response.Send(_gui);
+      path = Path.Combine(_path, path);
+      return File.Exists(path) ? req.Response.Send(File.ReadAllBytes(path)) : req.Response.Send(HttpStatusCode.NotFound);
+    }
+
+    private Task OpenApiRoute(HttpContext req)
     {
       return req.Response.Send(_documentation, Mime);
     }
@@ -119,7 +145,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
         License = new OpenApiLicense { Name = "GNU Affero General Public License 3.0", Url = new Uri("https://www.gnu.org/licenses/agpl-3.0.de.html") },
         Contact = new OpenApiContact { Name = "Jan Oliver Rüdiger", Url = new Uri("https://notes.jan-oliver-ruediger.de/kontakt/") },
         TermsOfService = new Uri("https://www.gnu.org/licenses/agpl-3.0.de.html"),
-        Title = "CorpusExplorer REST-WebServide",
+        Title = "CorpusExplorer REST-WebService",
         Version = "1.0.0"
       };
 

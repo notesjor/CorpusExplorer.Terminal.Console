@@ -130,7 +130,7 @@ namespace CorpusExplorer.Terminal.Console
       var ip = "127.0.0.1";
       var port = 2312;
       var file = "";
-      var timeout = 30000;
+      var timeout = 120;
 
       foreach (var arg in args)
       {
@@ -151,7 +151,7 @@ namespace CorpusExplorer.Terminal.Console
       }
       else
       {
-        var ws = new WebService(_writer, ip, port, file, timeout);
+        var ws = new WebService(_writer, ip, port, file, false, timeout);
         ws.Run();
       }
     }
