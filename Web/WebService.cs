@@ -20,7 +20,7 @@ namespace CorpusExplorer.Terminal.Console.Web
   {
     private readonly AbstractCorpusAdapter _corpus;
 
-    public WebService(AbstractTableWriter writer, string ip, int port, string file, bool enableGui, int timeout = 0) : base(writer, ip, port, enableGui, timeout)
+    public WebService(AbstractTableWriter writer, string ip, int port, string file, int timeout = 0) : base(writer, ip, port, timeout)
     {
       System.Console.Write(Resources.WebInit, file);
       _corpus = CorpusLoadHelper.LoadCorpus(file);

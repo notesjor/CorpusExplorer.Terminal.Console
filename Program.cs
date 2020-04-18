@@ -151,7 +151,7 @@ namespace CorpusExplorer.Terminal.Console
       }
       else
       {
-        var ws = new WebService(_writer, ip, port, file, false, timeout);
+        var ws = new WebService(_writer, ip, port, file, timeout);
         ws.Run();
       }
     }
