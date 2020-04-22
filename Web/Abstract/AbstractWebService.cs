@@ -106,7 +106,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     {
       try
       {
-        return arg.Response.Send(_availableExecuteActions, "application/json");
+        return arg.Response.Send(_availableExecuteActions);
       }
       catch (Exception ex)
       {
@@ -129,7 +129,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
         new OpenApiServer{ Url = $"http://{_ip}:{_port}" }
       };
 
-      document.Paths.Add($"{Url}execute/actions/",
+      document.Paths.Add("/execute/actions/",
        new OpenApiPathItem
        {
          Operations = new Dictionary<OperationType, OpenApiOperation>
@@ -139,9 +139,8 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
               {
                 Description= $"Lists all available actions for {Url}execute/",
                 Responses = new OpenApiResponses
-                {
-                  {"action", new OpenApiResponse{ Description ="The name of the action" } },
-                  {"description", new OpenApiResponse{ Description = "Short description - action and parameter" } }
+                { 
+                  {"200", new OpenApiResponse{ Description ="action = The name of the action / description = Short description - action and parameter" } }
                 }
               }
             }

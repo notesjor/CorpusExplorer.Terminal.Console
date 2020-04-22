@@ -57,7 +57,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         return GetAddRoute(req);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         return WriteError(req, ex.Message);
       }
@@ -70,7 +70,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         var er = req.PostData<AddRequest>();
         if (er?.Documents == null || string.IsNullOrEmpty(er.Language))
           return WriteError(req, Resources.WebErrorInvalidPostData);
-        if (er.Documents.Length > 100 || er.Documents.Sum(x=>x.Text.Length) / 5000 < 100)
+        if (er.Documents.Length > 100 || er.Documents.Sum(x => x.Text.Length) / 5000 < 100)
           return WriteError(req, Resources.WebErrorPostMax100Pages);
 
         return UseTagger(req, er.Language, er.GetDocumentArray(), true);
@@ -94,7 +94,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         var cleaner1 = new StandardCleanup();
         cleaner1.Input.Enqueue(docs);
         cleaner1.Execute();
-        var cleaner2 = new RegexXmlMarkupCleanup {Input = cleaner1.Output};
+        var cleaner2 = new RegexXmlMarkupCleanup { Input = cleaner1.Output };
         cleaner2.Execute();
         tagger.Input = cleaner2.Output;
       }
@@ -150,7 +150,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           writer.Destroy(false);
 
           ms.Seek(0, SeekOrigin.Begin);
-          response = Encoding.UTF8.GetString(ms.ToArray());          
+          response = Encoding.UTF8.GetString(ms.ToArray());
         }
         return req.Response.Send(response, Mime);
       }
@@ -178,22 +178,40 @@ namespace CorpusExplorer.Terminal.Console.Web
         Paths = new OpenApiPaths
         {
           {
-            $"{Url}execute/", new OpenApiPathItem{
+            "/execute/", new OpenApiPathItem
+            {
               Operations = new Dictionary<OperationType, OpenApiOperation>
               {
                 {
                   OperationType.Post, new OpenApiOperation
                   {
-                    Description = string.Format(Resources.WebHelpExecute, Url),
+                    Description = "Executes a command against a corpus (defined by corpusId)",
                     Parameters = new List<OpenApiParameter>
                     {
-                      new OpenApiParameter{ Name = "action", Required = true, Description = Resources.WebHelpExecuteParameterAction},
-                      new OpenApiParameter{ Name = "arguments", Required = true, Description = Resources.WebHelpExecuteParameterArguments},
-                      new OpenApiParameter{ Name = "corpusId", Required = true, Description = string.Format(Resources.WebHelpExecuteParameterCorpusId, Url)},
+                      new OpenApiParameter
+                      {
+                        Name = "request", In = ParameterLocation.Query, Required = true,
+                        Description =
+                          "Executes a command against the complete corpus or a sub-corpus (defined by GUIDs)",
+                        Schema = new OpenApiSchema
+                        {
+                          Type = "object",
+                          Properties = new Dictionary<string, OpenApiSchema>
+                          {
+                            {"action", new OpenApiSchema {Type = "string"}},
+                            {
+                              "arguments",
+                              new OpenApiSchema
+                                {Type = "object", AdditionalProperties = new OpenApiSchema {Type = "string"}}
+                            },
+                            {"corpusId", new OpenApiSchema {Type = "string"}}
+                          }
+                        }
+                      }
                     },
                     Responses = new OpenApiResponses
                     {
-                      { "200", new OpenApiResponse{ Description = Resources.WebHelpExecuteResult } }
+                      {"200", new OpenApiResponse {Description = Resources.WebHelpExecuteResult}}
                     }
                   }
                 }
@@ -201,7 +219,8 @@ namespace CorpusExplorer.Terminal.Console.Web
             }
           },
           {
-            $"{Url}add/langauges/", new OpenApiPathItem{
+            "/add/langauges/", new OpenApiPathItem
+            {
               Operations = new Dictionary<OperationType, OpenApiOperation>
               {
                 {
@@ -210,15 +229,16 @@ namespace CorpusExplorer.Terminal.Console.Web
                     Description = string.Format(Resources.WebHelpListAvailableLanguages, Url),
                     Responses = new OpenApiResponses
                     {
-                      { "200", new OpenApiResponse{ Description = Resources.WebHelpParameterLanguages } }
+                      {"200", new OpenApiResponse {Description = Resources.WebHelpParameterLanguages}}
                     }
                   }
                 }
               }
-            } 
+            }
           },
           {
-            $"{Url}add/", new OpenApiPathItem{
+            "/add/", new OpenApiPathItem
+            {
               Operations = new Dictionary<OperationType, OpenApiOperation>
               {
                 {
@@ -227,12 +247,46 @@ namespace CorpusExplorer.Terminal.Console.Web
                     Description = Resources.WebHelpAddCorpus,
                     Parameters = new List<OpenApiParameter>
                     {
-                      new OpenApiParameter{ Name = "language", Required = true, Description = Resources.WebHelpAddCorpusParameterLanguage},
-                      new OpenApiParameter{ Name = "documents", Required = true, Description = Resources.WebHelpAddCorpusParameterDocuments}
+                      new OpenApiParameter
+                      {
+                        Name = "request", In = ParameterLocation.Query, Required = true,
+                        Description = Resources.WebHelpAddCorpus,
+                        Schema = new OpenApiSchema
+                        {
+                          Type = "object",
+                          Properties = new Dictionary<string, OpenApiSchema>
+                          {
+                            {
+                              "language",
+                              new OpenApiSchema
+                                {Type = "string", Description = "see /add/language/ for all available languages."}
+                            },
+                            {
+                              "documents", new OpenApiSchema
+                              {
+                                Type = "array",
+                                Items = new OpenApiSchema
+                                {
+                                  Type = "object", 
+                                  Properties = new Dictionary<string, OpenApiSchema>
+                                  {
+                                    {"text", new OpenApiSchema {Type = "string"}},
+                                    {
+                                      "metadata",
+                                      new OpenApiSchema
+                                        {Type = "object", AdditionalProperties = new OpenApiSchema {Type = "string"}}
+                                    },
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     },
                     Responses = new OpenApiResponses
                     {
-                      { "200", new OpenApiResponse{ Description = "corpusId" } }
+                      {"200", new OpenApiResponse {Description = "corpusId"}}
                     }
                   }
                 }

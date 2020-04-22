@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus.Abstract;
@@ -12,6 +13,7 @@ using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
 using Microsoft.OpenApi.Models;
 using Tfres;
 using System.Collections.Generic;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace CorpusExplorer.Terminal.Console.Web
@@ -77,7 +79,8 @@ namespace CorpusExplorer.Terminal.Console.Web
         Paths = new OpenApiPaths
         {
           {
-            $"{Url}execute/", new OpenApiPathItem{
+            "/execute/", new OpenApiPathItem
+            {
               Operations = new Dictionary<OperationType, OpenApiOperation>
               {
                 {
@@ -86,13 +89,25 @@ namespace CorpusExplorer.Terminal.Console.Web
                     Description = string.Format(Resources.WebHelpExecute, Url),
                     Parameters = new List<OpenApiParameter>
                     {
-                      new OpenApiParameter{ Name = "action", Required = true, Description = Resources.WebHelpExecuteParameterAction},
-                      new OpenApiParameter{ Name = "arguments", Required = true, Description = Resources.WebHelpExecuteParameterArguments},
-                      new OpenApiParameter{ Name = "guids", Required = false, Description = Resources.WebHelpExecuteParameterGuids},
+                      new OpenApiParameter
+                      {
+                        Name = "request", In = ParameterLocation.Query, Required = true,
+                        Description = "Executes a command against the complete corpus or a sub-corpus (defined by GUIDs)",
+                        Schema = new OpenApiSchema
+                        {
+                          Type = "object",
+                          Properties = new Dictionary<string, OpenApiSchema>
+                          {
+                            {"action", new OpenApiSchema {Type = "string"}},
+                            {"arguments", new OpenApiSchema {Type = "object", AdditionalProperties = new OpenApiSchema {Type = "string"}}},
+                            {"guids", new OpenApiSchema {Type = "array", Items = new OpenApiSchema{Type ="string"}}}
+                          }
+                        }
+                      }
                     },
                     Responses = new OpenApiResponses
                     {
-                      { "200", new OpenApiResponse{ Description = Resources.WebHelpExecuteResult } }
+                      {"200", new OpenApiResponse {Description = Resources.WebHelpExecuteResult}}
                     }
                   }
                 }
