@@ -42,8 +42,8 @@
     <AssemblyOriginatorKeyFile>CorpusExplorerNextSnKey2019.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.OpenApi.DotNet452">
-      <HintPath>..\OpenAPI.net\src\Microsoft.OpenApi.DotNet452\bin\Release\Microsoft.OpenApi.DotNet452.dll</HintPath>
+    <Reference Include="Microsoft.OpenApi, Version=1.1.4.0, Culture=neutral, PublicKeyToken=3f5743946376f042, processorArchitecture=MSIL">
+      <HintPath>C:\Projekte\CorpusExplorerV2\CorpusExplorer\packages\Microsoft.OpenApi.1.1.4\lib\net46\Microsoft.OpenApi.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>C:\Projekte\CorpusExplorerV2\CorpusExplorer\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
