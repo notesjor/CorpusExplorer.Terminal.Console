@@ -24,28 +24,27 @@ namespace CorpusExplorer.Terminal.Console.Helper
 
     private static AbstractCorpusAdapter LoadCorpusAnnotate(string path)
     {
-      // Scraper extrahieren Meta-/Textdaten
-      var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
+      // Bsp.: annotate#BundestagPlenarprotokolleScraper#[TAGGER]#[LANGUAGE]#[DIRECTORY]
       var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries).ToList();
       if (split.Count != 5)
         return null;
 
       split.RemoveAt(0); // entfernt annotate#
-      if (!scrapers.ContainsKey(split[0]))
-        return null;
 
-      var scraper = scrapers[split[0]];
-      // Cleaner bereinigen Meta-/Textdaten
-      var cleaner = new StandardCleanup();
+      var scraper = Configuration.AddonScrapers.GetReflectedType(split[0], "Scraper");
+      if (scraper == null)
+        return null;
       split.RemoveAt(0); // entfernt [SCRAPER]
 
-      // Tagger annotieren Textdaten
-      var taggers = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
-      if (!taggers.ContainsKey(split[0]))
-        return null;
+      // Cleaner bereinigen Meta-/Textdaten
+      var cleaner = new StandardCleanup();
 
-      var tagger = taggers[split[0]];
+      // Tagger annotieren Textdaten
+      var tagger = Configuration.AddonTaggers.GetReflectedType(split[0], "Tagger");
+      if (tagger == null)
+        return null;
       split.RemoveAt(0); // entfernt [TAGGER]
+
       tagger.LanguageSelected = split[0];
       split.RemoveAt(0); // entfernt [LANGUAGE]
       var files = Directory.GetFiles(split[0].Replace("\"", ""), "*.*", SearchOption.TopDirectoryOnly);
@@ -63,15 +62,14 @@ namespace CorpusExplorer.Terminal.Console.Helper
 
     private static AbstractCorpusAdapter LoadCorpusImport(string path)
     {
-      // Importer laden bestehende Korpora
-      var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
+      // Bsp.: import#ImporterCec6#[FILES]
       var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
       if (split.Length != 3)
         return null;
 
-      if (!importers.ContainsKey(split[1]))
+      var importer = Configuration.AddonImporters.GetReflectedType(split[1], "Importer");
+      if (importer == null)
         return null;
-      var importer = importers[split[1]];
 
       var files = DetectFileOrDirectoryPaths(split[2]);
 

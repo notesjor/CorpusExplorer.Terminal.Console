@@ -20,8 +20,9 @@ namespace CorpusExplorer.Sdk.Action
       var output = args.Last().Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
-      var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-      if (!exporters.ContainsKey(output[0]))
+
+      var exporter = Configuration.AddonExporters.GetReflectedType(output[0], "Exporter");
+      if (exporter == null)
         return;
 
       var path = output[1].Replace("\"", "");
@@ -29,7 +30,7 @@ namespace CorpusExplorer.Sdk.Action
       if (dir != null && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
-      exporters[output[0]].Export(selection, path);
+      exporter.Export(selection, path);
     }
   }
 }

@@ -248,64 +248,64 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           {
             // Ist die Action vom Typ query, dann konvertiere Abfrage
             case "query":
-            {
-              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-              if (!exporters.ContainsKey(a.output.format))
-                return;
+              {
+                var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
+                if (exporter == null)
+                  return;
 
-              exporters[a.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
-              break;
-            }
+                exporter.Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
+                break;
+              }
             // Ist die Action vom Typ convert, dann konvertiere direkt
             case "convert":
-            {
-              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-              if (!exporters.ContainsKey(a.output.format))
-                return;
+              {
+                var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
+                if (exporter == null)
+                  return;
 
-              exporters[a.output.format].Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
-              break;
-            }
+                exporter.Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
+                break;
+              }
             case "cluster" when a.arguments[1] == "convert":
-            {
-              var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-              if (!exporters.ContainsKey(a.output.format))
-                return;
+              {
+                var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
+                if (exporter == null)
+                  return;
 
-              var qp = QueryParser.Parse(a.arguments[0]);
-              if (!(qp is FilterQueryUnsupportedParserFeature))
-                return;
+                var qp = QueryParser.Parse(a.arguments[0]);
+                if (!(qp is FilterQueryUnsupportedParserFeature))
+                  return;
 
-              var sel = UnsupportedQueryParserFeatureHelper.Handle(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)), (FilterQueryUnsupportedParserFeature)qp);
-              if (sel == null)
-                return;
+                var sel = UnsupportedQueryParserFeatureHelper.Handle(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)), (FilterQueryUnsupportedParserFeature)qp);
+                if (sel == null)
+                  return;
 
-              foreach (var s in sel)
-                exporters[a.output.format].Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
-              break;
-            }
+                foreach (var s in sel)
+                  exporter.Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
+                break;
+              }
             // Andernfalls ist format vom Typ AbstractTableWriter
             default:
-            {
-              var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
-              var format = Configuration.GetTableWriter(formatKey);
-              if (format == null)
-                return;
-
-              // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-              using (var bs = new BufferedStream(fs))
               {
-                format = format.Clone(bs);
-                Parallel.ForEach(selections, Configuration.ParallelOptions,
-                                 // ReSharper disable once AccessToDisposedClosure
-                                 // ReSharper disable once ImplicitlyCapturedClosure
-                                 selection => action.Execute(selection, a.arguments, format));
-                format.Destroy();
-              }
+                var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+                var format = Configuration.GetTableWriter(formatKey);
+                if (format == null)
+                  return;
 
-              break;
-            }
+                // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+                using (var bs = new BufferedStream(fs))
+                {
+                  format = format.Clone(bs);
+                  Parallel.ForEach(selections, Configuration.ParallelOptions,
+                                   // ReSharper disable once AccessToDisposedClosure
+                                   // ReSharper disable once ImplicitlyCapturedClosure
+                                   selection => action.Execute(selection, a.arguments, format));
+                  format.Destroy();
+                }
+
+                break;
+              }
           }
 
           // Reporting für Konsole
@@ -329,28 +329,28 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               // Ist die Action vom Typ query, dann konvertiere Abfrage
               case "query":
                 {
-                  var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-                  if (!exporters.ContainsKey(a.output.format))
+                  var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
+                  if (exporter == null)
                     return;
 
-                  exporters[a.output.format].Export(selection.CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
+                  exporter.Export(selection.CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
                   break;
                 }
               // Ist die Action vom Typ convert, dann konvertiere direkt
               case "convert":
                 {
-                  var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-                  if (!exporters.ContainsKey(a.output.format))
+                  var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
+                  if (exporter == null)
                     return;
 
-                  exporters[a.output.format].Export(selection.ToCorpus(), outputPath);
+                  exporter.Export(selection.ToCorpus(), outputPath);
                   break;
                 }
               // Ist die Action vom Typ cluster UND ist die cluster-Action vom Typ convert, dann muss format vom Typ AbstractExporter sein
               case "cluster" when a.arguments[1] == "convert":
                 {
-                  var exporters = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
-                  if (!exporters.ContainsKey(a.output.format))
+                  var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
+                  if (exporter == null)
                     return;
 
                   var qp = QueryParser.Parse(a.arguments[0]);
@@ -362,7 +362,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     return;
 
                   foreach (var s in sel)
-                    exporters[a.output.format].Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
+                    exporter.Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
                   break;
                 }
               // Andernfalls ist format vom Typ AbstractTableWriter
@@ -785,18 +785,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         switch (source)
         {
           case annotate annotate:
-            var scrapers = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
-            var taggers = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
-
             try
             {
-              if (!scrapers.ContainsKey(annotate.type))
-                continue;
-              if (!taggers.ContainsKey(annotate.tagger))
+              var scraper = Configuration.AddonScrapers.GetReflectedType(annotate.type, "Scraper");
+              var tagger = Configuration.AddonTaggers.GetReflectedType(annotate.tagger, "Tagger");
+
+              if (scraper == null || tagger == null)
                 continue;
 
               // Extrahiere und bereinige die Dokumente
-              var scraper = scrapers[annotate.type];
               scraper.Input.Enqueue(SearchFiles(annotate.Items));
               scraper.Execute();
               var cleaner1 = new StandardCleanup { Input = scraper.Output };
@@ -805,7 +802,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               cleaner2.Execute();
 
               // Annotiere das Textmaterial
-              var tagger = taggers[annotate.tagger];
               tagger.LanguageSelected = annotate.language;
               tagger.Input = cleaner2.Output;
               tagger.Execute();
@@ -819,13 +815,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             }
             break;
           case import import:
-            var importers = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
             try
             {
-              if (!importers.ContainsKey(import.type))
+              var importer = Configuration.AddonImporters.GetReflectedType(import.type, "Importer");
+              if (importer==null)
                 continue;
 
-              foreach (var corpus in importers[import.type].Execute(SearchFiles(import.Items)))
+              foreach (var corpus in importer.Execute(SearchFiles(import.Items)))
                 proj.Add(corpus);
             }
             catch (Exception ex)

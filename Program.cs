@@ -239,29 +239,29 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine(Resources.HelpModes);
       System.Console.WriteLine(Resources.HelpImportHeader);
 
-      var importer = Configuration.AddonImporters.GetReflectedTypeNameDictionary();
-      foreach (var x in importer) System.Console.WriteLine(Resources.HelpImportPattern, x.Key);
+      var importer = Configuration.AddonImporters.GetReflectedTypeNameList("Importer");
+      foreach (var x in importer) System.Console.WriteLine(Resources.HelpImportPattern, x);
 
       System.Console.WriteLine(Resources.HelpImportExample);
 
-      var scraper = Configuration.AddonScrapers.GetReflectedTypeNameDictionary();
+      var scraper = Configuration.AddonScrapers.GetReflectedTypeNameList("Scraper");
       System.Console.WriteLine(Resources.HelpAnnotateHeader);
       foreach (var x in scraper)
-        System.Console.WriteLine(Resources.HelpAnnotatePattern, x.Key);
+        System.Console.WriteLine(Resources.HelpAnnotatePattern, x);
       System.Console.WriteLine(Resources.HelpAnnotateNote);
-      var tagger = Configuration.AddonTaggers.GetReflectedTypeNameDictionary();
+      var tagger = Configuration.AddonTaggers.GetReflectedTypeNameList(""); // ignore hier nicht, da Tagger wie in TreeTagger Namensbestandteil ist. Ignore nur bei Namenssuche.
       System.Console.WriteLine(Resources.HelpAnnotateTaggerHeader);
       foreach (var x in tagger)
       {
-        System.Console.Write(Resources.HelpAnnotateTaggerPattern, x.Key);
-        System.Console.WriteLine(Resources.HelpAnnotateTaggerLanguagePattern, string.Join(", ", x.Value.LanguagesAvailabel));
+        System.Console.Write(Resources.HelpAnnotateTaggerPattern, x);
+        System.Console.WriteLine(Resources.HelpAnnotateTaggerLanguagePattern, string.Join(", ", Configuration.AddonTaggers.GetReflectedType(x, "Tagger").LanguagesAvailabel));
       }
       System.Console.WriteLine(Resources.HelpAnnotateExample);
 
       System.Console.WriteLine(Resources.HelpOutputHeader);
-      var exporter = Configuration.AddonExporters.GetReflectedTypeNameDictionary();
+      var exporter = Configuration.AddonExporters.GetReflectedTypeNameList("Exporter");
       foreach (var x in exporter)
-        System.Console.WriteLine(Resources.HelpOutputPattern, x.Key);
+        System.Console.WriteLine(Resources.HelpOutputPattern, x);
       System.Console.WriteLine(Resources.HelpOutputExample);
 
       System.Console.WriteLine(Resources.HelpQueryClusterSyntax);
