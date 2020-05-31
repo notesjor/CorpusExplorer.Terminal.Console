@@ -79,7 +79,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2 ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2 (e. g. 1: Lemma / 2: Wort) ähnelt.
         /// </summary>
         internal static string CorrespondingValuesActionDescription {
             get {

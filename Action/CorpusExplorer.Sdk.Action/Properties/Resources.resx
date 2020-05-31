@@ -318,7 +318,7 @@
     <value>keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile].</value>
   </data>
   <data name="CorrespondingValuesActionDescription" xml:space="preserve">
-    <value>corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2</value>
+    <value>corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2 (e. g. 1: Lemma / 2: Wort)</value>
   </data>
   <data name="MetaSelectedActionDescription" xml:space="preserve">
     <value>meta-select [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n]</value>
