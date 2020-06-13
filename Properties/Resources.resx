@@ -285,7 +285,11 @@ F:SQL - SQL-statement
 F:SQLSCHEMA - SQL-statement (schema only)
 F:SQLDATA - SQL-statement (insert data only - no schema)
 Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
-Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)</value>
+Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)
+Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 > C:\out.csv)
+Use the optimized direct way, by adding the output-path to the [F:FORMAT]-option
+Example: cec.exe F:CSV#C:\out.tsv import#Cec6#C:\mycorpus.cec6 frequency1
+</value>
   </data>
   <data name="WebErrorInvalidPostData" xml:space="preserve">
     <value>invalid post-data</value>
