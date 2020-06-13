@@ -136,6 +136,8 @@ Syntax for filtering:
 cec.exe [INPUT] [QUERY] [OUTPUT]
 Syntax for analytics (writes output to stdout):
 cec.exe {F:FORMAT} [INPUT] [ACTION]
+Syntax for analytics (writes output to file - like C:\out.xyx):
+cec.exe [F:FORMAT]#"C:\out.xyx" [INPUT] [ACTION]
 Syntax for scripting:
 cec.exe FILE:[PATH]
 More detailed scripting errors:
@@ -151,7 +153,7 @@ cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}
   </data>
   <data name="HelpImportExample" xml:space="preserve">
     <value>Note: [FILES] = separate files with &amp; - merges all files before processing
-Example: cec.exe import#ImporterCec5#C:\mycorpus1.cec5&amp;C:\mycorpus2.cec5 convert ExporterCec6#C:\mycorpus.cec6
+Example: cec.exe import#Cec5#C:\mycorpus1.cec5&amp;C:\mycorpus2.cec5 convert Cec6#C:\mycorpus.cec6
 
 </value>
   </data>
@@ -179,7 +181,7 @@ Import corpus material - direct[INPUT]:</value>
     <value>([LANGUAGE] = {0})</value>
   </data>
   <data name="HelpAnnotateExample" xml:space="preserve">
-    <value>Example: cec.exe annotate#DpxcScraper#SimpleTreeTagger#Deutsch#C:\dpxc\ convert ExporterCec6#C:\mycorpus.cec6</value>
+    <value>Example: cec.exe annotate#Dpxc#SimpleTreeTagger#Deutsch#C:\dpxc\ convert Cec6#C:\mycorpus.cec6</value>
   </data>
   <data name="HelpQueryClusterSyntax" xml:space="preserve">
     <value>
@@ -195,22 +197,22 @@ Second character [OPERATOR] (if you choose M):
   ( = starts with (case sensitive) | ) = ends with (case sensitive)
 If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)
 Example (query only): !M:Author::Jan - Finds all documents where "Jan" isn't an author
-Example (in action): cec.exe import#ImporterCec6#C:\mycorpus.cec6 query !M:Author::Jan ExporterCec6#C:\mycorpus.cec6
+Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query !M:Author::Jan Cec6#C:\mycorpus.cec6
 
 Second character [OPERATOR] (if you choose T):
   ~ = any match | - = all in one document | = = all in one sentence | § = exact phrase
   ? = regEx value | F = regEx fulltext-search (very slow) | 1 = first plus any other match
 If you have chosen T - enter the layer name (see [ACTION] = layer-names)
 Example (query only): T§Wort::OpenSource;Software - Finds all documents with the exact phrase "OpensSource Software"
-Example (in action): cec.exe import#ImporterCec6#C:\mycorpus.cec6 query T§Wort::OpenSource;Software ExporterCec6#C:\mycorpus.cec6
+Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query T§Wort::OpenSource;Software Cec6#C:\mycorpus.cec6
 Note 1: If you use several words in a T-query, then separate them with ;
 Note 2: You can also use a query file (*.ceusd) - use the FILE: prefix
-Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 query FILE:C:\query.ceusd ExporterCec6#C:\mycorpus.cec6
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 query FILE:C:\query.ceusd Cec6#C:\mycorpus.cec6
 
 Second character [OPERATOR] (if you choose X):
   R = random selection | S = auto split by meta-data (use cluster for auto split)
 If you use XR for random selection you need to specify the document count
-Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 query XR::100 frequency1 Wort
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 query XR::100 frequency1 Wort
 Note 4: XR will generate two outputs - the regular and the inverted output.
 If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)
 
@@ -218,17 +220,17 @@ Enter the separator :: followed by the query
 If you use XS you must specify the meta data type - TEXT, INT, FLOAT or DATE
 Note 5: XS will generate multiple outputs - based on clusters.
 TEXT generates for every entry a separate snapshot
-Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort
 INT / FLOAT you need to set up a [CLUSTERSIZE]
-Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSYear::INT;10 ExporterCec6#C:\mycorpus.cec6
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSYear::INT;10 Cec6#C:\mycorpus.cec6
 DATE;C;[CLUSTERSIZE] - generates [CLUSTERSIZE] clusters.
-Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSDate::DATE;C;10 ExporterCec6#C:\mycorpus.cec6
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;C;10 Cec6#C:\mycorpus.cec6
 DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster / DATE;Y = Year-Cluster
 DATE;YW = Week-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster
 DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster
-Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSDate::DATE;YMD ExporterCec6#C:\mycorpus.cec6
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;YMD Cec6#C:\mycorpus.cec6
 WINDOW = Add WINDOW + SIZE as an prefix for each cluster argument to enable the rolling window feature
-Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD ExporterCec6#C:\mycorpus.cec6</value>
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD Cec6#C:\mycorpus.cec6</value>
   </data>
   <data name="HelpOutputHeader" xml:space="preserve">
     <value>
@@ -242,8 +244,8 @@ Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 cluster XSDate::WINDOW7;DA
   </data>
   <data name="HelpOutputExample" xml:space="preserve">
     <value>Note: [FILE] = any file you like to store the output
-Example 'convert': cec.exe import#ImporterCec5#C:\mycorpus.cec5 convert ExporterCec6#C:\mycorpus.cec6
-Example 'query': cec.exe import#ImporterCec5#C:\mycorpus.cec5 query !M:Author::Jan ExporterCec6#C:\mycorpus.cec6</value>
+Example 'convert': cec.exe import#Cec5#C:\mycorpus.cec5 convert Cec6#C:\mycorpus.cec6
+Example 'query': cec.exe import#Cec5#C:\mycorpus.cec5 query !M:Author::Jan Cec6#C:\mycorpus.cec6</value>
   </data>
   <data name="HelpActionHeader" xml:space="preserve">
     <value>
@@ -256,7 +258,7 @@ Most actions accept arguments. [ARG] is a required argument. {ARG} is an optiona
     <value>[ACTION] = {0}</value>
   </data>
   <data name="HelpActionExample" xml:space="preserve">
-    <value>Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
   </data>
   <data name="HelpScripting" xml:space="preserve">
     <value>
@@ -265,7 +267,7 @@ Most actions accept arguments. [ARG] is a required argument. {ARG} is an optiona
 
 All actionss above can be stored in a file to build up a automatic process.
 In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout
-Example: import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv</value>
+Example: import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv</value>
   </data>
   <data name="HelpFormat" xml:space="preserve">
     <value>
@@ -282,7 +284,7 @@ F:HTML - HTML5-Document
 F:SQL - SQL-statement
 F:SQLSCHEMA - SQL-statement (schema only)
 F:SQLDATA - SQL-statement (insert data only - no schema)
-Example: cec.exe F:JSON import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
+Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
 Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)</value>
   </data>
   <data name="WebErrorInvalidPostData" xml:space="preserve">

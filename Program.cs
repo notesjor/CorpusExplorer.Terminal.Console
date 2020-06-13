@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
@@ -168,7 +169,6 @@ namespace CorpusExplorer.Terminal.Console
       if (selection == null || selection.CountToken == 0)
         return;
 
-      System.Console.OutputEncoding = Configuration.Encoding;
       var temp = args.ToList();
       temp.RemoveAt(0); // CorpusFile (no longer needed)
       temp.RemoveAt(0); // Action (no longer needed)
@@ -229,6 +229,7 @@ namespace CorpusExplorer.Terminal.Console
     {
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
       CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
+      System.Console.InputEncoding = System.Console.OutputEncoding = Configuration.Encoding;
       CultureInfo.DefaultThreadCurrentCulture = Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
       Execute(args);
     }

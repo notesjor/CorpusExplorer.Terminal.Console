@@ -100,7 +100,7 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Example: cec.exe import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Example: cec.exe import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort ähnelt.
         /// </summary>
         public static string HelpActionExample {
             get {
@@ -131,7 +131,7 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Example: cec.exe annotate#DpxcScraper#SimpleTreeTagger#Deutsch#C:\dpxc\ convert ExporterCec6#C:\mycorpus.cec6 ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Example: cec.exe annotate#Dpxc#SimpleTreeTagger#Deutsch#C:\dpxc\ convert Cec6#C:\mycorpus.cec6 ähnelt.
         /// </summary>
         public static string HelpAnnotateExample {
             get {
@@ -208,7 +208,7 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         ///F:SQL - SQL-statement
         ///F:SQLSCHEMA - SQL-statement (schema only)
         ///F:SQLDATA - SQL-statement (insert data only - no schema)
-        ///Example: cec.exe F:JSON import#ImporterCec6#C [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///Example: cec.exe F:JSON import#Cec6#C:\mycorp [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string HelpFormat {
             get {
@@ -218,7 +218,7 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Note: [FILES] = separate files with &amp; - merges all files before processing
-        ///Example: cec.exe import#ImporterCec5#C:\mycorpus1.cec5&amp;C:\mycorpus2.cec5 convert ExporterCec6#C:\mycorpus.cec6
+        ///Example: cec.exe import#Cec5#C:\mycorpus1.cec5&amp;C:\mycorpus2.cec5 convert Cec6#C:\mycorpus.cec6
         ///
         /// ähnelt.
         /// </summary>
@@ -255,6 +255,8 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         ///cec.exe [INPUT] [QUERY] [OUTPUT]
         ///Syntax for analytics (writes output to stdout):
         ///cec.exe {F:FORMAT} [INPUT] [ACTION]
+        ///Syntax for analytics (writes output to file - like C:\out.xyx):
+        ///cec.exe [F:FORMAT]#&quot;C:\out.xyx&quot; [INPUT] [ACTION]
         ///Syntax for scripting:
         ///cec.exe FILE:[PATH]
         ///More detailed scripting errors:
@@ -262,8 +264,7 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         ///To start interactive shell mode
         ///cec.exe SHELL
         ///To start a REST-WebService
-        ///cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}
-        /// ähnelt.
+        ///cec.exe {F [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string HelpModes {
             get {
@@ -273,8 +274,8 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Note: [FILE] = any file you like to store the output
-        ///Example &apos;convert&apos;: cec.exe import#ImporterCec5#C:\mycorpus.cec5 convert ExporterCec6#C:\mycorpus.cec6
-        ///Example &apos;query&apos;: cec.exe import#ImporterCec5#C:\mycorpus.cec5 query !M:Author::Jan ExporterCec6#C:\mycorpus.cec6 ähnelt.
+        ///Example &apos;convert&apos;: cec.exe import#Cec5#C:\mycorpus.cec5 convert Cec6#C:\mycorpus.cec6
+        ///Example &apos;query&apos;: cec.exe import#Cec5#C:\mycorpus.cec5 query !M:Author::Jan Cec6#C:\mycorpus.cec6 ähnelt.
         /// </summary>
         public static string HelpOutputExample {
             get {
@@ -331,7 +332,7 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         ///
         ///All actionss above can be stored in a file to build up a automatic process.
         ///In this case it&apos;s recommended to redirect the [ACTION]-output to a file and not to stdout
-        ///Example: import#ImporterCec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv ähnelt.
+        ///Example: import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv ähnelt.
         /// </summary>
         public static string HelpScripting {
             get {

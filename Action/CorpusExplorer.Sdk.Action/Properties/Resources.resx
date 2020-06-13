@@ -168,16 +168,16 @@
     <value>how-many-documents - sum of all documents</value>
   </data>
   <data name="DescFrequency1" xml:space="preserve">
-    <value>frequency1 {LAYER} - count token frequency on [LAYER]</value>
+    <value>frequency1 {LAYER} - count token frequency on {LAYER} (default: Wort)</value>
   </data>
   <data name="DescFrequency1Selected" xml:space="preserve">
     <value>frequency1-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File</value>
   </data>
   <data name="DescFrequency2" xml:space="preserve">
-    <value>frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers</value>
+    <value>frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers (default: Lemma, Wort)</value>
   </data>
   <data name="DescFrequency3" xml:space="preserve">
-    <value>frequency3 {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers</value>
+    <value>frequency3 {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (default: POS, Lemma, Wort)</value>
   </data>
   <data name="DescGetDocument" xml:space="preserve">
     <value>get-document [GUID] {LAYER} - get all layer-information for specific [GUID] document. Use {LAYER} to filter output.</value>
@@ -273,7 +273,7 @@
     <value>ner [NERFILE] - performs a named entity recorgnition</value>
   </data>
   <data name="DescNgram" xml:space="preserve">
-    <value>ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on [LAYER]</value>
+    <value>ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on {LAYER} (default: Wort)</value>
   </data>
   <data name="DescNgramSelect" xml:space="preserve">
     <value>ngram-select [N] [LAYER] [minFREQ] [WORDS] - all [N]-grams on [LAYER] containing [WORDS] .</value>
@@ -285,7 +285,7 @@
     <value>query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.</value>
   </data>
   <data name="DescReadingEase" xml:space="preserve">
-    <value>reading-ease {LAYER} - reading ease of [LAYER]</value>
+    <value>reading-ease {LAYER} - reading ease of {LAYER} (default: Wort)</value>
   </data>
   <data name="DescHowManySentences" xml:space="preserve">
     <value>how-many-sentences - sum of all sentences</value>
@@ -303,7 +303,7 @@
     <value>how-many-types [LAYER] - sum of all [LAYER]-values (types)</value>
   </data>
   <data name="DescVocabularyComplexity" xml:space="preserve">
-    <value>vocabulary-complexity {LAYER} - vocabulary complexity in [LAYER]</value>
+    <value>vocabulary-complexity {LAYER} - vocabulary complexity in {LAYER}</value>
   </data>
   <data name="DescVocd" xml:space="preserve">
     <value>vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]</value>

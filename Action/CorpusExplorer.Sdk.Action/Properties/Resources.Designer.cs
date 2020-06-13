@@ -178,7 +178,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die frequency1 {LAYER} - count token frequency on [LAYER] ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die frequency1 {LAYER} - count token frequency on {LAYER} (default: Wort) ähnelt.
         /// </summary>
         internal static string DescFrequency1 {
             get {
@@ -196,7 +196,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers (default: Lemma, Wort) ähnelt.
         /// </summary>
         internal static string DescFrequency2 {
             get {
@@ -205,7 +205,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die frequency3 {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die frequency3 {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (default: POS, Lemma, Wort) ähnelt.
         /// </summary>
         internal static string DescFrequency3 {
             get {
@@ -403,7 +403,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on [LAYER] ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on {LAYER} (default: Wort) ähnelt.
         /// </summary>
         internal static string DescNgram {
             get {
@@ -448,7 +448,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die reading-ease {LAYER} - reading ease of [LAYER] ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die reading-ease {LAYER} - reading ease of {LAYER} (default: Wort) ähnelt.
         /// </summary>
         internal static string DescReadingEase {
             get {
@@ -466,7 +466,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die vocabulary-complexity {LAYER} - vocabulary complexity in [LAYER] ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die vocabulary-complexity {LAYER} - vocabulary complexity in {LAYER} ähnelt.
         /// </summary>
         internal static string DescVocabularyComplexity {
             get {
