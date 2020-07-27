@@ -7,15 +7,15 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Sdk.Action
 {
-  public class CorrespondingValuesAction : IAction
+  public class Metaphone3ValuesAction : IAction
   {
-    public string Action => "corresponding";
+    public string Action => "metaphone";
     public string Description => Resources.CorrespondingValuesActionDescription;
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length != 2)
         return;
-      
+
       var block = selection.CreateBlock<CorrespondingLayerValueBlock>();
       block.Layer1Displayname = args[0];
       block.Layer2Displayname = args[1];

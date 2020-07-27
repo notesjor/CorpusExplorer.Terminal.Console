@@ -60,7 +60,9 @@
     <Compile Include="Frequency1RawAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />
+    <Compile Include="InverseDocumentFrequencyAction.cs" />
     <Compile Include="KeywordAction.cs" />
+    <Compile Include="Metaphone3ValuesAction.cs" />
     <Compile Include="MetaSelectedAction.cs" />
     <Compile Include="MetaSelectedDomainAction.cs" />
     <Compile Include="PositionFrequencyAction.cs" />
@@ -107,6 +109,8 @@
     <Compile Include="SentenceCountAction.cs" />
     <Compile Include="StyleBurrowsDeltaAction.cs" />
     <Compile Include="StyleNgramAction.cs" />
+    <Compile Include="TermFrequencyAction.cs" />
+    <Compile Include="TermFrequencyInverseDocumentFrequencyAction.cs" />
     <Compile Include="TokenCountAction.cs" />
     <Compile Include="TokenListAction.cs" />
     <Compile Include="TypeCountAction.cs" />
