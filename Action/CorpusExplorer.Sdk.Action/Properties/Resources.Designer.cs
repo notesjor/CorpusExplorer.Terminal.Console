@@ -151,6 +151,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die cooccurrence-cross [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER]. ähnelt.
+        /// </summary>
+        internal static string DescCooccurrencesCross {
+            get {
+                return ResourceManager.GetString("DescCooccurrencesCross", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values. ähnelt.
         /// </summary>
         internal static string DescCooccurrenceSelect {
@@ -174,6 +183,33 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescDocumentCount {
             get {
                 return ResourceManager.GetString("DescDocumentCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die frequency1-raw {LAYER} - count token frequency on [LAYER] (no rel. frequency) ähnelt.
+        /// </summary>
+        internal static string DescFreq1Raw {
+            get {
+                return ResourceManager.GetString("DescFreq1Raw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die frequency2-raw {LAYER1} {LAYER2} - count token frequency on 2 layers (no rel. frequency) ähnelt.
+        /// </summary>
+        internal static string DescFreq2Raw {
+            get {
+                return ResourceManager.GetString("DescFreq2Raw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die frequency3-raw {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (no rel. frequency) ähnelt.
+        /// </summary>
+        internal static string DescFreq3Raw {
+            get {
+                return ResourceManager.GetString("DescFreq3Raw", resourceCulture);
             }
         }
         
@@ -241,6 +277,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die hash [LAYER] [ALGO] - calculates a hashsum for all documents in [LAYER]. [ALGO] = MD5, SHA1, SHA256, SHA512 ähnelt.
+        /// </summary>
+        internal static string DescHash {
+            get {
+                return ResourceManager.GetString("DescHash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die how-many-sentences - sum of all sentences ähnelt.
         /// </summary>
         internal static string DescHowManySentences {
@@ -264,6 +309,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescHowManyTypes {
             get {
                 return ResourceManager.GetString("DescHowManyTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die idf [META] {LAYER} - inverse document frequency for [META] on {LAYER} (default: WORT) ähnelt.
+        /// </summary>
+        internal static string DescIdf {
+            get {
+                return ResourceManager.GetString("DescIdf", resourceCulture);
             }
         }
         
@@ -457,11 +511,47 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die similarity [META] {LAYER} - [META] similarity based on {LAYER} (default: WORT) ähnelt.
+        /// </summary>
+        internal static string DescSimilarity {
+            get {
+                return ResourceManager.GetString("DescSimilarity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram ähnelt.
         /// </summary>
         internal static string DescStyleNGram {
             get {
                 return ResourceManager.GetString("DescStyleNGram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die tf [META] {LAYER} - term frequency for [META] on {LAYER} (default: WORT) ähnelt.
+        /// </summary>
+        internal static string DescTf {
+            get {
+                return ResourceManager.GetString("DescTf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die tf-idf [META] {LAYER} - term frequency * inverse term frequency for [META] on {LAYER} (default: WORT) ähnelt.
+        /// </summary>
+        internal static string DescTfIdf {
+            get {
+                return ResourceManager.GetString("DescTfIdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die token-list [LAYER] - list of all tokens in [LAYER] ähnelt.
+        /// </summary>
+        internal static string DescTokeList {
+            get {
+                return ResourceManager.GetString("DescTokeList", resourceCulture);
             }
         }
         

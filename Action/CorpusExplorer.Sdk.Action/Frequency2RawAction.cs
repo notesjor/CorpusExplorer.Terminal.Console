@@ -9,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class Frequency2RawAction : IAction
   {
     public string Action => "frequency2-raw";
-    public string Description => "frequency2-raw {LAYER1} {LAYER2} - count token frequency on 2 layers (no rel. frequency)";
+    public string Description => Resources.DescFreq2Raw;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -10,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "cooccurrence-cross";
 
-    public string Description => "cooccurrence-cross [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER].";
+    public string Description => Resources.DescCooccurrencesCross;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

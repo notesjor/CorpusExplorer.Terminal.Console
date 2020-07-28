@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -16,7 +17,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "hash";
 
-    public string Description => "hash [LAYER] [ALGO] - calculates a hashsum for all documents in [LAYER]. [ALGO] = MD5, SHA1, SHA256, SHA512";
+    public string Description => Resources.DescHash;
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var vm = new DocumentHashViewModel {Selection = selection};

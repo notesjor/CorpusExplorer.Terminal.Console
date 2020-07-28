@@ -10,7 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   public class TokenListAction : IAction
   {
     public string Action => "token-list";
-    public string Description => "token-list [LAYER] - list of all tokens in [LAYER]";
+    public string Description => Resources.DescTokeList;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

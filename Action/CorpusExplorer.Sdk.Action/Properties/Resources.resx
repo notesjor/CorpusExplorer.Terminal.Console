@@ -194,6 +194,9 @@
   <data name="DescKwicAllInSentence" xml:space="preserve">
     <value>kwic-sentence [LAYER] [WORDS] - [WORDS] = space separated tokens - a sentence must contains all token</value>
   </data>
+  <data name="DescSimilarity" xml:space="preserve">
+    <value>similarity [META] {LAYER} - [META] similarity based on {LAYER} (default: WORT)</value>
+  </data>
   <data name="DescKwicAny" xml:space="preserve">
     <value>kwic-any [LAYER] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens</value>
   </data>
@@ -325,5 +328,32 @@
   </data>
   <data name="MetaSelectedDomainActionDescriptionAdditional" xml:space="preserve">
     <value> (reduces all URLs &gt; domain name only)</value>
+  </data>
+  <data name="DescCooccurrencesCross" xml:space="preserve">
+    <value>cooccurrence-cross [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER].</value>
+  </data>
+  <data name="DescHash" xml:space="preserve">
+    <value>hash [LAYER] [ALGO] - calculates a hashsum for all documents in [LAYER]. [ALGO] = MD5, SHA1, SHA256, SHA512</value>
+  </data>
+  <data name="DescTf" xml:space="preserve">
+    <value>tf [META] {LAYER} - term frequency for [META] on {LAYER} (default: WORT)</value>
+  </data>
+  <data name="DescFreq1Raw" xml:space="preserve">
+    <value>frequency1-raw {LAYER} - count token frequency on [LAYER] (no rel. frequency)</value>
+  </data>
+  <data name="DescFreq2Raw" xml:space="preserve">
+    <value>frequency2-raw {LAYER1} {LAYER2} - count token frequency on 2 layers (no rel. frequency)</value>
+  </data>
+  <data name="DescFreq3Raw" xml:space="preserve">
+    <value>frequency3-raw {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (no rel. frequency)</value>
+  </data>
+  <data name="DescIdf" xml:space="preserve">
+    <value>idf [META] {LAYER} - inverse document frequency for [META] on {LAYER} (default: WORT)</value>
+  </data>
+  <data name="DescTfIdf" xml:space="preserve">
+    <value>tf-idf [META] {LAYER} - term frequency * inverse term frequency for [META] on {LAYER} (default: WORT)</value>
+  </data>
+  <data name="DescTokeList" xml:space="preserve">
+    <value>token-list [LAYER] - list of all tokens in [LAYER]</value>
   </data>
 </root>
