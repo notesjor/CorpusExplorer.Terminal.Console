@@ -9,7 +9,7 @@ namespace CorpusExplorer.Sdk.Action
   public class MetaSelectedDomainAction : IAction
   {
     public string Action => "meta-select+domain";
-    public string Description => Resources.MetaSelectedActionDescription + Resources.MetaSelectedDomainActionDescriptionAdditional;
+    public string Description => Resources.MetaSelectedDomainActionDescription;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

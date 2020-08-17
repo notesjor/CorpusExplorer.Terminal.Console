@@ -8,7 +8,7 @@ Der CorpusExplorer steht neben der offiziellen GUI (http://www.corpusexplorer.de
 ## Installation Linux/MacOS
 1. Installieren Sie mono (http://www.mono-project.com/download/) - Mindestversion 4.x
 2. Laden und entpacken Sie die folgende Datei: http://www.bitcutstudios.com/products/corpusexplorer/App.zip
-3. Stellen Sie allen Aufrufen ein "mono" voran - z. B. "mono cec.exe import#ImporterCec6#demo.cec6 frequency". Mono führt die cec.exe aus (die sich im entpackten Ordner - siehe 2. - befindet).
+3. Stellen Sie allen Aufrufen ein "mono" voran - z. B. "mono cec.exe import#Cec6#demo.cec6 frequency". Mono führt die cec.exe aus (die sich im entpackten Ordner - siehe 2. - befindet).
 __Einschränkung Linux/MacOS__: Gegenwärtig ist es noch nicht möglich, den Befehl "annotate" auszuführen. Alle anderen Befehle funktionieren einwandfrei (getestet auf Debian 8 - Mono 5.0.1).
 
 ## Grundlegendes
@@ -20,34 +20,55 @@ cec.exe [INPUT] [ACTION]
 ```
 - Bsp. für Konsole/Shell: 
 ```SHELL
-cec.exe import#ImporterCec6#demo.cec6 frequency3 > frequency.tsv
+cec.exe import#Cec6#demo.cec6 frequency3 > frequency.tsv
 ```
-[INPUT] = import#ImporterCec6#demo.cec6  / Lese das Korpus demo.cec6 im CEC6-Format ein.
+[INPUT] = import#Cec6#demo.cec6 / Lese das Korpus demo.cec6 im CEC6-Format ein.
 [ACTION] = frequency3 / Berechne die Frequenz (Standardwerte: POS, Lemma, Wort)
 > = Leite die Ausgabe in die Datei frequency.tsv um.
-- Bsp. für R: 
+
+## Nutzung z. B. in Programmiersprachen
+### Bsp. für R: 
 ```R
-tbl <- read.table(pipe("cec.exe import#ImporterCec6#demo.cec6 frequency3"), sep = "\t", header = TRUE, dec = ".", encoding = "UTF-8", quote = "")
+tbl <- read.table(pipe("cec.exe import#Cec6#demo.cec6 frequency3"), sep = "\t", header = TRUE, dec = ".", encoding = "UTF-8", quote = "")
+```
+### Bsp. für Python: 
+```Python
+import subprocess;
+import csv;
+from io import StringIO;
+from subprocess import PIPE;
+
+cec = subprocess.run("cec.exe import#Cec6#demo.cec6 frequency3", stdout=PIPE).stdout.decode(encoding='UTF-8');
+cec = StringIO(cec);
+tsv = csv.reader(cec, delimiter='\t', quotechar='"');
+for row in tsv:
+	print(";".join(row);
 ```
 
-- Bsp. für Konsole (andere Ausgabeformate): 
+## Andere Ausgabeformate
 ```SHELL
-cec.exe F:TSV import#ImporterCec6#demo.cec6 frequency3 > frequency.tsv
-cec.exe F:CSV import#ImporterCec6#demo.cec6 frequency3 > frequency.csv
-cec.exe F:JSON import#ImporterCec6#demo.cec6 frequency3 > frequency.json
-cec.exe F:XML import#ImporterCec6#demo.cec6 frequency3 > frequency.xml
-cec.exe F:HTML import#ImporterCec6#demo.cec6 frequency3 > frequency.html
-cec.exe F:SQL import#ImporterCec6#demo.cec6 frequency3 > frequency.sql
+cec.exe F:TSV import#Cec6#demo.cec6 frequency3 > frequency.tsv
+cec.exe F:CSV import#Cec6#demo.cec6 frequency3 > frequency.csv
+cec.exe F:JSON import#Cec6#demo.cec6 frequency3 > frequency.json
+cec.exe F:XML import#Cec6#demo.cec6 frequency3 > frequency.xml
+cec.exe F:HTML import#Cec6#demo.cec6 frequency3 > frequency.html
+cec.exe F:SQL import#Cec6#demo.cec6 frequency3 > frequency.sql
 ```
 - Falls Sie keine TID-Spalte benötigen, können Sie anstelle von F: die Option FNT: verwenden. Bsp.:
 ```SHELL
-cec.exe FNT:TSV import#ImporterCec6#demo.cec6 frequency3 > frequency.tsv
+cec.exe FNT:TSV import#Cec6#demo.cec6 frequency3 > frequency.tsv
 ```
-- Bsp. für REST-Aufruf (Maturity Level 2) - Erlaubt es, ein Korpus als REST-Webservice zu hosten
+
+## Korpus als WebService
+Korpora können auch als WebService (REST-basiert) bereitgestellt werden.
 cec.exe [F:FORMAT] PORT:[PORT] [INPUT]
 ```SHELL
-cec.exe F:JSON PORT:3535 import#ImporterCec6#demo.cec6
+cec.exe F:JSON PORT:3535 import#Cec6#demo.cec6
 ```
+Lassen Sie das Konsolenfenster geöffnet und starten Sie ihren WebBrowser. Sie können eine Dokumentation unter http://127.0.0.1:3535 einsehen.
+Mehrere Korpora können gleichzeitig als WebService betrieben werden, dazu muss aber jedem Korpus ein separater Port zugewiesen werden.
+Eine SSL/TLS-Transportverschlüsselung ist NICHT möglich - wenn Sie dies benötigen, dann erstellen Sie einen Reverse-Proxy z. B. mit Apache
+(https://gridscale.io/community/tutorials/apache-server-reverse-proxy-ubuntu/).
 
 ### [INPUT]
 Es können zwei unterschiedliche INPUT-Quellen genutzt werden. "import" für bereits annotiertes Korpusmaterial oder "annotate", um einen Annotationsprozess anzustoßen. 
@@ -60,9 +81,9 @@ cec.exe import#[IMPORTER]#[FILES] [ACTION]
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [IMPORTER] abzufragen.
 Bsp. für CEC6, DTAbf.TCF und Weblicht:
 ```SHELL
-cec.exe import#ImporterCec6#demo.cec6 [ACTION]
-cec.exe import#DtaImporter#C:/DTAbf/doc01.tcf.xml [ACTION]
-cec.exe import#WeblichtImporter#C:/Weblicht/page01.xml|C:/webL.xml [ACTION]
+cec.exe import#Cec6#demo.cec6 [ACTION]
+cec.exe import#Dta#C:/DTAbf/doc01.tcf.xml [ACTION]
+cec.exe import#Weblicht#C:/Weblicht/page01.xml|C:/webL.xml [ACTION]
 ```
 Hinweis: Einige Betriebssysteme (und Betriebssystemversionen) haben Problemen, wenn sich im Pfad Leerzeichen bedfinden. Vermeiden Sie daher soweit möglich Leerzeichen in Pfad und Dateinamen.
 
@@ -74,7 +95,7 @@ cec.exe annotate#[SCRAPER]#[TAGGER]#[LANGUAGE]#[DIRECTORY] [ACTION]
 Tipp: Starten Sie cec.exe ohne Parameter, um die verfügbaren [SCRAPER], [TAGGER] und [LANGUAGE] abzufragen.
 Es wird empfohlen, "annotate" immer in Kombination mit den [ACTION]s "convert" oder "query" zu nutzen. Dadurch wird das fertig annotierte Korpus gespeichert und kann jederzeit mit "import" geladen werden, ohne das Korpus erneut zu annotieren. Bsp.:
 ```SHELL
-cec.exe annotate#TwitterScraper#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec6#"C:/korpus.cec6"
+cec.exe annotate#Twitter#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec6#"C:/korpus.cec6"
 ```
 
 ### [ACTION]
@@ -84,20 +105,34 @@ Für ACTION können folgenden Befehle genutzt werden (Argumente in [] sind verpf
 - cluster-list [QUERY] - Führt die gleiche Analyse durch wie "cluster", doch werden die Cluster als Liste ausgegeben und nicht zur weiteren Auswertung herangezogen.
 - convert [OUTPUT] - Konvertiert Korpusdaten in ein anderes Format - siehe [OUTPUT]
 - cooccurrence [LAYER] {minSIGNI} {minFREQ} - Berechnet zu allen Worten in [LAYER] alle Kookkurrenzen. Erlaubt es optional ein Minimum für die Signifikanz [minSIGNI] und für die Frequenz [minFREQ] anzugeben. Standardwerte: [minSIGNI] = 0.9 / [minFREQ] = 1
+- cooccurrence-cross [LAYER] [WORDS] - Berechne die Kreuz-Kookkurrenzen zu allen [WORDS] in [LAYER].
+- cooccurrence-cross-full [LAYER] [WORDS] - (siehe cooccurrence-cross) - Ausgabe ist mittels Duplex vervollstädigt.
+- cooccurrence-profile [LAYER] [WORD] - Berechne ein Kookkurrenz-Profil.
 - cooccurrence-select [LAYER] [WORDS] - Ermittel die Kookkurrenzen zu einem bestimmten Suchwort/Phrase.
+- corresponding [LAYER1] [LAYER2] - Gebe alle korrespondierenden Layer-Werte aus. 
+- corresponding-metaphone [LAYER1] [LAYER2] - (siehe corresponding) Layer-Werte werden mittels Metaphone3 (nur für Deutsch) berechnet.
 - cross-frequency {LAYER} - Berechnet zu allen Worten in [LAYER] die Kreuzfrequenz (Standardlayer = Wort).
+- disambiguation [LAYER] [WORD] - Disabiguierung des [WORD] auf [LAYER]
+- editdist [LAYER] - Berechnet die Edit-Distanz für alle Dokumente im [LAYER]
 - frequency1 {LAYER} - Berechnet die Frequenzen für [LAYER] (Standardlayer = Wort).
+- frequency1-raw {LAYER} - (siehe frequency1) - keine relative Frequenzen
 - frequency1-select [LAYER1] [WORDS] - Berechnet die Frequenzen für [LAYER]. Dabei werden nur die gegebenen [WORDS] gezählt (Leerzeichen getrennt). Anstelle von [WORDS] kann auch FILE:[FILE], also eine Datei mit einer Wortliste (pro Zeile ein Wort), angegeben werden - ODER - SDM:[FILE], also eine Datei mit einem SDM-Datei (Sentiment-Detection-Model).
 - frequency2 {LAYER1} {LAYER2} - Berechnet die Frequenzen über zwei Layer [LAYER1] [LAYER2] (Standardlayer = POS / Wort)
+- frequency2-raw {LAYER1} {LAYER2} - (siehe frequency2) - keine relative Frequenzen
 - frequency3 {LAYER1} {LAYER2} {LAYER3} - Berechnet die Frequenzen über drei Layer [LAYER1] [LAYER2] [LAYER3]  (Standardlayer = POS / Lemma / Wort)
+- frequency3 {LAYER1} {LAYER2} {LAYER3} - (siehe frequency3) - keine relative Frequenzen
 - get-document [GUID] {LAYER} - Gibt alle Layer-Daten für das gewünschte Dokumente (GUID) zurück (Standardlayer = Wort).
 - get-document-displaynames - Gibt alle Dokumente als GUID/Dokumentname zurück.
 - get-document-metadata [GUID] - Gibt alle Metadaten eines Dokuments (GUID) zurück.
 - get-types [LAYER] - Auflistung aller Types (ohne Frequenz) im [LAYER]
+- hash [LAYER] [ALGO] - Berechnet den Hashwert für alle Dokumente in [LAYER]. Als [ALGO] können: MD5, SHA1, SHA256 und SHA512 angegeben werden.
+- hash-roll [LAYER] - Berechnet einen Rolling-Hashwert.
 - how-many-documents - Anzahl der Dokumente
 - how-many-sentences - Anzahl der Sätze
 - how-many-tokens - Anzahl der Token
 - how-many-types [LAYER] - Anzahl der Types in [LAYER]
+- idf [META] {LAYER} - Berechnet die IDF (inverse Dokumenten Frequenz).
+- keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - Berechnet Keywords für [LAYER]. Referenz-Datei [TSV_RefFile] nötig (nutze frequency1). [COL_Token] und [COL_RelFreq] sind die Spalten in der Datei.
 - kwic-any [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER]
 - kwic-document [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Dokument vorkommen
 - kwic-first-any [LAYER] [WORD] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Das [WORD] muss in einem Dokument vorkommen plus ein beliebiges [WORDS]
@@ -106,19 +141,26 @@ Für ACTION können folgenden Befehle genutzt werden (Argumente in [] sind verpf
 - kwic-sig [LAYER] [WORDS] - KWIC-Analyse die wie kwic-phrase funktioniert aber zusätzliche Signifikanzdaten bietet.
 - kwit [LAYER] [WORDS] - [WORDS] = Spezielle KWIC-Analyse, die die Daten als GraphViz-DiGraph aufbereitet. Siehe: kwic-phrase
 - layer-names - Auflistung aller verfügbaren Layer
+- lda-doc-cluster [CONFIG] - Berechnet Dokument-Cluster mittels LDA.
+- lda-topics [CONFIG] - Gibt die LDA-Topics aus.
 - meta - Auflistung aller Metadaten + Token/Type/Dokument-Frequenz
 - meta-by-document - Auflistung aller Dokumente mit zugehörigen Metadaten
 - meta-categories - Auflistung aller verfügbaren Meta-Kategorien
+- metaphone [LAYER] - Ausgabe alle [LAYER] Werte als Metaphone3 (nur für Deutsch).
 - mtld [LAYER] [META] - Berechnet MTLD für den [LAYER] automatische Clusterung basierend auf [META]
 - ner [NERFILE] - Führt eine Named-Entity-Recognition mithilfe das zuvor ermittelten Wörterbuchs durch.
-- n-gram [N] {LAYER} {minFREQ} - Berechnet [N]-Gramme für [LAYER] (Standardlayer = Wort). Optional: {minFREQ} = Mindestfrequenz / Standardwert: 1
-- n-gram-selected [N] [LAYER] [minFREQ] [WORDS] - Gibt alle [N]-Gramme für [LAYER] mit einer Mindestfrequenz [minFREQ] aus, die [WORDS] enthalten.
+- ngram [N] {LAYER} {minFREQ} - Berechnet [N]-Gramme für [LAYER] (Standardlayer = Wort). Optional: {minFREQ} = Mindestfrequenz / Standardwert: 1
+- ngram-select [N] [LAYER] [minFREQ] [WORDS] - Gibt alle [N]-Gramme für [LAYER] mit einer Mindestfrequenz [minFREQ] aus, die [WORDS] enthalten.
 - position-frequency [LAYER] [WORD] - Gibt die Links-/Rechtsfrequenz zu [WORD] in [LAYER] aus.
 - query [QUERY] - Führt eine Abfrage auf der aktuell geladenen Korpusmenge durch. Siehe [OUTPUT]
 - query-list [QUERY] [NAME] - Funktioniert wie query, nur dass das Ergebnis eine Liste mit den Ergebnissen ist und nicht ein Subkorpus.
 - reading-ease [LAYER] - Berechnet verschiedene Lesbarkeitsindices für [LAYER]
+- similarity [META] {LAYER} - Berechnet die Ähnlichkeit für [META] der Dokumente in [LAYER].
 - style-burrowsd [META1] [META2] - Stilanalyse mittels Burrows-Delta. Vergleicht zwei Metaangaben miteinander
 - style-ngram [LAYER] [META] [N] [minFREQ] - Stilanalyse mittels N-Grammen. Siehe: n-gram
+- tf [META] {LAYER} - Termfrequenz für [META] auf [LAYER]
+- tf-idf [META] {LAYER} - TF-IDF für [META] auf [LAYER]
+- token-list [LAYER] - Auflistung aller Token in [LAYER]
 - vocabulary-complexity [LAYER] - Berechnet verschiedene Vokabularkomplexitäten für [LAYER]
 - vocd [LAYER] [META] - Berechnet VOCD für [LAYER] automatische Clusterung basierend auf [META]
 
@@ -165,7 +207,7 @@ Typ, Operator und Abfrageziel werden ohne trennende Leerzeichen geschrieben. Die
 
 Beispiele:
 ```SHELL
-cec.exe import#ImporterCec6#C:/input.cec6 query !T~Wort:>aber;kein ExporterCec6#C:/output.cec6
+cec.exe import#Cec6#C:/input.cec6 query !T~Wort:>aber;kein ExporterCec6#C:/output.cec6
 ```
 Was bedeutet diese Abfrage? negiere (__!__) die Text-Abfrage (__T__) welche einen beliebigen Wert (__~__) aus der Liste (alles nach __:>__ - Trennung mittels ;) sucht. Gefunden werden also alle Dokumente, die weder __aber__ noch __kein__ enthalten.
 
@@ -189,5 +231,5 @@ Findet alle Dokumente, die im Volltext (__T__) (__Wort__-Layer) die Phrase (__§
 #### [ACTION] convert
 Erlaubt es, ein bestehendes Korpus in ein anderes Korpusformat zu konvertieren.
 ```SHELL
-cec.exe import#ImporterCec6#"C:/korpus.cec6" convert ExporterCec6#corpusOut.cec6
+cec.exe import#Cec6#"C:/korpus.cec6" convert ExporterCec6#corpusOut.cec6
 ```

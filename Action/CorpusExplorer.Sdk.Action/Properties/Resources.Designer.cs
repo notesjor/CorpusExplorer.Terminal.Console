@@ -664,11 +664,11 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  (reduces all URLs &gt; domain name only) ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-select+domain [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n] (reduces all URLs &gt; domain name only) ähnelt.
         /// </summary>
-        internal static string MetaSelectedDomainActionDescriptionAdditional {
+        internal static string MetaSelectedDomainActionDescription {
             get {
-                return ResourceManager.GetString("MetaSelectedDomainActionDescriptionAdditional", resourceCulture);
+                return ResourceManager.GetString("MetaSelectedDomainActionDescription", resourceCulture);
             }
         }
         
