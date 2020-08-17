@@ -88,7 +88,7 @@
     <Compile Include="KwicFirstAnyFilterAction.cs" />
     <Compile Include="KwicNamedEntityAction.cs" />
     <Compile Include="KwicSignificantFilterAction.cs" />
-    <Compile Include="KwitFilterAction.cs" />
+    <Compile Include="KwitAction.cs" />
     <Compile Include="LayerNamesAction.cs" />
     <Compile Include="LayerValuesAction.cs" />
     <Compile Include="MetaAction.cs" />

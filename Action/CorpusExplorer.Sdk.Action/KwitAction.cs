@@ -11,7 +11,7 @@ using CorpusExplorer.Sdk.ViewModel;
 
 namespace CorpusExplorer.Sdk.Action
 {
-  public class KwitFilterAction : IAction
+  public class KwitAction : IAction
   {
     public string Action => "kwit";
 
@@ -19,16 +19,18 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      if (args == null || args.Length < 2)
+      if (args == null || args.Length < 3)
         return;
 
       var queries = new List<string>(args);
+      queries.RemoveAt(0);
       queries.RemoveAt(0);
 
       var vm = new TextFlowSearchViewModel
       {
         Selection = selection,
-        LayerDisplayname = args[0],
+        Layer1Displayname = args[0],
+        Layer2Displayname = args[1],
         LayerQueryPhrase = queries,
         AutoJoin = true,
         HighlightCooccurrences = false

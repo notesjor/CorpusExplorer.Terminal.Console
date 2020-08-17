@@ -385,7 +385,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwit [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwit [LAYER1] [LAYER2] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
         /// </summary>
         internal static string DescKwit {
             get {
