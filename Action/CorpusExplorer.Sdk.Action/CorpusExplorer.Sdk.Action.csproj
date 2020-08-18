@@ -63,6 +63,7 @@
     <Compile Include="Frequency3RawAction.cs" />
     <Compile Include="InverseDocumentFrequencyAction.cs" />
     <Compile Include="KeywordAction.cs" />
+    <Compile Include="KwitSelectAction.cs" />
     <Compile Include="Metaphone3ValuesAction.cs" />
     <Compile Include="MetaSelectedAction.cs" />
     <Compile Include="MetaSelectedDomainAction.cs" />
