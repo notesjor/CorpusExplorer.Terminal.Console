@@ -34,15 +34,21 @@ tbl <- read.table(pipe("cec.exe import#Cec6#demo.cec6 frequency3"), sep = "\t", 
 ### Bsp. für Python: 
 ```Python
 import subprocess;
-import csv;
-from io import StringIO;
 from subprocess import PIPE;
+from io import StringIO;
 
 cec = subprocess.run("cec.exe import#Cec6#demo.cec6 frequency3", stdout=PIPE).stdout.decode(encoding='UTF-8');
 cec = StringIO(cec);
+
+# Einlesen mittels csv-Reader
+import csv;
 tsv = csv.reader(cec, delimiter='\t', quotechar='"');
 for row in tsv:
 	print(";".join(row);
+	
+# Einlesen als pandas / dataframe
+import pandas as pd
+df = pd.read_csv(cec, sep="\t")
 ```
 
 ## Andere Ausgabeformate
