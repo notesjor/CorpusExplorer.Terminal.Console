@@ -52,6 +52,9 @@ df = pd.read_csv(cec, sep="\t")
 ```
 
 ## Andere Ausgabeformate
+Die Ausgabe erfolgt im Fall einer normalen Analyse (ausgenommen 'convert' und 'query') direkt auf dem STDOUT-Stream.
+Sie können dieses Stream mittels '>' umleiten. Beispiel:
+
 ```SHELL
 cec.exe F:TSV import#Cec6#demo.cec6 frequency3 > frequency.tsv
 cec.exe F:CSV import#Cec6#demo.cec6 frequency3 > frequency.csv
@@ -60,9 +63,21 @@ cec.exe F:XML import#Cec6#demo.cec6 frequency3 > frequency.xml
 cec.exe F:HTML import#Cec6#demo.cec6 frequency3 > frequency.html
 cec.exe F:SQL import#Cec6#demo.cec6 frequency3 > frequency.sql
 ```
-- Falls Sie keine TID-Spalte benötigen, können Sie anstelle von F: die Option FNT: verwenden. Bsp.:
+
+Falls Sie keine TID-Spalte benötigen, können Sie anstelle von F: die Option FNT: verwenden. Bsp.:
 ```SHELL
 cec.exe FNT:TSV import#Cec6#demo.cec6 frequency3 > frequency.tsv
+```
+
+Vorteile von STDTOUT: 
+- Dieser Stream ist in allen Betriebssystemen verfügbar (Windows, Linux, MacOS). 
+- Ergebnisse können (1) direkte in der Konsole (2) in einer Datei (3) an ein aderes Programm weitergeleitet werden.
+- Sie können den Stream nicht nur in eine Datei umleiten, sondern auch direkt an andere Programme übergeben.
+
+Nachteile von STDOUT:
+- Dieser Stream ist langsam. Wenn Sie die Ausgabe nur in eine Datei benötigen, dann nutzen Sie die optimierte Version (F: oder FNT: und Dateiname):
+```SHELL
+cec.exe FNT:TSV#frequency.tsv import#Cec6#demo.cec6 frequency3
 ```
 
 ## Korpus als WebService
@@ -208,29 +223,52 @@ Primäre Typen und deren Operatoren (geordnet nach Priorität):
 	- \- = Alle Werte aus der Liste müssen im Dokument vorkommen.
 	- = = Alle Werte aus der Liste müssen in einem Satz vorkommen.
 	- § = Alle Werte aus der Liste müssen exakt in der Listenreihenfolge vorkommen.
+- X = Erweiterte Optionen
+	- R = Zufälle Auswahl (Bsp.: XR::100 - Wählt 100 Dokumente zufällig aus).
+	- S = Autosplit auf Basis einer Metaanagabe - Syntax:
+		- Direkt nach XS muss der Namen der Meta-Angabe erfolgen. Bsp.: XSAutor
+		- Gefolgt vom Trennoperator ::
+		- Nach dem Trennoperator muss angegben werden, wie die Meta-Angabe zu interpretieren ist. Zulässig sind folgende Werte: TEXT, INT, FLOAT oder DATE. Für diese Werte gelten folgende Regeln:
+			- TEXT = Jeder unterschiedliche Wert wird als separat betrachtet.
+			- INT und FLOAT = Geben Sie an, wieviele Cluster Sie benötigen. z. B. 10 -> INT;10
+			- DATE = Für DATE stehen mehrere Optionen zur Verfügung:
+				- DATE;C;10 = Datumscluster (siehe oben - INT und FLOAT).
+				- DATE;CEN = Cluster nach Jahrhunderten (23.12.1985 > 19)
+				- DATE;DEC = Cluster nach Jahrzehnten (23.12.1985 > 198)
+				- DATE;Y = Cluster nach Jahren
+				- DATE;YM = Cluster nach Jahr/Monat
+				- DATE;YMD = Cluster nach Jahr/Monat/TAG
+				- DATE;YMDH = Cluster nach Jahr/Monat/TAG/Stunde
+				- DATE;YMDHM = Cluster nach Jahr/Monat/TAG/Stunde/Minute
+				- DATE;ALL = Cluster nach exakter Zeitangabe (Millisekunde)
+		- Beispiele:
+			- XSAutor::TEXT - Cluster für unterschiedliche Autorennamen
+			- XSJahr::INT;10 - Zehn Cluster mittels Jahreszahl-Angabe
+			- XSDatum::DATE;C;10 - Zehn Cluster mittels Datums-Angabe
+			- XSDatum::DATE;YM - Cluster für Monate mittels Datums-Angabe
 
-Typ, Operator und Abfrageziel werden ohne trennende Leerzeichen geschrieben. Dieser Erste Teil ist durch :> vom Wert-Teil getrennt.
+Typ, Operator und Abfrageziel werden ohne trennende Leerzeichen geschrieben. Dieser Erste Teil ist durch :: vom Wert-Teil getrennt.
 
 Beispiele:
 ```SHELL
-cec.exe import#Cec6#C:/input.cec6 query !T~Wort:>aber;kein ExporterCec6#C:/output.cec6
+cec.exe import#Cec6#C:/input.cec6 query !T~Wort::aber;kein ExporterCec6#C:/output.cec6
 ```
-Was bedeutet diese Abfrage? negiere (__!__) die Text-Abfrage (__T__) welche einen beliebigen Wert (__~__) aus der Liste (alles nach __:>__ - Trennung mittels ;) sucht. Gefunden werden also alle Dokumente, die weder __aber__ noch __kein__ enthalten.
+Was bedeutet diese Abfrage? negiere (__!__) die Text-Abfrage (__T__) welche einen beliebigen Wert (__~__) aus der Liste (alles nach __::__ - Trennung mittels ;) sucht. Gefunden werden also alle Dokumente, die weder __aber__ noch __kein__ enthalten.
 
 Um die folgenden Beispiele möglichst kurz zu halten, wurde die sonst übliche Dokumentation des Konsolenaufrufs eingekürzt. Wiedergeben wird hier nur die Abfragesyntax.
 
 ```SHELL
-(!M-Verlag:>Spiegel | !T~Wort:>Diktator)
+(!M-Verlag::Spiegel | !T~Wort::Diktator)
 ```
 Gruppen-Abfrage: Gefunden werden alle Dokumente die entweder nicht (__!__) in der Meta-Angabe (__M__) __Spiegel__ enthalten (__-__) ODER nicht (__!__) das __Wort__ __Diktator__ enthalten (__~__).
 
 ```SHELL
-M!Verlag:>
+M!Verlag::
 ```
 Leere-Metadaten: Gibt alle Dokumente zurück, für die keine Meta-Daten zu __Verlag__ hinterlegt sind.
 
 ```SHELL
-T§Wort:>den;Tag;nicht;vor;dem;Abend;loben
+T§Wort::den;Tag;nicht;vor;dem;Abend;loben
 ```
 Findet alle Dokumente, die im Volltext (__T__) (__Wort__-Layer) die Phrase (__§__) "den Tag nicht vor dem Abend loben" enthalten.
 
