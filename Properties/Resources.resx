@@ -269,21 +269,17 @@ All actionss above can be stored in a file to build up a automatic process.
 In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout
 Example: import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv</value>
   </data>
-  <data name="HelpFormat" xml:space="preserve">
+  <data name="HelpFormatHeader" xml:space="preserve">
     <value>
 
 &lt;: --- [F:FORMAT] --- :&gt;
 
 If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.
 You need to set one of the following tags as first parameter:
-F:TSV - (standard output format) tab separated values
-F:CSV - ';' separated values
-F:JSON - JSON-array
-F:XML - XML-Document
-F:HTML - HTML5-Document
-F:SQL - SQL-statement
-F:SQLSCHEMA - SQL-statement (schema only)
-F:SQLDATA - SQL-statement (insert data only - no schema)
+</value>
+  </data>
+  <data name="HelpFormatFooter" xml:space="preserve">
+    <value>
 Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
 Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)
 Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 > C:\out.csv)

@@ -195,24 +195,31 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die 
+        ///Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
+        ///Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)
+        ///Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 &gt; C:\out.csv)
+        ///Use the optimized direct way, by adding the output-path to the [F:FORMAT]-option
+        ///Example: cec.exe F:CSV#C:\out.tsv import#Cec6#C:\mycorpus.cec6 frequency1
+        /// ähnelt.
+        /// </summary>
+        public static string HelpFormatFooter {
+            get {
+                return ResourceManager.GetString("HelpFormatFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 
         ///
         ///&lt;: --- [F:FORMAT] --- :&gt;
         ///
         ///If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.
         ///You need to set one of the following tags as first parameter:
-        ///F:TSV - (standard output format) tab separated values
-        ///F:CSV - &apos;;&apos; separated values
-        ///F:JSON - JSON-array
-        ///F:XML - XML-Document
-        ///F:HTML - HTML5-Document
-        ///F:SQL - SQL-statement
-        ///F:SQLSCHEMA - SQL-statement (schema only)
-        ///F:SQLDATA - SQL-statement (insert data only - no schema)
-        ///Example: cec.exe F:JSON import#Cec6#C:\mycorp [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// ähnelt.
         /// </summary>
-        public static string HelpFormat {
+        public static string HelpFormatHeader {
             get {
-                return ResourceManager.GetString("HelpFormat", resourceCulture);
+                return ResourceManager.GetString("HelpFormatHeader", resourceCulture);
             }
         }
         

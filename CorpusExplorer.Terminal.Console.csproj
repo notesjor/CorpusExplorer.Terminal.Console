@@ -115,6 +115,14 @@
       <Project>{029fe5a6-9504-499a-9e0d-05754d44cbb1}</Project>
       <Name>CorpusExplorer.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Db.LinqConnect.Core\CorpusExplorer.Sdk.Db.LinqConnect.Core.csproj">
+      <Project>{4e82ac86-a176-4141-9614-249a26e0fefc}</Project>
+      <Name>CorpusExplorer.Sdk.Db.LinqConnect.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Db.SQLite\CorpusExplorer.Sdk.Db.SQLite.csproj">
+      <Project>{1958f4cd-e4fb-4572-b126-71161653be8b}</Project>
+      <Name>CorpusExplorer.Sdk.Db.SQLite</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
       <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>
       <Name>CorpusExplorer.Sdk</Name>

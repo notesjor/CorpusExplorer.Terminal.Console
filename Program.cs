@@ -273,7 +273,10 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine(Resources.HelpActionExample);
       
       System.Console.WriteLine(Resources.HelpScripting);
-      System.Console.WriteLine(Resources.HelpFormat);
+      System.Console.WriteLine(Resources.HelpFormatHeader);
+      foreach (var x in Configuration.AddonTableWriter.OrderBy(x => x.Value.WriteTid))
+        System.Console.WriteLine($"{x.Value.TableWriterTag} - {x.Value.Description}");
+      System.Console.WriteLine(Resources.HelpFormatFooter);
     }
 
     private static bool ProcessXmlScript(string path)
