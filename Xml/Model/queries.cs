@@ -17,8 +17,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   {
     private object[] itemsField;
 
-    private string processingField;
-
     /// <remarks />
     [XmlElement("query", typeof(query))]
     [XmlElement("queryBuilder", typeof(queryBuilder))]
@@ -27,14 +25,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
     {
       get => itemsField;
       set => itemsField = value;
-    }
-
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
-    public string processing
-    {
-      get => processingField;
-      set => processingField = value;
     }
   }
 }
