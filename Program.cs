@@ -102,6 +102,8 @@ namespace CorpusExplorer.Terminal.Console
 
       if (args[0].StartsWith("DEBUG:"))
       {
+        System.Console.WriteLine("CEC DEBUG-WAIT [PRESS -ENTER- TO CONTINUE]");
+        System.Console.ReadLine();
         DebugSkript(args);
         return;
       }
