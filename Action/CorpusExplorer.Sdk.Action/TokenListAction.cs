@@ -18,7 +18,7 @@ namespace CorpusExplorer.Sdk.Action
       dt.Columns.Add(Resources.Tokens, typeof(string));
 
       dt.BeginLoadData();
-      foreach (var v in selection?.GetLayers(args[0])?.FirstOrDefault()?.Values)
+      foreach (var v in selection.GetLayers(args[0]).FirstOrDefault().Values)
         dt.Rows.Add(v);
       dt.EndLoadData();
 

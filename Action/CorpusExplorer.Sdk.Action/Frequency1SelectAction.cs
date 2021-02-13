@@ -33,12 +33,21 @@ namespace CorpusExplorer.Sdk.Action
 
       var div = vm.Frequency.Select(x => x.Value).Sum() / 1000000d;
 
-      if (hsh.Count == 1 && hsh.ToArray()[0].StartsWith("FILE:"))
-        ExecuteFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("FILE:", ""));
-      else if (hsh.Count == 1 && hsh.ToArray()[0].StartsWith("SDM:"))
-        ExecuteSdmFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
-      else if (hsh.Count >= 1)
-        ExecuteSimpleQuery(selection.Displayname, writer, vm, div, hsh);
+      switch (hsh.Count)
+      {
+        case 1 when hsh.ToArray()[0].StartsWith("FILE:"):
+          ExecuteFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("FILE:", ""));
+          break;
+        case 1 when hsh.ToArray()[0].StartsWith("SDM:"):
+          ExecuteSdmFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
+          break;
+        default:
+        {
+          if (hsh.Count >= 1)
+            ExecuteSimpleQuery(selection.Displayname, writer, vm, div, hsh);
+          break;
+        }
+      }
     }
 
     private void ExecuteFileQuery(string tid, AbstractTableWriter writer, Frequency1LayerViewModel vm, double div,
@@ -149,9 +158,8 @@ namespace CorpusExplorer.Sdk.Action
 
       res.BeginLoadData();
 
-      foreach (var f in vm.Frequency)
-        if (hsh.Contains(f.Key))
-          res.Rows.Add(f.Key, f.Value, f.Value / div);
+      foreach (var f in vm.Frequency.Where(f => hsh.Contains(f.Key)))
+        res.Rows.Add(f.Key, f.Value, f.Value / div);
 
       res.EndLoadData();
 

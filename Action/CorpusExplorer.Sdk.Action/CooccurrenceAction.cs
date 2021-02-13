@@ -1,4 +1,3 @@
-using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
@@ -15,7 +14,7 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new CooccurrenceViewModel {Selection = selection};
+      var vm = new CooccurrenceViewModel { Selection = selection };
       if (args.Length >= 1)
         vm.LayerDisplayname = args[0];
       if (args.Length >= 2)

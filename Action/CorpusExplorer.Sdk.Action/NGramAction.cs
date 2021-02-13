@@ -13,7 +13,7 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new NgramViewModel {Selection = selection};
+      var vm = new NgramViewModel { Selection = selection };
       if (args.Length == 0)
         vm.NGramSize = 5;
       if (args.Length >= 1)

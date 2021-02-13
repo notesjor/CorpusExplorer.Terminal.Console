@@ -13,7 +13,7 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new FrequencyCrossViewModel {Selection = selection};
+      var vm = new FrequencyCrossViewModel { Selection = selection };
       if (args != null && args.Length == 1)
         vm.LayerDisplayname = args[0];
       vm.Execute();

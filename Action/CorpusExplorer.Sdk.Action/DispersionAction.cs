@@ -11,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
     public string Description => "dispersion [LAYER] [META] - calculates dispersions values of all [LAYER] values based on [META]";
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new DispersionViewModel();
+      var vm = new DispersionViewModel { Selection = selection };
       if (args.Length > 0)
         vm.LayerDisplayname = args[0];
       if (args.Length > 1)

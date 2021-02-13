@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Helper;
@@ -40,9 +41,8 @@ namespace CorpusExplorer.Sdk.Action
       dt.Columns.Add(Resources.Content, typeof(string));
 
       dt.BeginLoadData();
-      foreach (var pair in layers)
-        if (filter.Contains(pair.Key))
-          dt.Rows.Add(pair.Key, pair.Value.ReduceDocumentToText());
+      foreach (var pair in layers.Where(pair => filter.Contains(pair.Key)))
+        dt.Rows.Add(pair.Key, pair.Value.ReduceDocumentToText());
 
       dt.EndLoadData();
 

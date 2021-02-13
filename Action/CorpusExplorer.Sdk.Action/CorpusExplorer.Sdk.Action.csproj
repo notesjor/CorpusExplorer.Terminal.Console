@@ -51,11 +51,14 @@
     <Compile Include="BasicInformationAction.cs" />
     <Compile Include="ClusterAction.cs" />
     <Compile Include="ClusterListAction.cs" />
+    <Compile Include="CooccurrenceCorrespondingAction.cs" />
     <Compile Include="CooccurrenceCrossAction.cs" />
     <Compile Include="CooccurrenceCrossFullAction.cs" />
     <Compile Include="CorrespondingValuesAction.cs" />
+    <Compile Include="CrossFrequencyCorrespondingAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />
     <Compile Include="DispersionAction.cs" />
+    <Compile Include="DispersionCorrespondingAction.cs" />
     <Compile Include="DocumentHashAction.cs" />
     <Compile Include="DocumentSimilarityAction.cs" />
     <Compile Include="EditDistanceAction.cs" />
@@ -64,10 +67,12 @@
     <Compile Include="Frequency3RawAction.cs" />
     <Compile Include="InverseDocumentFrequencyAction.cs" />
     <Compile Include="KeywordAction.cs" />
+    <Compile Include="KeywordCorrespondingAction.cs" />
     <Compile Include="KwitSelectAction.cs" />
     <Compile Include="Metaphone3ValuesAction.cs" />
     <Compile Include="MetaSelectedAction.cs" />
     <Compile Include="MetaSelectedDomainAction.cs" />
+    <Compile Include="NGramCorrespondingAction.cs" />
     <Compile Include="PositionFrequencyAction.cs" />
     <Compile Include="ConvertAction.cs" />
     <Compile Include="CooccurrenceAction.cs" />
@@ -100,6 +105,7 @@
     <Compile Include="NamedEntityAction.cs" />
     <Compile Include="NGramAction.cs" />
     <Compile Include="NgramSelectedAction.cs" />
+    <Compile Include="PositionFrequencyCorrespondingAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

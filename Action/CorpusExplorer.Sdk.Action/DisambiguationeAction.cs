@@ -17,10 +17,13 @@ namespace CorpusExplorer.Sdk.Action
       if (args == null || args.Length != 2)
         return;
 
-      var vm = new DisambiguationViewModel { Selection = selection };
-      vm.LayerDisplayname = args[0];
-      vm.LayerQuery = args[1];
-      vm.MinimumSignificance = 1;
+      var vm = new DisambiguationViewModel
+      {
+        Selection = selection,
+        LayerDisplayname = args[0], 
+        LayerQuery = args[1], 
+        MinimumSignificance = 1
+      };
       vm.Execute();
 
       writer.WriteTable(selection.Displayname, vm.GetFullDataTable());

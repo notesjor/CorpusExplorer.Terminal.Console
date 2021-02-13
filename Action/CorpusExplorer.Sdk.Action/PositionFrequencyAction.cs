@@ -20,7 +20,8 @@ namespace CorpusExplorer.Sdk.Action
       var vm = new PositionFrequencyViewModel
       {
         Selection = selection,
-        LayerDisplayname = args[0]
+        LayerDisplayname = args[0],
+        LayerQueries = new[] { args[1] }
       };
       vm.Execute();
 

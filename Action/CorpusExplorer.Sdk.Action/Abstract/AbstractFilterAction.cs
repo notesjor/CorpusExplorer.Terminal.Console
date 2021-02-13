@@ -20,7 +20,7 @@ namespace CorpusExplorer.Sdk.Action.Abstract
       var queries = new List<string>(args);
       queries.RemoveAt(0);
 
-      var vm = new TextLiveSearchViewModel {Selection = selection};
+      var vm = new TextLiveSearchViewModel { Selection = selection };
       vm.AddQuery(GetQuery(args[0], queries));
       vm.Execute();
 
