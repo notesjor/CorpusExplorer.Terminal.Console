@@ -502,15 +502,6 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die reading-ease {LAYER} - reading ease of {LAYER} (default: Wort) ähnelt.
-        /// </summary>
-        internal static string DescReadingEase {
-            get {
-                return ResourceManager.GetString("DescReadingEase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die similarity [META] {LAYER} - [META] similarity based on {LAYER} (default: WORT) ähnelt.
         /// </summary>
         internal static string DescSimilarity {

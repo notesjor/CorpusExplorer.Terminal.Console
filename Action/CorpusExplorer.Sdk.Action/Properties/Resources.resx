@@ -306,9 +306,6 @@
   <data name="DescQueryList" xml:space="preserve">
     <value>query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.</value>
   </data>
-  <data name="DescReadingEase" xml:space="preserve">
-    <value>reading-ease {LAYER} - reading ease of {LAYER} (default: Wort)</value>
-  </data>
   <data name="DescHowManySentences" xml:space="preserve">
     <value>how-many-sentences - sum of all sentences</value>
   </data>

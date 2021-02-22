@@ -114,7 +114,6 @@
     </Compile>
     <Compile Include="QueryAction.cs" />
     <Compile Include="QueryListAction.cs" />
-    <Compile Include="ReadingEaseAction.cs" />
     <Compile Include="SentenceCountAction.cs" />
     <Compile Include="StyleBurrowsDeltaAction.cs" />
     <Compile Include="StyleNgramAction.cs" />
