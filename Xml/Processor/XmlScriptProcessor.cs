@@ -100,8 +100,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 foreach (var item in i.Items)
                   switch (item)
                   {
-                    case file f:
-                      using (var project = ReadSources(new[] { f }))
+                    case file _:
+                      using (var project = ReadSources(new[] { i }))
                         ExecuteSession(session, scriptFilename, project);
                       break;
                     case directory d:
