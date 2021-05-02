@@ -106,7 +106,7 @@
     <Compile Include="Xml\Model\sources.cs" />
     <Compile Include="Xml\Model\template.cs" />
     <Compile Include="Xml\Model\templates.cs" />
-    <Compile Include="Xml\Model\var.cs" />
+    <Compile Include="Xml\Model\variable.cs" />
     <Compile Include="Xml\Processor\XmlScriptProcessor.cs" />
   </ItemGroup>
   <ItemGroup>

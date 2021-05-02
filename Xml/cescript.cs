@@ -148,7 +148,7 @@ public partial class session {
     
     private object[] queriesField;
     
-    private templates templatesField;
+    private template[] templatesField;
     
     private actions actionsField;
     
@@ -180,7 +180,8 @@ public partial class session {
     }
     
     /// <remarks/>
-    public templates templates {
+    [System.Xml.Serialization.XmlArrayItemAttribute("template", IsNullable=false)]
+    public template[] templates {
         get {
             return this.templatesField;
         }
@@ -663,42 +664,20 @@ public partial class queryGroup {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class templates {
-    
-    private template templateField;
-    
-    /// <remarks/>
-    public template template {
-        get {
-            return this.templateField;
-        }
-        set {
-            this.templateField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class template {
     
-    private var[] varField;
+    private variable[] variableField;
     
     private string srcField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("var")]
-    public var[] var {
+    [System.Xml.Serialization.XmlElementAttribute("variable")]
+    public variable[] variable {
         get {
-            return this.varField;
+            return this.variableField;
         }
         set {
-            this.varField = value;
+            this.variableField = value;
         }
     }
     
@@ -721,7 +700,7 @@ public partial class template {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class var {
+public partial class variable {
     
     private string keyField;
     
@@ -940,6 +919,29 @@ public partial class queries {
         }
         set {
             this.itemsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class templates {
+    
+    private template[] templateField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("template")]
+    public template[] template {
+        get {
+            return this.templateField;
+        }
+        set {
+            this.templateField = value;
         }
     }
 }

@@ -51,9 +51,14 @@
 		
 		<templates>
 			<template src="C:/template.xml">
-				<var key="key" value="val"/>
-				<var key="abc" value="123"/>
-				<var key="nanana" value="xyz"/>
+				<variable key="key" value="val"/>
+				<variable key="abc" value="123"/>
+				<variable key="nanana" value="xyz"/>
+			</template>
+			<template src="C:/template.xml">
+				<variable key="key" value="val"/>
+				<variable key="abc" value="123"/>
+				<variable key="nanana" value="xyz"/>
 			</template>
 		</templates>
 		

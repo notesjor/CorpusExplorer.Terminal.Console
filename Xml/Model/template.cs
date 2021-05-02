@@ -10,16 +10,16 @@
   public partial class template
   {
 
-    private var[] varField;
+    private variable[] variableField;
 
     private string srcField;
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("var")]
-    public var[] var
+    [System.Xml.Serialization.XmlElementAttribute("variable")]
+    public variable[] variable
     {
-      get { return this.varField; }
-      set { this.varField = value; }
+      get { return this.variableField; }
+      set { this.variableField = value; }
     }
 
     /// <remarks/>

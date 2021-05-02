@@ -14,7 +14,7 @@
 
     private queries queriesField;
 
-    private templates templatesField;
+    private template[] templatesField;
 
     private actions actionsField;
 
@@ -30,7 +30,6 @@
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("queries", typeof(queries), IsNullable = false)]
     public queries queries
     {
       get { return this.queriesField; }
@@ -38,7 +37,8 @@
     }
 
     /// <remarks/>
-    public templates templates
+    [System.Xml.Serialization.XmlArrayItemAttribute("template", IsNullable = false)]
+    public template[] templates
     {
       get { return this.templatesField; }
       set { this.templatesField = value; }

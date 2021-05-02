@@ -107,19 +107,19 @@
   <xs:element name="templates">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="template"/>
+        <xs:element maxOccurs="unbounded" ref="template"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="template">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="var"/>
+        <xs:element maxOccurs="unbounded" ref="variable"/>
       </xs:sequence>
       <xs:attribute name="src" use="required" type="xs:anyURI"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="var">
+  <xs:element name="variable">
     <xs:complexType>
       <xs:attribute name="key" use="required" type="xs:NCName"/>
       <xs:attribute name="value" use="required" type="xs:NMTOKEN"/>

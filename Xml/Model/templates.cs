@@ -10,10 +10,11 @@
   public partial class templates
   {
 
-    private template templateField;
+    private template[] templateField;
 
     /// <remarks/>
-    public template template
+    [System.Xml.Serialization.XmlElementAttribute("template")]
+    public template[] template
     {
       get { return this.templateField; }
       set { this.templateField = value; }
