@@ -11,12 +11,12 @@
 using System.Xml.Serialization;
 
 // 
-// Dieser Quellcode wurde automatisch generiert von xsd, Version=4.6.1055.0.
+// Dieser Quellcode wurde automatisch generiert von xsd, Version=4.8.3928.0.
 // 
 
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -28,7 +28,7 @@ public partial class cescript {
     
     private sessions sessionsField;
     
-    private decimal versionField;
+    private string versionField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("meta", IsNullable=false)]
@@ -52,8 +52,8 @@ public partial class cescript {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public decimal version {
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NMTOKEN")]
+    public string version {
         get {
             return this.versionField;
         }
@@ -64,7 +64,7 @@ public partial class cescript {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -100,7 +100,7 @@ public partial class meta {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -136,7 +136,7 @@ public partial class sessions {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -146,7 +146,9 @@ public partial class session {
     
     private sources sourcesField;
     
-    private queries queriesField;
+    private object[] queriesField;
+    
+    private templates templatesField;
     
     private actions actionsField;
     
@@ -165,12 +167,25 @@ public partial class session {
     }
     
     /// <remarks/>
-    public queries queries {
+    [System.Xml.Serialization.XmlArrayItemAttribute("query", typeof(query), IsNullable=false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("queryBuilder", typeof(queryBuilder), IsNullable=false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("queryGroup", typeof(queryGroup), IsNullable=false)]
+    public object[] queries {
         get {
             return this.queriesField;
         }
         set {
             this.queriesField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public templates templates {
+        get {
+            return this.templatesField;
+        }
+        set {
+            this.templatesField = value;
         }
     }
     
@@ -208,7 +223,7 @@ public partial class session {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -245,7 +260,7 @@ public partial class sources {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -308,7 +323,7 @@ public partial class annotate {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -370,7 +385,7 @@ public partial class directory {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -419,7 +434,7 @@ public partial class file {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -456,45 +471,7 @@ public partial class import {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class queries {
-    
-    private object[] itemsField;
-    
-    private string processingField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("query", typeof(query))]
-    [System.Xml.Serialization.XmlElementAttribute("queryBuilder", typeof(queryBuilder))]
-    [System.Xml.Serialization.XmlElementAttribute("queryGroup", typeof(queryGroup))]
-    public object[] Items {
-        get {
-            return this.itemsField;
-        }
-        set {
-            this.itemsField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
-    public string processing {
-        get {
-            return this.processingField;
-        }
-        set {
-            this.processingField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -543,7 +520,7 @@ public partial class query {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -605,7 +582,7 @@ public partial class queryBuilder {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -680,7 +657,101 @@ public partial class queryGroup {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class templates {
+    
+    private template templateField;
+    
+    /// <remarks/>
+    public template template {
+        get {
+            return this.templateField;
+        }
+        set {
+            this.templateField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class template {
+    
+    private var[] varField;
+    
+    private string srcField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("var")]
+    public var[] var {
+        get {
+            return this.varField;
+        }
+        set {
+            this.varField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="anyURI")]
+    public string src {
+        get {
+            return this.srcField;
+        }
+        set {
+            this.srcField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class var {
+    
+    private string keyField;
+    
+    private string valueField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string key {
+        get {
+            return this.keyField;
+        }
+        set {
+            this.keyField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NMTOKEN")]
+    public string value {
+        get {
+            return this.valueField;
+        }
+        set {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -716,7 +787,7 @@ public partial class actions {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -790,7 +861,7 @@ public partial class action {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -826,7 +897,7 @@ public partial class output {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -849,7 +920,32 @@ public partial class head {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class queries {
+    
+    private object[] itemsField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("query", typeof(query))]
+    [System.Xml.Serialization.XmlElementAttribute("queryBuilder", typeof(queryBuilder))]
+    [System.Xml.Serialization.XmlElementAttribute("queryGroup", typeof(queryGroup))]
+    public object[] Items {
+        get {
+            return this.itemsField;
+        }
+        set {
+            this.itemsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]

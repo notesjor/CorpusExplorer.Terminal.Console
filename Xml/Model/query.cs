@@ -1,48 +1,43 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
-
-namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class query
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public partial class query
   {
+
     private string nameField;
 
     private string parentField;
 
     private string[] textField;
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string name
     {
-      get => nameField;
-      set => nameField = value;
+      get { return this.nameField; }
+      set { this.nameField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string parent
     {
-      get => parentField;
-      set => parentField = value;
+      get { return this.parentField; }
+      set { this.parentField = value; }
     }
 
-    /// <remarks />
-    [XmlText]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
     public string[] Text
     {
-      get => textField;
-      set => textField = value;
+      get { return this.textField; }
+      set { this.textField = value; }
     }
   }
 }

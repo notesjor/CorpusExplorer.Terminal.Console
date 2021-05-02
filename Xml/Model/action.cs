@@ -1,67 +1,62 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
-
-namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class action
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public partial class action
   {
+
+    private output outputField;
+
     private string[] argumentsField;
 
     private string modeField;
-
-    private output outputField;
 
     private string queryField;
 
     private string typeField;
 
-    /// <remarks />
+    /// <remarks/>
     public output output
     {
-      get => outputField;
-      set => outputField = value;
+      get { return this.outputField; }
+      set { this.outputField = value; }
     }
 
-    /// <remarks />
-    [XmlArrayItem("argument", DataType = "NCName", IsNullable = false)]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayItemAttribute("argument", DataType = "NCName", IsNullable = false)]
     public string[] arguments
     {
-      get => argumentsField;
-      set => argumentsField = value;
+      get { return this.argumentsField; }
+      set { this.argumentsField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string mode
     {
-      get => modeField;
-      set => modeField = value;
+      get { return this.modeField; }
+      set { this.modeField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string query
     {
-      get => queryField;
-      set => queryField = value;
+      get { return this.queryField; }
+      set { this.queryField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string type
     {
-      get => typeField;
-      set => typeField = value;
+      get { return this.typeField; }
+      set { this.typeField = value; }
     }
   }
 }

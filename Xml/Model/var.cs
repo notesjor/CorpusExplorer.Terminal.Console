@@ -7,24 +7,24 @@
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
   [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-  public partial class output
+  public partial class var
   {
 
-    private string formatField;
+    private string keyField;
 
     private string valueField;
 
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
-    public string format
+    public string key
     {
-      get { return this.formatField; }
-      set { this.formatField = value; }
+      get { return this.keyField; }
+      set { this.keyField = value; }
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlTextAttribute(DataType = "anyURI")]
-    public string Value
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NMTOKEN")]
+    public string value
     {
       get { return this.valueField; }
       set { this.valueField = value; }

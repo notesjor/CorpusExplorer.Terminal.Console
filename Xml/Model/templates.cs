@@ -7,27 +7,16 @@
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
   [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-  public partial class output
+  public partial class templates
   {
 
-    private string formatField;
-
-    private string valueField;
+    private template templateField;
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
-    public string format
+    public template template
     {
-      get { return this.formatField; }
-      set { this.formatField = value; }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlTextAttribute(DataType = "anyURI")]
-    public string Value
-    {
-      get { return this.valueField; }
-      set { this.valueField = value; }
+      get { return this.templateField; }
+      set { this.templateField = value; }
     }
   }
 }

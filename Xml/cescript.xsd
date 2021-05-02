@@ -6,7 +6,7 @@
         <xs:element ref="head"/>
         <xs:element ref="sessions"/>
       </xs:sequence>
-      <xs:attribute name="version" use="required" type="xs:decimal"/>
+      <xs:attribute name="version" use="required" type="xs:NMTOKEN"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="head">
@@ -38,6 +38,7 @@
       <xs:sequence>
         <xs:element ref="sources"/>
         <xs:element ref="queries"/>
+        <xs:element minOccurs="0" ref="templates"/>
         <xs:element ref="actions"/>
       </xs:sequence>
       <xs:attribute name="override" type="xs:boolean"/>
@@ -79,7 +80,6 @@
         <xs:element ref="queryBuilder"/>
         <xs:element ref="queryGroup"/>
       </xs:choice>
-      <xs:attribute name="processing" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="queryBuilder">
@@ -102,6 +102,27 @@
       <xs:attribute name="operator" use="required" type="xs:NCName"/>
       <xs:attribute name="parent" use="required" type="xs:NCName"/>
       <xs:attribute name="prefix" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="templates">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="template"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="template">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="var"/>
+      </xs:sequence>
+      <xs:attribute name="src" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="var">
+    <xs:complexType>
+      <xs:attribute name="key" use="required" type="xs:NCName"/>
+      <xs:attribute name="value" use="required" type="xs:NMTOKEN"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="actions">

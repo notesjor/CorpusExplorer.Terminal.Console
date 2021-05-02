@@ -1,39 +1,34 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
-
-namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class sources
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public partial class sources
   {
+
     private object[] itemsField;
 
     private string processingField;
 
-    /// <remarks />
-    [XmlElement("annotate", typeof(annotate))]
-    [XmlElement("import", typeof(import))]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("annotate", typeof(annotate))]
+    [System.Xml.Serialization.XmlElementAttribute("import", typeof(import))]
     public object[] Items
     {
-      get => itemsField;
-      set => itemsField = value;
+      get { return this.itemsField; }
+      set { this.itemsField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string processing
     {
-      get => processingField;
-      set => processingField = value;
+      get { return this.processingField; }
+      set { this.processingField = value; }
     }
   }
 }

@@ -12,9 +12,11 @@
 			</annotate>
 			<import type="ImporterCec6">
 				<file>C:/test.abc</file>
+				<file>C:/test.abc</file>
+				<file delete="true">test.abc</file>
 				<directory filter=".cec6">C:/</directory>
 				<file>C:/test.abc</file>
-				<directory filter=".cec6">C:/</directory>
+				<directory filter=".cec6" delete="true">C:/</directory>
 			</import>
 			<import type="ImporterCec6">
 				<file>C:/test.abc</file>
@@ -46,6 +48,14 @@
 				<value>Bernd</value>
 			</queryBuilder>
 		</queries>
+		
+		<templates>
+			<template src="C:/template.xml">
+				<var key="key" value="val"/>
+				<var key="abc" value="123"/>
+				<var key="nanana" value="xyz"/>
+			</template>
+		</templates>
 		
 		<actions mode="synchron">
 			<action type="convert">

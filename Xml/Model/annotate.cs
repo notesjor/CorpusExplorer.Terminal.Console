@@ -1,20 +1,15 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
-
-namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class annotate
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public partial class annotate
   {
+
     private object[] itemsField;
 
     private string languageField;
@@ -23,37 +18,37 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
 
     private string typeField;
 
-    /// <remarks />
-    [XmlElement("directory", typeof(directory))]
-    [XmlElement("file", typeof(file))]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("directory", typeof(directory))]
+    [System.Xml.Serialization.XmlElementAttribute("file", typeof(file))]
     public object[] Items
     {
-      get => itemsField;
-      set => itemsField = value;
+      get { return this.itemsField; }
+      set { this.itemsField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string language
     {
-      get => languageField;
-      set => languageField = value;
+      get { return this.languageField; }
+      set { this.languageField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string tagger
     {
-      get => taggerField;
-      set => taggerField = value;
+      get { return this.taggerField; }
+      set { this.taggerField = value; }
     }
 
-    /// <remarks />
-    [XmlAttribute(DataType = "NCName")]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "NCName")]
     public string type
     {
-      get => typeField;
-      set => typeField = value;
+      get { return this.typeField; }
+      set { this.typeField = value; }
     }
   }
 }

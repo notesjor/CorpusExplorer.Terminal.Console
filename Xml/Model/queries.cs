@@ -1,30 +1,25 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
-
-namespace CorpusExplorer.Terminal.Console.Xml.Model
+﻿namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-  /// <remarks />
-  [GeneratedCode("xsd", "4.6.1055.0")]
-  [Serializable]
-  [DebuggerStepThrough]
-  [DesignerCategory("code")]
-  [XmlType(AnonymousType = true)]
-  [XmlRoot(Namespace = "", IsNullable = false)]
-  public class queries
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public partial class queries
   {
+
     private object[] itemsField;
 
-    /// <remarks />
-    [XmlElement("query", typeof(query))]
-    [XmlElement("queryBuilder", typeof(queryBuilder))]
-    [XmlElement("queryGroup", typeof(queryGroup))]
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("query", typeof(query))]
+    [System.Xml.Serialization.XmlElementAttribute("queryBuilder", typeof(queryBuilder))]
+    [System.Xml.Serialization.XmlElementAttribute("queryGroup", typeof(queryGroup))]
     public object[] Items
     {
-      get => itemsField;
-      set => itemsField = value;
+      get { return this.itemsField; }
+      set { this.itemsField = value; }
     }
   }
 }
