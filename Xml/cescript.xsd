@@ -11,9 +11,19 @@
   </xs:element>
   <xs:element name="head">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="meta"/>
-      </xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="config"/>
+        <xs:element ref="meta"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="config">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:integer">
+          <xs:attribute name="key" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:simpleContent>
     </xs:complexType>
   </xs:element>
   <xs:element name="meta">
@@ -66,7 +76,7 @@
   </xs:element>
   <xs:element name="import">
     <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:choice maxOccurs="unbounded">
         <xs:element ref="directory"/>
         <xs:element ref="file"/>
       </xs:choice>

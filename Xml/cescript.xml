@@ -1,7 +1,9 @@
 <cescript version="1.0d">
 <head>
 	<meta key="a">Hallo</meta>
+	<config key="parallel">40</config>
 	<meta key="b">2018</meta>
+	<config key="parallel">40</config>
 </head>
 <sessions mode="synchron">
 	<session override="true">

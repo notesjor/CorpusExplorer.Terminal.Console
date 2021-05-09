@@ -13,9 +13,9 @@ using System.Xml.Serialization;
 // 
 // Dieser Quellcode wurde automatisch generiert von xsd, Version=4.8.3928.0.
 // 
+
 namespace CorpusExplorer.Terminal.Console.Xml.Model
 {
-
   /// <remarks/>
   [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
   [System.SerializableAttribute()]
@@ -26,15 +26,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Model
   public partial class cescript
   {
 
-    private meta[] headField;
+    private object[] headField;
 
     private sessions sessionsField;
 
     private string versionField;
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("meta", IsNullable = false)]
-    public meta[] head
+    [System.Xml.Serialization.XmlArrayItemAttribute("config", typeof(config), IsNullable = false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("meta", typeof(meta), IsNullable = false)]
+    public object[] head
     {
       get { return this.headField; }
       set { this.headField = value; }

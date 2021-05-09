@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Blocks;
+using CorpusExplorer.Sdk.Blocks.Cooccurrence;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -61,6 +63,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       ConsoleHelper.PrintHeader();
 
+      ApplyConfigurationHead(script.head);
+
       Parallel.ForEach(script.sessions.session,
                        !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
                          ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
@@ -79,6 +83,56 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       ConsoleHelper.PrintHeader();
       System.Console.WriteLine(Resources.XmlScriptSuccess);
+    }
+
+    private static void ApplyConfigurationHead(object[] head)
+    {
+      var configs = head.config();
+      if (configs == null) 
+        return;
+
+      foreach (var config in configs)
+        switch (config.key)
+        {
+          case "parallel":
+            Configuration.ParallelOptions = new ParallelOptions { MaxDegreeOfParallelism = int.Parse(config.Value) };
+            break;
+          case "encoding":
+            int page;
+            Configuration.Encoding = int.TryParse(config.Value, out page) ? Encoding.GetEncoding(page) : Encoding.GetEncoding(config.Value);
+            break;
+          case "cache":
+            switch (config.Value)
+            {
+              case "current":
+                Configuration.Cache = new CacheStrategyCurrentSelection();
+                break; 
+              case "disable":
+                Configuration.Cache = new CacheStrategyDisableCaching();
+                break;
+            }
+            break;
+          case "significance":
+            switch (config.Value)
+            {
+              case "log":
+                Configuration.SetSignificance(new LogLikelihoodSignificance());
+                break;
+              case "chi2":
+                Configuration.SetSignificance(new ChiSquaredSignificance());
+                break;
+              case "poisson":
+                Configuration.SetSignificance(new PoissonSignificance());
+                break;
+            }
+            break;
+          case "min-frequency":
+            Configuration.MinimumFrequency = int.Parse(config.Value);
+            break;
+          case "min-significance":
+            Configuration.MinimumSignificance = double.Parse(config.Value);
+            break;
+        }
     }
 
     private static void ExecuteSession(session session, string scriptFilename)

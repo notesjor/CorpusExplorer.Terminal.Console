@@ -7,13 +7,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Extensions
   public static class SourcesExtension
   {
     public static IEnumerable<annotate> annotate(this sources obj)
-    {
-      return obj.Items.OfType<annotate>();
-    }
+      => obj.Items.OfType<annotate>();
 
     public static IEnumerable<import> import(this sources obj)
-    {
-      return obj.Items.OfType<import>();
-    }
+      => obj.Items.OfType<import>();
   }
 }

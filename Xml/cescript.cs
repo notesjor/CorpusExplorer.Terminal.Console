@@ -24,15 +24,16 @@ using System.Xml.Serialization;
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class cescript {
     
-    private meta[] headField;
+    private object[] headField;
     
     private sessions sessionsField;
     
     private string versionField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("meta", IsNullable=false)]
-    public meta[] head {
+    [System.Xml.Serialization.XmlArrayItemAttribute("config", typeof(config), IsNullable=false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("meta", typeof(meta), IsNullable=false)]
+    public object[] head {
         get {
             return this.headField;
         }
@@ -59,6 +60,42 @@ public partial class cescript {
         }
         set {
             this.versionField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+public partial class config {
+    
+    private string keyField;
+    
+    private string valueField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="NCName")]
+    public string key {
+        get {
+            return this.keyField;
+        }
+        set {
+            this.keyField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute(DataType="integer")]
+    public string Value {
+        get {
+            return this.valueField;
+        }
+        set {
+            this.valueField = value;
         }
     }
 }
@@ -884,16 +921,17 @@ public partial class output {
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
 public partial class head {
     
-    private meta[] metaField;
+    private object[] itemsField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("meta")]
-    public meta[] meta {
+    [System.Xml.Serialization.XmlElementAttribute("config", typeof(config))]
+    [System.Xml.Serialization.XmlElementAttribute("meta", typeof(meta))]
+    public object[] Items {
         get {
-            return this.metaField;
+            return this.itemsField;
         }
         set {
-            this.metaField = value;
+            this.itemsField = value;
         }
     }
 }

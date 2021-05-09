@@ -84,6 +84,7 @@
     <Compile Include="Web\Model\Response\AvailableActionsResponse.cs" />
     <Compile Include="Web\WebServiceDirect.cs" />
     <Compile Include="Web\WebService.cs" />
+    <Compile Include="Xml\Extensions\MetaExtension.cs" />
     <Compile Include="Xml\Extensions\QueriesExtension.cs" />
     <Compile Include="Xml\Extensions\SourcesExtension.cs" />
     <Compile Include="Xml\Model\action.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Xml\Model\annotate.cs" />
     <Compile Include="Xml\Model\arguments.cs" />
     <Compile Include="Xml\Model\cescript.cs" />
+    <Compile Include="Xml\Model\config.cs" />
     <Compile Include="Xml\Model\directory.cs" />
     <Compile Include="Xml\Model\file.cs" />
     <Compile Include="Xml\Model\head.cs" />
