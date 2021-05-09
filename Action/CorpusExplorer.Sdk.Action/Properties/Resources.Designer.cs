@@ -547,6 +547,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die token-list-select [LAYER] [REGEX] - list of all tokens in [LAYER] who are matching the [REGEX]-expression ähnelt.
+        /// </summary>
+        internal static string DescTokeListSelect {
+            get {
+                return ResourceManager.GetString("DescTokeListSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die vocabulary-complexity {LAYER} - vocabulary complexity in {LAYER} ähnelt.
         /// </summary>
         internal static string DescVocabularyComplexity {

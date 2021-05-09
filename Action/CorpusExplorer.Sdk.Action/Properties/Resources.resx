@@ -372,4 +372,7 @@
   <data name="DescTokeList" xml:space="preserve">
     <value>token-list [LAYER] - list of all tokens in [LAYER]</value>
   </data>
+  <data name="DescTokeListSelect" xml:space="preserve">
+    <value>token-list-select [LAYER] [REGEX] - list of all tokens in [LAYER] who are matching the [REGEX]-expression</value>
+  </data>
 </root>

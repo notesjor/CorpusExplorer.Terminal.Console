@@ -79,7 +79,7 @@
 		</actions>
 	</session>
 	<session>	
-		<sources processing="merge"> <!-- processing = merge OR loop -->
+		<sources processing="merge"> <!-- processing = merge OR loop OR sub-dir-loop -->
 			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
 				<file>C:/test.abc</file>
 				<directory filter=".cec6">C:/</directory>
@@ -101,6 +101,38 @@
 				<file>C:/test.abc</file>
 				<directory filter=".cec6">C:/</directory>
 			</import>			
+		</sources>
+		
+		<queries>
+			<query>!M:Author::Jan</query>
+			<query name="q1">!M:Author::Jan</query>
+		</queries>
+		
+		<actions>
+			<action type="convert">
+				<output format="ExporterCec6">C:/test.cec6</output>
+			</action>
+			<action type="basic-information" query="q1">
+				<output format="TSV">C:/{input}_{query}.tsv</output>
+			</action>
+			<action type="frequency2">
+				<output format="TSV">C:/f.tsv</output>
+				<arguments>
+					<argument>POS</argument>
+					<argument>Lemma</argument>
+				</arguments>
+			</action>
+		</actions>
+	</session>
+	<session>	
+		<sources processing="sub-dir-loop"> <!-- processing = merge OR loop OR sub-dir-loop -->
+			<!-- Hinweis: sub-dir-loop erlaubt kein file/directory sondern reicht alle Dateien an den ersten Eintrag durch -->			
+			<import type="ImporterCec6">
+				<directory filter=".cec6">C:/</directory> <!-- Hinweis: sub-dir-loop setzt ein directory im ersten Eintrag voraus. -->
+			</import>		
+			<!-- Hinweis: Wird nicht berücksichtigt -->
+			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
+			</annotate>
 		</sources>
 		
 		<queries>

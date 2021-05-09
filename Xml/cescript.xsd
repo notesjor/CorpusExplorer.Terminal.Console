@@ -55,7 +55,7 @@
   </xs:element>
   <xs:element name="annotate">
     <xs:complexType>
-      <xs:choice maxOccurs="unbounded">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="directory"/>
         <xs:element ref="file"/>
       </xs:choice>
@@ -66,7 +66,7 @@
   </xs:element>
   <xs:element name="import">
     <xs:complexType>
-      <xs:choice maxOccurs="unbounded">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="directory"/>
         <xs:element ref="file"/>
       </xs:choice>

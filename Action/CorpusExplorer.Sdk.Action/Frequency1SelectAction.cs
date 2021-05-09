@@ -38,6 +38,9 @@ namespace CorpusExplorer.Sdk.Action
         case 1 when hsh.ToArray()[0].StartsWith("FILE:"):
           ExecuteFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("FILE:", ""));
           break;
+        case 1 when hsh.ToArray()[0].StartsWith("G-FILE:"):
+          ExecuteGroupFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("G-FILE:", ""));
+          break;
         case 1 when hsh.ToArray()[0].StartsWith("SDM:"):
           ExecuteSdmFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
           break;
@@ -51,6 +54,30 @@ namespace CorpusExplorer.Sdk.Action
     }
 
     private void ExecuteFileQuery(string tid, AbstractTableWriter writer, Frequency1LayerViewModel vm, double div,
+                                  string path)
+    {
+      var lines = File.ReadAllLines(path, Configuration.Encoding);
+
+      var res = new DataTable();
+
+      res.Columns.Add(vm.LayerDisplayname, typeof(string));
+      res.Columns.Add(Resources.Frequency, typeof(double));
+      res.Columns.Add(Resources.FrequencyRel, typeof(double));
+
+      res.BeginLoadData();
+
+      foreach (var line in lines)
+      {
+        var sum = vm.Frequency.ContainsKey(line) ? vm.Frequency[line] : 0;
+        res.Rows.Add(line, sum, sum == 0 ? 0 : sum / div);
+      }
+
+      res.EndLoadData();
+
+      writer.WriteTable(tid, res);
+    }
+
+    private void ExecuteGroupFileQuery(string tid, AbstractTableWriter writer, Frequency1LayerViewModel vm, double div,
                                   string path)
     {
       var lines = File.ReadAllLines(path, Configuration.Encoding);

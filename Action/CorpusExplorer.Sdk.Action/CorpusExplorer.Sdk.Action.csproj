@@ -130,6 +130,7 @@
     <Compile Include="DocumentTermFrequencyAction.cs" />
     <Compile Include="TokenCountAction.cs" />
     <Compile Include="TokenListAction.cs" />
+    <Compile Include="TokenListSelectAction.cs" />
     <Compile Include="TypeCountAction.cs" />
     <Compile Include="VocabularyComplexityAction.cs" />
     <Compile Include="VocdAction.cs" />

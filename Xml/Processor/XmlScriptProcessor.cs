@@ -85,54 +85,117 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       try
       {
-        if (session.sources.processing == "loop")
+        switch (session.sources.processing)
         {
-          foreach (var source in session.sources.Items)
-          {
-            _terminal.ProjectNew(false);
-            switch (source)
+          case "loop":
+            {
+              foreach (var source in session.sources.Items)
+              {
+                _terminal.ProjectNew(false);
+                switch (source)
+                {
+                  case annotate a:
+                    using (var project = ReadSources(new[] { a }))
+                      ExecuteSession(session, scriptFilename, project);
+                    break;
+                  case import i:
+                    foreach (var item in i.Items)
+                      switch (item)
+                      {
+                        case file _:
+                          using (var project = ReadSources(new[] { i }))
+                            ExecuteSession(session, scriptFilename, project);
+                          break;
+                        case directory d:
+                          var files = Directory.GetFiles(d.Value, d.filter);
+                          foreach (var file in files)
+                            using (var project = ReadSources(new[]
+                            {
+                            new import
+                            {
+                              Items = new[]
+                              {
+                                new file
+                                {
+                                  delete = d.delete,
+                                  Value = file
+                                }
+                              }, type = i.type
+                            }
+                          }))
+                            {
+                              ExecuteSession(session, scriptFilename, project);
+                            }
+                          break;
+                      }
+                    break;
+                }
+              }
+
+              break;
+            }
+          case "sub-dir-loop":
+            var sdlSource = session.sources.Items.FirstOrDefault();
+            switch (sdlSource)
             {
               case annotate a:
-                using (var project = ReadSources(new[] { a }))
-                  ExecuteSession(session, scriptFilename, project);
+                var baseDirA = a.Items.FirstOrDefault() as directory;
+                var subDirsA = Directory.GetDirectories(baseDirA.Value);
+                foreach (var subDir in subDirsA)
+                {
+                  _terminal.ProjectNew(false);
+                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", ""); 
+                  using (var project = ReadSources(new[]
+                  {
+                    new annotate
+                    {
+                      type = a.type,
+                      tagger = a.tagger,
+                      language = a.language,
+                      Items = Directory.GetFiles(subDir, baseDirA.filter)
+                                       .Select(file => new file
+                                        {
+                                          delete = baseDirA.delete,
+                                          Value = file
+                                        }).ToArray()
+                    }
+                  }))
+                    ExecuteSession(session, scriptFilename, project);
+                }
                 break;
               case import i:
-                foreach (var item in i.Items)
-                  switch (item)
+                var baseDirI = i.Items.FirstOrDefault() as directory;
+                var subDirsI = Directory.GetDirectories(baseDirI.Value);
+                foreach (var subDir in subDirsI)
+                {
+                  _terminal.ProjectNew(false);
+                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
+                  using (var project = ReadSources(new[]
                   {
-                    case file _:
-                      using (var project = ReadSources(new[] { i }))
-                        ExecuteSession(session, scriptFilename, project);
-                      break;
-                    case directory d:
-                      var files = Directory.GetFiles(d.Value, d.filter);
-                      foreach (var file in files)
-                        using (var project = ReadSources(new[]
-                        {
-                          new import
-                          {
-                            Items = new[]
-                            {
-                              new file
-                              {
-                                delete = d.delete,
-                                Value = file
-                              }
-                            }, type = i.type
-                          }
-                        }))
-                        {
-                          ExecuteSession(session, scriptFilename, project);
-                        }
-                      break;
-                  }
+                    new import
+                    {
+                      type = i.type,
+                      Items = Directory.GetFiles(subDir, baseDirI.filter)
+                                       .Select(file => new file
+                                        {
+                                          delete = baseDirI.delete,
+                                          Value = file
+                                        }).ToArray()
+                    }
+                  }))
+                    ExecuteSession(session, scriptFilename, project);
+                }
                 break;
             }
-          }
+
+            break;
+          default:
+            {
+              using (var project = ReadSources(session.sources.Items))
+                ExecuteSession(session, scriptFilename, project);
+              break;
+            }
         }
-        else
-          using (var project = ReadSources(session.sources.Items))
-            ExecuteSession(session, scriptFilename, project);
       }
       catch
       {
@@ -470,6 +533,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static Dictionary<string, Selection[]> GenerateSelections(Project source, queries queries)
     {
       var all = source.SelectAll;
+      if (all == null)
+        return new Dictionary<string, Selection[]>();
+
       all.Displayname = "ALL";
       var res = new Dictionary<string, Selection[]> { { "", new[] { all } } };
 
@@ -742,16 +808,20 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
     }
 
+    private static string overrideCorpusName = null;
+
     /// <summary>
     ///   Erzeugt einen Ausgabepfad
     /// </summary>
     /// <param name="path">Pfad</param>
     /// <param name="scriptFilename">Name des CeScripts</param>
+    /// <param name="corpusName">Name des Korpus (kann durch overrideCorpusName überschrieben werden)</param>
     /// <param name="selectionName">Schnappschussname</param>
     /// <param name="action">Action</param>
     /// <returns>Ausgabepfad</returns>
     private static string OutputPathBuilder(string path, string scriptFilename, string corpusName, string selectionName, string action)
     {
+      corpusName = overrideCorpusName ?? corpusName;
       var res = path.Replace("{all}", "{script}_{corpus}_{selection}_{action}")
                     .Replace("{script}", scriptFilename)
                     .Replace("{corpus}", corpusName)
@@ -818,7 +888,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             try
             {
               var importer = Configuration.AddonImporters.GetReflectedType(import.type, "Importer");
-              if (importer==null)
+              if (importer == null)
                 continue;
 
               foreach (var corpus in importer.Execute(SearchFiles(import.Items)))
