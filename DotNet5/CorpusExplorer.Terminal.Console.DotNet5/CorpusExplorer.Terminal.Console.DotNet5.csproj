@@ -1,0 +1,98 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>cec5</AssemblyName>
+    <RootNamespace>CorpusExplorer.Terminal.Console</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Helper\CeScriptHelper.cs" Link="Helper\CeScriptHelper.cs" />
+    <Compile Include="..\..\Helper\ConsoleHelper.cs" Link="Helper\ConsoleHelper.cs" />
+    <Compile Include="..\..\Helper\CorpusLoadHelper.cs" Link="Helper\CorpusLoadHelper.cs" />
+    <Compile Include="..\..\Helper\XmlValueHelper.cs" Link="Helper\XmlValueHelper.cs" />
+    <Compile Include="..\..\Program.cs" Link="Program.cs" />
+    <Compile Include="..\..\Web\Abstract\AbstractWebService.cs" Link="Web\Abstract\AbstractWebService.cs" />
+    <Compile Include="..\..\Web\Model\ActionFilter.cs" Link="Web\Model\ActionFilter.cs" />
+    <Compile Include="..\..\Web\Model\Request\WebServiceDirect\AddRequest.cs" Link="Web\Model\Request\WebServiceDirect\AddRequest.cs" />
+    <Compile Include="..\..\Web\Model\Request\WebServiceDirect\AddRequestDocument.cs" Link="Web\Model\Request\WebServiceDirect\AddRequestDocument.cs" />
+    <Compile Include="..\..\Web\Model\Request\WebServiceDirect\ExecuteRequest.cs" Link="Web\Model\Request\WebServiceDirect\ExecuteRequest.cs" />
+    <Compile Include="..\..\Web\Model\Request\WebServiceDirect\ExportRequest.cs" Link="Web\Model\Request\WebServiceDirect\ExportRequest.cs" />
+    <Compile Include="..\..\Web\Model\Request\WebService\ExecuteRequest.cs" Link="Web\Model\Request\WebService\ExecuteRequest.cs" />
+    <Compile Include="..\..\Web\Model\Response\Abstract\AbstractResponse.cs" Link="Web\Model\Response\Abstract\AbstractResponse.cs" />
+    <Compile Include="..\..\Web\Model\Response\AvailableActionsResponse.cs" Link="Web\Model\Response\AvailableActionsResponse.cs" />
+    <Compile Include="..\..\Web\WebService.cs" Link="Web\WebService.cs" />
+    <Compile Include="..\..\Web\WebServiceDirect.cs" Link="Web\WebServiceDirect.cs" />
+    <Compile Include="..\..\Xml\Extensions\MetaExtension.cs" Link="Xml\Extensions\MetaExtension.cs" />
+    <Compile Include="..\..\Xml\Extensions\QueriesExtension.cs" Link="Xml\Extensions\QueriesExtension.cs" />
+    <Compile Include="..\..\Xml\Extensions\SourcesExtension.cs" Link="Xml\Extensions\SourcesExtension.cs" />
+    <Compile Include="..\..\Xml\Model\action.cs" Link="Xml\Model\action.cs" />
+    <Compile Include="..\..\Xml\Model\actions.cs" Link="Xml\Model\actions.cs" />
+    <Compile Include="..\..\Xml\Model\annotate.cs" Link="Xml\Model\annotate.cs" />
+    <Compile Include="..\..\Xml\Model\arguments.cs" Link="Xml\Model\arguments.cs" />
+    <Compile Include="..\..\Xml\Model\cescript.cs" Link="Xml\Model\cescript.cs" />
+    <Compile Include="..\..\Xml\Model\config.cs" Link="Xml\Model\config.cs" />
+    <Compile Include="..\..\Xml\Model\directory.cs" Link="Xml\Model\directory.cs" />
+    <Compile Include="..\..\Xml\Model\file.cs" Link="Xml\Model\file.cs" />
+    <Compile Include="..\..\Xml\Model\head.cs" Link="Xml\Model\head.cs" />
+    <Compile Include="..\..\Xml\Model\import.cs" Link="Xml\Model\import.cs" />
+    <Compile Include="..\..\Xml\Model\meta.cs" Link="Xml\Model\meta.cs" />
+    <Compile Include="..\..\Xml\Model\output.cs" Link="Xml\Model\output.cs" />
+    <Compile Include="..\..\Xml\Model\queries.cs" Link="Xml\Model\queries.cs" />
+    <Compile Include="..\..\Xml\Model\query.cs" Link="Xml\Model\query.cs" />
+    <Compile Include="..\..\Xml\Model\queryBuilder.cs" Link="Xml\Model\queryBuilder.cs" />
+    <Compile Include="..\..\Xml\Model\queryGroup.cs" Link="Xml\Model\queryGroup.cs" />
+    <Compile Include="..\..\Xml\Model\session.cs" Link="Xml\Model\session.cs" />
+    <Compile Include="..\..\Xml\Model\sessions.cs" Link="Xml\Model\sessions.cs" />
+    <Compile Include="..\..\Xml\Model\sources.cs" Link="Xml\Model\sources.cs" />
+    <Compile Include="..\..\Xml\Model\template.cs" Link="Xml\Model\template.cs" />
+    <Compile Include="..\..\Xml\Model\templates.cs" Link="Xml\Model\templates.cs" />
+    <Compile Include="..\..\Xml\Model\variable.cs" Link="Xml\Model\variable.cs" />
+    <Compile Include="..\..\Xml\Processor\XmlScriptProcessor.cs" Link="Xml\Processor\XmlScriptProcessor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helper\" />
+    <Folder Include="Web\Abstract\" />
+    <Folder Include="Web\Model\Request\WebServiceDirect\" />
+    <Folder Include="Web\Model\Request\WebService\" />
+    <Folder Include="Web\Model\Response\Abstract\" />
+    <Folder Include="Xml\Extensions\" />
+    <Folder Include="Xml\Model\" />
+    <Folder Include="Xml\Processor\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\TfresWebserver\TefresWebserver\TFRES.csproj" />
+    <ProjectReference Include="..\..\Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj" />
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\BitCutStudios.CorpusExplorer\BitCutStudios.CorpusExplorer.csproj" />
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Core\CorpusExplorer.Core.csproj" />
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Diagnostic\CorpusExplorer.Sdk.Diagnostic.csproj" />
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Binary\CorpusExplorer.Sdk.Extern.Binary.csproj" />
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Plaintext\CorpusExplorer.Sdk.Extern.Plaintext.csproj" />
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj" />
+    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

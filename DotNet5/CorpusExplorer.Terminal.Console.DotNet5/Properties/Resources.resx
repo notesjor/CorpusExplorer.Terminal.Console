@@ -1,0 +1,924 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BaseHelp" xml:space="preserve">
+    <value>help - to display command help</value>
+  </data>
+  <data name="BaseHelp1" xml:space="preserve">
+    <value>help - to display command help</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="Done1" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>error!</value>
+  </data>
+  <data name="Error1" xml:space="preserve">
+    <value>error!</value>
+  </data>
+  <data name="ExecuteScript" xml:space="preserve">
+    <value>execute script: {0}</value>
+  </data>
+  <data name="ExecuteScript1" xml:space="preserve">
+    <value>execute script: {0}</value>
+  </data>
+  <data name="HelpActionExample" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+  </data>
+  <data name="HelpActionExample1" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+  </data>
+  <data name="HelpActionHeader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpActionHeader1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpActionPattern" xml:space="preserve">
+    <value>[ACTION] = {0}</value>
+  </data>
+  <data name="HelpActionPattern1" xml:space="preserve">
+    <value>[ACTION] = {0}</value>
+  </data>
+  <data name="HelpAnnotateExample" xml:space="preserve">
+    <value>Example: cec.exe annotate#Dpxc#SimpleTreeTagger#Deutsch#C:\dpxc\ convert Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="HelpAnnotateExample1" xml:space="preserve">
+    <value>Example: cec.exe annotate#Dpxc#SimpleTreeTagger#Deutsch#C:\dpxc\ convert Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="HelpAnnotateHeader" xml:space="preserve">
+    <value>Annotate raw text - [INPUT]:</value>
+  </data>
+  <data name="HelpAnnotateHeader1" xml:space="preserve">
+    <value>Annotate raw text - [INPUT]:</value>
+  </data>
+  <data name="HelpAnnotateNote" xml:space="preserve">
+    <value>Note: [DIRECTORY] = any directory you like - all files will be processed</value>
+  </data>
+  <data name="HelpAnnotateNote1" xml:space="preserve">
+    <value>Note: [DIRECTORY] = any directory you like - all files will be processed</value>
+  </data>
+  <data name="HelpAnnotatePattern" xml:space="preserve">
+    <value>[INPUT] = annotate#{0}#[TAGGER]#[LANGUAGE]#[DIRECTORY]</value>
+  </data>
+  <data name="HelpAnnotatePattern1" xml:space="preserve">
+    <value>[INPUT] = annotate#{0}#[TAGGER]#[LANGUAGE]#[DIRECTORY]</value>
+  </data>
+  <data name="HelpAnnotateTaggerHeader" xml:space="preserve">
+    <value>[TAGGER] &amp; [LANGUAGE]:</value>
+  </data>
+  <data name="HelpAnnotateTaggerHeader1" xml:space="preserve">
+    <value>[TAGGER] &amp; [LANGUAGE]:</value>
+  </data>
+  <data name="HelpAnnotateTaggerLanguagePattern" xml:space="preserve">
+    <value>([LANGUAGE] = {0})</value>
+  </data>
+  <data name="HelpAnnotateTaggerLanguagePattern1" xml:space="preserve">
+    <value>([LANGUAGE] = {0})</value>
+  </data>
+  <data name="HelpAnnotateTaggerPattern" xml:space="preserve">
+    <value>[TAGGER] = {0} </value>
+  </data>
+  <data name="HelpAnnotateTaggerPattern1" xml:space="preserve">
+    <value>[TAGGER] = {0} </value>
+  </data>
+  <data name="HelpFormatFooter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpFormatFooter1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpFormatHeader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpFormatHeader1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpImportExample" xml:space="preserve">
+    <value>Note: [FILES] = separate files with &amp; - merges all files before processing</value>
+  </data>
+  <data name="HelpImportExample1" xml:space="preserve">
+    <value>Note: [FILES] = separate files with &amp; - merges all files before processing</value>
+  </data>
+  <data name="HelpImportHeader" xml:space="preserve">
+    <value>&lt;: --- [INPUT]-- - :&gt;</value>
+  </data>
+  <data name="HelpImportHeader1" xml:space="preserve">
+    <value>&lt;: --- [INPUT]-- - :&gt;</value>
+  </data>
+  <data name="HelpImportPattern" xml:space="preserve">
+    <value>[INPUT] = import#{0}#[FILES]</value>
+  </data>
+  <data name="HelpImportPattern1" xml:space="preserve">
+    <value>[INPUT] = import#{0}#[FILES]</value>
+  </data>
+  <data name="HelpModes" xml:space="preserve">
+    <value>Syntax for annotation/conversion:</value>
+  </data>
+  <data name="HelpModes1" xml:space="preserve">
+    <value>Syntax for annotation/conversion:</value>
+  </data>
+  <data name="HelpOutputExample" xml:space="preserve">
+    <value>Note: [FILE] = any file you like to store the output</value>
+  </data>
+  <data name="HelpOutputExample1" xml:space="preserve">
+    <value>Note: [FILE] = any file you like to store the output</value>
+  </data>
+  <data name="HelpOutputHeader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpOutputHeader1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpOutputPattern" xml:space="preserve">
+    <value>[OUTPUT] = {0}#[FILE]</value>
+  </data>
+  <data name="HelpOutputPattern1" xml:space="preserve">
+    <value>[OUTPUT] = {0}#[FILE]</value>
+  </data>
+  <data name="HelpQueryClusterSyntax" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpQueryClusterSyntax1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpScripting" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HelpScripting1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ok!</value>
+  </data>
+  <data name="Ok1" xml:space="preserve">
+    <value>ok!</value>
+  </data>
+  <data name="PointPointPointOk" xml:space="preserve">
+    <value>...ok!</value>
+  </data>
+  <data name="PointPointPointOk1" xml:space="preserve">
+    <value>...ok!</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>ready!</value>
+  </data>
+  <data name="Ready1" xml:space="preserve">
+    <value>ready!</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>running</value>
+  </data>
+  <data name="Running1" xml:space="preserve">
+    <value>running</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>FILE:[FILE] - to execute script</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>SAVE:[FILE] - to save command history as script</value>
+  </data>
+  <data name="String10" xml:space="preserve">
+    <value>&lt;: --- [F:FORMAT] --- :&gt;</value>
+  </data>
+  <data name="String100" xml:space="preserve">
+    <value>cec.exe {F:FORMAT} [INPUT] [ACTION]</value>
+  </data>
+  <data name="String101" xml:space="preserve">
+    <value>Syntax for analytics (writes output to file - like C:\out.xyx):</value>
+  </data>
+  <data name="String102" xml:space="preserve">
+    <value>cec.exe [F:FORMAT]#"C:\out.xyx" [INPUT] [ACTION]</value>
+  </data>
+  <data name="String103" xml:space="preserve">
+    <value>Syntax for scripting:</value>
+  </data>
+  <data name="String104" xml:space="preserve">
+    <value>cec.exe FILE:[PATH]</value>
+  </data>
+  <data name="String105" xml:space="preserve">
+    <value>More detailed scripting errors:</value>
+  </data>
+  <data name="String106" xml:space="preserve">
+    <value>cec.exe DEBUG:[PATH]</value>
+  </data>
+  <data name="String107" xml:space="preserve">
+    <value>To start interactive shell mode</value>
+  </data>
+  <data name="String108" xml:space="preserve">
+    <value>cec.exe SHELL</value>
+  </data>
+  <data name="String109" xml:space="preserve">
+    <value>To start a REST-WebService</value>
+  </data>
+  <data name="String11" xml:space="preserve">
+    <value>If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.</value>
+  </data>
+  <data name="String110" xml:space="preserve">
+    <value>cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}</value>
+  </data>
+  <data name="String111" xml:space="preserve">
+    <value>Example 'convert': cec.exe import#Cec5#C:\mycorpus.cec5 convert Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String112" xml:space="preserve">
+    <value>Example 'query': cec.exe import#Cec5#C:\mycorpus.cec5 query !M:Author::Jan Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String113" xml:space="preserve">
+    <value>&lt;: --- [OUTPUT] --- :&gt;</value>
+  </data>
+  <data name="String114" xml:space="preserve">
+    <value>[OUTPUT-EXPORTER] - for query or convert:</value>
+  </data>
+  <data name="String115" xml:space="preserve">
+    <value>[QUERY]:</value>
+  </data>
+  <data name="String116" xml:space="preserve">
+    <value>A preceding ! inverts the entire query</value>
+  </data>
+  <data name="String117" xml:space="preserve">
+    <value>First character:</value>
+  </data>
+  <data name="String118" xml:space="preserve">
+    <value>M = Metadata -OR- T = (Full)Text -OR- X = Extended Features</value>
+  </data>
+  <data name="String119" xml:space="preserve">
+    <value>followed by configuration (see below), the :: separator and the values</value>
+  </data>
+  <data name="String12" xml:space="preserve">
+    <value>You need to set one of the following tags as first parameter:</value>
+  </data>
+  <data name="String120" xml:space="preserve">
+    <value>Second character [OPERATOR] (if you choose M):</value>
+  </data>
+  <data name="String121" xml:space="preserve">
+    <value>? = regEx | : = contains (case sensitive) | . = contains (not case sensitive)</value>
+  </data>
+  <data name="String122" xml:space="preserve">
+    <value>= = match exact (case sensitive) | - = match exact (not case sensitive) | ! = is empty</value>
+  </data>
+  <data name="String123" xml:space="preserve">
+    <value>( = starts with (case sensitive) | ) = ends with (case sensitive)</value>
+  </data>
+  <data name="String124" xml:space="preserve">
+    <value>If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)</value>
+  </data>
+  <data name="String125" xml:space="preserve">
+    <value>Example (query only): !M:Author::Jan - Finds all documents where "Jan" isn't an author</value>
+  </data>
+  <data name="String126" xml:space="preserve">
+    <value>Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query !M:Author::Jan Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String127" xml:space="preserve">
+    <value>Second character [OPERATOR] (if you choose T):</value>
+  </data>
+  <data name="String128" xml:space="preserve">
+    <value>~ = any match | - = all in one document | = = all in one sentence | § = exact phrase</value>
+  </data>
+  <data name="String129" xml:space="preserve">
+    <value>? = regEx value | F = regEx fulltext-search (very slow) | 1 = first plus any other match</value>
+  </data>
+  <data name="String13" xml:space="preserve">
+    <value>Example: cec.exe import#Cec5#C:\mycorpus1.cec5&amp;C:\mycorpus2.cec5 convert Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String130" xml:space="preserve">
+    <value>If you have chosen T - enter the layer name (see [ACTION] = layer-names)</value>
+  </data>
+  <data name="String131" xml:space="preserve">
+    <value>Example (query only): T§Wort::OpenSource;Software - Finds all documents with the exact phrase "OpensSource Software"</value>
+  </data>
+  <data name="String132" xml:space="preserve">
+    <value>Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query T§Wort::OpenSource;Software Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String133" xml:space="preserve">
+    <value>Note 1: If you use several words in a T-query, then separate them with ;</value>
+  </data>
+  <data name="String134" xml:space="preserve">
+    <value>Note 2: You can also use a query file (*.ceusd) - use the FILE: prefix</value>
+  </data>
+  <data name="String135" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 query FILE:C:\query.ceusd Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String136" xml:space="preserve">
+    <value>Second character [OPERATOR] (if you choose X):</value>
+  </data>
+  <data name="String137" xml:space="preserve">
+    <value>R = random selection | S = auto split by meta-data (use cluster for auto split)</value>
+  </data>
+  <data name="String138" xml:space="preserve">
+    <value>If you use XR for random selection you need to specify the document count</value>
+  </data>
+  <data name="String139" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 query XR::100 frequency1 Wort</value>
+  </data>
+  <data name="String14" xml:space="preserve">
+    <value>Import corpus material - direct[INPUT]:</value>
+  </data>
+  <data name="String140" xml:space="preserve">
+    <value>Note 4: XR will generate two outputs - the regular and the inverted output.</value>
+  </data>
+  <data name="String141" xml:space="preserve">
+    <value>If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)</value>
+  </data>
+  <data name="String142" xml:space="preserve">
+    <value>Enter the separator :: followed by the query</value>
+  </data>
+  <data name="String143" xml:space="preserve">
+    <value>If you use XS you must specify the meta data type - TEXT, INT, FLOAT or DATE</value>
+  </data>
+  <data name="String144" xml:space="preserve">
+    <value>Note 5: XS will generate multiple outputs - based on clusters.</value>
+  </data>
+  <data name="String145" xml:space="preserve">
+    <value>TEXT generates for every entry a separate snapshot</value>
+  </data>
+  <data name="String146" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort</value>
+  </data>
+  <data name="String147" xml:space="preserve">
+    <value>INT / FLOAT you need to set up a [CLUSTERSIZE]</value>
+  </data>
+  <data name="String148" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSYear::INT;10 Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String149" xml:space="preserve">
+    <value>DATE;C;[CLUSTERSIZE] - generates [CLUSTERSIZE] clusters.</value>
+  </data>
+  <data name="String15" xml:space="preserve">
+    <value>cec.exe [INPUT] convert [OUTPUT]</value>
+  </data>
+  <data name="String150" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;C;10 Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String151" xml:space="preserve">
+    <value>DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster / DATE;Y = Year-Cluster</value>
+  </data>
+  <data name="String152" xml:space="preserve">
+    <value>DATE;YW = Week-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster</value>
+  </data>
+  <data name="String153" xml:space="preserve">
+    <value>DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster</value>
+  </data>
+  <data name="String154" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;YMD Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String155" xml:space="preserve">
+    <value>WINDOW = Add WINDOW + SIZE as an prefix for each cluster argument to enable the rolling window feature</value>
+  </data>
+  <data name="String156" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String157" xml:space="preserve">
+    <value>&lt;: --- [SCRIPTING] --- :&gt;</value>
+  </data>
+  <data name="String158" xml:space="preserve">
+    <value>All actionss above can be stored in a file to build up a automatic process.</value>
+  </data>
+  <data name="String159" xml:space="preserve">
+    <value>In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout</value>
+  </data>
+  <data name="String16" xml:space="preserve">
+    <value>Syntax for filtering:</value>
+  </data>
+  <data name="String160" xml:space="preserve">
+    <value>Example: import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv</value>
+  </data>
+  <data name="String161" xml:space="preserve">
+    <value>LOAD: {0}...</value>
+  </data>
+  <data name="String17" xml:space="preserve">
+    <value>cec.exe [INPUT] [QUERY] [OUTPUT]</value>
+  </data>
+  <data name="String18" xml:space="preserve">
+    <value>Syntax for analytics (writes output to stdout):</value>
+  </data>
+  <data name="String19" xml:space="preserve">
+    <value>cec.exe {F:FORMAT} [INPUT] [ACTION]</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>quit - to exit shell mode</value>
+  </data>
+  <data name="String20" xml:space="preserve">
+    <value>Syntax for analytics (writes output to file - like C:\out.xyx):</value>
+  </data>
+  <data name="String21" xml:space="preserve">
+    <value>cec.exe [F:FORMAT]#"C:\out.xyx" [INPUT] [ACTION]</value>
+  </data>
+  <data name="String22" xml:space="preserve">
+    <value>Syntax for scripting:</value>
+  </data>
+  <data name="String23" xml:space="preserve">
+    <value>cec.exe FILE:[PATH]</value>
+  </data>
+  <data name="String24" xml:space="preserve">
+    <value>More detailed scripting errors:</value>
+  </data>
+  <data name="String25" xml:space="preserve">
+    <value>cec.exe DEBUG:[PATH]</value>
+  </data>
+  <data name="String26" xml:space="preserve">
+    <value>To start interactive shell mode</value>
+  </data>
+  <data name="String27" xml:space="preserve">
+    <value>cec.exe SHELL</value>
+  </data>
+  <data name="String28" xml:space="preserve">
+    <value>To start a REST-WebService</value>
+  </data>
+  <data name="String29" xml:space="preserve">
+    <value>cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}</value>
+  </data>
+  <data name="String3" xml:space="preserve">
+    <value>&lt;: --- [ACTION] --- :&gt;</value>
+  </data>
+  <data name="String30" xml:space="preserve">
+    <value>Example 'convert': cec.exe import#Cec5#C:\mycorpus.cec5 convert Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String31" xml:space="preserve">
+    <value>Example 'query': cec.exe import#Cec5#C:\mycorpus.cec5 query !M:Author::Jan Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String32" xml:space="preserve">
+    <value>&lt;: --- [OUTPUT] --- :&gt;</value>
+  </data>
+  <data name="String33" xml:space="preserve">
+    <value>[OUTPUT-EXPORTER] - for query or convert:</value>
+  </data>
+  <data name="String34" xml:space="preserve">
+    <value>[QUERY]:</value>
+  </data>
+  <data name="String35" xml:space="preserve">
+    <value>A preceding ! inverts the entire query</value>
+  </data>
+  <data name="String36" xml:space="preserve">
+    <value>First character:</value>
+  </data>
+  <data name="String37" xml:space="preserve">
+    <value>M = Metadata -OR- T = (Full)Text -OR- X = Extended Features</value>
+  </data>
+  <data name="String38" xml:space="preserve">
+    <value>followed by configuration (see below), the :: separator and the values</value>
+  </data>
+  <data name="String39" xml:space="preserve">
+    <value>Second character [OPERATOR] (if you choose M):</value>
+  </data>
+  <data name="String4" xml:space="preserve">
+    <value>Most actions accept arguments. [ARG] is a required argument. {ARG} is an optional argument.</value>
+  </data>
+  <data name="String40" xml:space="preserve">
+    <value>? = regEx | : = contains (case sensitive) | . = contains (not case sensitive)</value>
+  </data>
+  <data name="String41" xml:space="preserve">
+    <value>= = match exact (case sensitive) | - = match exact (not case sensitive) | ! = is empty</value>
+  </data>
+  <data name="String42" xml:space="preserve">
+    <value>( = starts with (case sensitive) | ) = ends with (case sensitive)</value>
+  </data>
+  <data name="String43" xml:space="preserve">
+    <value>If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories)</value>
+  </data>
+  <data name="String44" xml:space="preserve">
+    <value>Example (query only): !M:Author::Jan - Finds all documents where "Jan" isn't an author</value>
+  </data>
+  <data name="String45" xml:space="preserve">
+    <value>Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query !M:Author::Jan Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String46" xml:space="preserve">
+    <value>Second character [OPERATOR] (if you choose T):</value>
+  </data>
+  <data name="String47" xml:space="preserve">
+    <value>~ = any match | - = all in one document | = = all in one sentence | § = exact phrase</value>
+  </data>
+  <data name="String48" xml:space="preserve">
+    <value>? = regEx value | F = regEx fulltext-search (very slow) | 1 = first plus any other match</value>
+  </data>
+  <data name="String49" xml:space="preserve">
+    <value>If you have chosen T - enter the layer name (see [ACTION] = layer-names)</value>
+  </data>
+  <data name="String5" xml:space="preserve">
+    <value>Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+  </data>
+  <data name="String50" xml:space="preserve">
+    <value>Example (query only): T§Wort::OpenSource;Software - Finds all documents with the exact phrase "OpensSource Software"</value>
+  </data>
+  <data name="String51" xml:space="preserve">
+    <value>Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query T§Wort::OpenSource;Software Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String52" xml:space="preserve">
+    <value>Note 1: If you use several words in a T-query, then separate them with ;</value>
+  </data>
+  <data name="String53" xml:space="preserve">
+    <value>Note 2: You can also use a query file (*.ceusd) - use the FILE: prefix</value>
+  </data>
+  <data name="String54" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 query FILE:C:\query.ceusd Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String55" xml:space="preserve">
+    <value>Second character [OPERATOR] (if you choose X):</value>
+  </data>
+  <data name="String56" xml:space="preserve">
+    <value>R = random selection | S = auto split by meta-data (use cluster for auto split)</value>
+  </data>
+  <data name="String57" xml:space="preserve">
+    <value>If you use XR for random selection you need to specify the document count</value>
+  </data>
+  <data name="String58" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 query XR::100 frequency1 Wort</value>
+  </data>
+  <data name="String59" xml:space="preserve">
+    <value>Note 4: XR will generate two outputs - the regular and the inverted output.</value>
+  </data>
+  <data name="String6" xml:space="preserve">
+    <value>Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)</value>
+  </data>
+  <data name="String60" xml:space="preserve">
+    <value>If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)</value>
+  </data>
+  <data name="String61" xml:space="preserve">
+    <value>Enter the separator :: followed by the query</value>
+  </data>
+  <data name="String62" xml:space="preserve">
+    <value>If you use XS you must specify the meta data type - TEXT, INT, FLOAT or DATE</value>
+  </data>
+  <data name="String63" xml:space="preserve">
+    <value>Note 5: XS will generate multiple outputs - based on clusters.</value>
+  </data>
+  <data name="String64" xml:space="preserve">
+    <value>TEXT generates for every entry a separate snapshot</value>
+  </data>
+  <data name="String65" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort</value>
+  </data>
+  <data name="String66" xml:space="preserve">
+    <value>INT / FLOAT you need to set up a [CLUSTERSIZE]</value>
+  </data>
+  <data name="String67" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSYear::INT;10 Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String68" xml:space="preserve">
+    <value>DATE;C;[CLUSTERSIZE] - generates [CLUSTERSIZE] clusters.</value>
+  </data>
+  <data name="String69" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;C;10 Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String7" xml:space="preserve">
+    <value>Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 &gt; C:\out.csv)</value>
+  </data>
+  <data name="String70" xml:space="preserve">
+    <value>DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster / DATE;Y = Year-Cluster</value>
+  </data>
+  <data name="String71" xml:space="preserve">
+    <value>DATE;YW = Week-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster</value>
+  </data>
+  <data name="String72" xml:space="preserve">
+    <value>DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster</value>
+  </data>
+  <data name="String73" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;YMD Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String74" xml:space="preserve">
+    <value>WINDOW = Add WINDOW + SIZE as an prefix for each cluster argument to enable the rolling window feature</value>
+  </data>
+  <data name="String75" xml:space="preserve">
+    <value>Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String76" xml:space="preserve">
+    <value>&lt;: --- [SCRIPTING] --- :&gt;</value>
+  </data>
+  <data name="String77" xml:space="preserve">
+    <value>All actionss above can be stored in a file to build up a automatic process.</value>
+  </data>
+  <data name="String78" xml:space="preserve">
+    <value>In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout</value>
+  </data>
+  <data name="String79" xml:space="preserve">
+    <value>Example: import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort &gt; output.csv</value>
+  </data>
+  <data name="String8" xml:space="preserve">
+    <value>Use the optimized direct way, by adding the output-path to the [F:FORMAT]-option</value>
+  </data>
+  <data name="String80" xml:space="preserve">
+    <value>LOAD: {0}...</value>
+  </data>
+  <data name="String81" xml:space="preserve">
+    <value>FILE:[FILE] - to execute script</value>
+  </data>
+  <data name="String82" xml:space="preserve">
+    <value>SAVE:[FILE] - to save command history as script</value>
+  </data>
+  <data name="String83" xml:space="preserve">
+    <value>quit - to exit shell mode</value>
+  </data>
+  <data name="String84" xml:space="preserve">
+    <value>&lt;: --- [ACTION] --- :&gt;</value>
+  </data>
+  <data name="String85" xml:space="preserve">
+    <value>Most actions accept arguments. [ARG] is a required argument. {ARG} is an optional argument.</value>
+  </data>
+  <data name="String86" xml:space="preserve">
+    <value>Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort</value>
+  </data>
+  <data name="String87" xml:space="preserve">
+    <value>Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)</value>
+  </data>
+  <data name="String88" xml:space="preserve">
+    <value>Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 &gt; C:\out.csv)</value>
+  </data>
+  <data name="String89" xml:space="preserve">
+    <value>Use the optimized direct way, by adding the output-path to the [F:FORMAT]-option</value>
+  </data>
+  <data name="String9" xml:space="preserve">
+    <value>Example: cec.exe F:CSV#C:\out.tsv import#Cec6#C:\mycorpus.cec6 frequency1</value>
+  </data>
+  <data name="String90" xml:space="preserve">
+    <value>Example: cec.exe F:CSV#C:\out.tsv import#Cec6#C:\mycorpus.cec6 frequency1</value>
+  </data>
+  <data name="String91" xml:space="preserve">
+    <value>&lt;: --- [F:FORMAT] --- :&gt;</value>
+  </data>
+  <data name="String92" xml:space="preserve">
+    <value>If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.</value>
+  </data>
+  <data name="String93" xml:space="preserve">
+    <value>You need to set one of the following tags as first parameter:</value>
+  </data>
+  <data name="String94" xml:space="preserve">
+    <value>Example: cec.exe import#Cec5#C:\mycorpus1.cec5&amp;C:\mycorpus2.cec5 convert Cec6#C:\mycorpus.cec6</value>
+  </data>
+  <data name="String95" xml:space="preserve">
+    <value>Import corpus material - direct[INPUT]:</value>
+  </data>
+  <data name="String96" xml:space="preserve">
+    <value>cec.exe [INPUT] convert [OUTPUT]</value>
+  </data>
+  <data name="String97" xml:space="preserve">
+    <value>Syntax for filtering:</value>
+  </data>
+  <data name="String98" xml:space="preserve">
+    <value>cec.exe [INPUT] [QUERY] [OUTPUT]</value>
+  </data>
+  <data name="String99" xml:space="preserve">
+    <value>Syntax for analytics (writes output to stdout):</value>
+  </data>
+  <data name="WebErrorActionUnavailable" xml:space="preserve">
+    <value>action unavailable</value>
+  </data>
+  <data name="WebErrorActionUnavailable1" xml:space="preserve">
+    <value>action unavailable</value>
+  </data>
+  <data name="WebErrorCorpusUnavailable" xml:space="preserve">
+    <value>corpus unavailable</value>
+  </data>
+  <data name="WebErrorCorpusUnavailable1" xml:space="preserve">
+    <value>corpus unavailable</value>
+  </data>
+  <data name="WebErrorInvalidPostData" xml:space="preserve">
+    <value>invalid post-data</value>
+  </data>
+  <data name="WebErrorInvalidPostData1" xml:space="preserve">
+    <value>invalid post-data</value>
+  </data>
+  <data name="WebErrorPostMax100Pages" xml:space="preserve">
+    <value>this service is only up to 100 documents/pages</value>
+  </data>
+  <data name="WebErrorPostMax100Pages1" xml:space="preserve">
+    <value>this service is only up to 100 documents/pages</value>
+  </data>
+  <data name="WebErrorTaggingProcessError" xml:space="preserve">
+    <value>tagging process failed</value>
+  </data>
+  <data name="WebErrorTaggingProcessError1" xml:space="preserve">
+    <value>tagging process failed</value>
+  </data>
+  <data name="WebErrorWrongLanguage" xml:space="preserve">
+    <value>wrong language selected - use: {0}</value>
+  </data>
+  <data name="WebErrorWrongLanguage1" xml:space="preserve">
+    <value>wrong language selected - use: {0}</value>
+  </data>
+  <data name="WebHelpActionsActionName" xml:space="preserve">
+    <value>The name of the action</value>
+  </data>
+  <data name="WebHelpActionsActionName1" xml:space="preserve">
+    <value>The name of the action</value>
+  </data>
+  <data name="WebHelpActionsDescription" xml:space="preserve">
+    <value>Short description - action and parameter</value>
+  </data>
+  <data name="WebHelpActionsDescription1" xml:space="preserve">
+    <value>Short description - action and parameter</value>
+  </data>
+  <data name="WebHelpAddCorpus" xml:space="preserve">
+    <value>Adds/analyzes a new corpus</value>
+  </data>
+  <data name="WebHelpAddCorpus1" xml:space="preserve">
+    <value>Adds/analyzes a new corpus</value>
+  </data>
+  <data name="WebHelpAddCorpusParameterDocuments" xml:space="preserve">
+    <value>text = document-text / meta = key/value dictionary - example: {"text":"annotate this text","meta":{"Author":"Jan","Integer":5,"Date":"2019-01-08T21:32:01.0194747+01:00"}}</value>
+  </data>
+  <data name="WebHelpAddCorpusParameterDocuments1" xml:space="preserve">
+    <value>text = document-text / meta = key/value dictionary - example: {"text":"annotate this text","meta":{"Author":"Jan","Integer":5,"Date":"2019-01-08T21:32:01.0194747+01:00"}}</value>
+  </data>
+  <data name="WebHelpAddCorpusParameterLanguage" xml:space="preserve">
+    <value>the language of all documents</value>
+  </data>
+  <data name="WebHelpAddCorpusParameterLanguage1" xml:space="preserve">
+    <value>the language of all documents</value>
+  </data>
+  <data name="WebHelpExecute" xml:space="preserve">
+    <value>Shows all available Actions for {0}execute/</value>
+  </data>
+  <data name="WebHelpExecute1" xml:space="preserve">
+    <value>Shows all available Actions for {0}execute/</value>
+  </data>
+  <data name="WebHelpExecuteParameterAction" xml:space="preserve">
+    <value>name of the action to execute</value>
+  </data>
+  <data name="WebHelpExecuteParameterAction1" xml:space="preserve">
+    <value>name of the action to execute</value>
+  </data>
+  <data name="WebHelpExecuteParameterArguments" xml:space="preserve">
+    <value>example: ['POS', 'Lemma', 'Wort']</value>
+  </data>
+  <data name="WebHelpExecuteParameterArguments1" xml:space="preserve">
+    <value>example: ['POS', 'Lemma', 'Wort']</value>
+  </data>
+  <data name="WebHelpExecuteParameterCorpusId" xml:space="preserve">
+    <value>the id of the corpus you added via {0}add/</value>
+  </data>
+  <data name="WebHelpExecuteParameterCorpusId1" xml:space="preserve">
+    <value>the id of the corpus you added via {0}add/</value>
+  </data>
+  <data name="WebHelpExecuteParameterGuids" xml:space="preserve">
+    <value>example: ['guid1', 'guid2', 'guid3']</value>
+  </data>
+  <data name="WebHelpExecuteParameterGuids1" xml:space="preserve">
+    <value>example: ['guid1', 'guid2', 'guid3']</value>
+  </data>
+  <data name="WebHelpExecuteResult" xml:space="preserve">
+    <value>execution result</value>
+  </data>
+  <data name="WebHelpExecuteResult1" xml:space="preserve">
+    <value>execution result</value>
+  </data>
+  <data name="WebHelpListActions" xml:space="preserve">
+    <value>Lists of all available Actions for {0}execute/</value>
+  </data>
+  <data name="WebHelpListActions1" xml:space="preserve">
+    <value>Lists of all available Actions for {0}execute/</value>
+  </data>
+  <data name="WebHelpListAvailableLanguages" xml:space="preserve">
+    <value>lists all available languages for {0}add/</value>
+  </data>
+  <data name="WebHelpListAvailableLanguages1" xml:space="preserve">
+    <value>lists all available languages for {0}add/</value>
+  </data>
+  <data name="WebHelpParameterLanguages" xml:space="preserve">
+    <value>all available languages</value>
+  </data>
+  <data name="WebHelpParameterLanguages1" xml:space="preserve">
+    <value>all available languages</value>
+  </data>
+  <data name="WebInit" xml:space="preserve">
+    <value>INIT WebService (mode: file)</value>
+  </data>
+  <data name="WebInit1" xml:space="preserve">
+    <value>INIT WebService (mode: file)</value>
+  </data>
+  <data name="XmlScriptCurrentActions" xml:space="preserve">
+    <value>..:: CURRENT ACTIONS ::..</value>
+  </data>
+  <data name="XmlScriptCurrentActions1" xml:space="preserve">
+    <value>..:: CURRENT ACTIONS ::..</value>
+  </data>
+  <data name="XmlScriptParserError001" xml:space="preserve">
+    <value>E001: XML Parser Error</value>
+  </data>
+  <data name="XmlScriptParserError0011" xml:space="preserve">
+    <value>E001: XML Parser Error</value>
+  </data>
+  <data name="XmlScriptSuccess" xml:space="preserve">
+    <value>--- SCRIPT SUCCESSFULLY EXECUTED ---</value>
+  </data>
+  <data name="XmlScriptSuccess1" xml:space="preserve">
+    <value>--- SCRIPT SUCCESSFULLY EXECUTED ---</value>
+  </data>
+</root>
