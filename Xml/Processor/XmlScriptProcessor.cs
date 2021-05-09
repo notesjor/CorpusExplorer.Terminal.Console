@@ -111,6 +111,56 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                           foreach (var file in files)
                             using (var project = ReadSources(new[]
                             {
+                              new import
+                              {
+                                Items = new[]
+                                {
+                                  new file
+                                  {
+                                    delete = d.delete,
+                                    Value = file
+                                  }
+                                },
+                                type = i.type
+                              }
+                            }))
+                            {
+                              ExecuteSession(session, scriptFilename, project);
+                            }
+
+                          break;
+                      }
+                    break;
+                }
+              }
+
+              break;
+            }
+          case "parallel-loop":
+          {
+            foreach (var source in session.sources.Items)
+            {
+              _terminal.ProjectNew(false);
+              switch (source)
+              {
+                case annotate a:
+                  using (var project = ReadSources(new[] { a }))
+                    ExecuteSession(session, scriptFilename, project);
+                  break;
+                case import i:
+                  foreach (var item in i.Items)
+                    switch (item)
+                    {
+                      case file _:
+                        using (var project = ReadSources(new[] { i }))
+                          ExecuteSession(session, scriptFilename, project);
+                        break;
+                      case directory d:
+                        var files = Directory.GetFiles(d.Value, d.filter);
+                        Parallel.ForEach(files, Configuration.ParallelOptions, file =>
+                        {
+                          using (var project = ReadSources(new[]
+                          {
                             new import
                             {
                               Items = new[]
@@ -120,20 +170,23 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                                   delete = d.delete,
                                   Value = file
                                 }
-                              }, type = i.type
+                              },
+                              type = i.type
                             }
                           }))
-                            {
-                              ExecuteSession(session, scriptFilename, project);
-                            }
-                          break;
-                      }
-                    break;
-                }
-              }
+                          {
+                            ExecuteSession(session, scriptFilename, project);
+                          }
+                        });
 
-              break;
+                        break;
+                    }
+                  break;
+              }
             }
+
+            break;
+          }
           case "sub-dir-loop":
             var sdlSource = session.sources.Items.FirstOrDefault();
             switch (sdlSource)
@@ -144,7 +197,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 foreach (var subDir in subDirsA)
                 {
                   _terminal.ProjectNew(false);
-                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", ""); 
+                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
                   using (var project = ReadSources(new[]
                   {
                     new annotate
@@ -185,6 +238,63 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                   }))
                     ExecuteSession(session, scriptFilename, project);
                 }
+                break;
+            }
+
+            break;
+          case "parallel-sub-dir-loop":
+            var psdlSource = session.sources.Items.FirstOrDefault();
+            switch (psdlSource)
+            {
+              case annotate a:
+                var baseDirA = a.Items.FirstOrDefault() as directory;
+                var subDirsA = Directory.GetDirectories(baseDirA.Value);
+                Parallel.ForEach(subDirsA, Configuration.ParallelOptions, subDir =>
+                {
+                  _terminal.ProjectNew(false);
+                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
+                                             .Replace("\\", "");
+                  using (var project = ReadSources(new[]
+                  {
+                    new annotate
+                    {
+                      type = a.type,
+                      tagger = a.tagger,
+                      language = a.language,
+                      Items = Directory.GetFiles(subDir, baseDirA.filter)
+                                       .Select(file => new file
+                                        {
+                                          delete = baseDirA.delete,
+                                          Value = file
+                                        }).ToArray()
+                    }
+                  }))
+                    ExecuteSession(session, scriptFilename, project);
+                });
+                break;
+              case import i:
+                var baseDirI = i.Items.FirstOrDefault() as directory;
+                var subDirsI = Directory.GetDirectories(baseDirI.Value);
+                Parallel.ForEach(subDirsI, Configuration.ParallelOptions, subDir =>
+                {
+                  _terminal.ProjectNew(false);
+                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
+                                             .Replace("\\", "");
+                  using (var project = ReadSources(new[]
+                  {
+                    new import
+                    {
+                      type = i.type,
+                      Items = Directory.GetFiles(subDir, baseDirI.filter)
+                                       .Select(file => new file
+                                        {
+                                          delete = baseDirI.delete,
+                                          Value = file
+                                        }).ToArray()
+                    }
+                  }))
+                    ExecuteSession(session, scriptFilename, project);
+                });
                 break;
             }
 
