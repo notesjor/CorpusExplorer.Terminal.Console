@@ -91,7 +91,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             {
               foreach (var source in session.sources.Items)
               {
-                _terminal.ProjectNew(false);
                 switch (source)
                 {
                   case annotate a:
@@ -137,56 +136,56 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               break;
             }
           case "parallel-loop":
-          {
-            foreach (var source in session.sources.Items)
             {
-              _terminal.ProjectNew(false);
-              switch (source)
+              foreach (var source in session.sources.Items)
               {
-                case annotate a:
-                  using (var project = ReadSources(new[] { a }))
-                    ExecuteSession(session, scriptFilename, project);
-                  break;
-                case import i:
-                  foreach (var item in i.Items)
-                    switch (item)
-                    {
-                      case file _:
-                        using (var project = ReadSources(new[] { i }))
-                          ExecuteSession(session, scriptFilename, project);
-                        break;
-                      case directory d:
-                        var files = Directory.GetFiles(d.Value, d.filter);
-                        Parallel.ForEach(files, Configuration.ParallelOptions, file =>
-                        {
-                          using (var project = ReadSources(new[]
-                          {
-                            new import
-                            {
-                              Items = new[]
-                              {
-                                new file
-                                {
-                                  delete = d.delete,
-                                  Value = file
-                                }
-                              },
-                              type = i.type
-                            }
-                          }))
-                          {
+                switch (source)
+                {
+                  case annotate a:
+                    using (var project = ReadSources(new[] { a }))
+                      ExecuteSession(session, scriptFilename, project);
+                    break;
+                  case import i:
+                    foreach (var item in i.Items)
+                      switch (item)
+                      {
+                        case file _:
+                          using (var project = ReadSources(new[] { i }))
                             ExecuteSession(session, scriptFilename, project);
-                          }
-                        });
+                          break;
+                        case directory d:
+                          var files = Directory.GetFiles(d.Value, d.filter);
+                          Parallel.ForEach(files, Configuration.ParallelOptions, file =>
+                          {
+                            using (var project = ReadSources(new[]
+                            {
+                              new import
+                              {
+                                Items = new[]
+                                {
+                                  new file
+                                  {
+                                    delete = d.delete,
+                                    Value = file
+                                  }
+                                },
+                                type = i.type
+                              }
+                            }))
+                            {
+                              ExecuteSession(session, scriptFilename, project);
+                            }
+                            GC.Collect();
+                          });
 
-                        break;
-                    }
-                  break;
+                          break;
+                      }
+                    break;
+                }
               }
-            }
 
-            break;
-          }
+              break;
+            }
           case "sub-dir-loop":
             var sdlSource = session.sources.Items.FirstOrDefault();
             switch (sdlSource)
@@ -196,7 +195,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsA = Directory.GetDirectories(baseDirA.Value);
                 foreach (var subDir in subDirsA)
                 {
-                  _terminal.ProjectNew(false);
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
                   using (var project = ReadSources(new[]
                   {
@@ -221,7 +219,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
                 foreach (var subDir in subDirsI)
                 {
-                  _terminal.ProjectNew(false);
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
                   using (var project = ReadSources(new[]
                   {
@@ -251,7 +248,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsA = Directory.GetDirectories(baseDirA.Value);
                 Parallel.ForEach(subDirsA, Configuration.ParallelOptions, subDir =>
                 {
-                  _terminal.ProjectNew(false);
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
                                              .Replace("\\", "");
                   using (var project = ReadSources(new[]
@@ -269,7 +265,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                                         }).ToArray()
                     }
                   }))
+                  {
                     ExecuteSession(session, scriptFilename, project);
+                  }
+
+                  GC.Collect();
                 });
                 break;
               case import i:
@@ -277,7 +277,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
                 Parallel.ForEach(subDirsI, Configuration.ParallelOptions, subDir =>
                 {
-                  _terminal.ProjectNew(false);
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
                                              .Replace("\\", "");
                   using (var project = ReadSources(new[]
@@ -293,7 +292,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                                         }).ToArray()
                     }
                   }))
+                  {
                     ExecuteSession(session, scriptFilename, project);
+                  }
+
+                  GC.Collect();
                 });
                 break;
             }
@@ -945,7 +948,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       return res;
     }
 
-    private static object _readSourcesNewProjectLock = new object();
+    private static object _newProjectLock = new object();
 
     /// <summary>
     ///   Liest die gewünschten Korpusquellen ein
@@ -955,11 +958,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static Project ReadSources(object[] sources)
     {
       Project proj;
-      lock (_readSourcesNewProjectLock)
-      {
-        _terminal.ProjectNew(false);
-        proj = _terminal.Project;
-      }
+      lock (_newProjectLock)
+        proj = _terminal.ProjectNew(false);
 
       foreach (var source in sources)
         switch (source)
