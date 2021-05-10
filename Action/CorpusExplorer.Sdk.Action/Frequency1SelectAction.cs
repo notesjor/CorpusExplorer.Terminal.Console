@@ -68,8 +68,11 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var line in lines)
       {
-        var sum = vm.Frequency.ContainsKey(line) ? vm.Frequency[line] : 0;
-        res.Rows.Add(line, sum, sum == 0 ? 0 : sum / div);
+        if (!vm.Frequency.ContainsKey(line)) 
+          continue;
+
+        var sum = vm.Frequency[line];
+        res.Rows.Add(line, sum, sum / div);
       }
 
       res.EndLoadData();
