@@ -298,7 +298,7 @@
     <value>ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on {LAYER} (default: Wort)</value>
   </data>
   <data name="DescNgramSelect" xml:space="preserve">
-    <value>ngram-select [N] [LAYER] [minFREQ] [WORDS] - all [N]-grams on [LAYER] containing [WORDS] .</value>
+    <value>ngram-select [N] [LAYER] [minFREQ] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE].</value>
   </data>
   <data name="DescQuery" xml:space="preserve">
     <value>query [QUERY] - see help section [OUTPUT] for more information</value>

@@ -1,6 +1,8 @@
+using System.IO;
 using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
+using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -30,7 +32,11 @@ namespace CorpusExplorer.Sdk.Action
       queries.RemoveAt(0);
       queries.RemoveAt(0);
       queries.RemoveAt(0);
-      vm.LayerQueries = queries;
+
+      if (queries.Count == 1 && queries[0].StartsWith("FILE:"))
+        vm.LayerQueries = File.ReadAllLines(queries[0].Replace("FILE:", ""), Configuration.Encoding);
+      else
+        vm.LayerQueries = queries;
 
       vm.Execute();
 

@@ -466,7 +466,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die ngram-select [N] [LAYER] [minFREQ] [WORDS] - all [N]-grams on [LAYER] containing [WORDS] . ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die ngram-select [N] [LAYER] [minFREQ] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE]. ähnelt.
         /// </summary>
         internal static string DescNgramSelect {
             get {
