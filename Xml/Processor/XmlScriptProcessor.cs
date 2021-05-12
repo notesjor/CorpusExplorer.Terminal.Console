@@ -229,7 +229,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                             {
                               ExecuteSession(session, scriptFilename, project);
                             }
-                            GC.Collect();
                           });
 
                           break;
@@ -322,8 +321,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                   {
                     ExecuteSession(session, scriptFilename, project);
                   }
-
-                  GC.Collect();
                 });
                 break;
               case import i:
@@ -349,8 +346,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                   {
                     ExecuteSession(session, scriptFilename, project);
                   }
-
-                  GC.Collect();
                 });
                 break;
             }
@@ -1013,7 +1008,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       Project proj;
       lock (_newProjectLock)
-        proj = _terminal.ProjectNew(false);
+        proj = _terminal.ProjectNew(false, false);
 
       foreach (var source in sources)
         switch (source)
