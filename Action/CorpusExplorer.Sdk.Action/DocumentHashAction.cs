@@ -17,7 +17,25 @@ namespace CorpusExplorer.Sdk.Action
       if (args.Length >= 1)
         vm.LayerDisplayname = args[0];
       if (args.Length == 2)
-        vm.LayerDisplayname = args[1];
+        switch (args[1].ToUpper())
+        {
+          case "MD5":
+            vm.HashAlgorithm = DocumentHashViewModel.Algorithm.MD5;
+            break;
+          case "SHA1":
+            vm.HashAlgorithm = DocumentHashViewModel.Algorithm.SHA1;
+            break;
+          case "SHA256":
+            vm.HashAlgorithm = DocumentHashViewModel.Algorithm.SHA256;
+            break;
+          case "SHA512":
+            vm.HashAlgorithm = DocumentHashViewModel.Algorithm.SHA512;
+            break;
+          default:
+            vm.HashAlgorithm = DocumentHashViewModel.Algorithm.SHA512;
+            break;
+        }
+        
       vm.Execute();
 
       writer.WriteTable(vm.GetDataTable());
