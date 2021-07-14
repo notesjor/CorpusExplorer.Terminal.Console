@@ -51,6 +51,10 @@ import pandas as pd
 df = pd.read_csv(cec, sep="\t")
 ```
 
+## Nutzung in Jupyter Notebooks
+Was in Python funktioniert, funktioniert natürlich auch in Jupyter Notebooks. D. h. Es lassen sich interaktive Korpusanalysen mit der CEC erstellen.
+![Screenshot CEC und Jupyter Notebooks](https://github.com/notesjor/CorpusExplorer.Terminal.Console/blob/master/screen.png?raw=true)
+
 ## Andere Ausgabeformate
 Die Ausgabe erfolgt im Fall einer normalen Analyse (ausgenommen 'convert' und 'query') direkt auf dem STDOUT-Stream.
 Sie können dieses Stream mittels '>' umleiten. Beispiel:
