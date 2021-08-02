@@ -19,7 +19,7 @@ namespace CorpusExplorer.Sdk.Action
       var vm = new NamedEntityDetectionViewModel
       {
         Selection = selection,
-        Model = Blocks.NamedEntityRecognition.Model.Load(args[0])
+        Model = Blocks.NamedEntityRecognition.NamedEntityRecognitionModel.Load(args[0])
       };
 
       vm.Execute();
