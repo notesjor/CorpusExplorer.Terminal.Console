@@ -11,6 +11,7 @@
     <Compile Include="..\..\Helper\CeScriptHelper.cs" Link="Helper\CeScriptHelper.cs" />
     <Compile Include="..\..\Helper\ConsoleHelper.cs" Link="Helper\ConsoleHelper.cs" />
     <Compile Include="..\..\Helper\CorpusLoadHelper.cs" Link="Helper\CorpusLoadHelper.cs" />
+    <Compile Include="..\..\Helper\CorpusNullHelper.cs" Link="Helper\CorpusNullHelper.cs" />
     <Compile Include="..\..\Helper\XmlValueHelper.cs" Link="Helper\XmlValueHelper.cs" />
     <Compile Include="..\..\Program.cs" Link="Program.cs" />
     <Compile Include="..\..\Web\Abstract\AbstractWebService.cs" Link="Web\Abstract\AbstractWebService.cs" />

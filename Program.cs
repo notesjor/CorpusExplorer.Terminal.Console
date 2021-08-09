@@ -166,9 +166,9 @@ namespace CorpusExplorer.Terminal.Console
       if (action == null)
         return;
 
-      var corpus = CorpusLoadHelper.LoadCorpus(args[0]);
+      var corpus = args[0] == "NULL" ? CorpusNullHelper.Corpus : CorpusLoadHelper.LoadCorpus(args[0]);
       var selection = corpus?.ToSelection();
-      if (selection == null || selection.CountToken == 0)
+      if (selection == null)
         return;
 
       var temp = args.ToList();
@@ -273,7 +273,7 @@ namespace CorpusExplorer.Terminal.Console
       foreach (var action in Configuration.AddonConsoleActions.OrderBy(x => x.Action))
         System.Console.WriteLine(Resources.HelpActionPattern, action.Description);
       System.Console.WriteLine(Resources.HelpActionExample);
-      
+
       System.Console.WriteLine(Resources.HelpScripting);
       System.Console.WriteLine(Resources.HelpFormatHeader);
       foreach (var x in Configuration.AddonTableWriter.OrderBy(x => x.Value.WriteTid))
