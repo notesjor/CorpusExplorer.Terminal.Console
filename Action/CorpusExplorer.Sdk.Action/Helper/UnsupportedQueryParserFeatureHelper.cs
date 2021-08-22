@@ -28,7 +28,15 @@ namespace CorpusExplorer.Sdk.Action.Helper
         return null;
 
       var block = selection.CreateBlock<RandomSelectionBlock>();
-      block.DocumentCount = int.Parse(values[0].ToString());
+      var value = values[0].ToString();
+
+      if (value.EndsWith("%%%"))
+        block.DocumentProMillion = double.Parse(value.Replace("%%%", ""));
+      else if (value.EndsWith("%"))
+        block.DocumentPercent = double.Parse(value.Replace("%", ""));
+      else
+        block.DocumentCount = int.Parse(value);
+
       block.Calculate();
 
       return string.IsNullOrEmpty(output)
