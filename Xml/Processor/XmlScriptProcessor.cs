@@ -517,6 +517,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 if (format == null)
                   return;
 
+                format.Path = outputPath;
+
                 // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
                 using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
                 using (var bs = new BufferedStream(fs))
@@ -597,6 +599,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                   var format = Configuration.GetTableWriter(formatKey);
                   if (format == null)
                     return;
+
+                  format.Path = outputPath;
 
                   // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
                   using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
