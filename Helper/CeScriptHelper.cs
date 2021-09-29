@@ -41,7 +41,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
               tmp.AddRange(actions.action);
 
             if (s.actions == null)
-              s.actions = new actions { action = tmp.ToArray(), mode = actions?.mode };
+              s.actions = new actions { action = tmp.ToArray(), mode = actions?.mode, parallel = actions?.parallel };
             else
               s.actions.action = tmp.ToArray();
           }

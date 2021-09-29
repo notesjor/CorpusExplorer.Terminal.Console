@@ -64,11 +64,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       ConsoleHelper.PrintHeader();
 
       ApplyConfigurationHead(script.head);
-
+      
       Parallel.ForEach(script.sessions.session,
                        !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
                          ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
-                         : Configuration.ParallelOptions,
+                         : CustomParallelConfigurationHelper.UseCustomParallelConfiguration(script.sessions.parallel),
                        session =>
                        {
                          try
@@ -209,7 +209,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                           break;
                         case directory d:
                           var files = Directory.GetFiles(d.Value, d.filter);
-                          Parallel.ForEach(files, Configuration.ParallelOptions, file =>
+                          Parallel.ForEach(files, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), file =>
                           {
                             using (var project = ReadSources(new[]
                             {
@@ -299,7 +299,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               case annotate a:
                 var baseDirA = a.Items.FirstOrDefault() as directory;
                 var subDirsA = Directory.GetDirectories(baseDirA.Value);
-                Parallel.ForEach(subDirsA, Configuration.ParallelOptions, subDir =>
+                Parallel.ForEach(subDirsA, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
                 {
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
                                              .Replace("\\", "");
@@ -326,7 +326,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               case import i:
                 var baseDirI = i.Items.FirstOrDefault() as directory;
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
-                Parallel.ForEach(subDirsI, Configuration.ParallelOptions, subDir =>
+                Parallel.ForEach(subDirsI, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
                 {
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
                                              .Replace("\\", "");
@@ -375,7 +375,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         Parallel.ForEach(session.actions.action,
                          !string.IsNullOrEmpty(session.actions.mode) && session.actions.mode.StartsWith("sync")
                            ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
-                           : Configuration.ParallelOptions,
+                           : CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.actions.parallel),
                          action => { ExecuteSessionAction(scriptFilename, action, selections, allowOverride); });
       }
       catch (Exception ex)
