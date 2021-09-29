@@ -12,6 +12,8 @@
 
     private object[] itemsField;
 
+    private string parallelField;
+
     private string processingField;
 
     /// <remarks/>
@@ -21,6 +23,14 @@
     {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "integer")]
+    public string parallel
+    {
+      get { return this.parallelField; }
+      set { this.parallelField = value; }
     }
 
     /// <remarks/>

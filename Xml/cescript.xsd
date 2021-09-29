@@ -41,6 +41,7 @@
         <xs:element maxOccurs="unbounded" ref="session"/>
       </xs:sequence>
       <xs:attribute name="mode" use="required" type="xs:NCName"/>
+      <xs:attribute name="parallel" use="required" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="session">
@@ -60,6 +61,7 @@
         <xs:element ref="annotate"/>
         <xs:element ref="import"/>
       </xs:choice>
+      <xs:attribute name="parallel" type="xs:integer"/>
       <xs:attribute name="processing" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
@@ -141,6 +143,7 @@
         <xs:element maxOccurs="unbounded" ref="action"/>
       </xs:sequence>
       <xs:attribute name="mode" type="xs:NCName"/>
+      <xs:attribute name="parallel" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="action">

@@ -696,7 +696,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="source">Projekt</param>
     /// <param name="queries">Abfragen</param>
     /// <returns>Auflistung mit allen Abfragen</returns>
-    private static Dictionary<string, Selection[]> GenerateSelections(Project source, queries queries)
+    private static Dictionary<string, Selection[]> GenerateSelections(Project source, object[] queries)
     {
       var all = source.SelectAll;
       if (all == null)
@@ -705,10 +705,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       all.Displayname = "ALL";
       var res = new Dictionary<string, Selection[]> { { "", new[] { all } } };
 
-      if (queries?.Items == null)
+      if (queries == null)
         return res;
 
-      foreach (var item in queries.Items)
+      foreach (var item in queries)
         try
         {
           switch (item)

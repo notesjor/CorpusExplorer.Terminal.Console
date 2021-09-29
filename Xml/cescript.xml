@@ -5,7 +5,7 @@
 	<meta key="b">2018</meta>
 	<config key="parallel">40</config>
 </head>
-<sessions mode="synchron">
+<sessions mode="synchron" parallel="5">
 	<session override="true">
 		<sources>
 			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
@@ -64,7 +64,7 @@
 			</template>
 		</templates>
 		
-		<actions mode="synchron">
+		<actions mode="synchron" parallel="5">
 			<action type="convert">
 				<output format="ExporterCec6">C:/test.cec6</output>
 			</action>
@@ -81,7 +81,7 @@
 		</actions>
 	</session>
 	<session>	
-		<sources processing="merge"> <!-- processing = merge OR loop OR sub-dir-loop -->
+		<sources processing="merge" parallel="5"> <!-- processing = merge OR loop OR sub-dir-loop -->
 			<annotate type="DpxcScraper" tagger="TreeTagger" language="Deutsch">
 				<file>C:/test.abc</file>
 				<directory filter=".cec6">C:/</directory>

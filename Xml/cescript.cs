@@ -149,6 +149,8 @@ public partial class sessions {
     
     private string modeField;
     
+    private string parallelField;
+    
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("session")]
     public session[] session {
@@ -168,6 +170,17 @@ public partial class sessions {
         }
         set {
             this.modeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="integer")]
+    public string parallel {
+        get {
+            return this.parallelField;
+        }
+        set {
+            this.parallelField = value;
         }
     }
 }
@@ -271,6 +284,8 @@ public partial class sources {
     
     private object[] itemsField;
     
+    private string parallelField;
+    
     private string processingField;
     
     /// <remarks/>
@@ -282,6 +297,17 @@ public partial class sources {
         }
         set {
             this.itemsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="integer")]
+    public string parallel {
+        get {
+            return this.parallelField;
+        }
+        set {
+            this.parallelField = value;
         }
     }
     
@@ -779,6 +805,8 @@ public partial class actions {
     
     private string modeField;
     
+    private string parallelField;
+    
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("action")]
     public action[] action {
@@ -798,6 +826,17 @@ public partial class actions {
         }
         set {
             this.modeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType="integer")]
+    public string parallel {
+        get {
+            return this.parallelField;
+        }
+        set {
+            this.parallelField = value;
         }
     }
 }

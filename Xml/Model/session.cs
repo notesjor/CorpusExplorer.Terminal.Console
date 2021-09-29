@@ -12,7 +12,7 @@
 
     private sources sourcesField;
 
-    private queries queriesField;
+    private object[] queriesField;
 
     private template[] templatesField;
 
@@ -30,7 +30,10 @@
     }
 
     /// <remarks/>
-    public queries queries
+    [System.Xml.Serialization.XmlArrayItemAttribute("query", typeof(query), IsNullable = false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("queryBuilder", typeof(queryBuilder), IsNullable = false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("queryGroup", typeof(queryGroup), IsNullable = false)]
+    public object[] queries
     {
       get { return this.queriesField; }
       set { this.queriesField = value; }

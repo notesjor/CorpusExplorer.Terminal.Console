@@ -6,16 +6,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Extensions
 {
   public static class QueriesExtension
   {
-    public static IEnumerable<query> query(this queries obj) 
-      => obj?.Items?.OfType<query>() ?? new query[0];
+    public static IEnumerable<query> query(this object[] obj) 
+      => obj?.OfType<query>() ?? new query[0];
 
-    public static IEnumerable<queryGroup> queryGroup(this queries obj) 
-      => obj?.Items?.OfType<queryGroup>() ?? new queryGroup[0];
+    public static IEnumerable<queryGroup> queryGroup(this object[] obj) 
+      => obj?.OfType<queryGroup>() ?? new queryGroup[0];
 
-    public static IEnumerable<queryBuilder> queryBuilder(this queries obj) 
-      => obj?.Items?.OfType<queryBuilder>() ?? new queryBuilder[0];
+    public static IEnumerable<queryBuilder> queryBuilder(this object[] obj) 
+      => obj?.OfType<queryBuilder>() ?? new queryBuilder[0];
 
-    public static string[] GetNames(this queries obj)
+    public static string[] GetNames(this object[] obj)
     {
       var res = new List<string>();
       var q0 = obj.query();

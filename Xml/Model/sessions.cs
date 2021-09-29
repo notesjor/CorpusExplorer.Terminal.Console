@@ -14,6 +14,8 @@
 
     private string modeField;
 
+    private string parallelField;
+
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("session")]
     public session[] session
@@ -28,6 +30,14 @@
     {
       get { return this.modeField; }
       set { this.modeField = value; }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute(DataType = "integer")]
+    public string parallel
+    {
+      get { return this.parallelField; }
+      set { this.parallelField = value; }
     }
   }
 }
