@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
@@ -25,7 +27,13 @@ namespace CorpusExplorer.Sdk.Action.Abstract
       queries = ResolveFileQueriesRecursive(queries);
 
       var vm = new TextLiveSearchViewModel { Selection = selection };
-      vm.AddQuery(GetQuery(args[0], queries));
+      if (queries.Any(query => query.Contains(" ")))
+        foreach (var query in queries)
+        {
+          vm.AddQuery(GetQuery(args[0], query.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)));
+        }
+      else
+        vm.AddQuery(GetQuery(args[0], queries));
       vm.Execute();
 
       writer.WriteTable(selection.Displayname, vm.GetUniqueDataTableCsv());
