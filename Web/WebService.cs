@@ -62,8 +62,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           writer.Destroy(false);
 
           ms.Seek(0, SeekOrigin.Begin);
-          req.Response.ContentType = Mime;
-          return req.Response.Send(ms.Length, ms);
+          return req.Response.Send(ms, Mime);
         }
       }
       catch (Exception ex)
