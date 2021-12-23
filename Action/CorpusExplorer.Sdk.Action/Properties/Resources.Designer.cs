@@ -385,11 +385,20 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwit [LAYER1] [LAYER2] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
         /// </summary>
         internal static string DescKwit {
             get {
                 return ResourceManager.GetString("DescKwit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwit-n [LAYER1] [LAYER2] [minFREQ] [PRE] [POST] [WORDS] - Like kwit (but you can specificate the range [PRE] and [POST] the match - e.g. [PRE] = 3) ähnelt.
+        /// </summary>
+        internal static string DescKwitSelect {
+            get {
+                return ResourceManager.GetString("DescKwitSelect", resourceCulture);
             }
         }
         

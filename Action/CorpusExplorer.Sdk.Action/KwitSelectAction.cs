@@ -15,14 +15,15 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "kwit-n";
 
-    public string Description => "kwit-n [LAYER1] [LAYER2] [PRE] [POST] [WORDS] - Like kwit (but you can specificate the range [PRE] and [POST] the match - e.g. [PRE] = 3)";
+    public string Description => Resources.DescKwitSelect;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      if (args == null || args.Length < 5)
+      if (args == null || args.Length < 6)
         return;
 
       var queries = new List<string>(args);
+      queries.RemoveAt(0);
       queries.RemoveAt(0);
       queries.RemoveAt(0);
       var pre = int.Parse(queries[0]);
@@ -35,6 +36,7 @@ namespace CorpusExplorer.Sdk.Action
         Selection = selection,
         Layer1Displayname = args[0],
         Layer2Displayname = args[1],
+        MinFrequency = int.Parse(args[2]),
         LayerQueryPhrase = queries,
         AutoJoin = true,
         HighlightCooccurrences = false,
