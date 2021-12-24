@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -10,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   public class CrossFrequencyCorrespondingAction : IAction
   {
     public string Action => "cross-frequency-corresponding";
-    public string Description => "cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - calculates the cross-frequency based on [LAYER] and apply corresponding [LAYER2] [WORDS] filter.";
+    public string Description => Resources.DescCrossFrequencyCorresponding;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

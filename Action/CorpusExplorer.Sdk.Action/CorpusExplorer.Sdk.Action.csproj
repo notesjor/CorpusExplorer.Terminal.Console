@@ -78,7 +78,6 @@
     <Compile Include="KeywordAction.cs" />
     <Compile Include="KeywordCorrespondingAction.cs" />
     <Compile Include="KwitSelectAction.cs" />
-    <Compile Include="Metaphone3ValuesAction.cs" />
     <Compile Include="MetaSelectedAction.cs" />
     <Compile Include="MetaSelectedDomainAction.cs" />
     <Compile Include="NGramCorrespondingAction.cs" />

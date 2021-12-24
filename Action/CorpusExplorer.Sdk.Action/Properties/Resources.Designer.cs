@@ -142,6 +142,24 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - significant cooccurrences for all [LAYER1] values with correspondig [LAYER2] [WORDS] - ([ANY] = any matches [bool]). ähnelt.
+        /// </summary>
+        internal static string DescCooccurrenceCorresponding {
+            get {
+                return ResourceManager.GetString("DescCooccurrenceCorresponding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die cooccurrence-cross-full [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER] (includes all cooccurrences). ähnelt.
+        /// </summary>
+        internal static string DescCooccurrenceCrossFull {
+            get {
+                return ResourceManager.GetString("DescCooccurrenceCrossFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER]. ähnelt.
         /// </summary>
         internal static string DescCooccurrenceProfile {
@@ -174,6 +192,33 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescCrossFrequency {
             get {
                 return ResourceManager.GetString("DescCrossFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - calculates the cross-frequency based on [LAYER] and apply corresponding [LAYER2] [WORDS] filter. ähnelt.
+        /// </summary>
+        internal static string DescCrossFrequencyCorresponding {
+            get {
+                return ResourceManager.GetString("DescCrossFrequencyCorresponding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die dispersion [LAYER] [META] - calculates dispersions values of all [LAYER] values based on [META] ähnelt.
+        /// </summary>
+        internal static string DescDispersion {
+            get {
+                return ResourceManager.GetString("DescDispersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die dispersion [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter. ähnelt.
+        /// </summary>
+        internal static string DescDispersionCorresponding {
+            get {
+                return ResourceManager.GetString("DescDispersionCorresponding", resourceCulture);
             }
         }
         
@@ -318,6 +363,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescIdf {
             get {
                 return ResourceManager.GetString("DescIdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die keyword [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter. ähnelt.
+        /// </summary>
+        internal static string DescKeywordCorresponding {
+            get {
+                return ResourceManager.GetString("DescKeywordCorresponding", resourceCulture);
             }
         }
         
@@ -475,6 +529,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die ngram [N] [LAYER1] [minFREQ] [LAYER2] [ANY] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter. ähnelt.
+        /// </summary>
+        internal static string DescNGramCorresponding {
+            get {
+                return ResourceManager.GetString("DescNGramCorresponding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die ngram-select [N] [LAYER] [minFREQ] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE]. ähnelt.
         /// </summary>
         internal static string DescNgramSelect {
@@ -489,6 +552,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescPositionFrequency {
             get {
                 return ResourceManager.GetString("DescPositionFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter. ähnelt.
+        /// </summary>
+        internal static string DescPositionFrequencyCorresponding {
+            get {
+                return ResourceManager.GetString("DescPositionFrequencyCorresponding", resourceCulture);
             }
         }
         

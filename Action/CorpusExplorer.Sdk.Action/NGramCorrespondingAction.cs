@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -10,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   public class NGramCorrespondingAction : IAction
   {
     public string Action => "ngram-corresponding";
-    public string Description => "ngram [N] [LAYER1] [minFREQ] [LAYER2] [ANY] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.";
+    public string Description => Resources.DescNGramCorresponding;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -11,7 +12,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "cooccurrence-corresponding";
 
-    public string Description => "cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - significant cooccurrences for all [LAYER1] values with correspondig [LAYER2] [WORDS] - ([ANY] = any matches [bool]).";
+    public string Description => Resources.DescCooccurrenceCorresponding;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

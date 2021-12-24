@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -10,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   public class DispersionCorrespondingAction : IAction
   {
     public string Action => "dispersion-corresponding";
-    public string Description => "dispersion [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter.";
+    public string Description => Resources.DescDispersionCorresponding;
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var arguments = args.ToList();

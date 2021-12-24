@@ -378,4 +378,28 @@
   <data name="DescKwitSelect" xml:space="preserve">
     <value>kwit-n [LAYER1] [LAYER2] [minFREQ] [PRE] [POST] [WORDS] - Like kwit (but you can specificate the range [PRE] and [POST] the match - e.g. [PRE] = 3)</value>
   </data>
+  <data name="DescCooccurrenceCorresponding" xml:space="preserve">
+    <value>cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - significant cooccurrences for all [LAYER1] values with correspondig [LAYER2] [WORDS] - ([ANY] = any matches [bool]).</value>
+  </data>
+  <data name="DescCooccurrenceCrossFull" xml:space="preserve">
+    <value>cooccurrence-cross-full [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER] (includes all cooccurrences).</value>
+  </data>
+  <data name="DescCrossFrequencyCorresponding" xml:space="preserve">
+    <value>cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - calculates the cross-frequency based on [LAYER] and apply corresponding [LAYER2] [WORDS] filter.</value>
+  </data>
+  <data name="DescDispersion" xml:space="preserve">
+    <value>dispersion [LAYER] [META] - calculates dispersions values of all [LAYER] values based on [META]</value>
+  </data>
+  <data name="DescDispersionCorresponding" xml:space="preserve">
+    <value>dispersion [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter.</value>
+  </data>
+  <data name="DescKeywordCorresponding" xml:space="preserve">
+    <value>keyword [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter.</value>
+  </data>
+  <data name="DescNGramCorresponding" xml:space="preserve">
+    <value>ngram [N] [LAYER1] [minFREQ] [LAYER2] [ANY] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.</value>
+  </data>
+  <data name="DescPositionFrequencyCorresponding" xml:space="preserve">
+    <value>position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.</value>
+  </data>
 </root>

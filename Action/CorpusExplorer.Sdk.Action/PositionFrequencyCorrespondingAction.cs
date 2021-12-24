@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
@@ -11,7 +12,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "position-frequency-corresponding";
 
-    public string Description => "position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.";
+    public string Description => Resources.DescPositionFrequencyCorresponding;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
