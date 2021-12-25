@@ -86,7 +86,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     public void Run()
     {
       System.Console.Write($"SERVER {Url} ...");
-      _documentation = OpenApiHelper.ConvertToJson(AppendDefaultDocumentation(GetDocumentation()));
+      _documentation = AppendDefaultDocumentation(GetDocumentation()).ConvertToJson();
 
       var s = new Server(_ip, _port, OpenApiRoute) { Timeout = _timeout };
       s.AddEndpoint(HttpVerb.GET, "/execute/actions/", ExecuteActionsRoute);
