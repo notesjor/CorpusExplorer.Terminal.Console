@@ -391,15 +391,27 @@
     <value>dispersion [LAYER] [META] - calculates dispersions values of all [LAYER] values based on [META]</value>
   </data>
   <data name="DescDispersionCorresponding" xml:space="preserve">
-    <value>dispersion [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter.</value>
+    <value>dispersion-corresponding [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter.</value>
   </data>
   <data name="DescKeywordCorresponding" xml:space="preserve">
-    <value>keyword [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter.</value>
+    <value>keyword-corresponding [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter.</value>
   </data>
   <data name="DescNGramCorresponding" xml:space="preserve">
-    <value>ngram [N] [LAYER1] [minFREQ] [LAYER2] [ANY] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.</value>
+    <value>ngram-corresponding [N] [LAYER1] [minFREQ] [LAYER2] [ANY?] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.</value>
   </data>
   <data name="DescPositionFrequencyCorresponding" xml:space="preserve">
     <value>position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.</value>
+  </data>
+  <data name="Query" xml:space="preserve">
+	  <value>Query</value>
+  </data>
+  <data name="DescQueryCountAllTokenMatches" xml:space="preserve">
+	  <value>query-count-tokens [QUERY/FILE] - counts how many token-spans match the [QUERY]</value>
+  </data>
+  <data name="DescQueryCountDocuments" xml:space="preserve">
+	  <value>query-count-documents [QUERY/FILE] - counts how many documents match the [QUERY]</value>
+  </data>
+  <data name="DescQueryCountSentences" xml:space="preserve">
+	  <value>query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY]</value>
   </data>
 </root>

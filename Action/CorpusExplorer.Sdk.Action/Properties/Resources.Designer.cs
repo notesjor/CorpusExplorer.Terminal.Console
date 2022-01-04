@@ -214,7 +214,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die dispersion [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die dispersion-corresponding [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter. ähnelt.
         /// </summary>
         internal static string DescDispersionCorresponding {
             get {
@@ -367,7 +367,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die keyword [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die keyword-corresponding [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter. ähnelt.
         /// </summary>
         internal static string DescKeywordCorresponding {
             get {
@@ -529,7 +529,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die ngram [N] [LAYER1] [minFREQ] [LAYER2] [ANY] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die ngram-corresponding [N] [LAYER1] [minFREQ] [LAYER2] [ANY?] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter. ähnelt.
         /// </summary>
         internal static string DescNGramCorresponding {
             get {
@@ -570,6 +570,33 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescQuery {
             get {
                 return ResourceManager.GetString("DescQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die query-count-tokens [QUERY/FILE] - counts how many token-spans match the [QUERY] ähnelt.
+        /// </summary>
+        internal static string DescQueryCountAllTokenMatches {
+            get {
+                return ResourceManager.GetString("DescQueryCountAllTokenMatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die query-count-documents [QUERY/FILE] - counts how many documents match the [QUERY] ähnelt.
+        /// </summary>
+        internal static string DescQueryCountDocuments {
+            get {
+                return ResourceManager.GetString("DescQueryCountDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY] ähnelt.
+        /// </summary>
+        internal static string DescQueryCountSentences {
+            get {
+                return ResourceManager.GetString("DescQueryCountSentences", resourceCulture);
             }
         }
         
@@ -768,6 +795,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string Param {
             get {
                 return ResourceManager.GetString("Param", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Query ähnelt.
+        /// </summary>
+        internal static string Query {
+            get {
+                return ResourceManager.GetString("Query", resourceCulture);
             }
         }
         

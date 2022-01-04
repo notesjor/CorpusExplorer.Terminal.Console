@@ -1,0 +1,58 @@
+using System;
+using System.Data;
+using System.IO;
+using System.Linq;
+using CorpusExplorer.Sdk.Action.Helper;
+using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
+using CorpusExplorer.Sdk.Ecosystem.Model;
+using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
+using CorpusExplorer.Sdk.Utils.Filter;
+using CorpusExplorer.Sdk.Utils.Filter.Queries;
+
+namespace CorpusExplorer.Sdk.Action
+{
+  public class QueryCountSentencesAction : IAction
+  {
+    public string Action => "query-count-sentences";
+    public string Description => Resources.DescQueryCountSentences;
+
+    public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
+    {
+      if (args == null || args.Length < 1)
+        return;
+
+      var dt = new DataTable();
+      dt.Columns.Add(Resources.Query, typeof(string));
+      dt.Columns.Add(Resources.Frequency, typeof(double));
+
+      dt.BeginLoadData();
+      if (args[0].StartsWith("FILE:"))
+      {
+        var lines = File.ReadAllLines(args[0].Replace("FILE:", string.Empty), Configuration.Encoding);
+        foreach (var x in lines.ToDictionary(x => x, QueryParser.Parse))
+          dt.Rows.Add(x.Key, QuickQuery.CountOnSentenceLevel(selection, new[] { x.Value }));
+      }
+      else
+      {
+        var s = args[0].Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+        if (s.Length != 2)
+          return;
+
+        var query = QueryParser.Parse(args[0]);
+        if (query is FilterQueryUnsupportedParserFeature feature)
+        {
+          UnsupportedQueryParserFeatureHelper.Handle(selection, feature, args[1], writer);
+          return;
+        }
+
+        dt.Rows.Add(args[0], QuickQuery.CountOnSentenceLevel(selection, new[] { query }));
+      }
+
+      dt.EndLoadData();
+
+      writer.WriteTable(selection.Displayname, dt);
+    }
+  }
+}

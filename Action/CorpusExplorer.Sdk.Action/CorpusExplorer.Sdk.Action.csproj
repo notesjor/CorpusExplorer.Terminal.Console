@@ -121,6 +121,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="QueryAction.cs" />
+    <Compile Include="QueryCountAllTokenMatchesAction.cs" />
+    <Compile Include="QueryCountDocumentsAction.cs" />
+    <Compile Include="QueryCountSentencesAction.cs" />
     <Compile Include="QueryListAction.cs" />
     <Compile Include="SentenceCountAction.cs" />
     <Compile Include="StyleBurrowsDeltaAction.cs" />
