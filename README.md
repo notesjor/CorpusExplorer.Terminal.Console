@@ -1,3 +1,5 @@
+# Note: An English version can be found below.
+
 # CorpusExplorer.Terminal.Console (früher: CorpusExplorer-Port-R)
 Der CorpusExplorer steht neben der offiziellen GUI (http://www.corpusexplorer.de) auch als Konsolenanwendung zur Verfügung. Damit ist es möglich, aus anderen Programmen oder anderen Programmiersprachen auf Analysen/Daten des CorpusExplorers zuzugreifen. Ursprünglich wurde die Konsolen-Lösung unter dem Namen CorpusExplorer-Port-R entwickelt und sollte die Nutzung des CorpusExplorers innerhalb der Programmiersprache R ermöglichen.
 
@@ -14,17 +16,40 @@ __Einschränkung Linux/MacOS__: Gegenwärtig ist es noch nicht möglich, den Bef
 ## Grundlegendes
 Der cec.exe greift auf das CorpusExplorer-Ökosystem zurück. D.h. auch alle installierten Erweiterungen für den CorpusExplorer sind nutzbar. Rufen Sie cec.exe über die Konsole ohne Parameter auf, dann erhalten Sie alle verfügbaren Scraper, Importer, Tagger, Actions und Exporter. Erweiterungen für den CorpusExplorer finden Sie hier: http://notes.jan-oliver-ruediger.de/software/corpusexplorer-overview/corpusexplorer-v2-0/erweiterungen/
 
-Die Grundsyntax für den Konsolenaufruf lautet:
+Die Grundsyntax für verschiedene Konsolenaufruf lauten (diese werden im Folgenden noch weiter ausgeführt):
+
+Syntax-Grundidee:
 ```SHELL
-cec.exe [INPUT] [ACTION]
+cec.exe [INPUT] [ACTION] [OUTPUT]
 ```
-- Bsp. für Konsole/Shell: 
+Syntax für Annotation und Konvertierung (convert ist eine [ACTION]):
 ```SHELL
-cec.exe import#Cec6#demo.cec6 frequency3 > frequency.tsv
+cec.exe [INPUT] convert [OUTPUT]
 ```
-[INPUT] = import#Cec6#demo.cec6 / Lese das Korpus demo.cec6 im CEC6-Format ein.
-[ACTION] = frequency3 / Berechne die Frequenz (Standardwerte: POS, Lemma, Wort)
-> = Leite die Ausgabe in die Datei frequency.tsv um.
+Syntax für Filter:
+```SHELL
+cec.exe [INPUT] [QUERY] [OUTPUT]
+```
+Syntax für Analysen (Ausgabe wird in STDOUT geschrieben):
+```SHELL
+cec.exe {F:FORMAT} [INPUT] [ACTION]
+```
+Syntax für Skripting:
+```SHELL
+cec.exe FILE:[PATH]
+```
+Erweiterte Fehlerausgabe im Skript-Modus:
+```SHELL
+cec.exe DEBUG:[PATH]
+```
+Um eine interaktive SHELL zu starten
+```SHELL
+cec.exe SHELL
+```
+Um einen REST-WebService zu starten
+```SHELL
+cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}
+```
 
 ## Nutzung z. B. in Programmiersprachen
 ### Bsp. für R: 
@@ -73,6 +98,21 @@ Falls Sie keine TID-Spalte benötigen, können Sie anstelle von F: die Option FN
 cec.exe FNT:TSV import#Cec6#demo.cec6 frequency3 > frequency.tsv
 ```
 
+Verfügbare Ausgabeformate in der Standardinstallation:
+```SHELL
+F:CSV - comma separated values
+F:HTML - HTML5-document
+F:TRTD - HTML-Table Skeleton
+F:JSON - JavaScript Object Notation (JSON)
+F:JSONR - JavaScript Object Notation (rounded values)
+F:SQLDATA - SQL (data only)
+F:SQLSCHEMA - SQL (schema only)
+F:SQL - SQL (schema + data)
+F:TSV - tab separated values
+F:TSVR - tab separated values (rounded values)
+F:XML - XML-document
+```
+
 Vorteile von STDTOUT: 
 - Dieser Stream ist in allen Betriebssystemen verfügbar (Windows, Linux, MacOS). 
 - Ergebnisse können (1) direkte in der Konsole (2) in einer Datei (3) an ein aderes Programm weitergeleitet werden.
@@ -112,6 +152,38 @@ cec.exe import#Weblicht#C:/Weblicht/page01.xml|C:/webL.xml [ACTION]
 ```
 Hinweis: Einige Betriebssysteme (und Betriebssystemversionen) haben Problemen, wenn sich im Pfad Leerzeichen bedfinden. Vermeiden Sie daher soweit möglich Leerzeichen in Pfad und Dateinamen.
 
+Folgende Import-Formate stehen in der Standardinstallation zur Verfügung:
+```SHELL
+[INPUT] = import#Cec6#[FILES]
+[INPUT] = import#Bnc#[FILES]
+[INPUT] = import#Catma#[FILES]
+[INPUT] = import#ClanChildes#[FILES]
+[INPUT] = import#Conll#[FILES]
+[INPUT] = import#CoraXml08#[FILES]
+[INPUT] = import#CoraXml10#[FILES]
+[INPUT] = import#EchtzeitEngine#[FILES]
+[INPUT] = import#Cec5#[FILES]
+[INPUT] = import#Cec6Stream#[FILES]
+[INPUT] = import#CorpusWorkBench#[FILES]
+[INPUT] = import#Dewac#[FILES]
+[INPUT] = import#Dta#[FILES]
+[INPUT] = import#Dta2017#[FILES]
+[INPUT] = import#FnhdC#[FILES]
+[INPUT] = import#FolkerFln#[FILES]
+[INPUT] = import#Korap#[FILES]
+[INPUT] = import#SimpleJsonStandoff#[FILES]
+[INPUT] = import#CorpusExplorerV1toV5#[FILES]
+[INPUT] = import#Redewiedergabe#[FILES]
+[INPUT] = import#SketchEngine#[FILES]
+[INPUT] = import#Speedy#[FILES]
+[INPUT] = import#Tiger#[FILES]
+[INPUT] = import#Tlv#[FILES]
+[INPUT] = import#TreeTagger#[FILES]
+[INPUT] = import#Txm#[FILES]
+[INPUT] = import#Weblicht#[FILES]
+[INPUT] = import#OpusXces#[FILES]
+```
+
 #### [INPUT] - annotate
 Syntax für "annotate" (annotiert immer den gesamten Ordner):
 ```SHELL
@@ -123,72 +195,210 @@ Es wird empfohlen, "annotate" immer in Kombination mit den [ACTION]s "convert" o
 cec.exe annotate#Twitter#ClassicTreeTagger#Deutsch#"C:/korpus" convert ExporterCec6#"C:/korpus.cec6"
 ```
 
+Folgende Annotate-Formate stehen in der Standardinstallation zur Verfügung:
+```SHELL
+[INPUT] = annotate#Alto12#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#AnnotationPro#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Apaek#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Bawe#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Blogger#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#BundestagDrucksachen#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#BundestagPlenarprotokolle#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#BundestagDtdPlenarprotokolle#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Catma#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#ClarinContentSearch#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#ListOfScrapDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Cosmas#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Csv#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#LeipzigerWortschatz#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DigitalPlato#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Dpxc#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DortmunderChatKorpus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SlashA#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DtaBasisformat#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Dta#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Dta2017#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DwdsTei#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#EasyHashtagSeparation#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#RawMsgMsg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Epub#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Europarl#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#EuroParlUds#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#ExmaraldaExb#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#FolkerFln#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Folker#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Gutenberg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Ids#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Korap#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleJsonStandoff#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Kidko#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#KleineanfrageDe#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#NexisCom#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Cec6#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleDocxDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleHtmlDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#TextSharpPdf#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimplePdfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleRtfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#PureXmlText#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Perseus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Txt#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Pmg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#PostgreSqlDump#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#PurlOrg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#RssFeedItem#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Shakespeare#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Speedy#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Talkbank#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#P5Cal2#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#TextGrid#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Tiger#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Tsv#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Tumblr#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Twapper#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Twitter#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#TwitterStatus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Txm#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#UniversalExcel#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Weblicht#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Wet#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Wordpress#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#YouTube#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+```
+Notiz: [DIRECTORY] = Ein beliebiges Verzeichnis (alle Dateien werden verarbeitet)
+
+Folgende Tagger und Sprachpakete stehen in der Standardinstallation zur Verfügung:
+```SHELL
+[TAGGER] = ClassicTreeTagger ([LANGUAGE] = Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Spanisch)
+[TAGGER] = SimpleTreeTagger ([LANGUAGE] = Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Spanisch)
+[TAGGER] = TnTTagger ([LANGUAGE] = Deutsch, Englisch)
+[TAGGER] = RawTextTagger ([LANGUAGE] = Universal)
+[TAGGER] = OwnTreeTagger ([LANGUAGE] = Durch Skript definiert.)
+[TAGGER] = UdPipeExeTagger ([LANGUAGE] = )
+```
+Bsp.: cec.exe annotate#Dpxc#SimpleTreeTagger#Deutsch#C:\dpxc\ convert Cec6#C:\mycorpus.cec6
+
+#### [OUTPUT] - Export ([ACTION] = convert oder query)
+Wenn Sie die [ACTION]s convert oder query nutzen, erfolgt die Ausgabe in einem Korpusformat (und nicht als Tabelle). 
+```SHELL
+cec.exe import#[IMPORTER]#[FILES] convert [OUTPUT]
+cec.exe import#[IMPORTER]#[FILES] query [QUERY] [OUTPUT]
+```
+
+Folgende Ausgabe-Formate stehen in der Standardinstallation zur Verfügung:
+```SHELL
+[OUTPUT] = Cec6#[FILE]
+[OUTPUT] = Query#[FILE]
+[OUTPUT] = AnnoationPro#[FILE]
+[OUTPUT] = Catma#[FILE]
+[OUTPUT] = Conll#[FILE]
+[OUTPUT] = Cec5#[FILE]
+[OUTPUT] = CorpusWorkBench#[FILE]
+[OUTPUT] = Csv#[FILE]
+[OUTPUT] = CsvMetadataOnly#[FILE]
+[OUTPUT] = Dta#[FILE]
+[OUTPUT] = Dta2017#[FILE]
+[OUTPUT] = DwdsTei#[FILE]
+[OUTPUT] = HtmlPure#[FILE]
+[OUTPUT] = Json#[FILE]
+[OUTPUT] = Plaintext#[FILE]
+[OUTPUT] = PlaintextPureInOneFile#[FILE]
+[OUTPUT] = PlaintextPure#[FILE]
+[OUTPUT] = SketchEngine#[FILE]
+[OUTPUT] = SlashA#[FILE]
+[OUTPUT] = Speedy#[FILE]
+[OUTPUT] = Tlv#[FILE]
+[OUTPUT] = TreeTagger#[FILE]
+[OUTPUT] = Txm#[FILE]
+[OUTPUT] = Weblicht#[FILE]
+[OUTPUT] = OpusXces#[FILE]
+[OUTPUT] = Xml#[FILE]
+```
+Notiz: [FILE] = Eine beliebige Datei, in der die Ausgabe gespeichert werden soll
+Bsp.: 'convert': cec.exe import#Cec5#C:\mycorpus.cec5 convert Cec6#C:\mycorpus.cec6
+Bsp.: 'query': cec.exe import#Cec5#C:\mycorpus.cec5 query !M:Author::Jan Cec6#C:\mycorpus.cec6
+
 ### [ACTION]
 Für ACTION können folgenden Befehle genutzt werden (Argumente in [] sind verpflichtend, Argumente in {} sind optional.):
-- basic-information - Gibt grundlegende Informationen aus Token/Sätze/Dokumente
-- cluster [QUERY] [ACTION] {ARGUMENTS} - Erlaubt es einen [ACTION] über ein Cluster auszuführen. Das Cluster wird durch [QUERY] erzeugt.
-- cluster-list [QUERY] - Führt die gleiche Analyse durch wie "cluster", doch werden die Cluster als Liste ausgegeben und nicht zur weiteren Auswertung herangezogen.
-- convert [OUTPUT] - Konvertiert Korpusdaten in ein anderes Format - siehe [OUTPUT]
-- cooccurrence [LAYER] {minSIGNI} {minFREQ} - Berechnet zu allen Worten in [LAYER] alle Kookkurrenzen. Erlaubt es optional ein Minimum für die Signifikanz [minSIGNI] und für die Frequenz [minFREQ] anzugeben. Standardwerte: [minSIGNI] = 0.9 / [minFREQ] = 1
-- cooccurrence-cross [LAYER] [WORDS] - Berechne die Kreuz-Kookkurrenzen zu allen [WORDS] in [LAYER].
-- cooccurrence-cross-full [LAYER] [WORDS] - (siehe cooccurrence-cross) - Ausgabe ist mittels Duplex vervollstädigt.
-- cooccurrence-profile [LAYER] [WORD] - Berechne ein Kookkurrenz-Profil.
-- cooccurrence-select [LAYER] [WORDS] - Ermittel die Kookkurrenzen zu einem bestimmten Suchwort/Phrase.
-- corresponding [LAYER1] [LAYER2] - Gebe alle korrespondierenden Layer-Werte aus. 
-- corresponding-metaphone [LAYER1] [LAYER2] - (siehe corresponding) Layer-Werte werden mittels Metaphone3 (nur für Deutsch) berechnet.
-- cross-frequency {LAYER} - Berechnet zu allen Worten in [LAYER] die Kreuzfrequenz (Standardlayer = Wort).
-- disambiguation [LAYER] [WORD] - Disabiguierung des [WORD] auf [LAYER]
-- editdist [LAYER] - Berechnet die Edit-Distanz für alle Dokumente im [LAYER]
-- frequency1 {LAYER} - Berechnet die Frequenzen für [LAYER] (Standardlayer = Wort).
-- frequency1-raw {LAYER} - (siehe frequency1) - keine relative Frequenzen
-- frequency1-select [LAYER1] [WORDS] - Berechnet die Frequenzen für [LAYER]. Dabei werden nur die gegebenen [WORDS] gezählt (Leerzeichen getrennt). Anstelle von [WORDS] kann auch FILE:[FILE], also eine Datei mit einer Wortliste (pro Zeile ein Wort), angegeben werden - ODER - SDM:[FILE], also eine Datei mit einem SDM-Datei (Sentiment-Detection-Model).
-- frequency2 {LAYER1} {LAYER2} - Berechnet die Frequenzen über zwei Layer [LAYER1] [LAYER2] (Standardlayer = POS / Wort)
-- frequency2-raw {LAYER1} {LAYER2} - (siehe frequency2) - keine relative Frequenzen
-- frequency3 {LAYER1} {LAYER2} {LAYER3} - Berechnet die Frequenzen über drei Layer [LAYER1] [LAYER2] [LAYER3]  (Standardlayer = POS / Lemma / Wort)
-- frequency3 {LAYER1} {LAYER2} {LAYER3} - (siehe frequency3) - keine relative Frequenzen
-- get-document [GUID] {LAYER} - Gibt alle Layer-Daten für das gewünschte Dokumente (GUID) zurück (Standardlayer = Wort).
-- get-document-displaynames - Gibt alle Dokumente als GUID/Dokumentname zurück.
-- get-document-metadata [GUID] - Gibt alle Metadaten eines Dokuments (GUID) zurück.
-- get-types [LAYER] - Auflistung aller Types (ohne Frequenz) im [LAYER]
-- hash [LAYER] [ALGO] - Berechnet den Hashwert für alle Dokumente in [LAYER]. Als [ALGO] können: MD5, SHA1, SHA256 und SHA512 angegeben werden.
-- hash-roll [LAYER] - Berechnet einen Rolling-Hashwert.
-- how-many-documents - Anzahl der Dokumente
-- how-many-sentences - Anzahl der Sätze
-- how-many-tokens - Anzahl der Token
-- how-many-types [LAYER] - Anzahl der Types in [LAYER]
-- idf [META] {LAYER} - Berechnet die IDF (inverse Dokumenten Frequenz).
-- keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - Berechnet Keywords für [LAYER]. Referenz-Datei [TSV_RefFile] nötig (nutze frequency1). [COL_Token] und [COL_RelFreq] sind die Spalten in der Datei.
-- kwic-any [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER]
-- kwic-document [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Dokument vorkommen
-- kwic-first-any [LAYER] [WORD] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Das [WORD] muss in einem Dokument vorkommen plus ein beliebiges [WORDS]
-- kwic-phrase [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in exakt der gegebenen Reihenfolge vorkommen
-- kwic-sentence [LAYER] [WORDS] - KWIC-Analyse der [WORDS] (Leerzeichen getrennt) in [LAYER] - Alle [WORDS] müssen in einem Satz vorkommen
-- kwic-sig [LAYER] [WORDS] - KWIC-Analyse die wie kwic-phrase funktioniert aber zusätzliche Signifikanzdaten bietet.
-- kwit [LAYER] [WORDS] - [WORDS] = Spezielle KWIC-Analyse, die die Daten als GraphViz-DiGraph aufbereitet. Siehe: kwic-phrase
-- layer-names - Auflistung aller verfügbaren Layer
-- lda-doc-cluster [CONFIG] - Berechnet Dokument-Cluster mittels LDA.
-- lda-topics [CONFIG] - Gibt die LDA-Topics aus.
-- meta - Auflistung aller Metadaten + Token/Type/Dokument-Frequenz
-- meta-by-document - Auflistung aller Dokumente mit zugehörigen Metadaten
-- meta-categories - Auflistung aller verfügbaren Meta-Kategorien
-- metaphone [LAYER] - Ausgabe alle [LAYER] Werte als Metaphone3 (nur für Deutsch).
-- mtld [LAYER] [META] - Berechnet MTLD für den [LAYER] automatische Clusterung basierend auf [META]
-- ner [NERFILE] - Führt eine Named-Entity-Recognition mithilfe das zuvor ermittelten Wörterbuchs durch.
-- ngram [N] {LAYER} {minFREQ} - Berechnet [N]-Gramme für [LAYER] (Standardlayer = Wort). Optional: {minFREQ} = Mindestfrequenz / Standardwert: 1
-- ngram-select [N] [LAYER] [minFREQ] [WORDS] - Gibt alle [N]-Gramme für [LAYER] mit einer Mindestfrequenz [minFREQ] aus, die [WORDS] enthalten.
-- position-frequency [LAYER] [WORD] - Gibt die Links-/Rechtsfrequenz zu [WORD] in [LAYER] aus.
-- query [QUERY] - Führt eine Abfrage auf der aktuell geladenen Korpusmenge durch. Siehe [OUTPUT]
-- query-list [QUERY] [NAME] - Funktioniert wie query, nur dass das Ergebnis eine Liste mit den Ergebnissen ist und nicht ein Subkorpus.
-- reading-ease [LAYER] - Berechnet verschiedene Lesbarkeitsindices für [LAYER]
-- similarity [META] {LAYER} - Berechnet die Ähnlichkeit für [META] der Dokumente in [LAYER].
-- style-burrowsd [META1] [META2] - Stilanalyse mittels Burrows-Delta. Vergleicht zwei Metaangaben miteinander
-- style-ngram [LAYER] [META] [N] [minFREQ] - Stilanalyse mittels N-Grammen. Siehe: n-gram
-- tf [META] {LAYER} - Termfrequenz für [META] auf [LAYER]
-- tf-idf [META] {LAYER} - TF-IDF für [META] auf [LAYER]
-- token-list [LAYER] - Auflistung aller Token in [LAYER]
-- vocabulary-complexity [LAYER] - Berechnet verschiedene Vokabularkomplexitäten für [LAYER]
-- vocd [LAYER] [META] - Berechnet VOCD für [LAYER] automatische Clusterung basierend auf [META]
-
+```SHELL
+[ACTION] = basic-information - Basis-Informationen wie z. B. Token, Sätze, Dokumente
+[ACTION] = cluster [QUERY] [TASK] {ARGUMENTS} - Führt einen [TASK] für jedes Cluster aus (erzeugt durch [QUERY])
+[ACTION] = cluster-list [QUERY] - Funktioniert wie 'cluster', mit dem Unterschied, dass hier eine Liste von Dokument GUIDs zurückgegeben wird.
+[ACTION] = convert - siehe Hilfe-Abschnitt [OUTPUT] für weitere Informationen
+[ACTION] = cooccurrence [LAYER] {minSIGNI} {minFREQ} -Signifikante Kookkurrenzen für alle [LAYER] Werte
+[ACTION] = cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - Signifikante Kookkurrenzen in [LAYER1] korrespondierend gefiltert durch [LAYER2] [WORDS] - ([ANY] = any matches [bool]).
+[ACTION] = cooccurrence-cross [LAYER] [WÖRTER] - Kreuz-Kookkurrenzen für die [WÖRTER] im [LAYER].
+[ACTION] = cooccurrence-cross-full [LAYER] [WORDS] - Berechnet alle Kookkurrenzen zu [WORDS] in [LAYER] (vervollständigte Liste).
+[ACTION] = cooccurrence-profile [LAYER] [WORD] - Kookkurrenz-Profil fürr [WORD] im [LAYER].
+[ACTION] = cooccurrence-select [LAYER] [WORDS] - Signifikante Kookkurrenzen aller Werte in [LAYER]
+[ACTION] = corresponding [LAYER1] [LAYER2] - findet alle korrespondierenden Werte zweischen den LAYERn 1 & 2 (z. B. 1: Lemma / 2: Wort)
+[ACTION] = corresponding-metaphone [LAYER1] [LAYER2] - find all corresponding types betweet LAYER1 & LAYER2 (e. g. 1: Lemma / 2: Wort) based on metaphone
+[ACTION] = cross-frequency {LAYER} - Kreuz-Frequenz in [LAYER]
+[ACTION] = cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - Berechnet die Kreuz-Frequenz im [LAYER] die mit [LAYER2] [WORDS] korrespondieren.
+[ACTION] = disambiguiert [WORD] im [LAYER]
+[ACTION] = dispersion [LAYER] [META] - Berechnet die Dispersion von Werten in [LAYER] basierend auf [META]
+[ACTION] = dispersion-corresponding [LAYER1] [META] [LAYER2] [ANY] [WORDS] - Berechnet die Dispersion aller Werte aus [LAYER1] in [META] korrespondierend gefiltert mit [LAYER2] [WORDS].
+[ACTION] = editdist [LAYER] - Berechnet die Edit-Distanz aller Dokumente im [LAYER] untereinander.
+[ACTION] = frequency1 {LAYER} - Frequenzliste für [LAYER] (Voreinstellung: Wort)
+[ACTION] = frequency1-raw {LAYER} - Frequenz (ohne relative Frequenz)
+[ACTION] = frequency1-select [LAYER] [WORDS/FILE/SDM] - Berechnet die Frequenz aller [WORDS in [LAYER] = Leerzeichen getrennt [FILE] = Pro Zeile ein Token [SDM] = SDM-Datei
+[ACTION] = frequency2 {LAYER1} {LAYER2} - Frequenzliste über zwei Layer (Voreinstellung: Lemma, Wort)
+[ACTION] = frequency2-raw {LAYER1} {LAYER2} - Frequenz über zwei Layer (ohne relative Frequenz)
+[ACTION] = frequency3 {LAYER1} {LAYER2} {LAYER3} - Frequenzliste über 3 Layer (Voreinstellung: POS, Lemma, Wort)
+[ACTION] = frequency3-raw {LAYER1} {LAYER2} {LAYER3} - Frequenz über drei Layer (ohne relative Frequenz)
+[ACTION] = get-document [GUID] {LAYER} - Gibt das Dokument [GUID] von [LAYER] zurück.
+[ACTION] = get-document-displaynames - Gibt alle Dokumente mit GUID und Anzeigename zurück.
+[ACTION] = get-document-metadata [GUID] - Gibt alle Metadaten zum Dokument [GUID] zurück.
+[ACTION] = get-types [LAYER] - list all [LAYER]-values (types)
+[ACTION] = hash [LAYER] [ALGO] - Hashwert für alle Dokumente in [LAYER]. [ALGO] = MD5, SHA1, SHA256, SHA512
+[ACTION] = hash-roll [LAYER] - calculates a rolling hashsum for all documents in [LAYER].
+[ACTION] = how-many-documents - Summe aller Dokumente
+[ACTION] = how-many-sentences - Summe aller Sätze
+[ACTION] = how-many-tokens - Summe aller Token
+[ACTION] = how-many-types [LAYER] - Summe aller [LAYER]-Werte (Types)
+[ACTION] = idf [META] {LAYER} - Inverse Dokumenten-Frequenz für [META] im {LAYER} (Voreinstellung: WORT)
+[ACTION] = keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - berechnet Keyworte im [LAYER]-mit Hilfe einer Referenzlist [TSV_RefFile].
+[ACTION] = keyword [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - Berechnet Keywords (siehe [ACTION = keyword]) und wendet einen korrespondierenden Filter an.
+[ACTION] = kwic-any [LAYER] [WORDS] - KWIC für jedes Vorkommen - [WORDS] = Leerzeichen getrennt
+[ACTION] = kwic-document [LAYER] [WORDS] - [WORDS] = Leerzeichen getrennt - Ein Dokumente muss alle [WORDS] enthalten.
+[ACTION] = kwic-first-any [LAYER] [WORD] [WORDS] - KWIC erstes [WORD] dann ein beliebiges [WORDS] = Leerzeichen getrennt
+[ACTION] = ner [NERFILE] - Führt eine NER-Analyse durch und gibt auch alle Fundstellen aus.
+[ACTION] = kwic-phrase [LAYER] [WORDS] - [WORDS] = Leerzeichen getrennt - Alle [WORDS] in der angegebenen Reihenfolge.
+[ACTION] = kwic-sentence [LAYER] [WORDS] - [WORDS] = Leerzeichen getrennt - Ein Satz muss alle [WORDS] enthalten.
+[ACTION] = kwic-sig [LAYER] [WORDS] - KWIC mit Siginifkanz-Metrik - [WORDS] = Leerzeichen getrennt - [y/n] y= Ja / n = nein - zum Aktivieren des HTML-Highlights
+[ACTION] = kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Erzeugt einen KWIT-Baum. Sucht alle [WORDS] in [LAYER1] ([minFREQ] = Minimum-Frequenz) - Ausgabe in [LAYER2] - [WORDS] = Token separiert durch Leerzeichen (die Abfrage erfolgt als Phrase).
+[ACTION] = kwit-n [LAYER1] [LAYER2] [minFREQ] [PRE] [POST] [WORDS] - Funktioniert wie [ACTION = kwit], jedoch kann der Suchbereich mittels [PRE] und [POST] eingeschränkt werden.
+[ACTION] = layer-names - Auflistung aller [LAYER]-Namen
+[ACTION] = lda [CONFIG] {TOPIC-EXPORT} - [CONFIG] must be a JSON-Config file. If the file don't exists a new file will be created. Use {TOPIC-EXPORT} to export a additional topic-list.
+[ACTION] = meta - Listet alle Meta-Kategorien, Meta-Werte sowie deren Token/Type/Dokumenten-Anzahl auf.
+[ACTION] = meta-by-document - Listet alle Dokumente und deren Metadaten
+[ACTION] = meta-categories - Liste aller Meta-Kategorien
+[ACTION] = metaphone [LAYER] - convert all types (in layer) into metaphone representations.
+[ACTION] = meta-select [category_1..n] - Listet alle Meta-Kategorien, Bezeichnungen und zählt für diese Tokens/Types/Dokumente
+[ACTION] = meta-select+domain [category_1..n] - Listet alle Metadaten (Kategorien, Bezeichnungen sowie Frequenzen für Token/Type/Dokumente) - Reduziert URLs (falls vorhanden) auf die Domain.
+[ACTION] = mtld [LAYER] [META] - Berechnet MTLD für [LAYER] cluster durch [META]
+[ACTION] = ner [NERFILE] - Führt eine NER-Analyse durch
+[ACTION] = ngram [N] {LAYER} {minFREQ} - [N]Gramme basierend auf [LAYER] (Voreinstellung: Wort)
+[ACTION] = ngram [N] [LAYER1] [minFREQ] [LAYER2] [ANY] [WORDS2] - [N]-gram basierend auf [LAYER1] - korrespondierend gefiltert durch [LAYER2] [WORD2].
+[ACTION] = ngram-select [N] [LAYER] [minFREQ] [WORDS] - Alle [N]Grammes im [LAYER] die [WORDS] beinhalten.
+[ACTION] = position-frequency [LAYER1] [WORD] -links/recht-Frequenz um ein gegebenes [WORD]
+[ACTION] = position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - Links-/Rechts-Positionsfrequenz von Kollokaten zu [WORD1] in [LAYER1] + korrespondierend gefiltert mit [LAYER2] [WORDS2].
+[ACTION] = query [QUERY] - siehe Hilfe-Abschnitt [OUTPUT] für weitere Informationen
+[ACTION] = query-count-documents [QUERY/FILE] - Zählt die Dokumente auf die [QUERY] zutrifft.
+[ACTION] = query-count-sentences [QUERY/FILE] - Zählt, wieviele Sätze zum [QUERY] passen.
+[ACTION] = query-count-tokens [QUERY/FILE] - Zählt, wie häufig [QUERY] vorkommt.
+[ACTION] = query-list [QUERY] [NAME] - Funktioniert wir 'query' nur mit dem Unterschied, dass eine Liste aller [GUID]s zurückgegeben wird und kein Teilkorpus.
+[ACTION] = reading-ease {LAYER} - reading ease of {LAYER} (default: Wort)
+[ACTION] = similarity [META] {LAYER} - Ähnlichkeit von [META] basierend auf {LAYER} (Voreinstellung: WORT)
+[ACTION] = style-burrowsd [META1] [META2] - vergleicht [META1] mit [META2] basiert auf "Burrows Delta"
+[ACTION] = style-ngram [LAYER] [META] [N] [minFREQ] -Stil-Analyse basierend auf NGrammen
+[ACTION] = tf [META] {LAYER} - Term-Frequenz für [META] in {LAYER} (Voreinstellung: WORT)
+[ACTION] = tf-idf [META] {LAYER} - TF-IDF für [META] in {LAYER} (Voreinstellung: WORT)
+[ACTION] = token-list [LAYER] - Liste aller Token im [LAYER]
+[ACTION] = token-list-select [LAYER] [REGEX] - Listet alle Token in [LAYER] die zum [REGEX]-Ausdruck passen.
+[ACTION] = vocabulary-complexity {LAYER} -Vokabular Komplexität in {LAYER}
+[ACTION] = vocd [LAYER] [META] - berechnet VOCD auf [LAYER] Cluster mittels [META]
+```
 #### [ACTION] query
 Seit August 2017 nutzen alle CorpusExplorer-Terminals die selbe Abfragesyntax. D. h. Sie können auch aus der Windows-GUI Abfragen exportieren und in der Konsole nutzen.
 Beispiel der Abfragesyntax:
@@ -281,3 +491,364 @@ Erlaubt es, ein bestehendes Korpus in ein anderes Korpusformat zu konvertieren.
 ```SHELL
 cec.exe import#Cec6#"C:/korpus.cec6" convert ExporterCec6#corpusOut.cec6
 ```
+
+# ENGLISH VERSION <<< <<< <<< <<< <<< 
+
+Syntax for annotation/conversion:
+```SHELL
+cec.exe [INPUT] convert [OUTPUT]
+```
+Syntax for filtering:
+```SHELL
+cec.exe [INPUT] [QUERY] [OUTPUT]
+```
+Syntax for analytics (writes output to stdout):
+```SHELL
+cec.exe {F:FORMAT} [INPUT] [ACTION]
+```
+Syntax for analytics (writes output to file - like C:\out.xyx):
+```SHELL
+cec.exe [F:FORMAT]#"C:\out.xyx" [INPUT] [ACTION]
+```
+Syntax for scripting:
+```SHELL
+cec.exe FILE:[PATH]
+```
+More detailed scripting errors:
+```SHELL
+cec.exe DEBUG:[PATH]
+```
+To start interactive shell mode
+```SHELL
+cec.exe SHELL
+```
+To start a REST-WebService
+```SHELL
+cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}
+```
+
+### [INPUT]
+Import corpus material - direct[INPUT]:
+```SHELL
+[INPUT] = import#Cec6#[FILES]
+[INPUT] = import#Bnc#[FILES]
+[INPUT] = import#Catma#[FILES]
+[INPUT] = import#ClanChildes#[FILES]
+[INPUT] = import#Conll#[FILES]
+[INPUT] = import#CoraXml08#[FILES]
+[INPUT] = import#CoraXml10#[FILES]
+[INPUT] = import#EchtzeitEngine#[FILES]
+[INPUT] = import#Cec5#[FILES]
+[INPUT] = import#Cec6Stream#[FILES]
+[INPUT] = import#CorpusWorkBench#[FILES]
+[INPUT] = import#Dewac#[FILES]
+[INPUT] = import#Dta#[FILES]
+[INPUT] = import#Dta2017#[FILES]
+[INPUT] = import#FnhdC#[FILES]
+[INPUT] = import#FolkerFln#[FILES]
+[INPUT] = import#Korap#[FILES]
+[INPUT] = import#SimpleJsonStandoff#[FILES]
+[INPUT] = import#CorpusExplorerV1toV5#[FILES]
+[INPUT] = import#Redewiedergabe#[FILES]
+[INPUT] = import#SketchEngine#[FILES]
+[INPUT] = import#Speedy#[FILES]
+[INPUT] = import#Tiger#[FILES]
+[INPUT] = import#Tlv#[FILES]
+[INPUT] = import#TreeTagger#[FILES]
+[INPUT] = import#Txm#[FILES]
+[INPUT] = import#Weblicht#[FILES]
+[INPUT] = import#OpusXces#[FILES]
+```
+Note: [FILES] = separate files with & - merges all files before processing
+Example: cec.exe import#Cec5#C:\mycorpus1.cec5&C:\mycorpus2.cec5 convert Cec6#C:\mycorpus.cec6
+
+
+### Annotate raw text - [INPUT]:
+```SHELL
+[INPUT] = annotate#Alto12#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#AnnotationPro#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Apaek#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Bawe#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Blogger#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#BundestagDrucksachen#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#BundestagPlenarprotokolle#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#BundestagDtdPlenarprotokolle#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Catma#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#ClarinContentSearch#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#ListOfScrapDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Cosmas#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Csv#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#LeipzigerWortschatz#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DigitalPlato#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Dpxc#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DortmunderChatKorpus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SlashA#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DtaBasisformat#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Dta#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Dta2017#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#DwdsTei#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#EasyHashtagSeparation#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#RawMsgMsg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Epub#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Europarl#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#EuroParlUds#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#ExmaraldaExb#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#FolkerFln#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Folker#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Gutenberg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Ids#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Korap#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleJsonStandoff#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Kidko#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#KleineanfrageDe#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#NexisCom#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Cec6#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleDocxDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleHtmlDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#TextSharpPdf#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimplePdfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SimpleRtfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#PureXmlText#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Perseus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Txt#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Pmg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#PostgreSqlDump#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#PurlOrg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#RssFeedItem#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Shakespeare#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Speedy#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Talkbank#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#P5Cal2#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#TextGrid#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Tiger#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Tsv#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Tumblr#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Twapper#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Twitter#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#TwitterStatus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Txm#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#UniversalExcel#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Weblicht#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Wet#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#Wordpress#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#YouTube#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+```
+Note: [DIRECTORY] = any directory you like - all files will be processed
+#### [TAGGER] & [LANGUAGE]:
+```SHELL
+[TAGGER] = ClassicTreeTagger ([LANGUAGE] = Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Spanisch)
+[TAGGER] = SimpleTreeTagger ([LANGUAGE] = Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Spanisch)
+[TAGGER] = TnTTagger ([LANGUAGE] = Deutsch, Englisch)
+[TAGGER] = RawTextTagger ([LANGUAGE] = Universal)
+[TAGGER] = OwnTreeTagger ([LANGUAGE] = Durch Skript definiert.)
+[TAGGER] = UdPipeExeTagger ([LANGUAGE] = )
+```
+Example: cec.exe annotate#Dpxc#SimpleTreeTagger#Deutsch#C:\dpxc\ convert Cec6#C:\mycorpus.cec6
+
+
+### [OUTPUT]
+
+[OUTPUT-EXPORTER] - for query or convert:
+```SHELL
+[OUTPUT] = Cec6#[FILE]
+[OUTPUT] = Query#[FILE]
+[OUTPUT] = AnnoationPro#[FILE]
+[OUTPUT] = Catma#[FILE]
+[OUTPUT] = Conll#[FILE]
+[OUTPUT] = Cec5#[FILE]
+[OUTPUT] = CorpusWorkBench#[FILE]
+[OUTPUT] = Csv#[FILE]
+[OUTPUT] = CsvMetadataOnly#[FILE]
+[OUTPUT] = Dta#[FILE]
+[OUTPUT] = Dta2017#[FILE]
+[OUTPUT] = DwdsTei#[FILE]
+[OUTPUT] = HtmlPure#[FILE]
+[OUTPUT] = Json#[FILE]
+[OUTPUT] = Plaintext#[FILE]
+[OUTPUT] = PlaintextPureInOneFile#[FILE]
+[OUTPUT] = PlaintextPure#[FILE]
+[OUTPUT] = SketchEngine#[FILE]
+[OUTPUT] = SlashA#[FILE]
+[OUTPUT] = Speedy#[FILE]
+[OUTPUT] = Tlv#[FILE]
+[OUTPUT] = TreeTagger#[FILE]
+[OUTPUT] = Txm#[FILE]
+[OUTPUT] = Weblicht#[FILE]
+[OUTPUT] = OpusXces#[FILE]
+[OUTPUT] = Xml#[FILE]
+```
+Note: [FILE] = any file you like to store the output
+Example 'convert': cec.exe import#Cec5#C:\mycorpus.cec5 convert Cec6#C:\mycorpus.cec6
+Example 'query': cec.exe import#Cec5#C:\mycorpus.cec5 query !M:Author::Jan Cec6#C:\mycorpus.cec6
+
+### [QUERY]:
+A preceding ! inverts the entire query
+- First character:
+	- M = Metadata
+	- T = (Full)Text
+	- X = Extended Features
+	- followed by configuration (see below), the :: separator and the values
+- Second character [OPERATOR] 
+	- (if you choose M):
+		-  ? = regEx
+		-  : = contains (case sensitive)
+		-  . = contains (not case sensitive)
+		-  = = match exact (case sensitive)
+		-  - = match exact (not case sensitive) 
+		-  ! = is empty
+		-  ( = starts with (case sensitive)
+		-  ) = ends with (case sensitive)
+		If you have chosen M - enter the name of the meta category (see [ACTION] = meta-categories). 
+		Example (query only): !M:Author::Jan - Finds all documents where "Jan" isn't an author 
+		Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query !M:Author::Jan Cec6#C:\mycorpus.cec6
+	- (if you choose T):
+		- ~ = any match
+		- - = all in one document
+		- = = all in one sentence
+		- § = exact phrase
+		- ? = regEx value 
+		- F = regEx fulltext-search (very slow) 
+		- 1 = first plus any other match
+		If you have chosen T - enter the layer name (see [ACTION] = layer-names) 
+		Example (query only): T§Wort::OpenSource;Software - Finds all documents with the exact phrase "OpensSource Software" 
+		Example (in action): cec.exe import#Cec6#C:\mycorpus.cec6 query T§Wort::OpenSource;Software Cec6#C:\mycorpus.cec6 
+		Note 1: If you use several words in a T-query, then separate them with ';'
+		Note 2: You can also use a query file (*.ceusd) - use the FILE: prefix | Example: cec.exe import#Cec6#C:\mycorpus.cec6 query FILE:C:\query.ceusd Cec6#C:\mycorpus.cec6
+	- (if you choose X):
+		-  R = random selection
+		If you use XR for random selection you need to specify the document count
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 query XR::100 frequency1 Wort | Note 4: XR will generate two outputs - the regular and the inverted output.
+		-  S = auto split by meta-data (use cluster for auto split)
+		If you have chosen XS - enter the name of the meta category (see [ACTION] = meta-categories)
+	- Enter the separator :: followed by the query
+		- If you use XS you must specify the meta data type - TEXT, INT, FLOAT or DATE
+		Note 5: XS will generate multiple outputs - based on clusters.
+		TEXT generates for every entry a separate snapshot
+		Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSAuthor::TEXT frequency1 Wort
+		INT / FLOAT you need to set up a [CLUSTERSIZE]
+		Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSYear::INT;10 Cec6#C:\mycorpus.cec6
+		DATE;C;[CLUSTERSIZE] - generates [CLUSTERSIZE] clusters.
+		Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;C;10 Cec6#C:\mycorpus.cec6
+		- DATE;CEN = Century-Cluster / DATE;DEC = Decate-Cluster / DATE;Y = Year-Cluster
+		- DATE;YW = Week-Cluster / DATE;YM = Year/Month-Cluster / DATE;YMD = Year/Month/Day-Cluster
+		- DATE;YMDH = Year/Month/Day/Hour-Cluster / DATE;YMDHM = Year/Month/Day/Hour/Minute-Cluster / ALL = Every-Time-Cluster
+		- Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::DATE;YMD Cec6#C:\mycorpus.cec6
+		- WINDOW = Add WINDOW + SIZE as an prefix for each cluster argument to enable the rolling window feature
+		- Example: cec.exe import#Cec6#C:\mycorpus.cec6 cluster XSDate::WINDOW7;DATE;YMD Cec6#C:\mycorpus.cec6
+
+
+### [ACTION] 
+
+Most actions accept arguments. [ARG] is a required argument. {ARG} is an optional argument.
+```SHELL
+[ACTION] = basic-information - basic information tokens/sentences/documents
+[ACTION] = cluster [QUERY] [TASK] {ARGUMENTS} - executes a [TASK] for every cluster (generated by [QUERY])
+[ACTION] = cluster-list [QUERY] - works like cluster but returns clusters with document GUIDs.
+[ACTION] = convert - see help section [OUTPUT] for more information
+[ACTION] = cooccurrence [LAYER] {minSIGNI} {minFREQ} - significant cooccurrences for all [LAYER] values
+[ACTION] = cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - significant cooccurrences for all [LAYER1] values with correspondig [LAYER2] [WORDS] - ([ANY] = any matches [bool]).
+[ACTION] = cooccurrence-cross [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER].
+[ACTION] = cooccurrence-cross-full [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER] (includes all cooccurrences).
+[ACTION] = cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER].
+[ACTION] = cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.
+[ACTION] = corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 & LAYER2 (e. g. 1: Lemma / 2: Wort)
+[ACTION] = corresponding-metaphone [LAYER1] [LAYER2] - find all corresponding types betweet LAYER1 & LAYER2 (e. g. 1: Lemma / 2: Wort) based on metaphone
+[ACTION] = cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER]
+[ACTION] = cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - calculates the cross-frequency based on [LAYER] and apply corresponding [LAYER2] [WORDS] filter.
+[ACTION] = disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER].
+[ACTION] = dispersion [LAYER] [META] - calculates dispersions values of all [LAYER] values based on [META]
+[ACTION] = dispersion-corresponding [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter.
+[ACTION] = editdist [LAYER] - caculates the edit distance for all (to all) documents in [LAYER]
+[ACTION] = frequency1 {LAYER} - count token frequency on {LAYER} (default: Wort)
+[ACTION] = frequency1-raw {LAYER} - count token frequency on [LAYER] (no rel. frequency)
+[ACTION] = frequency1-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File
+[ACTION] = frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers (default: Lemma, Wort)
+[ACTION] = frequency2-raw {LAYER1} {LAYER2} - count token frequency on 2 layers (no rel. frequency)
+[ACTION] = frequency3 {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (default: POS, Lemma, Wort)
+[ACTION] = frequency3-raw {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (no rel. frequency)
+[ACTION] = get-document [GUID] {LAYER} - get all layer-information for specific [GUID] document. Use {LAYER} to filter output.
+[ACTION] = get-document-displaynames - get all document GUID / display-names.
+[ACTION] = get-document-metadata [GUID] - get all metadata for specific [GUID] document.
+[ACTION] = get-types [LAYER] - list all [LAYER]-values (types)
+[ACTION] = hash [LAYER] [ALGO] - calculates a hashsum for all documents in [LAYER]. [ALGO] = MD5, SHA1, SHA256, SHA512
+[ACTION] = hash-roll [LAYER] - calculates a rolling hashsum for all documents in [LAYER].
+[ACTION] = how-many-documents - sum of all documents
+[ACTION] = how-many-sentences - sum of all sentences
+[ACTION] = how-many-tokens - sum of all tokens
+[ACTION] = how-many-types [LAYER] - sum of all [LAYER]-values (types)
+[ACTION] = idf [META] {LAYER} - inverse document frequency for [META] on {LAYER} (default: WORT)
+[ACTION] = keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile].
+[ACTION] = keyword-corresponding [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter.
+[ACTION] = kwic-any [LAYER] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens
+[ACTION] = kwic-document [LAYER] [WORDS] - [WORDS] = space separated tokens - a document must contains all token
+[ACTION] = kwic-first-any [LAYER] [WORD] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)
+[ACTION] = ner [NERFILE] - performs a named entity recorgnition + kwic-resuls
+[ACTION] = kwic-phrase [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order
+[ACTION] = kwic-sentence [LAYER] [WORDS] - [WORDS] = space separated tokens - a sentence must contains all token
+[ACTION] = kwic-sig [LAYER] [y/n] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens - Enable HTML-Highlight [y/n]
+[ACTION] = kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order
+[ACTION] = kwit-n [LAYER1] [LAYER2] [minFREQ] [PRE] [POST] [WORDS] - Like kwit (but you can specificate the range [PRE] and [POST] the match - e.g. [PRE] = 3)
+[ACTION] = layer-names - all available names for [LAYER]
+[ACTION] = lda [CONFIG] {TOPIC-EXPORT} - [CONFIG] must be a JSON-Config file. If the file don't exists a new file will be created. Use {TOPIC-EXPORT} to export a additional topic-list.
+[ACTION] = meta - lists all meta-categories, labels and token/type/document-count
+[ACTION] = meta-by-document - list all documents with meta-data
+[ACTION] = meta-categories - all available names for meta categories
+[ACTION] = metaphone [LAYER] - convert all types (in layer) into metaphone representations.
+[ACTION] = meta-select [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n]
+[ACTION] = meta-select+domain [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n] (reduces all URLs > domain name only)
+[ACTION] = mtld [LAYER] [META] - calculates MTLD for [LAYER] clustered by [META]
+[ACTION] = ner [NERFILE] - performs a named entity recorgnition
+[ACTION] = ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on {LAYER} (default: Wort)
+[ACTION] = ngram-corresponding [N] [LAYER1] [minFREQ] [LAYER2] [ANY?] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.
+[ACTION] = ngram-select [N] [LAYER] [minFREQ] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE].
+[ACTION] = position-frequency [LAYER1] [WORD] - left/right position of words around [WORD]
+[ACTION] = position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.
+[ACTION] = query [QUERY] - see help section [OUTPUT] for more information
+[ACTION] = query-count-documents [QUERY/FILE] - counts how many documents match the [QUERY]
+[ACTION] = query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY]
+[ACTION] = query-count-tokens [QUERY/FILE] - counts how many token-spans match the [QUERY]
+[ACTION] = query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.
+[ACTION] = reading-ease {LAYER} - reading ease of {LAYER} (default: Wort)
+[ACTION] = similarity [META] {LAYER} - [META] similarity based on {LAYER} (default: WORT)
+[ACTION] = style-burrowsd [META1] [META2] - compares [META1] with [META2] based on "Burrows Delta"
+[ACTION] = style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram
+[ACTION] = tf [META] {LAYER} - term frequency for [META] on {LAYER} (default: WORT)
+[ACTION] = tf-idf [META] {LAYER} - term frequency * inverse term frequency for [META] on {LAYER} (default: WORT)
+[ACTION] = token-list [LAYER] - list of all tokens in [LAYER]
+[ACTION] = token-list-select [LAYER] [REGEX] - list of all tokens in [LAYER] who are matching the [REGEX]-expression
+[ACTION] = vocabulary-complexity {LAYER} - vocabulary complexity in {LAYER}
+[ACTION] = vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]
+```
+Example: cec.exe import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
+
+
+### [SCRIPTING] 
+
+All actionss above can be stored in a file to build up a automatic process.
+In this case it's recommended to redirect the [ACTION]-output to a file and not to stdout
+Example: import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort > output.csv
+
+
+### [F:FORMAT]
+
+If you use [ACTION] or the scripting-mode [FILE: / DEBUG:], you can change the output format.
+You need to set one of the following tags as first parameter:
+```SHELL
+F:CSV - comma separated values
+F:HTML - HTML5-document
+F:TRTD - HTML-Table Skeleton
+F:JSON - JavaScript Object Notation (JSON)
+F:JSONR - JavaScript Object Notation (rounded values)
+F:SQLDATA - SQL (data only)
+F:SQLSCHEMA - SQL (schema only)
+F:SQL - SQL (schema + data)
+F:TSV - tab separated values
+F:TSVR - tab separated values (rounded values)
+F:XML - XML-document
+```
+
+Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
+Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)
+Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 > C:\out.csv)
+Use the optimized direct way, by adding the output-path to the [F:FORMAT]-option
+Example: cec.exe F:CSV#C:\out.tsv import#Cec6#C:\mycorpus.cec6 frequency1
