@@ -75,7 +75,13 @@ namespace CorpusExplorer.Terminal.Console
     {
       if (args == null || args.Length == 0)
       {
-        PrintHelp();
+        PrintHelp(true);
+        return;
+      }
+
+      if (args.Length == 1 && args[0] == "--github")
+      {
+        PrintDocs();
         return;
       }
 
@@ -124,6 +130,15 @@ namespace CorpusExplorer.Terminal.Console
 
       ExecuteDirect(args);
       _writer.Destroy();
+    }
+
+    private static void PrintDocs()
+    {
+      Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+      PrintHelp(false);
+      System.Console.WriteLine("---");
+      Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
+      PrintHelp(false);
     }
 
     private static void ExecuteWebservice(string[] args)
@@ -197,7 +212,7 @@ namespace CorpusExplorer.Terminal.Console
           case "exit":
             return;
           case "help":
-            PrintHelp();
+            PrintHelp(true);
             break;
           default:
             if (command.StartsWith("SAVE:"))
@@ -236,9 +251,9 @@ namespace CorpusExplorer.Terminal.Console
       Execute(args);
     }
 
-    private static void PrintHelp()
+    private static void PrintHelp(bool clear)
     {
-      ConsoleHelper.PrintHeader();
+      ConsoleHelper.PrintHeader(clear);
       System.Console.WriteLine(Resources.HelpModes);
       System.Console.WriteLine(Resources.HelpImportHeader);
 
