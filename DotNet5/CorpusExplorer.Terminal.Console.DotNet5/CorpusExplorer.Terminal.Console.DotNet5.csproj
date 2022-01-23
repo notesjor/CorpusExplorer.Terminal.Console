@@ -84,6 +84,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Telerik.Windows.Documents">
+      <HintPath>..\..\..\..\Telerik\Telerik UI for WPF R1 2022\Binaries.NoXaml\WPF45\Telerik.Windows.Documents.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Core">
+      <HintPath>..\..\..\..\Telerik\Telerik UI for WPF R1 2022\Binaries.NoXaml\WPF45\Telerik.Windows.Documents.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Fixed">
+      <HintPath>..\..\..\..\Telerik\Telerik UI for WPF R1 2022\Binaries.NoXaml\WPF45\Telerik.Windows.Documents.Fixed.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Flow">
+      <HintPath>..\..\..\..\Telerik\Telerik UI for WPF R1 2022\Binaries.NoXaml\WPF45\Telerik.Windows.Documents.Flow.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Flow.FormatProviders.Pdf">
+      <HintPath>..\..\..\..\Telerik\Telerik UI for WPF R1 2022\Binaries.NoXaml\WPF45\Telerik.Windows.Documents.Flow.FormatProviders.Pdf.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
