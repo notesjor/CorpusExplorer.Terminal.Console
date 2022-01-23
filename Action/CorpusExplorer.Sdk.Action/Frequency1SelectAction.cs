@@ -20,7 +20,7 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new Frequency1LayerViewModel {Selection = selection};
+      var vm = new Frequency1LayerViewModel { Selection = selection };
       if (args == null || args.Length < 1)
         return;
 
@@ -45,11 +45,11 @@ namespace CorpusExplorer.Sdk.Action
           ExecuteSdmFileQuery(selection.Displayname, writer, vm, div, hsh.ToArray()[0].Replace("SDM:", ""));
           break;
         default:
-        {
-          if (hsh.Count >= 1)
-            ExecuteSimpleQuery(selection.Displayname, writer, vm, div, hsh);
-          break;
-        }
+          {
+            if (hsh.Count >= 1)
+              ExecuteSimpleQuery(selection.Displayname, writer, vm, div, hsh);
+            break;
+          }
       }
     }
 
@@ -68,7 +68,7 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var line in lines)
       {
-        if (!vm.Frequency.ContainsKey(line)) 
+        if (!vm.Frequency.ContainsKey(line))
           continue;
 
         var sum = vm.Frequency[line];
@@ -95,7 +95,7 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var line in lines)
       {
-        var split = line.Split(new[] {"\t"}, StringSplitOptions.RemoveEmptyEntries);
+        var split = line.Split(new[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
         if (split.Length < 2)
           continue;
 
@@ -131,7 +131,7 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var line in lines)
       {
-        var split = line.Split(new[] {"\t"}, StringSplitOptions.RemoveEmptyEntries);
+        var split = line.Split(new[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
         if (split.Length != 3)
           continue;
 
