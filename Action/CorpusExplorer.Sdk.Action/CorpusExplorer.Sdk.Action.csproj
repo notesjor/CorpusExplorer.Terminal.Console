@@ -126,6 +126,7 @@
     <Compile Include="QueryCountSentencesAction.cs" />
     <Compile Include="QueryListAction.cs" />
     <Compile Include="SentenceCountAction.cs" />
+    <Compile Include="SizeAction.cs" />
     <Compile Include="StyleBurrowsDeltaAction.cs" />
     <Compile Include="StyleNgramAction.cs" />
     <Compile Include="TermFrequencyInverseDocumentFrequencyAction.cs" />
