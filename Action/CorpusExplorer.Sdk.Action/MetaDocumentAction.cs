@@ -15,7 +15,9 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var columns = selection.GetDocumentMetadataPrototypeOnlyPropertiesAndTypes().ToArray();
+      var columns = selection.GetDocumentMetadataPrototypeOnlyPropertiesAndTypes();
+      if (columns.ContainsKey(Resources.Guid))
+        columns.Remove(Resources.Guid);
 
       var dt = new DataTable();
       dt.Columns.Add(Resources.Guid, typeof(string));
@@ -25,7 +27,7 @@ namespace CorpusExplorer.Sdk.Action
       dt.BeginLoadData();
       foreach (var pair in selection.DocumentMetadata)
       {
-        var items = new List<object> {pair.Key.ToString("N")};
+        var items = new List<object> { pair.Key.ToString("N") };
         items.AddRange(columns.Select(column => pair.Value.ContainsKey(column.Key) ? pair.Value[column.Key] : null));
         dt.Rows.Add(items.ToArray());
       }
