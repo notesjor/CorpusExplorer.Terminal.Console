@@ -180,6 +180,9 @@
   <data name="DescCooccurrenceSelect" xml:space="preserve">
     <value>cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.</value>
   </data>
+  <data name="DescCooccurrencePolarisation" xml:space="preserve">
+    <value>cooccurrence-polarisation [LAYER] [TOKEN_A] [TOKEN_B] - significant cooccurrence polarisation for [LAYER] between [TOKEN_A] and [TOKEN_B].</value>
+  </data>
   <data name="DescCrossFrequency" xml:space="preserve">
     <value>cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER]</value>
   </data>
@@ -413,5 +416,8 @@
   </data>
   <data name="DescQueryCountSentences" xml:space="preserve">
 	  <value>query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY]</value>
+  </data>
+  <data name="Cooccurrence" xml:space="preserve">
+    <value>Co-occurrence</value>
   </data>
 </root>

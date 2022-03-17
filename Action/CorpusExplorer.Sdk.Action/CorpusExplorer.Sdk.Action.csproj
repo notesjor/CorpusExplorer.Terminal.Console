@@ -63,6 +63,8 @@
     <Compile Include="CooccurrenceCorrespondingAction.cs" />
     <Compile Include="CooccurrenceCrossAction.cs" />
     <Compile Include="CooccurrenceCrossFullAction.cs" />
+    <Compile Include="CooccurrencePolarisationAction.cs" />
+    <Compile Include="CooccurrenceSelectedCorrespondingAction.cs" />
     <Compile Include="CorrespondingValuesAction.cs" />
     <Compile Include="CrossFrequencyCorrespondingAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />

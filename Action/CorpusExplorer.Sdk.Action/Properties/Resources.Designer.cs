@@ -79,6 +79,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Co-occurrence ähnelt.
+        /// </summary>
+        internal static string Cooccurrence {
+            get {
+                return ResourceManager.GetString("Cooccurrence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 &amp; LAYER2 (e. g. 1: Lemma / 2: Wort) ähnelt.
         /// </summary>
         internal static string CorrespondingValuesActionDescription {
@@ -156,6 +165,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescCooccurrenceCrossFull {
             get {
                 return ResourceManager.GetString("DescCooccurrenceCrossFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die cooccurrence-polarisation [LAYER] [TOKEN_A] [TOKEN_B] - significant cooccurrence polarisation for [LAYER] between [TOKEN_A] and [TOKEN_B]. ähnelt.
+        /// </summary>
+        internal static string DescCooccurrencePolarisation {
+            get {
+                return ResourceManager.GetString("DescCooccurrencePolarisation", resourceCulture);
             }
         }
         
