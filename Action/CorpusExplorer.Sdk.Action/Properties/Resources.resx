@@ -420,4 +420,13 @@
   <data name="Cooccurrence" xml:space="preserve">
     <value>Co-occurrence</value>
   </data>
+  <data name="NGram" xml:space="preserve">
+    <value>N-Gram</value>
+  </data>
+  <data name="Token" xml:space="preserve">
+    <value>Token</value>
+  </data>
+  <data name="Rank" xml:space="preserve">
+    <value>Rank</value>
+  </data>
 </root>

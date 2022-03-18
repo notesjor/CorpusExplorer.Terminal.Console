@@ -799,6 +799,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die N-Gram ähnelt.
+        /// </summary>
+        internal static string NGram {
+            get {
+                return ResourceManager.GetString("NGram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die OTHER ähnelt.
         /// </summary>
         internal static string Other {
@@ -822,6 +831,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string Query {
             get {
                 return ResourceManager.GetString("Query", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Rank ähnelt.
+        /// </summary>
+        internal static string Rank {
+            get {
+                return ResourceManager.GetString("Rank", resourceCulture);
             }
         }
         
@@ -867,6 +885,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string ToDR {
             get {
                 return ResourceManager.GetString("ToDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Token ähnelt.
+        /// </summary>
+        internal static string Token {
+            get {
+                return ResourceManager.GetString("Token", resourceCulture);
             }
         }
         
