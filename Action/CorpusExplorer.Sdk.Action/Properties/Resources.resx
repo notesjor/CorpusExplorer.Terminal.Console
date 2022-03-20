@@ -429,4 +429,7 @@
   <data name="Rank" xml:space="preserve">
     <value>Rank</value>
   </data>
+  <data name="DescCooccurrenceSelectedCorresponding" xml:space="preserve">
+    <value>cooccurrence-select-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - significant cooccurrences for [WORD1] in [LAYER] values - with [LAYER2] [WORDS2] correspondig values.</value>
+  </data>
 </root>

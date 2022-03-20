@@ -13,7 +13,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "cooccurrence-select-corresponding";
 
-    public string Description => Resources.DescCooccurrenceSelect;
+    public string Description => Resources.DescCooccurrenceSelectedCorresponding;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

@@ -205,6 +205,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die cooccurrence-select-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - significant cooccurrences for [WORD1] in [LAYER] values - with [LAYER2] [WORDS2] correspondig values. ähnelt.
+        /// </summary>
+        internal static string DescCooccurrenceSelectedCorresponding {
+            get {
+                return ResourceManager.GetString("DescCooccurrenceSelectedCorresponding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER] ähnelt.
         /// </summary>
         internal static string DescCrossFrequency {

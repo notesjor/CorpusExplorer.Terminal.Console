@@ -988,10 +988,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static string OutputPathBuilder(string path, string scriptFilename, string corpusName, string selectionName, string action)
     {
       corpusName = overrideCorpusName ?? corpusName;
-      var res = path.Replace("{all}", "{script}_{corpus}_{selection}_{action}")
+      var res = path.Replace("{all}", "{script}_{corpus}_{query}_{action}")
                     .Replace("{script}", scriptFilename)
                     .Replace("{corpus}", corpusName)
                     .Replace("{selection}", selectionName == "*" ? "ALL" : selectionName)
+					.Replace("{query}", selectionName == "*" ? "ALL" : selectionName) // früher {selection} - {query} ist eingängiger (beides unterstützt)
                     .Replace("{action}", action)
                     .EnsureFileName();
       var dir = Path.GetDirectoryName(res);
