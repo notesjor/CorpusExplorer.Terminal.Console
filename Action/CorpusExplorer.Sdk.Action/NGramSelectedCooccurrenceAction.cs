@@ -42,17 +42,18 @@ namespace CorpusExplorer.Sdk.Action
       var dt = new DataTable();
       dt.Columns.Add(Resources.NGram, typeof(string));
 
-      var max = block.WeightedNgrams.Keys.Max(x => x.Length);
+      var max = block.NgramsWeighted[0].Key.Length;
       for(var cnt = 1; cnt <= max; cnt++)
       {
         dt.Columns.Add($"{Resources.Token} ({cnt})", typeof(string));
         dt.Columns.Add($"{Resources.Rank} ({cnt})", typeof(byte));
       }
       dt.Columns.Add(Resources.Frequency, typeof(double));
-      dt.Columns.Add(Resources.Significance, typeof(double));
+      dt.Columns.Add(Resources.Significance + " (max.)", typeof(double));
+      dt.Columns.Add(Resources.Significance + " (sum)", typeof(double));
 
       dt.BeginLoadData();
-      foreach (var x in block.WeightedNgrams)
+      foreach (var x in block.NgramsWeighted)
       {
         var data = new List<object> { string.Join(" ", x.Key.Select(y => y.Key)) };
         foreach (var y in x.Key)
@@ -63,6 +64,7 @@ namespace CorpusExplorer.Sdk.Action
 
         data.Add(x.Value[0]);
         data.Add(x.Value[1]);
+        data.Add(x.Value[2]);
         dt.Rows.Add(data.ToArray());
       }
       dt.EndLoadData();
