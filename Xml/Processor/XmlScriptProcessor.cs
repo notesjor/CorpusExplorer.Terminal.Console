@@ -926,7 +926,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static Selection[] GenerateSelections_RandomSplit(Selection selection, IEnumerable<object> values)
     {
       var block = selection.CreateBlock<RandomSelectionBlock>();
-      block.DocumentCount = int.Parse(values.First().ToString());
+      block.DocumentMaxCount = int.Parse(values.First().ToString());
       block.Calculate();
       return new[] { block.RandomSelection, block.RandomInvertSelection };
     }

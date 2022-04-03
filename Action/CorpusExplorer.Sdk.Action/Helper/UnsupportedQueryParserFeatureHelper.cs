@@ -31,11 +31,15 @@ namespace CorpusExplorer.Sdk.Action.Helper
       var value = values[0].ToString();
 
       if (value.EndsWith("%%%"))
-        block.DocumentProMillion = double.Parse(value.Replace("%%%", ""));
+        block.DocumentMaxProMillion = double.Parse(value.Replace("%%%", ""));
       else if (value.EndsWith("%"))
-        block.DocumentPercent = double.Parse(value.Replace("%", ""));
+        block.DocumentMaxPercent = double.Parse(value.Replace("%", ""));
+      else if (value.EndsWith("T"))
+        block.TokenMax = long.Parse(value.Replace("T", ""));
+      else if (value.EndsWith("TTT"))
+        block.TokenMax = (long)(double.Parse(value.Replace("TTT", "")) * 1000000);
       else
-        block.DocumentCount = int.Parse(value);
+        block.DocumentMaxCount = int.Parse(value);
 
       block.Calculate();
 
