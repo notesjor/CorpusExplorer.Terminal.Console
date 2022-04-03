@@ -88,7 +88,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
 
     private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
     {
-      var tmp = fileOrDirectory.Split(new[] {"|", "\""}, StringSplitOptions.RemoveEmptyEntries);
+      var tmp = fileOrDirectory.Split(new[] {";", "\""}, StringSplitOptions.RemoveEmptyEntries);
       var files = new List<string>();
       foreach (var x in tmp)
         if (x.IsDirectory())

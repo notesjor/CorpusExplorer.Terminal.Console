@@ -42,8 +42,10 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     ///   Verarbeitete ein CEScript
     /// </summary>
     /// <param name="path">Pfad des CEScript</param>
-    public static void Process(string path)
+    /// <param name="debug">Sollen zusätzliche Debug-Infos ausgegeben werden?</param>
+    public static void Process(string path, bool debug)
     {
+      _debug = debug;
       _terminal = CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
       _errorLog = path + ".log";
 
@@ -64,7 +66,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       ConsoleHelper.PrintHeader();
 
       ApplyConfigurationHead(script.head);
-      
+
       Parallel.ForEach(script.sessions.session,
                        !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
                          ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
@@ -88,7 +90,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static void ApplyConfigurationHead(object[] head)
     {
       var configs = head.config();
-      if (configs == null) 
+      if (configs == null)
         return;
 
       foreach (var config in configs)
@@ -106,7 +108,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             {
               case "current":
                 Configuration.Cache = new CacheStrategyCurrentSelection();
-                break; 
+                break;
               case "disable":
                 Configuration.Cache = new CacheStrategyDisableCaching();
                 break;
@@ -926,7 +928,18 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static Selection[] GenerateSelections_RandomSplit(Selection selection, IEnumerable<object> values)
     {
       var block = selection.CreateBlock<RandomSelectionBlock>();
-      block.DocumentMaxCount = int.Parse(values.First().ToString());
+      var number = values.First().ToString();
+      if (number.EndsWith("%%%"))
+        block.DocumentMaxProMillion = double.Parse(number.Replace("%%%", ""));
+      else if (number.EndsWith("%"))
+        block.DocumentMaxPercent = double.Parse(number.Replace("%", ""));
+      else if (number.EndsWith("TTT"))
+        block.TokenMax = (long)(double.Parse(number.Replace("TTT", "")) * 1000000);
+      else if (number.EndsWith("T"))
+        block.TokenMax = long.Parse(number.Replace("T", ""));
+      else
+        block.DocumentMaxCount = int.Parse(number);
+
       block.Calculate();
       return new[] { block.RandomSelection, block.RandomInvertSelection };
     }
@@ -992,7 +1005,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     .Replace("{script}", scriptFilename)
                     .Replace("{corpus}", corpusName)
                     .Replace("{selection}", selectionName == "*" ? "ALL" : selectionName)
-					.Replace("{query}", selectionName == "*" ? "ALL" : selectionName) // früher {selection} - {query} ist eingängiger (beides unterstützt)
+          .Replace("{query}", selectionName == "*" ? "ALL" : selectionName) // früher {selection} - {query} ist eingängiger (beides unterstützt)
                     .Replace("{action}", action)
                     .EnsureFileName();
       var dir = Path.GetDirectoryName(res);
@@ -1003,6 +1016,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     }
 
     private static object _newProjectLock = new object();
+    private static bool _debug;
 
     /// <summary>
     ///   Liest die gewünschten Korpusquellen ein

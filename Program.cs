@@ -47,10 +47,10 @@ namespace CorpusExplorer.Terminal.Console
       }
     }
 
-    private static void DebugSkript(string[] args)
+    private static void DebugScript(string[] args)
     {
       var path = args[0].Replace("DEBUG:", "").Replace("\"", "");
-      if (ProcessXmlScript(path))
+      if (ProcessXmlScript(path, true))
         return;
 
       var lines = File.ReadAllLines(path, Configuration.Encoding);
@@ -110,7 +110,7 @@ namespace CorpusExplorer.Terminal.Console
       {
         System.Console.WriteLine("CEC DEBUG-WAIT [PRESS -ENTER- TO CONTINUE]");
         System.Console.ReadLine();
-        DebugSkript(args);
+        DebugScript(args);
         return;
       }
 
@@ -233,7 +233,7 @@ namespace CorpusExplorer.Terminal.Console
     private static void ExecuteSkript(string[] args)
     {
       var path = args[0].Replace("FILE:", "").Replace("\"", "");
-      if (ProcessXmlScript(path))
+      if (ProcessXmlScript(path, false))
         return;
 
       var lines = File.ReadAllLines(path, Configuration.Encoding);
@@ -296,11 +296,11 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine(Resources.HelpFormatFooter);
     }
 
-    private static bool ProcessXmlScript(string path)
+    private static bool ProcessXmlScript(string path, bool debug)
     {
       try
       {
-        XmlScriptProcessor.Process(path);
+        XmlScriptProcessor.Process(path, debug);
         return true;
       }
       catch
