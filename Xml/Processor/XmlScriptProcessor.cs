@@ -480,7 +480,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 if (exporter == null)
                   return;
 
-                exporter.Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
+                exporter.Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).CreateTemporary(new[] { QueryParser.Parse(a.arguments[0]) }).ToCorpus(), outputPath);
                 break;
               }
             // Ist die Action vom Typ convert, dann konvertiere direkt
@@ -562,7 +562,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                   if (exporter == null)
                     return;
 
-                  exporter.Export(selection.CreateTemporary(new[] { QueryParser.Parse(a.query) }).ToCorpus(), outputPath);
+                  exporter.Export(selection.CreateTemporary(new[] { QueryParser.Parse(a.arguments[0]) }).ToCorpus(), outputPath);
                   break;
                 }
               // Ist die Action vom Typ convert, dann konvertiere direkt

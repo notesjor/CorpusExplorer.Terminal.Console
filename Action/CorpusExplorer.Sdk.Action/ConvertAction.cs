@@ -27,7 +27,7 @@ namespace CorpusExplorer.Sdk.Action
 
       var path = output[1].Replace("\"", "");
       var dir = Path.GetDirectoryName(path);
-      if (dir != null && !Directory.Exists(dir))
+      if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
       exporter.Export(selection, path);
