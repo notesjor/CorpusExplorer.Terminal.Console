@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
@@ -97,20 +94,20 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       while (true) System.Console.ReadLine();
     }
 
-    private Task OpenApiRoute(HttpContext req)
+    private void OpenApiRoute(HttpContext req)
     {
-      return req.Response.Send(_documentation, Mime);
+      req.Response.Send(_documentation, Mime);
     }
 
-    private Task ExecuteActionsRoute(HttpContext arg)
+    private void ExecuteActionsRoute(HttpContext arg)
     {
       try
       {
-        return arg.Response.Send(_availableExecuteActions);
+        arg.Response.Send(_availableExecuteActions);
       }
       catch (Exception ex)
       {
-        return WriteError(arg, ex.Message);
+        WriteError(arg, ex.Message);
       }
     }
 
@@ -156,7 +153,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     /// <param name="request">Ursprüngliche Abfrage</param>
     /// <param name="message">Nachricht</param>
     /// <returns>Fehlermeldung</returns>
-    protected Task WriteError(HttpContext request, string message)
+    protected void WriteError(HttpContext request, string message)
     {
       using (var ms = new MemoryStream())
       {
@@ -165,7 +162,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
         writer.Destroy(false);
 
         ms.Seek(0, SeekOrigin.Begin);
-        return request.Response.Send(Encoding.UTF8.GetString(ms.ToArray()).Replace("\r\n", ""), Mime);
+        request.Response.Send(Encoding.UTF8.GetString(ms.ToArray()).Replace("\r\n", ""), Mime);
       }
     }
 
@@ -182,17 +179,17 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     /// </summary>
     /// <param name="req">Anfrage</param>
     /// <returns>Ergebnis</returns>
-    protected abstract Task GetExecuteRoute(HttpContext req);
+    protected abstract void GetExecuteRoute(HttpContext req);
 
-    private Task ExecuteRoute(HttpContext req)
+    private void ExecuteRoute(HttpContext req)
     {
       try
       {
-        return GetExecuteRoute(req);
+        GetExecuteRoute(req);
       }
       catch (Exception ex)
       {
-        return WriteError(req, ex.Message);
+        WriteError(req, ex.Message);
       }
     }
   }

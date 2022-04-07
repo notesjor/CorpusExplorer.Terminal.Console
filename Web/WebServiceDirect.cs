@@ -36,58 +36,67 @@ namespace CorpusExplorer.Terminal.Console.Web
       return new SimpleTreeTagger().LanguagesAvailabel.ToArray();
     }
 
-    private Task AvailableLanguagesRoute(HttpContext arg)
+    private void AvailableLanguagesRoute(HttpContext arg)
     {
       try
       {
-        return arg.Response.Send(_availableLanguages, "application/json");
+        arg.Response.Send(_availableLanguages, "application/json");
       }
       catch (Exception ex)
       {
-        return WriteError(arg, ex.Message);
+        WriteError(arg, ex.Message);
       }
     }
 
     protected override ActionFilter ExecuteActionFilter
       => new ActionFilter(false, "convert", "query", "cluster");
 
-    private Task AddRoute(HttpContext req)
+    private void AddRoute(HttpContext req)
     {
       try
       {
-        return GetAddRoute(req);
+        GetAddRoute(req);
       }
       catch (Exception ex)
       {
-        return WriteError(req, ex.Message);
+        WriteError(req, ex.Message);
       }
     }
 
-    private Task GetAddRoute(HttpContext req)
+    private void GetAddRoute(HttpContext req)
     {
       try
       {
         var er = req.PostData<AddRequest>();
         if (er?.Documents == null || string.IsNullOrEmpty(er.Language))
-          return WriteError(req, Resources.WebErrorInvalidPostData);
+        {
+          WriteError(req, Resources.WebErrorInvalidPostData);
+          return;
+        }
         if (er.Documents.Length > 100 || er.Documents.Sum(x => x.Text.Length) / 5000 < 100)
-          return WriteError(req, Resources.WebErrorPostMax100Pages);
+        {
+          WriteError(req, Resources.WebErrorPostMax100Pages);
+          return;
+        }
 
-        return UseTagger(req, er.Language, er.GetDocumentArray(), true);
+        UseTagger(req, er.Language, er.GetDocumentArray(), true);
       }
       catch (Exception ex)
       {
-        return WriteError(req, ex.Message);
+        WriteError(req, ex.Message);
       }
     }
 
-    private Task UseTagger(HttpContext req, string language, Dictionary<string, object>[] docs,
+    private void UseTagger(HttpContext req, string language, Dictionary<string, object>[] docs,
                                    bool enableCleanup)
     {
       var tagger = new SimpleTreeTagger();
       var available = new HashSet<string>(tagger.LanguagesAvailabel);
       if (!available.Contains(language))
-        return WriteError(req, string.Format(Resources.WebErrorWrongLanguage, string.Join(", ", available)));
+      {
+        WriteError(req, string.Format(Resources.WebErrorWrongLanguage, string.Join(", ", available)));
+        return;
+      }
 
       if (enableCleanup)
       {
@@ -107,30 +116,45 @@ namespace CorpusExplorer.Terminal.Console.Web
       tagger.Execute();
       var corpus = tagger.Output.First();
       if (corpus == null || corpus.CountDocuments == 0 || corpus.CountToken == 0)
-        return WriteError(req, Resources.WebErrorTaggingProcessError);
+      {
+        WriteError(req, Resources.WebErrorTaggingProcessError);
+        return;
+      }
 
       corpus.Save($"corpora/{corpus.CorporaGuids.First()}.cec6", false);
-      return req.Response.Send($"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}", "application/json");
+      req.Response.Send($"{{ \"corpusId\": \"{corpus.CorporaGuids.First()}\" }}", "application/json");
     }
 
-    protected override Task GetExecuteRoute(HttpContext req)
+    protected override void GetExecuteRoute(HttpContext req)
     {
       try
       {
         var er = req.PostData<ExecuteRequest>();
         if (er == null)
-          return WriteError(req, Resources.WebErrorInvalidPostData);
+        {
+          WriteError(req, Resources.WebErrorInvalidPostData);
+          return;
+        }
 
         var aCheck = Configuration.GetConsoleAction(er.Action);
         if (aCheck == null || !ExecuteActionFilter.Check(er.Action))
-          return WriteError(req, Resources.WebErrorActionUnavailable);
+        {
+          WriteError(req, Resources.WebErrorActionUnavailable);
+          return;
+        }
 
         if (!File.Exists($"corpora/{er.CorpusId}.cec6"))
-          return WriteError(req, Resources.WebErrorCorpusUnavailable);
+        {
+          WriteError(req, Resources.WebErrorCorpusUnavailable);
+          return;
+        }
 
         var corpus = CorpusAdapterWriteDirect.Create($"corpora/{er.CorpusId}.cec6");
         if (corpus == null)
-          return WriteError(req, Resources.WebErrorCorpusUnavailable);
+        {
+          WriteError(req, Resources.WebErrorCorpusUnavailable);
+          return;
+        }
 
         var selection = corpus.ToSelection();
         var a = new ClusterAction();
@@ -152,11 +176,11 @@ namespace CorpusExplorer.Terminal.Console.Web
           ms.Seek(0, SeekOrigin.Begin);
           response = Encoding.UTF8.GetString(ms.ToArray());
         }
-        return req.Response.Send(response, Mime);
+        req.Response.Send(response, Mime);
       }
       catch (Exception ex)
       {
-        return WriteError(req, ex.Message);
+        WriteError(req, ex.Message);
       }
     }
 

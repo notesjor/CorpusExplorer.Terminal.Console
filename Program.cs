@@ -85,6 +85,14 @@ namespace CorpusExplorer.Terminal.Console
         return;
       }
 
+      if (args[0].StartsWith("WAIT:"))
+      {
+        Wait(args[0]);
+        var tmp = args.ToList();
+        tmp.RemoveAt(0);
+        args = tmp.ToArray();
+      }
+
       if (args[0].StartsWith("F:") || args[0].StartsWith("FNT:"))
       {
         _writer = Configuration.GetTableWriter(args[0]);
@@ -130,6 +138,13 @@ namespace CorpusExplorer.Terminal.Console
 
       ExecuteDirect(args);
       _writer.Destroy();
+    }
+
+    private static void Wait(string cmd)
+    {
+      var process = Process.GetProcessById(int.Parse(cmd.Replace("WAIT:", "")));
+      System.Console.WriteLine($"WAIT 4: {process.Id} - {process.ProcessName}");
+      process.WaitForExit();
     }
 
     private static void PrintDocs()
