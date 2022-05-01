@@ -186,8 +186,8 @@ namespace CorpusExplorer.Terminal.Console.Web
 
     protected override Server ConfigureServer(Server server)
     {
-      server.AddEndpoint(HttpVerb.GET, "/add/languages/", AvailableLanguagesRoute);
-      server.AddEndpoint(HttpVerb.POST, "/add/", AddRoute);
+      server.AddEndpoint(System.Net.Http.HttpMethod.Get, "/add/languages/", AvailableLanguagesRoute);
+      server.AddEndpoint(System.Net.Http.HttpMethod.Post, "/add/", AddRoute);
 
       if (!Directory.Exists("corpora"))
         Directory.CreateDirectory("corpora");

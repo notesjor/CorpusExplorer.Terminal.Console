@@ -86,8 +86,8 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       _documentation = AppendDefaultDocumentation(GetDocumentation()).ConvertToJson();
 
       var s = new Server(_ip, _port, OpenApiRoute) { Timeout = _timeout };
-      s.AddEndpoint(HttpVerb.GET, "/execute/actions/", ExecuteActionsRoute);
-      s.AddEndpoint(HttpVerb.POST, "/execute/", ExecuteRoute);
+      s.AddEndpoint(System.Net.Http.HttpMethod.Get, "/execute/actions/", ExecuteActionsRoute);
+      s.AddEndpoint(System.Net.Http.HttpMethod.Post, "/execute/", ExecuteRoute);
       s = ConfigureServer(s);
       System.Console.WriteLine(s != null ? "ready!" : "error!");
 
