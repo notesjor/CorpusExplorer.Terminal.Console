@@ -13,10 +13,6 @@ namespace CorpusExplorer.Sdk.Action
     public override string Description => Resources.DescKwicFirstAny;
 
     protected override AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries)
-      => new FilterQuerySingleLayerFirstAndAnyOtherMatch
-      {
-        LayerDisplayname = layerDisplayname,
-        LayerQueries = queries
-      };
+      => new FilterQuerySingleLayerFirstAndAnyOtherMatch { LayerDisplayname = layerDisplayname, LayerQueries = queries };
   }
 }

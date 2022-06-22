@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
@@ -24,8 +25,16 @@ namespace CorpusExplorer.Sdk.Action.Abstract
 
       queries = ResolveFileQueriesRecursive(queries);
 
-      var vm = new TextLiveSearchViewModel { Selection = selection };
-      vm.AddQuery(GetQuery(args[0], queries));
+      var spanHelper = new KwicSpanHelper(queries);
+
+      var vm = new TextLiveSearchViewModel
+      {
+        Selection = selection,
+        AddContextSentencesPre = spanHelper.SentencePre,
+        AddContextSentencesPost = spanHelper.SentencePost
+      };
+
+      vm.AddQuery(GetQuery(args[0], spanHelper.CleanArguments));
       vm.Execute();
 
       writer.WriteTable(selection.Displayname, vm.GetUniqueDataTableCsv());
