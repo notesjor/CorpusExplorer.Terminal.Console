@@ -140,6 +140,7 @@
     <Compile Include="TokenListAction.cs" />
     <Compile Include="TokenListSelectAction.cs" />
     <Compile Include="TypeCountAction.cs" />
+    <Compile Include="ValidateAction.cs" />
     <Compile Include="VocabularyComplexityAction.cs" />
     <Compile Include="VocdAction.cs" />
   </ItemGroup>

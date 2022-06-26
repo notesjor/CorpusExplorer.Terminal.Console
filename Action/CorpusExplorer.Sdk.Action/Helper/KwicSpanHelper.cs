@@ -19,12 +19,12 @@ namespace CorpusExplorer.Sdk.Action.Helper
       for (var i = 0; i < list.Count; i++)
       {
         var item = list[i];
-        if (item.EndsWith("<") && int.TryParse(item.Replace("<", ""), out var pre) && pre >= 0)
+        if (item.StartsWith("SPAN-") && int.TryParse(item.Replace("SPAN-", ""), out var pre) && pre >= 0)
         {
           SentencePre = pre;
           clean.Add(i);
         }
-        else if (item.StartsWith(">") && int.TryParse(item.Replace("<", ""), out var post) && post >= 0)
+        else if (item.StartsWith("SPAN+") && int.TryParse(item.Replace("SPAN+", ""), out var post) && post >= 0)
         {
           SentencePost = post;
           clean.Add(i);
