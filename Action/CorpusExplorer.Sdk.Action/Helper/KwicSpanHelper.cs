@@ -7,34 +7,26 @@ namespace CorpusExplorer.Sdk.Action.Helper
   {
     public int SentencePre { get; }
     public int SentencePost { get; }
-    public string[] CleanArguments {get; }
+    public string[] CleanArguments { get; }
 
     public KwicSpanHelper(IEnumerable<string> args)
     {
       SentencePre = SentencePost = 0;
 
-      var list = args.ToList();
-      var clean = new List<int>();
+      var input = args.ToList();
+      var output = new List<string>();
 
-      for (var i = 0; i < list.Count; i++)
+      foreach (var item in input)
       {
-        var item = list[i];
         if (item.StartsWith("SPAN-") && int.TryParse(item.Replace("SPAN-", ""), out var pre) && pre >= 0)
-        {
           SentencePre = pre;
-          clean.Add(i);
-        }
         else if (item.StartsWith("SPAN+") && int.TryParse(item.Replace("SPAN+", ""), out var post) && post >= 0)
-        {
           SentencePost = post;
-          clean.Add(i);
-        }
+        else
+          output.Add(item);
       }
 
-      for (var i = clean.Count - 1; i > -1; i--)
-        list.RemoveAt(i);
-
-      CleanArguments = list.ToArray();
+      CleanArguments = output.ToArray();
     }
   }
 }
