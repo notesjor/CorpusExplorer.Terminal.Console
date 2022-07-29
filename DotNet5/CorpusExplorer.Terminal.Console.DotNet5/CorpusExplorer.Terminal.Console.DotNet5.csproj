@@ -83,6 +83,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.SoMeWeTa\CorpusExplorer.Sdk.Extern.SoMeWeTa.csproj" />
     <ProjectReference Include="..\..\..\TfresWebserver\TefresWebserver\TFRES.csproj" />
     <ProjectReference Include="..\..\Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj" />
     <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\BitCutStudios.CorpusExplorer\BitCutStudios.CorpusExplorer.csproj" />

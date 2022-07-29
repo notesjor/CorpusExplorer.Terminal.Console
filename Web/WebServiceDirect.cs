@@ -49,7 +49,7 @@ namespace CorpusExplorer.Terminal.Console.Web
     }
 
     protected override ActionFilter ExecuteActionFilter
-      => new ActionFilter(false, "convert", "query", "cluster");
+      => new ActionFilter(false, "convert", "query", "cluster", "remove-meta", "remove-layer", "meta-export", "meta-import");
 
     private void AddRoute(HttpContext req)
     {

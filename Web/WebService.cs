@@ -30,7 +30,7 @@ namespace CorpusExplorer.Terminal.Console.Web
     }
 
     protected override ActionFilter ExecuteActionFilter
-      => new ActionFilter(false, "convert", "query");
+      => new ActionFilter(false, "convert", "query", "remove-meta", "remove-layer", "meta-export", "meta-import");
 
     protected override Server ConfigureServer(Server server)
     {
