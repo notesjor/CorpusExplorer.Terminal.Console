@@ -133,7 +133,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die convert - see help section [OUTPUT] for more information ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die convert [OUTPUT] - see help section [OUTPUT] for more information ähnelt.
         /// </summary>
         internal static string DescConvert {
             get {
@@ -493,6 +493,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information ähnelt.
+        /// </summary>
+        internal static string DescLayerRemove {
+            get {
+                return ResourceManager.GetString("DescLayerRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die get-types [LAYER] - list all [LAYER]-values (types) ähnelt.
         /// </summary>
         internal static string DescLayerTypes {
@@ -525,6 +534,33 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescMetaCategories {
             get {
                 return ResourceManager.GetString("DescMetaCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-export [FILE] - export document metadata for external cleaning/usage ähnelt.
+        /// </summary>
+        internal static string DescMetaExport {
+            get {
+                return ResourceManager.GetString("DescMetaExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-import [FILE] [OUTPUT] - export document metadata for external cleaning/usage ähnelt.
+        /// </summary>
+        internal static string DescMetaImport {
+            get {
+                return ResourceManager.GetString("DescMetaImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information ähnelt.
+        /// </summary>
+        internal static string DescMetaRemove {
+            get {
+                return ResourceManager.GetString("DescMetaRemove", resourceCulture);
             }
         }
         
@@ -592,7 +628,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die query [QUERY] - see help section [OUTPUT] for more information ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die query [QUERY] [OUTPUT] - see help section [OUTPUT] for more information ähnelt.
         /// </summary>
         internal static string DescQuery {
             get {

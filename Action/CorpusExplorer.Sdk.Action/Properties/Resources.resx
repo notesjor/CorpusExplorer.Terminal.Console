@@ -169,7 +169,7 @@
     <value>position-frequency [LAYER1] [WORD] - left/right position of words around [WORD]</value>
   </data>
   <data name="DescConvert" xml:space="preserve">
-    <value>convert - see help section [OUTPUT] for more information</value>
+    <value>convert [OUTPUT] - see help section [OUTPUT] for more information</value>
   </data>
   <data name="DescCooccurrence" xml:space="preserve">
     <value>cooccurrence [LAYER] {minSIGNI} {minFREQ} - significant cooccurrences for all [LAYER] values</value>
@@ -304,7 +304,7 @@
     <value>ngram-select [N] [LAYER] [minFREQ] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE].</value>
   </data>
   <data name="DescQuery" xml:space="preserve">
-    <value>query [QUERY] - see help section [OUTPUT] for more information</value>
+    <value>query [QUERY] [OUTPUT] - see help section [OUTPUT] for more information</value>
   </data>
   <data name="DescQueryList" xml:space="preserve">
     <value>query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.</value>
@@ -431,5 +431,17 @@
   </data>
   <data name="DescCooccurrenceSelectedCorresponding" xml:space="preserve">
     <value>cooccurrence-select-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - significant cooccurrences for [WORD1] in [LAYER] values - with [LAYER2] [WORDS2] correspondig values.</value>
+  </data>
+  <data name="DescLayerRemove" xml:space="preserve">
+    <value>remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information</value>
+  </data>
+  <data name="DescMetaRemove" xml:space="preserve">
+    <value>remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information</value>
+  </data>
+  <data name="DescMetaImport" xml:space="preserve">
+    <value>meta-import [FILE] [OUTPUT] - export document metadata for external cleaning/usage</value>
+  </data>
+  <data name="DescMetaExport" xml:space="preserve">
+    <value>meta-export [FILE] - export document metadata for external cleaning/usage</value>
   </data>
 </root>

@@ -73,12 +73,23 @@ namespace CorpusExplorer.Terminal.Console
 
     private static void Execute(string[] args)
     {
+      if (args.Length > 0 && args[0] == "/WAIT")
+      {
+        System.Console.WriteLine("...PRESS ENTER TO CONTINUE...");
+        System.Console.ReadLine();
+        
+        var tmp = args.ToList();
+        tmp.RemoveAt(0);
+
+        args = tmp.ToArray();
+      }
+
       if (args == null || args.Length == 0)
       {
         PrintHelp(true);
         return;
       }
-
+      
       if (args.Length == 1 && args[0] == "--github")
       {
         PrintDocs();

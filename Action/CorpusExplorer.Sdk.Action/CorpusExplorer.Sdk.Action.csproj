@@ -16,7 +16,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -82,6 +82,8 @@
     <Compile Include="KeywordAction.cs" />
     <Compile Include="KeywordCorrespondingAction.cs" />
     <Compile Include="KwitSelectAction.cs" />
+    <Compile Include="MetaExportAction.cs" />
+    <Compile Include="MetaImportAction.cs" />
     <Compile Include="MetaSelectedAction.cs" />
     <Compile Include="MetaSelectedDomainAction.cs" />
     <Compile Include="NGramCooccurrenceAction.cs" />
@@ -131,6 +133,8 @@
     <Compile Include="QueryCountDocumentsAction.cs" />
     <Compile Include="QueryCountSentencesAction.cs" />
     <Compile Include="QueryListAction.cs" />
+    <Compile Include="RemoveLayerAction.cs" />
+    <Compile Include="RemoveMetaAction.cs" />
     <Compile Include="SentenceCountAction.cs" />
     <Compile Include="SizeAction.cs" />
     <Compile Include="StyleBurrowsDeltaAction.cs" />
