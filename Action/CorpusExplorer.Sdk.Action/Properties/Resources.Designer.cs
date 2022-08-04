@@ -493,7 +493,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information. ähnelt.
         /// </summary>
         internal static string DescLayerRemove {
             get {
@@ -556,7 +556,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information. ähnelt.
         /// </summary>
         internal static string DescMetaRemove {
             get {

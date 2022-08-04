@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\AbstractFilterAction.cs" />
+    <Compile Include="AddTaggerAction.cs" />
     <Compile Include="BasicInformationAction.cs" />
     <Compile Include="ClusterAction.cs" />
     <Compile Include="ClusterListAction.cs" />

@@ -433,10 +433,10 @@
     <value>cooccurrence-select-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - significant cooccurrences for [WORD1] in [LAYER] values - with [LAYER2] [WORDS2] correspondig values.</value>
   </data>
   <data name="DescLayerRemove" xml:space="preserve">
-    <value>remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information</value>
+    <value>remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information.</value>
   </data>
   <data name="DescMetaRemove" xml:space="preserve">
-    <value>remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information</value>
+    <value>remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information.</value>
   </data>
   <data name="DescMetaImport" xml:space="preserve">
     <value>meta-import [FILE] [OUTPUT] - export document metadata for external cleaning/usage</value>
