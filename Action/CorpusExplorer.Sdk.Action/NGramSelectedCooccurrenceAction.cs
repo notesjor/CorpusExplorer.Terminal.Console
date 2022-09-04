@@ -16,7 +16,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "ngram-select-sig";
 
-    public string Description => "ngram-select-sig [N] [LAYER] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE] rated by [WORD/FILE] co-occurrences.";
+    public string Description => Resources.DescNgramSigSelect;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

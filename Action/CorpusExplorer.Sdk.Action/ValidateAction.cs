@@ -14,7 +14,7 @@ namespace CorpusExplorer.Sdk.Action
   public class ValidateAction : IAction
   {
     public string Action => "validate";
-    public string Description => "validate - checks the loaded data against several rules.";
+    public string Description => Resources.DescValidate;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

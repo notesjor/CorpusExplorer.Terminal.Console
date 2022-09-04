@@ -78,10 +78,12 @@
     <Compile Include="Frequency1RawAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />
+    <Compile Include="Helper\FileQueriesHelper.cs" />
     <Compile Include="Helper\KwicSpanHelper.cs" />
     <Compile Include="InverseDocumentFrequencyAction.cs" />
     <Compile Include="KeywordAction.cs" />
     <Compile Include="KeywordCorrespondingAction.cs" />
+    <Compile Include="KwicExportAction.cs" />
     <Compile Include="KwitSelectAction.cs" />
     <Compile Include="MetaExportAction.cs" />
     <Compile Include="MetaImportAction.cs" />

@@ -15,7 +15,7 @@ namespace CorpusExplorer.Sdk.Action
   public class SizeAction : IAction
   {
     public string Action => "size";
-    public string Description => "size - returns the size (sentences/tokens) of all documents";
+    public string Description => Resources.DescSize;
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       var dt = new DataTable();

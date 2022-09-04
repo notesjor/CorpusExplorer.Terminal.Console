@@ -430,6 +430,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-export [LAYER] FILE:[WORDS+SPAN] [OUTPUT] - exports a KWIC of any occurrence - [WORDS] = space separated tokens + SPAN ähnelt.
+        /// </summary>
+        internal static string DescKwicExport {
+            get {
+                return ResourceManager.GetString("DescKwicExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die kwic-first-any [LAYER] [WORD] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other) ähnelt.
         /// </summary>
         internal static string DescKwicFirstAny {
@@ -610,6 +619,24 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die ngram-sig [N] [LAYER] - [N] sized N-gram based on [LAYER] rated with co-occurence-levels ähnelt.
+        /// </summary>
+        internal static string DescNgramSig {
+            get {
+                return ResourceManager.GetString("DescNgramSig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die ngram-select-sig [N] [LAYER] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE] rated by [WORD/FILE] co-occurrences. ähnelt.
+        /// </summary>
+        internal static string DescNgramSigSelect {
+            get {
+                return ResourceManager.GetString("DescNgramSigSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die position-frequency [LAYER1] [WORD] - left/right position of words around [WORD] ähnelt.
         /// </summary>
         internal static string DescPositionFrequency {
@@ -619,7 +646,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die position-frequency-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter. ähnelt.
         /// </summary>
         internal static string DescPositionFrequencyCorresponding {
             get {
@@ -682,6 +709,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die size - returns the size (sentences/tokens) of all documents ähnelt.
+        /// </summary>
+        internal static string DescSize {
+            get {
+                return ResourceManager.GetString("DescSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram ähnelt.
         /// </summary>
         internal static string DescStyleNGram {
@@ -727,6 +763,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die validate - checks the loaded data against several rules. ähnelt.
+        /// </summary>
+        internal static string DescValidate {
+            get {
+                return ResourceManager.GetString("DescValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die vocabulary-complexity {LAYER} - vocabulary complexity in {LAYER} ähnelt.
         /// </summary>
         internal static string DescVocabularyComplexity {
@@ -745,7 +790,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER]. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER] ähnelt.
         /// </summary>
         internal static string DisambiguationeActionDescription {
             get {

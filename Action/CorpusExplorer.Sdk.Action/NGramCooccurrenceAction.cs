@@ -11,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   public class NGramCooccurrenceAction : IAction
   {
     public string Action => "ngram-sig";
-    public string Description => "ngram-sig [N] [LAYER] - [N] sized N-gram based on [LAYER] rated with co-occurence-levels";
+    public string Description => Resources.DescNgramSig;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

@@ -23,7 +23,7 @@ namespace CorpusExplorer.Sdk.Action.Abstract
       var queries = new List<string>(args);
       queries.RemoveAt(0);
 
-      queries = ResolveFileQueriesRecursive(queries);
+      queries = FileQueriesHelper.ResolveFileQueries(queries);
 
       var spanHelper = new KwicSpanHelper(queries);
 
@@ -39,35 +39,7 @@ namespace CorpusExplorer.Sdk.Action.Abstract
 
       writer.WriteTable(selection.Displayname, vm.GetUniqueDataTableCsv());
     }
-
-    private List<string> ResolveFileQueriesRecursive(List<string> queries)
-    {
-      var res = new List<string>();
-      foreach (var query in queries)
-      {
-        if (query.StartsWith("FILE:"))
-          res.AddRange(ResolveFileQueriesRecursive(query));
-        else
-          res.Add(query);
-      }
-
-      return res;
-    }
-
-    private List<string> ResolveFileQueriesRecursive(string path)
-    {
-      var res = new List<string>();
-      foreach (var query in File.ReadAllLines(path.Replace("FILE:", ""), Configuration.Encoding))
-      {
-        if (query.StartsWith("FILE:"))
-          res.AddRange(ResolveFileQueriesRecursive(query));
-        else
-          res.Add(query);
-      }
-
-      return res;
-    }
-
+    
     protected abstract AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries);
   }
 }

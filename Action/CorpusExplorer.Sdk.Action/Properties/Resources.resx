@@ -331,7 +331,7 @@
     <value>vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]</value>
   </data>
   <data name="DisambiguationeActionDescription" xml:space="preserve">
-    <value>disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER].</value>
+    <value>disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER]</value>
   </data>
   <data name="editdist_desc" xml:space="preserve">
     <value>editdist [LAYER] - caculates the edit distance for all (to all) documents in [LAYER]</value>
@@ -403,7 +403,7 @@
     <value>ngram-corresponding [N] [LAYER1] [minFREQ] [LAYER2] [ANY?] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.</value>
   </data>
   <data name="DescPositionFrequencyCorresponding" xml:space="preserve">
-    <value>position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.</value>
+    <value>position-frequency-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.</value>
   </data>
   <data name="Query" xml:space="preserve">
 	  <value>Query</value>
@@ -443,5 +443,20 @@
   </data>
   <data name="DescMetaExport" xml:space="preserve">
     <value>meta-export [FILE] - export document metadata for external cleaning/usage</value>
+  </data>
+  <data name="DescKwicExport" xml:space="preserve">
+    <value>kwic-export [LAYER] FILE:[WORDS+SPAN] [OUTPUT] - exports a KWIC of any occurrence - [WORDS] = space separated tokens + SPAN</value>
+  </data>
+  <data name="DescNgramSig" xml:space="preserve">
+    <value>ngram-sig [N] [LAYER] - [N] sized N-gram based on [LAYER] rated with co-occurence-levels</value>
+  </data>
+  <data name="DescNgramSigSelect" xml:space="preserve">
+    <value>ngram-select-sig [N] [LAYER] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE] rated by [WORD/FILE] co-occurrences.</value>
+  </data>
+  <data name="DescSize" xml:space="preserve">
+    <value>size - returns the size (sentences/tokens) of all documents</value>
+  </data>
+  <data name="DescValidate" xml:space="preserve">
+    <value>validate - checks the loaded data against several rules.</value>
   </data>
 </root>
