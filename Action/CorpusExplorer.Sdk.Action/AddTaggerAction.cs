@@ -22,7 +22,7 @@ namespace CorpusExplorer.Sdk.Action
       if (args.Length != 2)
         return;
 
-      var tag = args[0].Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var tag = args[0].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (tag.Length != 2)
         return;
 
@@ -31,7 +31,7 @@ namespace CorpusExplorer.Sdk.Action
         return;
       tagger.LanguageSelected = tag[1];
 
-      var output = args[1].Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var output = args[1].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
 

@@ -22,7 +22,7 @@ namespace CorpusExplorer.Sdk.Action
       if (args == null || args.Length != 3)
         return;
 
-      var s = args[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
+      var s = args[0].Split(Splitter.ColonColon, StringSplitOptions.RemoveEmptyEntries);
       if (s.Length != 2)
         return;
 

@@ -22,7 +22,7 @@ namespace CorpusExplorer.Sdk.Action
       var meta = args[0];
       selection.RemoveDocumentMetadata(meta);
 
-      var output = args[1].Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var output = args[1].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
 

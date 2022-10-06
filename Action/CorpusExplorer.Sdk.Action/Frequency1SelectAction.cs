@@ -6,6 +6,7 @@ using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
+using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.ViewModel;
@@ -95,7 +96,7 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var line in lines)
       {
-        var split = line.Split(new[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
+        var split = line.Split(Splitter.Tab, StringSplitOptions.RemoveEmptyEntries);
         if (split.Length < 2)
           continue;
 
@@ -131,7 +132,7 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var line in lines)
       {
-        var split = line.Split(new[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
+        var split = line.Split(Splitter.Tab, StringSplitOptions.RemoveEmptyEntries);
         if (split.Length != 3)
           continue;
 

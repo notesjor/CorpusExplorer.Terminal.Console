@@ -17,7 +17,7 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var output = args.Last().Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var output = args.Last().Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
 

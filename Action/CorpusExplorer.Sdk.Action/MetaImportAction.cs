@@ -25,7 +25,7 @@ namespace CorpusExplorer.Sdk.Action
       vm.Import(args[0]);
       vm.Execute();
 
-      var output = args[1].Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var output = args[1].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
 

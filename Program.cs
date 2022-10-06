@@ -335,6 +335,8 @@ namespace CorpusExplorer.Terminal.Console
       }
     }
 
+    private static string[] _separator = { " > " };
+
     private static void StartProcessCec(string argument)
     {
       if (string.IsNullOrEmpty(argument))
@@ -347,7 +349,7 @@ namespace CorpusExplorer.Terminal.Console
 
       if (argument.Contains(" > "))
       {
-        var split = argument.Split(new[] { " > " }, StringSplitOptions.None).ToList();
+        var split = argument.Split(_separator, StringSplitOptions.None).ToList();
         argument = split[0];
 
         var process = Process.Start(new ProcessStartInfo

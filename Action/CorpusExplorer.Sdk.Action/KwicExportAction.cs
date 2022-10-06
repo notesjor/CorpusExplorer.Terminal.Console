@@ -31,7 +31,7 @@ namespace CorpusExplorer.Sdk.Action
 
       var layer = args[0];
       var queries = FileQueriesHelper.ResolveFileQueries(args[1].Replace("FILE:", ""));
-      var output = args[2].Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var output = args[2].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
 
       if(output.Length != 2)
         return;

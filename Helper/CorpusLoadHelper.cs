@@ -25,7 +25,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
     private static AbstractCorpusAdapter LoadCorpusAnnotate(string path)
     {
       // Bsp.: annotate#BundestagPlenarprotokolleScraper#[TAGGER]#[LANGUAGE]#[DIRECTORY]
-      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries).ToList();
+      var split = path.Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries).ToList();
       if (split.Count != 5)
         return null;
 
@@ -63,7 +63,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
     private static AbstractCorpusAdapter LoadCorpusImport(string path)
     {
       // Bsp.: import#ImporterCec6#[FILES]
-      var split = path.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var split = path.Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (split.Length != 3)
         return null;
 
@@ -86,9 +86,11 @@ namespace CorpusExplorer.Terminal.Console.Helper
       return merger.Output.FirstOrDefault();
     }
 
+    private static char[] _separator = {';', '\''};
+
     private static List<string> DetectFileOrDirectoryPaths(string fileOrDirectory)
     {
-      var tmp = fileOrDirectory.Split(new[] {";", "\""}, StringSplitOptions.RemoveEmptyEntries);
+      var tmp = fileOrDirectory.Split(_separator, StringSplitOptions.RemoveEmptyEntries);
       var files = new List<string>();
       foreach (var x in tmp)
         if (x.IsDirectory())

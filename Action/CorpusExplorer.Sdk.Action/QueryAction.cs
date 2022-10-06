@@ -5,6 +5,7 @@ using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
+using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter;
@@ -32,7 +33,7 @@ namespace CorpusExplorer.Sdk.Action
       }
       else
       {
-        var s = args[0].Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries);
+        var s = args[0].Split(Splitter.ColonColon, StringSplitOptions.RemoveEmptyEntries);
         if (s.Length != 2)
           return;
 

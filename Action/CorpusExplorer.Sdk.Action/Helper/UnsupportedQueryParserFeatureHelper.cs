@@ -56,7 +56,7 @@ namespace CorpusExplorer.Sdk.Action.Helper
     private static IEnumerable<Selection> UnsupportedParserRandomFeatureToFile(
       AbstractTableWriter writer, string output, RandomSelectionBlock block)
     {
-      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var outputOptions = output.Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (outputOptions.Length != 2)
         return null;
 
@@ -93,7 +93,7 @@ namespace CorpusExplorer.Sdk.Action.Helper
     private static IEnumerable<Selection> UnsupportedParserFeatureAutosplitToFile(
       AbstractTableWriter writer, string output, IEnumerable<Selection> selections)
     {
-      var outputOptions = output.Split(new[] {"#"}, StringSplitOptions.RemoveEmptyEntries);
+      var outputOptions = output.Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (outputOptions.Length != 2)
         return null;
 
