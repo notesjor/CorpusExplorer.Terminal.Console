@@ -459,4 +459,7 @@
   <data name="DescValidate" xml:space="preserve">
     <value>validate - checks the loaded data against several rules.</value>
   </data>
+  <data name="DescKwicMda" xml:space="preserve">
+    <value>kwic-mda [MDA-FILE] {-SPAN} {+SPAN} - KWIC based on MDA-FILE</value>
+  </data>
 </root>

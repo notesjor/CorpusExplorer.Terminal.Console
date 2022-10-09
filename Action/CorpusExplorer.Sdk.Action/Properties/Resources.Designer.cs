@@ -448,6 +448,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-mda [MDA-FILE] {-SPAN} {+SPAN} - KWIC based on MDA-FILE ähnelt.
+        /// </summary>
+        internal static string DescKwicMda {
+            get {
+                return ResourceManager.GetString("DescKwicMda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die ner [NERFILE] - performs a named entity recorgnition + kwic-resuls ähnelt.
         /// </summary>
         internal static string DescKwicNer {

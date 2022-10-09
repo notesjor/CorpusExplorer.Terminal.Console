@@ -84,6 +84,7 @@
     <Compile Include="KeywordAction.cs" />
     <Compile Include="KeywordCorrespondingAction.cs" />
     <Compile Include="KwicExportAction.cs" />
+    <Compile Include="KwicMdaFilterAction.cs" />
     <Compile Include="KwitSelectAction.cs" />
     <Compile Include="MetaExportAction.cs" />
     <Compile Include="MetaImportAction.cs" />
