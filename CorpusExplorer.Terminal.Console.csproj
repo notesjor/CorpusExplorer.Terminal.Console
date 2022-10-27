@@ -122,6 +122,7 @@
     <Compile Include="Xml\Model\queryGroup.cs" />
     <Compile Include="Xml\Model\session.cs" />
     <Compile Include="Xml\Model\sessions.cs" />
+    <Compile Include="Xml\Model\session_isp.cs" />
     <Compile Include="Xml\Model\sources.cs" />
     <Compile Include="Xml\Model\template.cs" />
     <Compile Include="Xml\Model\templates.cs" />

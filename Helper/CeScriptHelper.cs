@@ -13,11 +13,13 @@ namespace CorpusExplorer.Terminal.Console.Helper
     ///   Lade/Deserialisere das CeScrpit
     /// </summary>
     /// <param name="path">Pfad</param>
-    /// <param name="scriptFilename">Gibt den Dateinamen ohne Erweiterung zurück</param>
     /// <returns>CeScript</returns>
-    public static cescript LoadCeScript(string path, out string scriptFilename)
+    public static cescript LoadCeScript(string path)
     {
-      var script = Load(path, out scriptFilename);
+      var script = Load(path);
+      foreach(var s in script.sessions.session)
+        s.InternalScriptPath = path;
+      
       foreach (var s in script.sessions.session)
       {
         if (s?.templates == null) 
@@ -51,18 +53,13 @@ namespace CorpusExplorer.Terminal.Console.Helper
       return script;
     }
 
-    private static cescript Load(string path, out string scriptFilename)
+    private static cescript Load(string path)
     {
-      cescript script = null;
-      scriptFilename = Path.GetFileNameWithoutExtension(path);
-
       using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
       {
         var se = new XmlSerializer(typeof(cescript));
-        script = se.Deserialize(fs) as cescript;
+        return se.Deserialize(fs) as cescript;
       }
-
-      return script;
     }
   }
 }

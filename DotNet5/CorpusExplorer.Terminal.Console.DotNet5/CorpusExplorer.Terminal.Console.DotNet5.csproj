@@ -56,6 +56,7 @@
     <Compile Include="..\..\Xml\Model\queryGroup.cs" Link="Xml\Model\queryGroup.cs" />
     <Compile Include="..\..\Xml\Model\session.cs" Link="Xml\Model\session.cs" />
     <Compile Include="..\..\Xml\Model\sessions.cs" Link="Xml\Model\sessions.cs" />
+    <Compile Include="..\..\Xml\Model\session_isp.cs" Link="Xml\Model\session_isp.cs" />
     <Compile Include="..\..\Xml\Model\sources.cs" Link="Xml\Model\sources.cs" />
     <Compile Include="..\..\Xml\Model\template.cs" Link="Xml\Model\template.cs" />
     <Compile Include="..\..\Xml\Model\templates.cs" Link="Xml\Model\templates.cs" />
