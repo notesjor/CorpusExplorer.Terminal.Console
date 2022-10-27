@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Blocks;
@@ -28,6 +30,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 {
   public static class XmlScriptProcessor
   {
+    private static object _errorLogLock = new object();
     private static string _errorLog;
 
     private static readonly Dictionary<Guid, ExecuteActionItem> _executeActionList =
@@ -36,24 +39,18 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     private static readonly object _executeActionListLock = new object();
 
     private static bool _first = true;
-    private static TerminalController _terminal;
+    private static TerminalController _terminal = CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
 
     /// <summary>
     ///   Verarbeitete ein CEScript
     /// </summary>
     /// <param name="path">Pfad des CEScript</param>
-    /// <param name="debug">Sollen zusätzliche Debug-Infos ausgegeben werden?</param>
-    public static void Process(string path, bool debug)
+    public static void Process(string path)
     {
-      _debug = debug;
-      _terminal = CorpusExplorerEcosystem.Initialize(new CacheStrategyDisableCaching());
-      _errorLog = path + ".log";
-
-      string scriptFilename = null;
       cescript script = null;
       try
       {
-        script = CeScriptHelper.LoadCeScript(path, out scriptFilename);
+        script = CeScriptHelper.LoadCeScript(path);
       }
       catch (Exception ex)
       {
@@ -75,7 +72,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                        {
                          try
                          {
-                           ExecuteSession(session, scriptFilename);
+                           SessionRunner.Run(session);
                          }
                          catch (Exception ex)
                          {
@@ -137,10 +134,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
     }
 
-    private static void ExecuteSession(session session, string scriptFilename)
+    internal static void ExecuteSession(session session)
     {
       try
       {
+        var path = session.InternalScriptPath;
+        var scriptFilename = Path.GetFileNameWithoutExtension(path);
+        lock (_errorLogLock)
+          _errorLog = path + ".log";
+
         switch (session.sources.processing)
         {
           case "loop":
@@ -213,24 +215,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                           var files = Directory.GetFiles(d.Value, d.filter);
                           Parallel.ForEach(files, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), file =>
                           {
-                            using (var project = ReadSources(new[]
-                            {
-                              new import
-                              {
-                                Items = new[]
-                                {
-                                  new file
-                                  {
-                                    delete = d.delete,
-                                    Value = file
-                                  }
-                                },
-                                type = i.type
-                              }
-                            }))
-                            {
-                              ExecuteSession(session, scriptFilename, project);
-                            }
+                            SessionRunner.Run(session, file, i.type, d.delete);
                           });
 
                           break;
@@ -330,6 +315,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
                 Parallel.ForEach(subDirsI, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
                 {
+                  // TODO: Überlegen, ob man das nicht besser mit SessionRunner.Run(session, file, i.type, d.delete); ersetzt
+                  
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
                                              .Replace("\\", "");
                   using (var project = ReadSources(new[]
@@ -964,7 +951,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       res.Add(key, GenerateSelections_Compile(all, query.Text.CleanXmlValue(), query.name));
     }
 
-    private static void LogError(Exception ex, string additionalLine = null)
+    internal static void LogError(Exception ex, string additionalLine = null)
     {
       try
       {
@@ -976,10 +963,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           System.Console.WriteLine(ex.InnerException.StackTrace);
         }
 
-        File.AppendAllLines(_errorLog,
-                            additionalLine == null
-                              ? new[] { ex.Message, ex.StackTrace, "---" }
-                              : new[] { additionalLine, ex.Message, ex.StackTrace, "---" });
+        lock (_errorLogLock)
+          File.AppendAllLines(_errorLog,
+                              additionalLine == null
+                                ? new[] { ex.Message, ex.StackTrace, "---" }
+                                : new[] { additionalLine, ex.Message, ex.StackTrace, "---" });
       }
       catch
       {
@@ -1016,7 +1004,6 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     }
 
     private static object _newProjectLock = new object();
-    private static bool _debug;
 
     /// <summary>
     ///   Liest die gewünschten Korpusquellen ein

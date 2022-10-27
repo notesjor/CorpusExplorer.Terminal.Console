@@ -22,6 +22,7 @@
     <Compile Include="..\..\Helper\CorpusLoadHelper.cs" Link="Helper\CorpusLoadHelper.cs" />
     <Compile Include="..\..\Helper\CorpusNullHelper.cs" Link="Helper\CorpusNullHelper.cs" />
     <Compile Include="..\..\Helper\CustomParallelConfigurationHelper.cs" Link="Helper\CustomParallelConfigurationHelper.cs" />
+    <Compile Include="..\..\Helper\SessionRunner.cs" Link="Helper\SessionRunner.cs" />
     <Compile Include="..\..\Helper\XmlValueHelper.cs" Link="Helper\XmlValueHelper.cs" />
     <Compile Include="..\..\Program.cs" Link="Program.cs" />
     <Compile Include="..\..\Web\Abstract\AbstractWebService.cs" Link="Web\Abstract\AbstractWebService.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="..\..\Xml\Model\queryGroup.cs" Link="Xml\Model\queryGroup.cs" />
     <Compile Include="..\..\Xml\Model\session.cs" Link="Xml\Model\session.cs" />
     <Compile Include="..\..\Xml\Model\sessions.cs" Link="Xml\Model\sessions.cs" />
+    <Compile Include="..\..\Xml\Model\session_isp.cs" Link="Xml\Model\session_isp.cs" />
     <Compile Include="..\..\Xml\Model\sources.cs" Link="Xml\Model\sources.cs" />
     <Compile Include="..\..\Xml\Model\template.cs" Link="Xml\Model\template.cs" />
     <Compile Include="..\..\Xml\Model\templates.cs" Link="Xml\Model\templates.cs" />

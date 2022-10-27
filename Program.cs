@@ -7,6 +7,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 using CorpusExplorer.Sdk.Ecosystem;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -17,6 +19,7 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Properties;
 using CorpusExplorer.Terminal.Console.Web;
+using CorpusExplorer.Terminal.Console.Xml.Model;
 using CorpusExplorer.Terminal.Console.Xml.Processor;
 
 namespace CorpusExplorer.Terminal.Console
@@ -50,7 +53,7 @@ namespace CorpusExplorer.Terminal.Console
     private static void DebugScript(string[] args)
     {
       var path = args[0].Replace("DEBUG:", "").Replace("\"", "");
-      if (ProcessXmlScript(path, true))
+      if (ProcessXmlScript(path))
         return;
 
       var lines = File.ReadAllLines(path, Configuration.Encoding);
@@ -77,7 +80,7 @@ namespace CorpusExplorer.Terminal.Console
       {
         System.Console.WriteLine("...PRESS ENTER TO CONTINUE...");
         System.Console.ReadLine();
-        
+
         var tmp = args.ToList();
         tmp.RemoveAt(0);
 
@@ -89,7 +92,7 @@ namespace CorpusExplorer.Terminal.Console
         PrintHelp(true);
         return;
       }
-      
+
       if (args.Length == 1 && args[0] == "--github")
       {
         PrintDocs();
@@ -147,8 +150,40 @@ namespace CorpusExplorer.Terminal.Console
         return;
       }
 
+      if (args.Length == 1 && args[0] == "--session")
+      {
+        SessionMode();
+        return;
+      }
+
       ExecuteDirect(args);
       _writer.Destroy();
+    }
+
+    private static void SessionMode()
+    {
+      var stream = System.Console.OpenStandardInput();
+      var reader = new StreamReader(stream, Encoding.UTF8);
+      var xml = reader.ReadToEnd();
+
+      reader.Close();
+      stream.Close();
+
+      session session;
+      using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+      {
+        var serializer = new XmlSerializer(typeof(session));
+        session = (session)serializer.Deserialize(ms);
+      }
+
+      try
+      {
+        XmlScriptProcessor.ExecuteSession(session);
+      }
+      catch (Exception ex)
+      {
+        XmlScriptProcessor.LogError(ex);
+      }
     }
 
     private static void Wait(string cmd)
@@ -259,7 +294,7 @@ namespace CorpusExplorer.Terminal.Console
     private static void ExecuteSkript(string[] args)
     {
       var path = args[0].Replace("FILE:", "").Replace("\"", "");
-      if (ProcessXmlScript(path, false))
+      if (ProcessXmlScript(path))
         return;
 
       var lines = File.ReadAllLines(path, Configuration.Encoding);
@@ -322,16 +357,26 @@ namespace CorpusExplorer.Terminal.Console
       System.Console.WriteLine(Resources.HelpFormatFooter);
     }
 
-    private static bool ProcessXmlScript(string path, bool debug)
+    private static bool ProcessXmlScript(string path)
     {
       try
       {
-        XmlScriptProcessor.Process(path, debug);
+        Task.Run(MyGcCollect);
+        XmlScriptProcessor.Process(path);
         return true;
       }
       catch
       {
         return false;
+      }
+    }
+
+    private static async Task MyGcCollect()
+    {
+      while (true)
+      {
+        await Task.Delay(TimeSpan.FromMinutes(5));
+        Task.Run(GC.Collect);
       }
     }
 
