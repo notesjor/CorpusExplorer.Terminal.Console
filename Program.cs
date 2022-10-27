@@ -150,9 +150,9 @@ namespace CorpusExplorer.Terminal.Console
         return;
       }
 
-      if (args.Length == 2 && args[0] == "--session")
+      if (args.Length == 1 && args[0] == "--session")
       {
-        SessionMode(args[1]);
+        SessionMode();
         return;
       }
 
@@ -160,21 +160,29 @@ namespace CorpusExplorer.Terminal.Console
       _writer.Destroy();
     }
 
-    private static void SessionMode(string path)
+    private static void SessionMode()
     {
-      using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+      var stream = System.Console.OpenStandardInput();
+      var reader = new StreamReader(stream, Encoding.UTF8);
+      var xml = reader.ReadToEnd();
+
+      reader.Close();
+      stream.Close();
+
+      session session;
+      using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
       {
         var serializer = new XmlSerializer(typeof(session));
-        var session = (session)serializer.Deserialize(fs);
+        session = (session)serializer.Deserialize(ms);
+      }
 
-        try
-        {
-          XmlScriptProcessor.ExecuteSession(session);
-        }
-        catch (Exception ex)
-        {
-          XmlScriptProcessor.LogError(ex);
-        }
+      try
+      {
+        XmlScriptProcessor.ExecuteSession(session);
+      }
+      catch (Exception ex)
+      {
+        XmlScriptProcessor.LogError(ex);
       }
     }
 

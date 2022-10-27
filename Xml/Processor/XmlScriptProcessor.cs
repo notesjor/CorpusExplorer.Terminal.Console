@@ -72,34 +72,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                        {
                          try
                          {
-                           if (!Directory.Exists("sessions"))
-                             Directory.CreateDirectory("sessions");
-
-                           var sPath = Path.Combine("sessions", Guid.NewGuid().ToString("N"));
-
-                           using (var fs = new FileStream(sPath, FileMode.Create, FileAccess.Write))
-                           {
-                             var serializer = new XmlSerializer(typeof(session));
-                             serializer.Serialize(fs, session);
-                           }
-
-                           var assembly = Assembly.GetExecutingAssembly().Location;
-
-                           // start process of the same exe and write to stdin
-                           var process = new System.Diagnostics.Process
-                           {
-                             StartInfo =
-                               {
-                                 FileName = assembly.EndsWith(".dll") ? "dotnet" : assembly,
-                                 Arguments = assembly.EndsWith(".dll") ? $"{assembly} --session {sPath}" : $"--session {sPath}",
-                                 UseShellExecute = false,
-                                 CreateNoWindow = true,
-                                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                                 WorkingDirectory = Environment.CurrentDirectory,
-                               }
-                           };
-                           process.Start();
-                           process.WaitForExit();
+                           SessionRunner.Run(session);
                          }
                          catch (Exception ex)
                          {
@@ -242,24 +215,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                           var files = Directory.GetFiles(d.Value, d.filter);
                           Parallel.ForEach(files, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), file =>
                           {
-                            using (var project = ReadSources(new[]
-                            {
-                              new import
-                              {
-                                Items = new[]
-                                {
-                                  new file
-                                  {
-                                    delete = d.delete,
-                                    Value = file
-                                  }
-                                },
-                                type = i.type
-                              }
-                            }))
-                            {
-                              ExecuteSession(session, scriptFilename, project);
-                            }
+                            SessionRunner.Run(session, file, i.type, d.delete);
                           });
 
                           break;
@@ -359,6 +315,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
                 Parallel.ForEach(subDirsI, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
                 {
+                  // TODO: Überlegen, ob man das nicht besser mit SessionRunner.Run(session, file, i.type, d.delete); ersetzt
+                  
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
                                              .Replace("\\", "");
                   using (var project = ReadSources(new[]
