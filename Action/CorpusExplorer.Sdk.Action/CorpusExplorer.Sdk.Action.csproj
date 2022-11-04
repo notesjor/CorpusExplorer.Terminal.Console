@@ -79,6 +79,7 @@
     <Compile Include="Frequency2RawAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />
     <Compile Include="Helper\FileQueriesHelper.cs" />
+    <Compile Include="Abstract\AbstractActionWithExport.cs" />
     <Compile Include="Helper\KwicSpanHelper.cs" />
     <Compile Include="InverseDocumentFrequencyAction.cs" />
     <Compile Include="KeywordAction.cs" />

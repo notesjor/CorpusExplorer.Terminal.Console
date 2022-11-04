@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using CorpusExplorer.Sdk.Action.Abstract;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Blocks;
@@ -64,21 +65,24 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       ApplyConfigurationHead(script.head);
 
-      Parallel.ForEach(script.sessions.session,
-                       !string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync")
-                         ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
-                         : CustomParallelConfigurationHelper.UseCustomParallelConfiguration(script.sessions.parallel),
-                       session =>
-                       {
-                         try
-                         {
-                           SessionRunner.Run(session);
-                         }
-                         catch (Exception ex)
-                         {
-                           LogError(ex);
-                         }
-                       });
+      if (!string.IsNullOrEmpty(script.sessions.mode) && script.sessions.mode.StartsWith("sync"))
+        foreach (var session in script.sessions.session)
+          ExecuteSession(session);
+      else
+      {
+        Parallel.ForEach(script.sessions.session, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(script.sessions.parallel),
+          session =>
+          {
+            try
+            {
+              SessionRunner.Run(session);
+            }
+            catch (Exception ex)
+            {
+              LogError(ex);
+            }
+          });
+      }
 
       ConsoleHelper.PrintHeader();
       System.Console.WriteLine(Resources.XmlScriptSuccess);
@@ -316,7 +320,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 Parallel.ForEach(subDirsI, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
                 {
                   // TODO: Überlegen, ob man das nicht besser mit SessionRunner.Run(session, file, i.type, d.delete); ersetzt
-                  
+
                   overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
                                              .Replace("\\", "");
                   using (var project = ReadSources(new[]
@@ -454,74 +458,35 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           // Wurde eine Action bereits abgeschlossen? - Falls ja, breche ab.
           if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
             return;
-
+          
           // Reporting für Konsole
           ExecuteActionReport(taskGuid, query, a.type, outputPath, false);
 
-          switch (a.type)
+          if (action is AbstractActionWithExport exportAction)
           {
-            // Ist die Action vom Typ query, dann konvertiere Abfrage
-            case "query":
-              {
-                var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
-                if (exporter == null)
-                  return;
+            var exporter = Configuration.GetExporter(a.output.format);
+            exportAction.ExceuteXmlScriptProcessorBypass(selections.JoinFull(string.Join(", ", selections.Select(x => x.Displayname))), a.arguments, exporter, outputPath);
+          }
+          else
+          {
+            var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+            var format = Configuration.GetTableWriter(formatKey);
+            if (format == null)
+              return;
 
-                exporter.Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).CreateTemporary(new[] { QueryParser.Parse(a.arguments[0]) }).ToCorpus(), outputPath);
-                break;
-              }
-            // Ist die Action vom Typ convert, dann konvertiere direkt
-            case "convert":
-              {
-                var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
-                if (exporter == null)
-                  return;
+            format.Path = outputPath;
 
-                exporter.Export(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)).ToCorpus(), outputPath);
-                break;
-              }
-            case "cluster" when a.arguments[1] == "convert":
-              {
-                var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
-                if (exporter == null)
-                  return;
-
-                var qp = QueryParser.Parse(a.arguments[0]);
-                if (!(qp is FilterQueryUnsupportedParserFeature))
-                  return;
-
-                var sel = UnsupportedQueryParserFeatureHelper.Handle(selections.JoinFull(Path.GetFileNameWithoutExtension(outputPath)), (FilterQueryUnsupportedParserFeature)qp);
-                if (sel == null)
-                  return;
-
-                foreach (var s in sel)
-                  exporter.Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
-                break;
-              }
-            // Andernfalls ist format vom Typ AbstractTableWriter
-            default:
-              {
-                var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
-                var format = Configuration.GetTableWriter(formatKey);
-                if (format == null)
-                  return;
-
-                format.Path = outputPath;
-
-                // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-                using (var bs = new BufferedStream(fs))
-                {
-                  format = format.Clone(bs);
-                  Parallel.ForEach(selections, Configuration.ParallelOptions,
-                                   // ReSharper disable once AccessToDisposedClosure
-                                   // ReSharper disable once ImplicitlyCapturedClosure
-                                   selection => action.Execute(selection, a.arguments, format));
-                  format.Destroy();
-                }
-
-                break;
-              }
+            // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+            using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+            using (var bs = new BufferedStream(fs))
+            {
+              format = format.Clone(bs);
+              Parallel.ForEach(selections, Configuration.ParallelOptions,
+                // ReSharper disable once AccessToDisposedClosure
+                // ReSharper disable once ImplicitlyCapturedClosure
+                selection => action.Execute(selection, a.arguments, format));
+              format.Destroy();
+            }
           }
 
           // Reporting für Konsole
@@ -540,68 +505,28 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             // Reporting für Konsole
             ExecuteActionReport(taskGuid, selection.Displayname, a.type, outputPath, false);
 
-            switch (a.type)
+            if (action is AbstractActionWithExport exportAction)
             {
-              // Ist die Action vom Typ query, dann konvertiere Abfrage
-              case "query":
-                {
-                  var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
-                  if (exporter == null)
-                    return;
+              var exporter = Configuration.GetExporter(a.output.format);
+              exportAction.ExceuteXmlScriptProcessorBypass(selection, a.arguments, exporter, outputPath);
+            }
+            else
+            {
+              var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+              var format = Configuration.GetTableWriter(formatKey);
+              if (format == null)
+                return;
 
-                  exporter.Export(selection.CreateTemporary(new[] { QueryParser.Parse(a.arguments[0]) }).ToCorpus(), outputPath);
-                  break;
-                }
-              // Ist die Action vom Typ convert, dann konvertiere direkt
-              case "convert":
-                {
-                  var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
-                  if (exporter == null)
-                    return;
+              format.Path = outputPath;
 
-                  exporter.Export(selection.ToCorpus(), outputPath);
-                  break;
-                }
-              // Ist die Action vom Typ cluster UND ist die cluster-Action vom Typ convert, dann muss format vom Typ AbstractExporter sein
-              case "cluster" when a.arguments[1] == "convert":
-                {
-                  var exporter = Configuration.AddonExporters.GetReflectedType(a.output.format, "Exporter");
-                  if (exporter == null)
-                    return;
-
-                  var qp = QueryParser.Parse(a.arguments[0]);
-                  if (!(qp is FilterQueryUnsupportedParserFeature))
-                    return;
-
-                  var sel = UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature)qp);
-                  if (sel == null)
-                    return;
-
-                  foreach (var s in sel)
-                    exporter.Export(s.ToCorpus(), OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), s.Displayname, a.type));
-                  break;
-                }
-              // Andernfalls ist format vom Typ AbstractTableWriter
-              default:
-                {
-                  var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
-                  var format = Configuration.GetTableWriter(formatKey);
-                  if (format == null)
-                    return;
-
-                  format.Path = outputPath;
-
-                  // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-                  using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
-                  using (var bs = new BufferedStream(fs))
-                  {
-                    format = format.Clone(bs);
-                    action.Execute(selection, a.arguments, format);
-                    format.Destroy();
-                  }
-
-                  break;
-                }
+              // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+              using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+              using (var bs = new BufferedStream(fs))
+              {
+                format = format.Clone(bs);
+                action.Execute(selection, a.arguments, format);
+                format.Destroy();
+              }
             }
 
             // Reporting für Konsole
