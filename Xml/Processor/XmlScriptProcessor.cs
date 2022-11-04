@@ -925,6 +925,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
+      res = res.Replace(".cec6.cec6", ".cec6");
+      
       return res;
     }
 
