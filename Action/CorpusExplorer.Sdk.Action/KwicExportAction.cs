@@ -40,7 +40,7 @@ namespace CorpusExplorer.Sdk.Action
       merger.Input(selection.ToCorpus());
       merger.Execute();
 
-      return merger.Output.First();
+      return merger.Output.FirstOrDefault();
     }
   }
 }
