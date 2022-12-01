@@ -33,7 +33,7 @@ namespace CorpusExplorer.Sdk.Action
       {
         var lines = File.ReadAllLines(args[0].Replace("FILE:", string.Empty), Configuration.Encoding);
         foreach(var x in lines.ToDictionary(x => x, QueryParser.Parse))
-          dt.Rows.Add(x.Key, QuickQuery.CountOnDocumentLevel(selection, new[] { x.Value }));
+          dt.Rows.Add(x.Key, QuickQuery.CountOnDocumentLevel(selection, x.Value ));
       }
       else
       {
@@ -48,7 +48,7 @@ namespace CorpusExplorer.Sdk.Action
           return;
         }
 
-        dt.Rows.Add(args[0], QuickQuery.CountOnDocumentLevel(selection, new[] { query }));
+        dt.Rows.Add(args[0], QuickQuery.CountOnDocumentLevel(selection,  query ));
       }
 
       dt.EndLoadData();

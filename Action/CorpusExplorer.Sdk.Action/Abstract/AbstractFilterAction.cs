@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Addon;
-using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Abstract;
@@ -34,12 +32,13 @@ namespace CorpusExplorer.Sdk.Action.Abstract
         AddContextSentencesPost = spanHelper.SentencePost
       };
 
-      vm.AddQuery(GetQuery(args[0], spanHelper.CleanArguments));
+      foreach(var q in GetQuery(args[0], spanHelper.CleanArguments))
+        vm.AddQuery(q);
       vm.Execute();
 
       writer.WriteTable(selection.Displayname, vm.GetUniqueDataTableCsv());
     }
 
-    protected abstract AbstractFilterQuery GetQuery(string layerDisplayname, IEnumerable<string> queries);
+    protected abstract IEnumerable<AbstractFilterQuery> GetQuery(string layerDisplayname, IEnumerable<string> queries);
   }
 }
