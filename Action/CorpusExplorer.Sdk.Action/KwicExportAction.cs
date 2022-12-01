@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CorpusExplorer.Sdk.Action.Abstract;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Action.Properties;
@@ -22,7 +23,7 @@ namespace CorpusExplorer.Sdk.Action
         return null;
 
       var layer = args[0];
-      var queries = FileQueriesHelper.ResolveFileQueries(args[1].Replace("FILE:", ""));
+      var queries = FileQueriesHelper.ResolveFileQueries(new List<string> { args[1].Replace("FILE:", "") });
       var spanHelper = new KwicSpanHelper(queries);
       var merger = new CorpusMergerQueryBasedKwic
       {

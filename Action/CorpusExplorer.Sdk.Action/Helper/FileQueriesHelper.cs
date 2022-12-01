@@ -20,7 +20,7 @@ namespace CorpusExplorer.Sdk.Action.Helper
       return res;
     }
 
-    public static List<string> ResolveFileQueries(string path)
+    private static List<string> ResolveFileQueries(string path)
     {
       var res = new List<string>();
       foreach (var query in File.ReadAllLines(path.Replace("FILE:", ""), Configuration.Encoding))
