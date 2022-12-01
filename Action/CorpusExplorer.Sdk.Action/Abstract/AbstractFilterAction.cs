@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Addon;
+using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.Filter.Abstract;
@@ -12,6 +13,7 @@ namespace CorpusExplorer.Sdk.Action.Abstract
   {
     public abstract string Action { get; }
     public abstract string Description { get; }
+    public virtual TextLiveSearchBlock.SearchMode Mode => TextLiveSearchBlock.SearchMode.And;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -29,7 +31,7 @@ namespace CorpusExplorer.Sdk.Action.Abstract
       {
         Selection = selection,
         AddContextSentencesPre = spanHelper.SentencePre,
-        AddContextSentencesPost = spanHelper.SentencePost
+        AddContextSentencesPost = spanHelper.SentencePost,
       };
 
       foreach(var q in GetQuery(args[0], spanHelper.CleanArguments))
