@@ -462,4 +462,7 @@
   <data name="DescKwicMda" xml:space="preserve">
     <value>kwic-mda [MDA-FILE] {-SPAN} {+SPAN} - KWIC based on MDA-FILE</value>
   </data>
+  <data name="DescKwicPhraseCount" xml:space="preserve">
+    <value>kwic-phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
+  </data>
 </root>
