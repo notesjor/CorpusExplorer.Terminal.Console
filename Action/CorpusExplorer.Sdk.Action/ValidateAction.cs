@@ -1,13 +1,8 @@
-﻿using CorpusExplorer.Sdk.Action.Helper;
-using CorpusExplorer.Sdk.Action.Properties;
+﻿using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
-using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
-using CorpusExplorer.Sdk.Utils.Filter;
-using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Sdk.ViewModel;
-
 
 namespace CorpusExplorer.Sdk.Action
 {
@@ -20,6 +15,7 @@ namespace CorpusExplorer.Sdk.Action
     {
       var vm = new ValidateSelectionIntegrityViewModel { Selection = selection };
       vm.Execute();
+      writer.WriteTable(vm.GetDataTable());
     }
   }
 }
