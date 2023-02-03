@@ -29,7 +29,7 @@ namespace CorpusExplorer.Sdk.Action.Abstract
       exporter.Export(corpus, path);
     }
 
-    public void ExceuteXmlScriptProcessorBypass(Selection selection, string[] args, AbstractExporter exporter, string path)
+    public void ExecuteXmlScriptProcessorBypass(Selection selection, string[] args, AbstractExporter exporter, string path)
     {
       var corpus = ExecuteCall(selection, args, path);
       if (corpus == null)

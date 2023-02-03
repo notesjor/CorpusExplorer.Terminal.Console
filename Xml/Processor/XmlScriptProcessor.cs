@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using CorpusExplorer.Sdk.Action;
 using CorpusExplorer.Sdk.Action.Abstract;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Addon;
@@ -458,14 +459,46 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           // Wurde eine Action bereits abgeschlossen? - Falls ja, breche ab.
           if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
             return;
-          
+
           // Reporting für Konsole
           ExecuteActionReport(taskGuid, query, a.type, outputPath, false);
 
-          if (action is AbstractActionWithExport exportAction)
+          if (action is ClusterAction cluster)
+          {
+            var clusterAction = Configuration.GetConsoleAction(a.arguments[1]);
+            if (clusterAction == null)
+              return;
+
+            if (clusterAction is ClusterAction)
+            {
+              var msg = "The recursive use of 'cluster' is not allowed.";
+              System.Console.WriteLine(msg);
+              throw new Exception(msg);
+            }
+            else if (clusterAction is AbstractActionWithExport exportAction)
+            {
+              var msg = "cluster-merge Exports is not allowed";
+              System.Console.WriteLine(msg);
+              throw new Exception(msg);
+            }
+            else
+            {
+              var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+              var format = Configuration.GetTableWriter(formatKey);
+              if (format == null)
+                return;
+
+              // cluster behandelt in ExecuteXmlScriptProcessorBypass+TableWriter die Verarbeitung von TableWriter.
+              Parallel.ForEach(selections, Configuration.ParallelOptions,
+                  // ReSharper disable once AccessToDisposedClosure
+                  // ReSharper disable once ImplicitlyCapturedClosure
+                  selection => cluster.ExecuteXmlScriptProcessorBypass(clusterAction, selection, a.arguments, format, outputPath));
+            }
+          }
+          else if (action is AbstractActionWithExport exportAction)
           {
             var exporter = Configuration.GetExporter(a.output.format);
-            exportAction.ExceuteXmlScriptProcessorBypass(selections.JoinFull(string.Join(", ", selections.Select(x => x.Displayname))), a.arguments, exporter, outputPath);
+            exportAction.ExecuteXmlScriptProcessorBypass(selections.JoinFull(string.Join(", ", selections.Select(x => x.Displayname))), a.arguments, exporter, outputPath);
           }
           else
           {
@@ -505,10 +538,37 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             // Reporting für Konsole
             ExecuteActionReport(taskGuid, selection.Displayname, a.type, outputPath, false);
 
-            if (action is AbstractActionWithExport exportAction)
+            if (action is ClusterAction cluster)
+            {
+              var clusterAction = Configuration.GetConsoleAction(a.arguments[1]);
+              if (clusterAction == null)
+                return;
+
+              if (clusterAction is ClusterAction)
+              {
+                var msg = "The recursive use of 'cluster' is not allowed.";
+                System.Console.WriteLine(msg);
+                throw new Exception(msg);
+              }
+              else if (clusterAction is AbstractActionWithExport exportAction)
+              {
+                var exporter = Configuration.GetExporter(a.output.format);
+                cluster.ExecuteXmlScriptProcessorBypass(exportAction, selection, a.arguments, exporter, outputPath);
+              }
+              else
+              {
+                var formatKey = a.output.format.StartsWith("F:") || a.output.format.StartsWith("FNT:") ? a.output.format : $"F:{a.output.format}";
+                var format = Configuration.GetTableWriter(formatKey);
+                if (format == null)
+                  return;
+
+                cluster.ExecuteXmlScriptProcessorBypass(clusterAction, selection, a.arguments, format, outputPath);
+              }
+            }
+            else if (action is AbstractActionWithExport exportAction)
             {
               var exporter = Configuration.GetExporter(a.output.format);
-              exportAction.ExceuteXmlScriptProcessorBypass(selection, a.arguments, exporter, outputPath);
+              exportAction.ExecuteXmlScriptProcessorBypass(selection, a.arguments, exporter, outputPath);
             }
             else
             {
@@ -926,7 +986,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         Directory.CreateDirectory(dir);
 
       res = res.Replace(".cec6.cec6", ".cec6");
-      
+
       return res;
     }
 
