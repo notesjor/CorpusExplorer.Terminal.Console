@@ -465,4 +465,16 @@
   <data name="DescKwicPhraseCount" xml:space="preserve">
     <value>kwic-phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
   </data>
+  <data name="DescMetaDocumentSelect" xml:space="preserve">
+    <value>meta-by-document-select [META...N] - list selected document meta-data </value>
+  </data>
+  <data name="DescLayerRename" xml:space="preserve">
+    <value>layer-rename [Original Layer-Name] [New Layer-Name] [OUTPUT] - rename layer.</value>
+  </data>
+  <data name="DescLayerNew" xml:space="preserve">
+    <value>layer-new [New Layer-Name] [OUTPUT] - creates a new empty layer.</value>
+  </data>
+  <data name="DescLayerClone" xml:space="preserve">
+    <value>layer-clone [Original Layer-Name] [New Layer-Name] [OUTPUT] - clone original layer.</value>
+  </data>
 </root>

@@ -91,6 +91,7 @@
     <Compile Include="LayerNewAction.cs" />
     <Compile Include="LayerRemoveAction.cs" />
     <Compile Include="LayerRenameAction.cs" />
+    <Compile Include="MetaDocumentSelectAction.cs" />
     <Compile Include="MetaExportAction.cs" />
     <Compile Include="MetaImportAction.cs" />
     <Compile Include="MetaSelectedAction.cs" />

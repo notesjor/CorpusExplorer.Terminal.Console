@@ -11,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   public class LayerNewAction : IAction
   {
     public string Action => "layer-new";
-    public string Description => "layer-new [New Layer-Name] [OUTPUT] - creates a new empty layer.";
+    public string Description => CorpusExplorer.Sdk.Action.Properties.Resources.DescLayerNew;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

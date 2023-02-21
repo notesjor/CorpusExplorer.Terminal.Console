@@ -511,6 +511,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die layer-clone [Original Layer-Name] [New Layer-Name] [OUTPUT] - clone original layer. ähnelt.
+        /// </summary>
+        internal static string DescLayerClone {
+            get {
+                return ResourceManager.GetString("DescLayerClone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die layer-names - all available names for [LAYER] ähnelt.
         /// </summary>
         internal static string DescLayerNames {
@@ -520,11 +529,29 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die layer-new [New Layer-Name] [OUTPUT] - creates a new empty layer. ähnelt.
+        /// </summary>
+        internal static string DescLayerNew {
+            get {
+                return ResourceManager.GetString("DescLayerNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information. ähnelt.
         /// </summary>
         internal static string DescLayerRemove {
             get {
                 return ResourceManager.GetString("DescLayerRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die layer-rename [Original Layer-Name] [New Layer-Name] [OUTPUT] - rename layer. ähnelt.
+        /// </summary>
+        internal static string DescLayerRename {
+            get {
+                return ResourceManager.GetString("DescLayerRename", resourceCulture);
             }
         }
         
@@ -561,6 +588,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string DescMetaCategories {
             get {
                 return ResourceManager.GetString("DescMetaCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-by-document-select [META...N] - list selected document meta-data  ähnelt.
+        /// </summary>
+        internal static string DescMetaDocumentSelect {
+            get {
+                return ResourceManager.GetString("DescMetaDocumentSelect", resourceCulture);
             }
         }
         

@@ -11,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   public class LayerRenameAction : IAction
   {
     public string Action => "layer-rename";
-    public string Description => "layer-rename [Original Layer-Name] [New Layer-Name] [OUTPUT] - rename layer.";
+    public string Description => CorpusExplorer.Sdk.Action.Properties.Resources.DescLayerRename;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

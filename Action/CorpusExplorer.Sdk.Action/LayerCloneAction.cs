@@ -11,7 +11,7 @@ namespace CorpusExplorer.Sdk.Action
   public class LayerCloneAction : IAction
   {
     public string Action => "layer-clone";
-    public string Description => "layer-clone [Original Layer-Name] [New Layer-Name] [OUTPUT] - clone original layer.";
+    public string Description => CorpusExplorer.Sdk.Action.Properties.Resources.DescLayerClone;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {

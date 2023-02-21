@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -11,7 +12,7 @@ namespace CorpusExplorer.Sdk.Action
   public class LayerRemoveAction : IAction
   {
     public string Action => "layer-remove";
-    public string Description => "layer-remove [Layer-Name] [OUTPUT] - remove layer by name";
+    public string Description => Resources.DescLayerRemove;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
