@@ -17,43 +17,27 @@ namespace CorpusExplorer.Sdk.Action
 {
   public class PhraseCountAction : IAction
   {
-    public string Action => "kwic-phrase-count";
-    public string Description => Resources.DescKwicPhraseCount;
+    public string Action => "phrase-count";
+    public string Description => Resources.DescPhraseCount;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args == null || args.Length < 2)
         return;
 
-      var queries = new List<string>(args);
-      queries.RemoveAt(0);
+      var arguments = new List<string>(args);
+      arguments.RemoveAt(0);
 
-      queries = FileQueriesHelper.ResolveFileQueries(queries);
-
-      var spanHelper = new KwicSpanHelper(queries);
-
-      var dt = new DataTable();
-      dt.Columns.Add("Phrase", typeof(string));
-      dt.Columns.Add("Frequenz", typeof(int));
-
-      dt.BeginLoadData();
-      foreach (var q in GetQuery(args[0], spanHelper.CleanArguments))
+      PhraseFastCounterViewModel vm = new PhraseFastCounterViewModel
       {
-        var vm = new TextLiveSearchViewModel
-        {
-          Selection = selection,
-          AddContextSentencesPre = spanHelper.SentencePre,
-          AddContextSentencesPost = spanHelper.SentencePost,
-        };
+        Selection = selection,
+        AutoSplitLayerQuieresWithSpace = false,
+        LayerDisplayname = args[0],
+        LayerQueries = FileQueriesHelper.ResolveFileQueries(arguments).Select(x => x.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+      };
+      vm.Execute();
 
-        vm.AddQuery(q);
-        vm.Execute();
-
-        dt.Rows.Add(string.Join(" ", q.LayerQueries), vm.ResultCountWords);
-      }
-      dt.EndLoadData();
-
-      writer.WriteTable(selection.Displayname, dt);
+      writer.WriteTable(selection.Displayname, vm.GetDataTable());
     }
 
     protected IEnumerable<FilterQuerySingleLayerExactPhrase> GetQuery(string layerDisplayname, IEnumerable<string> queries)

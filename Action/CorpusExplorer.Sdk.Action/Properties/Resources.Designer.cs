@@ -475,9 +475,9 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
         /// </summary>
-        internal static string DescKwicPhraseCount {
+        internal static string DescPhraseCount {
             get {
                 return ResourceManager.GetString("DescKwicPhraseCount", resourceCulture);
             }

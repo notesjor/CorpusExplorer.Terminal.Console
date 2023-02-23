@@ -463,7 +463,7 @@
     <value>kwic-mda [MDA-FILE] {-SPAN} {+SPAN} - KWIC based on MDA-FILE</value>
   </data>
   <data name="DescKwicPhraseCount" xml:space="preserve">
-    <value>kwic-phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
+    <value>phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
   </data>
   <data name="DescMetaDocumentSelect" xml:space="preserve">
     <value>meta-by-document-select [META...N] - list selected document meta-data </value>
