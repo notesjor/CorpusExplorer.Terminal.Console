@@ -68,11 +68,11 @@ namespace CorpusExplorer.Sdk.Action
         if (File.Exists(output) && new FileInfo(output).Length > 0)
           continue;
 
-        action.ExecuteXmlScriptProcessorBypass(s, nargs.ToArray(), exporter, output); 
+        action.ExecuteXmlScriptProcessorBypass(s, nargs.ToArray(), exporter, output);
       }
     }
 
-    public void ExecuteXmlScriptProcessorBypass(IAction action, Selection selection, string[] args, AbstractTableWriter writer, string path)
+    public void ExecuteXmlScriptProcessorBypass(IAction action, Selection selection, string[] args, AbstractTableWriter writer, string path, bool merge)
     {
       if (args.Length < 2)
         return;
@@ -89,22 +89,39 @@ namespace CorpusExplorer.Sdk.Action
       nargs.RemoveAt(0);
       nargs.RemoveAt(0);
 
-      foreach (var s in selections)
+      if (merge)
       {
-        writer.Path = path.Replace("{cluster}", s.Displayname);
+        if (File.Exists(path) && new FileInfo(path).Length > 0)
+          return;
 
-        if (File.Exists(writer.Path) && new FileInfo(writer.Path).Length > 0)
-          continue;
-        
-        // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
-        using (var fs = new FileStream(writer.Path, FileMode.Create, FileAccess.Write))
+        using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
         using (var bs = new BufferedStream(fs))
         {
           var format = writer.Clone(bs);
-          action.Execute(s, nargs.ToArray(), format);
+
+          foreach (var s in selections)
+            action.Execute(s, nargs.ToArray(), format);
+
           format.Destroy();
-        }        
+        }
       }
+      else
+        foreach (var s in selections)
+        {
+          writer.Path = path.Replace("{cluster}", s.Displayname);
+
+          if (File.Exists(writer.Path) && new FileInfo(writer.Path).Length > 0)
+            continue;
+
+          // Kopie des TableWriter, um eine parallele Verarbeitung zu ermöglichen.
+          using (var fs = new FileStream(writer.Path, FileMode.Create, FileAccess.Write))
+          using (var bs = new BufferedStream(fs))
+          {
+            var format = writer.Clone(bs);
+            action.Execute(s, nargs.ToArray(), format);
+            format.Destroy();
+          }
+        }
     }
   }
 }

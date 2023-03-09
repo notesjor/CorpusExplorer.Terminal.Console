@@ -492,7 +492,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               Parallel.ForEach(selections, Configuration.ParallelOptions,
                   // ReSharper disable once AccessToDisposedClosure
                   // ReSharper disable once ImplicitlyCapturedClosure
-                  selection => cluster.ExecuteXmlScriptProcessorBypass(clusterAction, selection, a.arguments, format, outputPath));
+                  selection => cluster.ExecuteXmlScriptProcessorBypass(clusterAction, selection, a.arguments, format, outputPath, true));
             }
           }
           else if (action is AbstractActionWithExport exportAction)
@@ -562,7 +562,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 if (format == null)
                   return;
 
-                cluster.ExecuteXmlScriptProcessorBypass(clusterAction, selection, a.arguments, format, outputPath);
+                cluster.ExecuteXmlScriptProcessorBypass(clusterAction, selection, a.arguments, format, outputPath, false);
               }
             }
             else if (action is AbstractActionWithExport exportAction)
