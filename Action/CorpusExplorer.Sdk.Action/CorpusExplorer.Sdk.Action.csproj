@@ -165,7 +165,7 @@
     <None Include="CorpusExplorerNextSnKey2019.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\FuzzyHashing\Hyldahl.Hashing\Hyldahl.Hashing.csproj">
+    <ProjectReference Include="..\..\..\..\Projekte-Kooperation\FuzzyHashing\Hyldahl.Hashing\Hyldahl.Hashing.csproj">
       <Project>{6968101f-a3d4-4a14-a481-05e373cd5dc1}</Project>
       <Name>Hyldahl.Hashing</Name>
     </ProjectReference>
