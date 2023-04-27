@@ -136,7 +136,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TfresWebserver\TefresWebserver\TFRES.csproj">
+    <ProjectReference Include="..\..\Projekte-Kooperation\TfresWebserver\TefresWebserver\TFRES.csproj">
       <Project>{63f6b9f6-ff80-4764-bd45-109d549bf459}</Project>
       <Name>TFRES</Name>
     </ProjectReference>
