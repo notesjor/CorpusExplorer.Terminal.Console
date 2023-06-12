@@ -145,7 +145,10 @@ cec.exe DEBUG:[PATH]
 To start interactive shell mode
 cec.exe SHELL
 To start a REST-WebService
-cec.exe {F:FORMAT} PORT:2312 {IP:127.0.0.1} {TIMEOUT:120} {INPUT}
+cec.exe [F:FORMAT] PORT:[2312] [IP:127.0.0.1] [TIMEOUT:120] {INPUT}
+- if you use {IMPORT} use something like: Cec6#corpus.cec6 (one service per corpus)
+- if you don't use import you get a WebService where you can load different corpora
+- if you replace INPUT with BRIGE you got a BRIGE-Mode
 </value>
   </data>
   <data name="HelpImportPattern" xml:space="preserve">
@@ -282,7 +285,7 @@ You need to set one of the following tags as first parameter:
     <value>
 Example: cec.exe F:JSON import#Cec6#C:\mycorpus.cec6 frequency3 POS Lemma Wort
 Use FNT: to hide the TID (be carefull with this, if you are using CLUSTER)
-Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 > C:\out.csv)
+Normal STDOUT redirections is very slow (like: cec.exe F:CSV import#Cec6#C:\corpus.cec6 frequency1 &gt; C:\out.csv)
 Use the optimized direct way, by adding the output-path to the [F:FORMAT]-option
 Example: cec.exe F:CSV#C:\out.tsv import#Cec6#C:\mycorpus.cec6 frequency1
 </value>
@@ -374,5 +377,8 @@ LOAD: {0}...</value>
   </data>
   <data name="Running" xml:space="preserve">
     <value>running</value>
+  </data>
+  <data name="WebInitBridge" xml:space="preserve">
+    <value>INIT WebService (mode: BRIDGE)</value>
   </data>
 </root>

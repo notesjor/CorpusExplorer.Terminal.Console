@@ -35,6 +35,7 @@
     <Compile Include="..\..\Web\Model\Response\Abstract\AbstractResponse.cs" Link="Web\Model\Response\Abstract\AbstractResponse.cs" />
     <Compile Include="..\..\Web\Model\Response\AvailableActionsResponse.cs" Link="Web\Model\Response\AvailableActionsResponse.cs" />
     <Compile Include="..\..\Web\WebService.cs" Link="Web\WebService.cs" />
+    <Compile Include="..\..\Web\WebServiceBridge.cs" Link="Web\WebServiceBridge.cs" />
     <Compile Include="..\..\Web\WebServiceDirect.cs" Link="Web\WebServiceDirect.cs" />
     <Compile Include="..\..\Xml\Extensions\MetaExtension.cs" Link="Xml\Extensions\MetaExtension.cs" />
     <Compile Include="..\..\Xml\Extensions\QueriesExtension.cs" Link="Xml\Extensions\QueriesExtension.cs" />
