@@ -2419,6 +2419,15 @@ namespace CorpusExplorer.Terminal.Console.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die INIT WebService (mode: BRIDGE) ähnelt.
+        /// </summary>
+        internal static string WebInitBridge {
+            get {
+                return ResourceManager.GetString("WebInitBridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die ..:: CURRENT ACTIONS ::.. ähnelt.
         /// </summary>
         internal static string XmlScriptCurrentActions {

@@ -20,6 +20,14 @@ using CorpusExplorer.Sdk.Model;
 using System.Net.Http;
 using System.Net;
 using CorpusExplorer.Sdk.Model.Adapter.Corpus;
+using CorpusExplorer.Sdk.Utils.Filter.Abstract;
+using CorpusExplorer.Sdk.Utils.Filter.Queries;
+using CorpusExplorer.Sdk.Blocks;
+using CorpusExplorer.Sdk.ViewModel;
+using CorpusExplorer.Sdk.Blocks.SelectionCluster.Generator;
+using CorpusExplorer.Sdk.Blocks.SelectionCluster.Generator.Abstract;
+using System.Linq;
+using CorpusExplorer.Sdk.Blocks.SelectionCluster.Cluster.Helper;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -40,38 +48,69 @@ namespace CorpusExplorer.Terminal.Console.Web
     protected override Server ConfigureServer(Server server)
     {
       server.AddEndpoint(HttpMethod.Get, "/load", LoadCorpus);
+      server.AddEndpoint(HttpMethod.Get, "/fast/norm", FastNormData);
       server.AddEndpoint(HttpMethod.Get, "/fast/count", FastCount);
       server.AddEndpoint(HttpMethod.Get, "/fast/kwic", FastKwic);
-      server.AddEndpoint(HttpMethod.Get, "/fast/frequency", FastFrequency);
+      server.AddEndpoint(HttpMethod.Get, "/fast/timeline", FastTimeline);
       return server;
     }
 
-    private void FastFrequency(HttpContext context)
+    private void FastNormData(HttpContext context)
     {
       try
       {
-        var q = context.Request.GetData()["q"].Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+        var getData = context.GetData();        
+        var select = "all"; // select kann auch Y, YM oder YMD sein.
+        if (getData.ContainsKey("selection"))
+          select = getData["selection"];
 
-        AbstractFilterQuery query = null;
-        if (q.Length > 1)
+        if (select == "all")
         {
-          query = new FilterQuerySingleLayerExactPhrase
+          context.Response.Send(new
           {
-            Layer = "Wort",
-            LayerQueries = q
-          };
+            Corpora = _project.SelectAll.CountCorpora,
+            Documents = _project.SelectAll.CountDocuments,
+            Sentences = _project.SelectAll.CountSentences,
+            Tokens = _project.SelectAll.CountToken
+          });
         }
         else
         {
-          query = new FilterQuerySingleLayerAnyMatch
-          {
-            Layer = "Wort",
-            LayerQuery = q
-          };
-        }
+          var meta = "Datum";
+          if (getData.ContainsKey("date-meta"))
+            meta = getData["date-meta"];
 
-        var tmp = _project.SelectAll.CreateTemporary(query);
-        var count = tmp.
+          var block = _project.SelectAll.CreateBlock<SelectionClusterBlock>();
+          block.ClusterGenerator = GetFastCluster(select); // select ist Y, YM oder YMD.
+          block.ClusterGenerator.MetadataKey = meta;
+          block.Calculate();
+
+          var info = "simple";
+          if (getData.ContainsKey("info"))
+            info = getData["info"];
+
+          if (info == "full")
+          {
+            var dict = new Dictionary<string, object>();
+            foreach(var x in block.SelectionClusters)
+            {
+              var s = _project.SelectAll.CreateTemporary(x.Value);
+              dict.Add(x.Key, new
+              {
+                Corpora = s.CountCorpora,
+                Documents = s.CountDocuments,
+                Sentences = s.CountSentences,
+                Tokens = s.CountToken
+              });
+            }
+
+            context.Response.Send(dict);
+          }
+          else
+          {
+            context.Response.Send(block.SelectionClusters.ToDictionary(x => x.Key, x => _project.SelectAll.CreateTemporary(x.Value).CountToken));
+          }          
+        }
       }
       catch
       {
@@ -79,11 +118,91 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
+    private void FastTimeline(HttpContext context)
+    {
+      try
+      {
+        var getData = context.GetData();
+        AbstractFilterQuery query = GetFastQuery(getData);
+        var date = "YM";
+        if (getData.ContainsKey("date"))
+          date = getData["date"];
+        var meta = "Datum";
+        if (getData.ContainsKey("date-meta"))
+          meta = getData["date-meta"];
+
+        var block = _project.SelectAll.CreateBlock<SelectionClusterBlock>();
+        block.ClusterGenerator = GetFastCluster(date);
+        block.ClusterGenerator.MetadataKey = meta;
+        block.Calculate();
+
+        var info = "simple";
+        if (getData.ContainsKey("info"))
+          info = getData["info"];
+
+        if (info == "full")
+        {
+          var res = new Dictionary<string, object>();
+          foreach (var x in block.SelectionClusters)
+          {
+            var s = _project.SelectAll.CreateTemporary(x.Value);
+            var vm = GetFastTLS(query, s);
+            res.Add(x.Key, new
+            {
+              Corpora = vm.ResultCountCorpora,
+              Documents = vm.ResultCountDocuments,
+              Sentences = vm.ResultCountSentences,
+              Tokens = vm.ResultCountTokens
+            });
+          }
+          context.Response.Send(res);
+        }
+        else
+        {
+          var res = new Dictionary<string, int>();
+          foreach (var x in block.SelectionClusters)
+          {
+            var s = _project.SelectAll.CreateTemporary(x.Value);
+            var vm = GetFastTLS(query, s);
+            res.Add(x.Key, vm.ResultCountTokens);
+          }
+          context.Response.Send(res);
+        }
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private AbstractSelectionClusterGenerator GetFastCluster(string date)
+    {
+      switch (date)
+      {
+        case "Y":
+          return new SelectionClusterGeneratorDateTimeYearOnlyValue();
+        default: // YM
+          return new SelectionClusterGeneratorDateTimeYearMonthOnlyValue();
+        case "YMD":
+          return new SelectionClusterGeneratorDateTimeYearMonthDayOnlyValue();
+      }
+    }
+
     private void FastKwic(HttpContext context)
     {
       try
       {
+        var vm = GetFastTLS(GetFastQuery(context.GetData()));
 
+        using (var ms = new MemoryStream())
+        {
+          var tw = base.Writer.Clone(ms);
+          tw.WriteTable(vm.GetDataTable());
+          tw.Destroy(false);
+
+          var text = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+          context.Response.Send(text);
+        }
       }
       catch
       {
@@ -95,12 +214,53 @@ namespace CorpusExplorer.Terminal.Console.Web
     {
       try
       {
+        var vm = GetFastTLS(GetFastQuery(context.GetData()));
 
+        context.Response.Send(new
+        {
+          Corpora = vm.ResultCountCorpora,
+          Documents = vm.ResultCountDocuments,
+          Sentences = vm.ResultCountSentences,
+          Tokens = vm.ResultCountTokens
+        });
       }
       catch
       {
         context.Response.Send(HttpStatusCode.InternalServerError);
       }
+    }
+
+    private static AbstractFilterQuery GetFastQuery(Dictionary<string, string> getData)
+    {
+      var q = getData["q"].Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+      AbstractFilterQuery query = null;
+      if (q.Length > 1)
+      {
+        query = new FilterQuerySingleLayerExactPhrase
+        {
+          LayerDisplayname = "Wort",
+          LayerQueries = q
+        };
+      }
+      else
+      {
+        query = new FilterQuerySingleLayerAnyMatch
+        {
+          LayerDisplayname = "Wort",
+          LayerQueries = q
+        };
+      }
+
+      return query;
+    }
+
+    private TextLiveSearchViewModel GetFastTLS(AbstractFilterQuery query, Selection select = null)
+    {
+      var vm = new TextLiveSearchViewModel { Selection = select == null ? _project.SelectAll : select };
+      vm.AddQuery(query);
+      vm.Execute();
+      return vm;
     }
 
     private void LoadCorpus(HttpContext context)

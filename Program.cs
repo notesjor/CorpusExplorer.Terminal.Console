@@ -223,23 +223,20 @@ namespace CorpusExplorer.Terminal.Console
           file = arg;
       }
 
-      if (string.IsNullOrEmpty(file))
+      if (file.Contains("#"))
       {
-        var ws = new WebServiceDirect(_writer, ip, port, timeout);
+        var ws = new WebService(_writer, ip, port, file, timeout);
+        ws.Run();
+      }
+      else if (file.Contains("BRIDGE"))
+      {
+        var ws = new WebServiceBridge(_writer, ip, port, timeout);
         ws.Run();
       }
       else
       {
-        if(file.Contains("#"))
-        {
-          var ws = new WebService(_writer, ip, port, file, timeout);
-          ws.Run();
-        }
-        else
-        {
-          var ws = new WebServiceBridge(_writer, ip, port, timeout);
-          ws.Run();
-        }
+        var ws = new WebService(_writer, ip, port, file, timeout);
+        ws.Run();
       }
     }
 

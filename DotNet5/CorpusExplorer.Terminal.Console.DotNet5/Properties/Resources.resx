@@ -903,6 +903,9 @@
   <data name="WebInit1" xml:space="preserve">
     <value>INIT WebService (mode: file)</value>
   </data>
+  <data name="WebInitBridge" xml:space="preserve">
+    <value>INIT WebService (mode: BRIDGE)</value>
+  </data>
   <data name="XmlScriptCurrentActions" xml:space="preserve">
     <value>..:: CURRENT ACTIONS ::..</value>
   </data>
