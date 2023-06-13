@@ -40,7 +40,67 @@ namespace CorpusExplorer.Terminal.Console.Web
     protected override Server ConfigureServer(Server server)
     {
       server.AddEndpoint(HttpMethod.Get, "/load", LoadCorpus);
+      server.AddEndpoint(HttpMethod.Get, "/fast/count", FastCount);
+      server.AddEndpoint(HttpMethod.Get, "/fast/kwic", FastKwic);
+      server.AddEndpoint(HttpMethod.Get, "/fast/frequency", FastFrequency);
       return server;
+    }
+
+    private void FastFrequency(HttpContext context)
+    {
+      try
+      {
+        var q = context.Request.GetData()["q"].Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+        AbstractFilterQuery query = null;
+        if (q.Length > 1)
+        {
+          query = new FilterQuerySingleLayerExactPhrase
+          {
+            Layer = "Wort",
+            LayerQueries = q
+          };
+        }
+        else
+        {
+          query = new FilterQuerySingleLayerAnyMatch
+          {
+            Layer = "Wort",
+            LayerQuery = q
+          };
+        }
+
+        var tmp = _project.SelectAll.CreateTemporary(query);
+        var count = tmp.
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private void FastKwic(HttpContext context)
+    {
+      try
+      {
+
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private void FastCount(HttpContext context)
+    {
+      try
+      {
+
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
     }
 
     private void LoadCorpus(HttpContext context)
