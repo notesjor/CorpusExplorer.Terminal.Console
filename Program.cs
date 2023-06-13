@@ -228,11 +228,6 @@ namespace CorpusExplorer.Terminal.Console
         var ws = new WebService(_writer, ip, port, file, timeout);
         ws.Run();
       }
-      else if (file.Contains("BRIDGE"))
-      {
-        var ws = new WebServiceBridge(_writer, ip, port, timeout);
-        ws.Run();
-      }
       else
       {
         var ws = new WebService(_writer, ip, port, file, timeout);

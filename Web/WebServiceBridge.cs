@@ -47,7 +47,6 @@ namespace CorpusExplorer.Terminal.Console.Web
 
     protected override Server ConfigureServer(Server server)
     {
-      server.AddEndpoint(HttpMethod.Get, "/load", LoadCorpus);
       server.AddEndpoint(HttpMethod.Get, "/fast/norm", FastNormData);
       server.AddEndpoint(HttpMethod.Get, "/fast/count", FastCount);
       server.AddEndpoint(HttpMethod.Get, "/fast/kwic", FastKwic);
@@ -82,7 +81,7 @@ namespace CorpusExplorer.Terminal.Console.Web
 
           var block = _project.SelectAll.CreateBlock<SelectionClusterBlock>();
           block.ClusterGenerator = GetFastCluster(select); // select ist Y, YM oder YMD.
-          block.ClusterGenerator.MetadataKey = meta;
+          block.MetadataKey = meta;
           block.Calculate();
 
           var info = "simple";
@@ -135,7 +134,7 @@ namespace CorpusExplorer.Terminal.Console.Web
 
         var block = preSelection.CreateBlock<SelectionClusterBlock>();
         block.ClusterGenerator = GetFastCluster(date);
-        block.ClusterGenerator.MetadataKey = meta;
+        block.MetadataKey = meta;
         block.Calculate();
 
         var info = "simple";
@@ -265,34 +264,16 @@ namespace CorpusExplorer.Terminal.Console.Web
       return vm;
     }
 
-    private void LoadCorpus(HttpContext context)
+    public void UnloadCorpora()
     {
-      try
-      {
-        var get = context.Request.GetData();
-        var res = false;
-        if (get.ContainsKey("url"))
-          res = LoadCorpusUrl(get["url"]);
-        if (get.ContainsKey("file"))
-          res = LoadCorpusFile(get["file"]);
-
-        context.Response.Send(res ? HttpStatusCode.OK : HttpStatusCode.InternalServerError);
-      }
-      catch (Exception ex) when (ex is FileNotFoundException || ex is WebException)
-      {
-        context.Response.Send(HttpStatusCode.NotFound);
-      }
-      catch
-      {
-        context.Response.Send(HttpStatusCode.InternalServerError);
-      }
+      _project.Clear();
     }
 
-    private bool LoadCorpusUrl(string url)
+    public bool LoadCorpus(Uri url)
     {
-      var ending = url.ToLower().EndsWith(".cec6.gz")
+      var ending = url.AbsolutePath.EndsWith(".cec6.gz")
         ? ".cec6.gz"
-        : url.ToLower().EndsWith(".cec6.lz4")
+        : url.AbsolutePath.EndsWith(".cec6.lz4")
           ? ".cec6.lz4"
           : ".cec6";
 
@@ -301,7 +282,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       using (var wc = new WebClient())
       {
         wc.DownloadFile(url, path);
-        LoadCorpusFile(path);
+        LoadCorpus(path);
       }
 
       try
@@ -316,7 +297,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       return true;
     }
 
-    private bool LoadCorpusFile(string file)
+    public bool LoadCorpus(string file)
     {
       if (!File.Exists(file))
         throw new FileNotFoundException();
@@ -375,34 +356,6 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         Paths = new OpenApiPaths
         {
-          {
-            "/load/", new OpenApiPathItem
-            {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
-              {
-                {
-                   OperationType.Get, new OpenApiOperation
-                   {
-                     Description = $"Loads a url/file corpus",
-                     Parameters = new List<OpenApiParameter>
-                     {
-                       new OpenApiParameter
-                       {
-                         Name = "file", In = ParameterLocation.Query, Required = false,
-                         Description = "Path to a local CEC6-file",
-                       }
-                     },
-                     Responses = new OpenApiResponses
-                     {
-                       { "200", new OpenApiResponse { Description = "corpus loade"} },
-                       { "404", new OpenApiResponse { Description = "corpus not found"} },
-                       { "500", new OpenApiResponse { Description = "unknown error"} },
-                     }
-                   }
-                }
-              }
-            }
-          },
           {
             "/execute/", new OpenApiPathItem
             {

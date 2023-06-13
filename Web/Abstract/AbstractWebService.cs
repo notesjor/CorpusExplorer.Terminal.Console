@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
+using CorpusExplorer.Sdk.Utils.WaitBehaviour;
+using CorpusExplorer.Sdk.Utils.WaitBehaviour.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Response;
 using Microsoft.OpenApi.Models;
@@ -80,7 +82,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     /// <summary>
     /// Startet den Webserver
     /// </summary>
-    public void Run()
+    public void Run(AbstractWaitBehaviour waitBehaviour = null)
     {
       System.Console.Write($"SERVER {Url} ...");
       _documentation = AppendDefaultDocumentation(GetDocumentation()).ConvertToJson();
@@ -91,7 +93,10 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       s = ConfigureServer(s);
       System.Console.WriteLine(s != null ? "ready!" : "error!");
 
-      while (true) System.Console.ReadLine();
+      if(waitBehaviour == null)
+        waitBehaviour = new WaitBehaviourWindows();
+
+      waitBehaviour.Wait();
     }
 
     private void OpenApiRoute(HttpContext req)
