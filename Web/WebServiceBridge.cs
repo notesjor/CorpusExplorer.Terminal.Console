@@ -131,7 +131,9 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (getData.ContainsKey("date-meta"))
           meta = getData["date-meta"];
 
-        var block = _project.SelectAll.CreateBlock<SelectionClusterBlock>();
+        var preSelection = _project.SelectAll.CreateTemporary(query);
+
+        var block = preSelection.CreateBlock<SelectionClusterBlock>();
         block.ClusterGenerator = GetFastCluster(date);
         block.ClusterGenerator.MetadataKey = meta;
         block.Calculate();
