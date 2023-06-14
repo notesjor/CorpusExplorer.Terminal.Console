@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Sdk.Utils.WaitBehaviour;
@@ -22,6 +23,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     private readonly int _timeout;
     private string _availableExecuteActions;
     private string _documentation;
+    private Server _server;
 
     protected AbstractWebService(AbstractTableWriter writer, string ip, int port, int timeout = 0)
     {
@@ -82,22 +84,24 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     /// <summary>
     /// Startet den Webserver
     /// </summary>
-    public void Run(AbstractWaitBehaviour waitBehaviour = null)
+    public void Run(AbstractWaitBehaviour waitBehaviour = null, Action<Task> continueWith = null)
     {
       System.Console.Write($"SERVER {Url} ...");
       _documentation = AppendDefaultDocumentation(GetDocumentation()).ConvertToJson();
 
-      var s = new Server(_ip, _port, OpenApiRoute) { Timeout = _timeout };
-      s.AddEndpoint(System.Net.Http.HttpMethod.Get, "/execute/actions/", ExecuteActionsRoute);
-      s.AddEndpoint(System.Net.Http.HttpMethod.Post, "/execute/", ExecuteRoute);
-      s = ConfigureServer(s);
-      System.Console.WriteLine(s != null ? "ready!" : "error!");
+      _server = new Server(_ip, _port, OpenApiRoute, continueWith) { Timeout = _timeout };
+      _server.AddEndpoint(System.Net.Http.HttpMethod.Get, "/execute/actions/", ExecuteActionsRoute);
+      _server.AddEndpoint(System.Net.Http.HttpMethod.Post, "/execute/", ExecuteRoute);
+      _server = ConfigureServer(_server);
+      System.Console.WriteLine(_server != null ? "ready!" : "error!");
 
       if(waitBehaviour == null)
         waitBehaviour = new WaitBehaviourWindows();
 
       waitBehaviour.Wait();
     }
+
+    public void Cancel() => _server.Cancel();
 
     private void OpenApiRoute(HttpContext req)
     {

@@ -50,8 +50,36 @@ namespace CorpusExplorer.Terminal.Console.Web
       server.AddEndpoint(HttpMethod.Get, "/fast/norm", FastNormData);
       server.AddEndpoint(HttpMethod.Get, "/fast/count", FastCount);
       server.AddEndpoint(HttpMethod.Get, "/fast/kwic", FastKwic);
+      server.AddEndpoint(HttpMethod.Get, "/fast/fulltext", FastFulltext);
       server.AddEndpoint(HttpMethod.Get, "/fast/timeline", FastTimeline);
       return server;
+    }
+
+    private void FastFulltext(HttpContext context)
+    {
+      try
+      {
+        var getData = context.GetData();
+        var guid = Guid.Parse(getData["guid"]);
+        var sentence = -1;
+        if (getData.ContainsKey("sentence"))
+          sentence = int.Parse(getData["sentence"]);
+        var from = sentence;
+        var to = sentence;
+        if (getData.ContainsKey("from"))
+          from = int.Parse(getData["from"]);
+        if (getData.ContainsKey("to"))
+          to = int.Parse(getData["to"]);
+
+        if(from == to && from == -1)
+          context.Response.Send(_project.SelectAll.GetReadableMultilayerDocument(guid));
+        else
+          context.Response.Send(_project.SelectAll.GetReadableMultilayerDocument(guid, from, to));
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
     }
 
     private void FastNormData(HttpContext context)
