@@ -28,6 +28,7 @@ using CorpusExplorer.Sdk.Blocks.SelectionCluster.Generator;
 using CorpusExplorer.Sdk.Blocks.SelectionCluster.Generator.Abstract;
 using System.Linq;
 using CorpusExplorer.Sdk.Blocks.SelectionCluster.Cluster.Helper;
+using CorpusExplorer.Sdk.Helper;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -51,8 +52,44 @@ namespace CorpusExplorer.Terminal.Console.Web
       server.AddEndpoint(HttpMethod.Get, "/fast/count", FastCount);
       server.AddEndpoint(HttpMethod.Get, "/fast/kwic", FastKwic);
       server.AddEndpoint(HttpMethod.Get, "/fast/fulltext", FastFulltext);
+      server.AddEndpoint(HttpMethod.Get, "/fast/cooc", FastCooccurrences);
       server.AddEndpoint(HttpMethod.Get, "/fast/timeline", FastTimeline);
       return server;
+    }
+
+    private CeDictionaryMemoryFriendly<double> _coocChache = null;
+    private void FastCooccurrences(HttpContext context)
+    {
+      try
+      {
+        var getData = context.GetData();
+        var query = getData["q"];
+
+        if (_coocChache == null)
+        {
+          var block = _project.SelectAll.CreateBlock<CooccurrenceBlock>();
+          block.Calculate();
+
+          _coocChache = block.CooccurrenceSignificance.CompleteDictionaryToFullDictionaryMemoryFriendly();
+          
+          block.CooccurrenceFrequency.Clear();
+          block.CooccurrenceSignificance.Clear();
+          block = null;
+          GC.Collect();
+        }
+
+        if (_coocChache.ContainsKey(query))
+        {
+          context.Response.Send(_coocChache[query]);
+          return;
+        }
+        else
+          context.Response.Send(HttpStatusCode.NotFound);
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
     }
 
     private void FastFulltext(HttpContext context)
@@ -71,7 +108,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (getData.ContainsKey("to"))
           to = int.Parse(getData["to"]);
 
-        if(from == to && from == -1)
+        if (from == to && from == -1)
           context.Response.Send(_project.SelectAll.GetReadableMultilayerDocument(guid));
         else
           context.Response.Send(_project.SelectAll.GetReadableMultilayerDocument(guid, from, to));
@@ -86,7 +123,7 @@ namespace CorpusExplorer.Terminal.Console.Web
     {
       try
       {
-        var getData = context.GetData();        
+        var getData = context.GetData();
         var select = "all"; // select kann auch Y, YM oder YMD sein.
         if (getData.ContainsKey("selection"))
           select = getData["selection"];
@@ -119,7 +156,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           if (info == "full")
           {
             var dict = new Dictionary<string, object>();
-            foreach(var x in block.SelectionClusters)
+            foreach (var x in block.SelectionClusters)
             {
               var s = _project.SelectAll.CreateTemporary(x.Value);
               dict.Add(x.Key, new
@@ -136,7 +173,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           else
           {
             context.Response.Send(block.SelectionClusters.ToDictionary(x => x.Key, x => _project.SelectAll.CreateTemporary(x.Value).CountToken));
-          }          
+          }
         }
       }
       catch
@@ -208,6 +245,8 @@ namespace CorpusExplorer.Terminal.Console.Web
     {
       switch (date)
       {
+        case "C":
+          return new SelectionClusterGeneratorDateTimeCenturyOnlyValue();
         case "Y":
           return new SelectionClusterGeneratorDateTimeYearOnlyValue();
         default: // YM
@@ -331,6 +370,12 @@ namespace CorpusExplorer.Terminal.Console.Web
         throw new FileNotFoundException();
 
       _project.Add(CorpusAdapterWriteDirect.Create(file));
+      if (_coocChache != null)
+      {
+        _coocChache.Clear();
+        _coocChache = null;
+      }
+
       return true;
     }
 
