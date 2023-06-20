@@ -29,18 +29,17 @@ using CorpusExplorer.Sdk.Blocks.SelectionCluster.Generator.Abstract;
 using System.Linq;
 using CorpusExplorer.Sdk.Blocks.SelectionCluster.Cluster.Helper;
 using CorpusExplorer.Sdk.Helper;
+using System.Net.Http.Headers;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
-  public class WebServiceBridge : AbstractWebService
+  public class WebServiceBridgeIntegrated : AbstractWebService
   {
-    private readonly Project _project;
+    private Selection _selection;
 
-    public WebServiceBridge(AbstractTableWriter writer, string ip, int port, int timeout = 0) : base(writer, ip, port, timeout)
+    public WebServiceBridgeIntegrated(Selection selection, AbstractTableWriter writer, string ip, int port, int timeout = 0) : base(writer, ip, port, timeout)
     {
-      System.Console.Write(Resources.WebInitBridge);
-      _project = CorpusExplorerEcosystem.InitializeMinimal();
-      System.Console.WriteLine(Resources.Ok);
+      _selection = selection;
     }
 
     protected override ActionFilter ExecuteActionFilter
@@ -58,6 +57,7 @@ namespace CorpusExplorer.Terminal.Console.Web
     }
 
     private CeDictionaryMemoryFriendly<double> _coocChache = null;
+
     private void FastCooccurrences(HttpContext context)
     {
       try
@@ -67,7 +67,7 @@ namespace CorpusExplorer.Terminal.Console.Web
 
         if (_coocChache == null)
         {
-          var block = _project.SelectAll.CreateBlock<CooccurrenceBlock>();
+          var block = _selection.CreateBlock<CooccurrenceBlock>();
           block.Calculate();
 
           _coocChache = block.CooccurrenceSignificance.CompleteDictionaryToFullDictionaryMemoryFriendly();
@@ -109,9 +109,9 @@ namespace CorpusExplorer.Terminal.Console.Web
           to = int.Parse(getData["to"]);
 
         if (from == to && from == -1)
-          context.Response.Send(_project.SelectAll.GetReadableMultilayerDocument(guid));
+          context.Response.Send(_selection.GetReadableMultilayerDocument(guid));
         else
-          context.Response.Send(_project.SelectAll.GetReadableMultilayerDocument(guid, from, to));
+          context.Response.Send(_selection.GetReadableMultilayerDocument(guid, from, to));
       }
       catch
       {
@@ -132,10 +132,10 @@ namespace CorpusExplorer.Terminal.Console.Web
         {
           context.Response.Send(new
           {
-            Corpora = _project.SelectAll.CountCorpora,
-            Documents = _project.SelectAll.CountDocuments,
-            Sentences = _project.SelectAll.CountSentences,
-            Tokens = _project.SelectAll.CountToken
+            Corpora = _selection.CountCorpora,
+            Documents = _selection.CountDocuments,
+            Sentences = _selection.CountSentences,
+            Tokens = _selection.CountToken
           });
         }
         else
@@ -144,7 +144,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           if (getData.ContainsKey("date-meta"))
             meta = getData["date-meta"];
 
-          var block = _project.SelectAll.CreateBlock<SelectionClusterBlock>();
+          var block = _selection.CreateBlock<SelectionClusterBlock>();
           block.ClusterGenerator = GetFastCluster(select); // select ist Y, YM oder YMD.
           block.MetadataKey = meta;
           block.Calculate();
@@ -158,7 +158,7 @@ namespace CorpusExplorer.Terminal.Console.Web
             var dict = new Dictionary<string, object>();
             foreach (var x in block.SelectionClusters)
             {
-              var s = _project.SelectAll.CreateTemporary(x.Value);
+              var s = _selection.CreateTemporary(x.Value);
               dict.Add(x.Key, new
               {
                 Corpora = s.CountCorpora,
@@ -172,7 +172,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           }
           else
           {
-            context.Response.Send(block.SelectionClusters.ToDictionary(x => x.Key, x => _project.SelectAll.CreateTemporary(x.Value).CountToken));
+            context.Response.Send(block.SelectionClusters.ToDictionary(x => x.Key, x => _selection.CreateTemporary(x.Value).CountToken));
           }
         }
       }
@@ -195,7 +195,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (getData.ContainsKey("date-meta"))
           meta = getData["date-meta"];
 
-        var preSelection = _project.SelectAll.CreateTemporary(query);
+        var preSelection = _selection.CreateTemporary(query);
 
         var block = preSelection.CreateBlock<SelectionClusterBlock>();
         block.ClusterGenerator = GetFastCluster(date);
@@ -211,7 +211,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           var res = new Dictionary<string, object>();
           foreach (var x in block.SelectionClusters)
           {
-            var s = _project.SelectAll.CreateTemporary(x.Value);
+            var s = _selection.CreateTemporary(x.Value);
             var vm = GetFastTLS(query, s);
             res.Add(x.Key, new
             {
@@ -228,7 +228,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           var res = new Dictionary<string, int>();
           foreach (var x in block.SelectionClusters)
           {
-            var s = _project.SelectAll.CreateTemporary(x.Value);
+            var s = _selection.CreateTemporary(x.Value);
             var vm = GetFastTLS(query, s);
             res.Add(x.Key, vm.ResultCountTokens);
           }
@@ -325,58 +325,10 @@ namespace CorpusExplorer.Terminal.Console.Web
 
     private TextLiveSearchViewModel GetFastTLS(AbstractFilterQuery query, Selection select = null)
     {
-      var vm = new TextLiveSearchViewModel { Selection = select == null ? _project.SelectAll : select };
+      var vm = new TextLiveSearchViewModel { Selection = select == null ? _selection : select };
       vm.AddQuery(query);
       vm.Execute();
       return vm;
-    }
-
-    public void UnloadCorpora()
-    {
-      _project.Clear();
-    }
-
-    public bool LoadCorpus(Uri url)
-    {
-      var ending = url.AbsolutePath.EndsWith(".cec6.gz")
-        ? ".cec6.gz"
-        : url.AbsolutePath.EndsWith(".cec6.lz4")
-          ? ".cec6.lz4"
-          : ".cec6";
-
-      var path = "TEMP" + ending;
-
-      using (var wc = new WebClient())
-      {
-        wc.DownloadFile(url, path);
-        LoadCorpus(path);
-      }
-
-      try
-      {
-        File.Delete(path);
-      }
-      catch
-      {
-        // ignore
-      }
-
-      return true;
-    }
-
-    public bool LoadCorpus(string file)
-    {
-      if (!File.Exists(file))
-        throw new FileNotFoundException();
-
-      _project.Add(CorpusAdapterWriteDirect.Create(file));
-      if (_coocChache != null)
-      {
-        _coocChache.Clear();
-        _coocChache = null;
-      }
-
-      return true;
     }
 
     protected override void GetExecuteRoute(HttpContext req)
@@ -403,7 +355,7 @@ namespace CorpusExplorer.Terminal.Console.Web
           return;
         }
 
-        var selection = _project.SelectAll;
+        var selection = _selection;
         if (er.DocumentGuids != null && er.DocumentGuids.Length > 0)
           selection = selection.CreateTemporary(er.DocumentGuids);
 
