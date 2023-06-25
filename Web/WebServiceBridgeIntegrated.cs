@@ -30,12 +30,14 @@ using System.Linq;
 using CorpusExplorer.Sdk.Blocks.SelectionCluster.Cluster.Helper;
 using CorpusExplorer.Sdk.Helper;
 using System.Net.Http.Headers;
+using CorpusExplorer.Terminal.Universal;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
   public class WebServiceBridgeIntegrated : AbstractWebService
   {
     private Selection _selection;
+    private CeDictionaryMemoryFriendly<double> _coocChache = null;
 
     public WebServiceBridgeIntegrated(Selection selection, AbstractTableWriter writer, string ip, int port, int timeout = 0) : base(writer, ip, port, timeout)
     {
@@ -53,74 +55,25 @@ namespace CorpusExplorer.Terminal.Console.Web
       server.AddEndpoint(HttpMethod.Get, "/fast/fulltext", FastFulltext);
       server.AddEndpoint(HttpMethod.Get, "/fast/cooc", FastCooccurrences);
       server.AddEndpoint(HttpMethod.Get, "/fast/timeline", FastTimeline);
+      server.AddEndpoint(HttpMethod.Get, "/fast/snapshot", QuerySystemHelper.GetOperators);
+      server.AddEndpoint(HttpMethod.Post, "/fast/snapshot", FastSnapshop);
       return server;
-    }
-
-    private CeDictionaryMemoryFriendly<double> _coocChache = null;
-
-    private void FastCooccurrences(HttpContext context)
-    {
-      try
-      {
-        var getData = context.GetData();
-        var query = getData["q"];
-
-        if (_coocChache == null)
-        {
-          var block = _selection.CreateBlock<CooccurrenceBlock>();
-          block.Calculate();
-
-          _coocChache = block.CooccurrenceSignificance.CompleteDictionaryToFullDictionaryMemoryFriendly();
-          
-          block.CooccurrenceFrequency.Clear();
-          block.CooccurrenceSignificance.Clear();
-          block = null;
-          GC.Collect();
-        }
-
-        if (_coocChache.ContainsKey(query))
-        {
-          context.Response.Send(_coocChache[query]);
-          return;
-        }
-        else
-          context.Response.Send(HttpStatusCode.NotFound);
-      }
-      catch
-      {
-        context.Response.Send(HttpStatusCode.InternalServerError);
-      }
-    }
-
-    private void FastFulltext(HttpContext context)
-    {
-      try
-      {
-        var getData = context.GetData();
-        var guid = Guid.Parse(getData["guid"]);
-        var sentence = -1;
-        if (getData.ContainsKey("sentence"))
-          sentence = int.Parse(getData["sentence"]);
-        var from = sentence;
-        var to = sentence;
-        if (getData.ContainsKey("from"))
-          from = int.Parse(getData["from"]);
-        if (getData.ContainsKey("to"))
-          to = int.Parse(getData["to"]);
-
-        if (from == to && from == -1)
-          context.Response.Send(_selection.GetReadableMultilayerDocument(guid));
-        else
-          context.Response.Send(_selection.GetReadableMultilayerDocument(guid, from, to));
-      }
-      catch
-      {
-        context.Response.Send(HttpStatusCode.InternalServerError);
-      }
     }
 
     private void FastNormData(HttpContext context)
     {
+      if (_selection == null)
+      {
+        context.Response.Send(new
+        {
+          Corpora = 0,
+          Documents = 0,
+          Sentences = 0,
+          Tokens = 0
+        });
+        return;
+      }
+
       try
       {
         var getData = context.GetData();
@@ -182,8 +135,141 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
+    private void FastCount(HttpContext context)
+    {
+      if (_selection == null)
+      {
+        context.Response.Send(HttpStatusCode.NotFound);
+        return;
+      }
+
+      try
+      {
+        var vm = GetFastTLS(GetFastQuery(context.GetData()));
+
+        context.Response.Send(new
+        {
+          Corpora = vm.ResultCountCorpora,
+          Documents = vm.ResultCountDocuments,
+          Sentences = vm.ResultCountSentences,
+          Tokens = vm.ResultCountTokens
+        });
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private void FastKwic(HttpContext context)
+    {
+      if (_selection == null)
+      {
+        context.Response.Send(HttpStatusCode.NotFound);
+        return;
+      }
+
+      try
+      {
+        var vm = GetFastTLS(GetFastQuery(context.GetData()));
+
+        using (var ms = new MemoryStream())
+        {
+          var tw = base.Writer.Clone(ms);
+          tw.WriteTable(vm.GetDataTable());
+          tw.Destroy(false);
+
+          var text = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+          context.Response.Send(text);
+        }
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private void FastFulltext(HttpContext context)
+    {
+      if (_selection == null)
+      {
+        context.Response.Send(HttpStatusCode.NotFound);
+        return;
+      }
+
+      try
+      {
+        var getData = context.GetData();
+        var guid = Guid.Parse(getData["guid"]);
+        var sentence = -1;
+        if (getData.ContainsKey("sentence"))
+          sentence = int.Parse(getData["sentence"]);
+        var from = sentence;
+        var to = sentence;
+        if (getData.ContainsKey("from"))
+          from = int.Parse(getData["from"]);
+        if (getData.ContainsKey("to"))
+          to = int.Parse(getData["to"]);
+
+        if (from == to && from == -1)
+          context.Response.Send(_selection.GetReadableMultilayerDocument(guid));
+        else
+          context.Response.Send(_selection.GetReadableMultilayerDocument(guid, from, to));
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private void FastCooccurrences(HttpContext context)
+    {
+      if (_selection == null)
+      {
+        context.Response.Send(HttpStatusCode.NotFound);
+        return;
+      }
+
+      try
+      {
+        var getData = context.GetData();
+        var query = getData["q"];
+
+        if (_coocChache == null)
+        {
+          var block = _selection.CreateBlock<CooccurrenceBlock>();
+          block.Calculate();
+
+          _coocChache = block.CooccurrenceSignificance.CompleteDictionaryToFullDictionaryMemoryFriendly();
+          
+          block.CooccurrenceFrequency.Clear();
+          block.CooccurrenceSignificance.Clear();
+          block = null;
+          GC.Collect();
+        }
+
+        if (_coocChache.ContainsKey(query))
+        {
+          context.Response.Send(_coocChache[query]);
+          return;
+        }
+        else
+          context.Response.Send(HttpStatusCode.NotFound);
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }    
+
     private void FastTimeline(HttpContext context)
     {
+      if (_selection == null)
+      {
+        context.Response.Send(HttpStatusCode.NotFound);
+        return;
+      }
+
       try
       {
         var getData = context.GetData();
@@ -241,6 +327,25 @@ namespace CorpusExplorer.Terminal.Console.Web
       }
     }
 
+    private void FastSnapshop(HttpContext context)
+    {
+      try
+      {
+        var data = context.Request.PostDataAsString;
+        if(string.IsNullOrWhiteSpace(data))
+        {
+          context.Response.Send(HttpStatusCode.OK);
+          return;
+        }
+      }
+      catch
+      {
+        context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    #region PRIVATE
+
     private AbstractSelectionClusterGenerator GetFastCluster(string date)
     {
       switch (date)
@@ -253,48 +358,6 @@ namespace CorpusExplorer.Terminal.Console.Web
           return new SelectionClusterGeneratorDateTimeYearMonthOnlyValue();
         case "YMD":
           return new SelectionClusterGeneratorDateTimeYearMonthDayOnlyValue();
-      }
-    }
-
-    private void FastKwic(HttpContext context)
-    {
-      try
-      {
-        var vm = GetFastTLS(GetFastQuery(context.GetData()));
-
-        using (var ms = new MemoryStream())
-        {
-          var tw = base.Writer.Clone(ms);
-          tw.WriteTable(vm.GetDataTable());
-          tw.Destroy(false);
-
-          var text = System.Text.Encoding.UTF8.GetString(ms.ToArray());
-          context.Response.Send(text);
-        }
-      }
-      catch
-      {
-        context.Response.Send(HttpStatusCode.InternalServerError);
-      }
-    }
-
-    private void FastCount(HttpContext context)
-    {
-      try
-      {
-        var vm = GetFastTLS(GetFastQuery(context.GetData()));
-
-        context.Response.Send(new
-        {
-          Corpora = vm.ResultCountCorpora,
-          Documents = vm.ResultCountDocuments,
-          Sentences = vm.ResultCountSentences,
-          Tokens = vm.ResultCountTokens
-        });
-      }
-      catch
-      {
-        context.Response.Send(HttpStatusCode.InternalServerError);
       }
     }
 
@@ -624,5 +687,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         }
       };
     }
+
+    #endregion
   }
 }

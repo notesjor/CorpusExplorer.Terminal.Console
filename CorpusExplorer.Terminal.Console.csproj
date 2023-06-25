@@ -93,6 +93,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Web\Abstract\AbstractWebService.cs" />
+    <Compile Include="Web\Helper\QuerySystemHelper.cs" />
     <Compile Include="Web\Model\ActionFilter.cs" />
     <Compile Include="Web\Model\Request\WebServiceDirect\AddRequest.cs" />
     <Compile Include="Web\Model\Request\WebServiceDirect\AddRequestDocument.cs" />
@@ -102,7 +103,6 @@
     <Compile Include="Web\Model\Response\Abstract\AbstractResponse.cs" />
     <Compile Include="Web\Model\Response\AvailableActionsResponse.cs" />
     <Compile Include="Web\WebServiceBridgeIntegrated.cs" />
-    <Compile Include="Web\WebServiceBridge.cs" />
     <Compile Include="Web\WebServiceDirect.cs" />
     <Compile Include="Web\WebService.cs" />
     <Compile Include="Xml\Extensions\MetaExtension.cs" />

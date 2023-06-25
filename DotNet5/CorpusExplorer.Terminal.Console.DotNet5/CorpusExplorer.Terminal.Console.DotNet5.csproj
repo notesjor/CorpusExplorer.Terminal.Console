@@ -26,6 +26,7 @@
     <Compile Include="..\..\Helper\XmlValueHelper.cs" Link="Helper\XmlValueHelper.cs" />
     <Compile Include="..\..\Program.cs" Link="Program.cs" />
     <Compile Include="..\..\Web\Abstract\AbstractWebService.cs" Link="Web\Abstract\AbstractWebService.cs" />
+    <Compile Include="..\..\Web\Helper\QuerySystemHelper.cs" Link="Web\Helper\QuerySystemHelper.cs" />
     <Compile Include="..\..\Web\Model\ActionFilter.cs" Link="Web\Model\ActionFilter.cs" />
     <Compile Include="..\..\Web\Model\Request\WebServiceDirect\AddRequest.cs" Link="Web\Model\Request\WebServiceDirect\AddRequest.cs" />
     <Compile Include="..\..\Web\Model\Request\WebServiceDirect\AddRequestDocument.cs" Link="Web\Model\Request\WebServiceDirect\AddRequestDocument.cs" />
@@ -35,7 +36,6 @@
     <Compile Include="..\..\Web\Model\Response\Abstract\AbstractResponse.cs" Link="Web\Model\Response\Abstract\AbstractResponse.cs" />
     <Compile Include="..\..\Web\Model\Response\AvailableActionsResponse.cs" Link="Web\Model\Response\AvailableActionsResponse.cs" />
     <Compile Include="..\..\Web\WebService.cs" Link="Web\WebService.cs" />
-    <Compile Include="..\..\Web\WebServiceBridge.cs" Link="Web\WebServiceBridge.cs" />
     <Compile Include="..\..\Web\WebServiceDirect.cs" Link="Web\WebServiceDirect.cs" />
     <Compile Include="..\..\Xml\Extensions\MetaExtension.cs" Link="Xml\Extensions\MetaExtension.cs" />
     <Compile Include="..\..\Xml\Extensions\QueriesExtension.cs" Link="Xml\Extensions\QueriesExtension.cs" />
@@ -72,6 +72,7 @@
     <Folder Include="Web\Model\Request\WebServiceDirect\" />
     <Folder Include="Web\Model\Request\WebService\" />
     <Folder Include="Web\Model\Response\Abstract\" />
+    <Folder Include="Web\Helper\" />
     <Folder Include="Xml\Extensions\" />
     <Folder Include="Xml\Model\" />
     <Folder Include="Xml\Processor\" />
