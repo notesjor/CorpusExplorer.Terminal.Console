@@ -336,29 +336,13 @@ namespace CorpusExplorer.Terminal.Console.Web
       _project.Clear();
     }
 
-    public bool LoadCorpus(Uri url)
+    public bool LoadCorpus(AbstractCorpusAdapter corpus)
     {
-      var ending = url.AbsolutePath.EndsWith(".cec6.gz")
-        ? ".cec6.gz"
-        : url.AbsolutePath.EndsWith(".cec6.lz4")
-          ? ".cec6.lz4"
-          : ".cec6";
-
-      var path = "TEMP" + ending;
-
-      using (var wc = new WebClient())
+      _project.Add(corpus);
+      if (_coocChache != null)
       {
-        wc.DownloadFile(url, path);
-        LoadCorpus(path);
-      }
-
-      try
-      {
-        File.Delete(path);
-      }
-      catch
-      {
-        // ignore
+        _coocChache.Clear();
+        _coocChache = null;
       }
 
       return true;
@@ -369,14 +353,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       if (!File.Exists(file))
         throw new FileNotFoundException();
 
-      _project.Add(CorpusAdapterWriteDirect.Create(file));
-      if (_coocChache != null)
-      {
-        _coocChache.Clear();
-        _coocChache = null;
-      }
-
-      return true;
+      return LoadCorpus(CorpusAdapterWriteDirect.Create(file));
     }
 
     protected override void GetExecuteRoute(HttpContext req)
