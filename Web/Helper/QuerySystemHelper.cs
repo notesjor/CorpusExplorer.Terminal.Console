@@ -63,9 +63,9 @@ namespace CorpusExplorer.Terminal.Universal
       obj.Response.Send(_operators);
     }
 
-    private static AbstractFilterQuery ConvertRequestToQuery(HttpRequest request)
+    public static AbstractFilterQuery ConvertToQuery(string postDataAsString)
     {
-      return JsonConvert.DeserializeObject<AbstractFilterQuery>(request.PostDataAsString, new JsonSerializerSettings
+      return JsonConvert.DeserializeObject<AbstractFilterQuery>(postDataAsString, new JsonSerializerSettings
       {
         TypeNameHandling = TypeNameHandling.Objects
       });

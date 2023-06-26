@@ -31,17 +31,49 @@ using CorpusExplorer.Sdk.Blocks.SelectionCluster.Cluster.Helper;
 using CorpusExplorer.Sdk.Helper;
 using System.Net.Http.Headers;
 using CorpusExplorer.Terminal.Universal;
+using CorpusExplorer.Sdk.Model.Cache;
+using System.Net.Sockets;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
-  public class WebServiceBridgeIntegrated : AbstractWebService
+  public class WebServiceBridge : AbstractWebService
   {
+    private Project _project;
     private Selection _selection;
-    private CeDictionaryMemoryFriendly<double> _coocChache = null;
+    private CeDictionaryMemoryFriendly<double> _coocCache = null;
+    private List<EasyWebSocket> _sockets = new List<EasyWebSocket>();
 
-    public WebServiceBridgeIntegrated(Selection selection, AbstractTableWriter writer, string ip, int port, int timeout = 0) : base(writer, ip, port, timeout)
+    public WebServiceBridge(AbstractTableWriter writer, string ip, int port, int timeout = 0) : base(writer, ip, port, timeout)
     {
-      _selection = selection;
+      _project = CorpusExplorerEcosystem.InitializeMinimal(new CacheStrategyDisableCaching());
+    }
+
+    public Selection Selection
+    {
+      get => _selection;
+      set
+      {
+        _selection = value;
+
+        try
+        {
+          var tasks = new List<Task>();
+          foreach (var x in _sockets)
+            tasks.Add(x.Send("update"));
+
+          Task.WaitAll(tasks.ToArray());
+        }
+        catch
+        {
+          // ignore
+        }
+      }
+    }
+
+    public void AddCorpus(CorpusAdapterWriteDirect corpus)
+    {
+      _project.Add(corpus);
+      _selection = _project.SelectAll;
     }
 
     protected override ActionFilter ExecuteActionFilter
@@ -57,6 +89,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       server.AddEndpoint(HttpMethod.Get, "/fast/timeline", FastTimeline);
       server.AddEndpoint(HttpMethod.Get, "/fast/snapshot", QuerySystemHelper.GetOperators);
       server.AddEndpoint(HttpMethod.Post, "/fast/snapshot", FastSnapshop);
+      server.AddEndpoint(HttpMethod.Get, "/fast/subscribe", FastSubscribe);
       return server;
     }
 
@@ -235,22 +268,22 @@ namespace CorpusExplorer.Terminal.Console.Web
         var getData = context.GetData();
         var query = getData["q"];
 
-        if (_coocChache == null)
+        if (_coocCache == null)
         {
           var block = _selection.CreateBlock<CooccurrenceBlock>();
           block.Calculate();
 
-          _coocChache = block.CooccurrenceSignificance.CompleteDictionaryToFullDictionaryMemoryFriendly();
-          
+          _coocCache = block.CooccurrenceSignificance.CompleteDictionaryToFullDictionaryMemoryFriendly();
+
           block.CooccurrenceFrequency.Clear();
           block.CooccurrenceSignificance.Clear();
           block = null;
           GC.Collect();
         }
 
-        if (_coocChache.ContainsKey(query))
+        if (_coocCache.ContainsKey(query))
         {
-          context.Response.Send(_coocChache[query]);
+          context.Response.Send(_coocCache[query]);
           return;
         }
         else
@@ -260,7 +293,7 @@ namespace CorpusExplorer.Terminal.Console.Web
       {
         context.Response.Send(HttpStatusCode.InternalServerError);
       }
-    }    
+    }
 
     private void FastTimeline(HttpContext context)
     {
@@ -332,15 +365,37 @@ namespace CorpusExplorer.Terminal.Console.Web
       try
       {
         var data = context.Request.PostDataAsString;
-        if(string.IsNullOrWhiteSpace(data))
+        if (string.IsNullOrWhiteSpace(data))
         {
+          _selection = _project.SelectAll;
           context.Response.Send(HttpStatusCode.OK);
           return;
         }
+
+        var query = QuerySystemHelper.ConvertToQuery(data);
+        _selection = _project.SelectAll.CreateTemporary(query);
+        context.Response.Send(HttpStatusCode.OK);
       }
       catch
       {
         context.Response.Send(HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private void FastSubscribe(HttpContext context)
+    {
+      try
+      {
+        var socket = context.WebSocketEasy();
+        if (socket == null)
+          return;
+
+        socket.Closed += (s, e) => { _sockets.Remove(s as EasyWebSocket); };
+        _sockets.Add(socket);
+      }
+      catch
+      {
+        // ignore
       }
     }
 
