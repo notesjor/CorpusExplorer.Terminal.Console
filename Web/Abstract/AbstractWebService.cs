@@ -23,7 +23,7 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
     private readonly int _timeout;
     private string _availableExecuteActions;
     private string _documentation;
-    private Server _server;
+    protected Server _server;
 
     protected AbstractWebService(AbstractTableWriter writer, string ip, int port, int timeout = 0)
     {

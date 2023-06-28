@@ -41,9 +41,8 @@ namespace CorpusExplorer.Terminal.Console.Web
     private Project _project;
     private Selection _selection;
     private CeDictionaryMemoryFriendly<double> _coocCache = null;
-    private List<EasyWebSocket> _sockets = new List<EasyWebSocket>();
 
-    public WebServiceBridge(AbstractTableWriter writer, string ip, int port, int timeout = 0) : base(writer, ip, port, timeout)
+    public WebServiceBridge(AbstractTableWriter writer, string ip, int port) : base(writer, ip, port, 24 * 60 * 60 * 1000)
     {
       _project = CorpusExplorerEcosystem.InitializeMinimal(new CacheStrategyDisableCaching());
     }
@@ -57,11 +56,7 @@ namespace CorpusExplorer.Terminal.Console.Web
 
         try
         {
-          var tasks = new List<Task>();
-          foreach (var x in _sockets)
-            tasks.Add(x.Send("update"));
-
-          Task.WaitAll(tasks.ToArray());
+          _server.SendToAll("update");
         }
         catch
         {
@@ -386,14 +381,14 @@ namespace CorpusExplorer.Terminal.Console.Web
     {
       try
       {
-        var socket = context.WebSocketEasy();
+        var socket = context.GetWebSocket();
         if (socket == null)
           return;
 
-        socket.Closed += (s, e) => { _sockets.Remove(s as EasyWebSocket); };
-        _sockets.Add(socket);
-
-        socket.Wait();
+        socket.KeepOpenAndRecive(context, (msg) => 
+        {
+          // ignore msg from client
+        }).Wait();
       }
       catch
       {
