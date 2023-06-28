@@ -16,7 +16,7 @@ using Tfres;
 
 namespace CorpusExplorer.Terminal.Console.Web.Abstract
 {
-  public abstract class AbstractWebService
+  public abstract class AbstractWebService : IDisposable
   {
     private readonly string _ip;
     private readonly int _port;
@@ -100,8 +100,6 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
 
       waitBehaviour.Wait();
     }
-
-    public void Cancel() => _server.Cancel();
 
     private void OpenApiRoute(HttpContext req)
     {
@@ -200,6 +198,11 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       {
         WriteError(req, ex.Message);
       }
+    }
+
+    public void Dispose()
+    {
+      _server?.Dispose();
     }
   }
 }

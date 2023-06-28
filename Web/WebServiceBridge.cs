@@ -38,13 +38,14 @@ namespace CorpusExplorer.Terminal.Console.Web
 {
   public class WebServiceBridge : AbstractWebService
   {
-    private Project _project;
     private Selection _selection;
     private CeDictionaryMemoryFriendly<double> _coocCache = null;
+    private Project _project;
 
-    public WebServiceBridge(AbstractTableWriter writer, string ip, int port) : base(writer, ip, port, 24 * 60 * 60 * 1000)
+    public WebServiceBridge(ref Project project, AbstractTableWriter writer, string ip, int port) : base(writer, ip, port, 0)
     {
-      _project = CorpusExplorerEcosystem.InitializeMinimal(new CacheStrategyDisableCaching());
+      _project = project;
+      _selection = project.SelectAll;
     }
 
     public Selection Selection
@@ -63,12 +64,6 @@ namespace CorpusExplorer.Terminal.Console.Web
           // ignore
         }
       }
-    }
-
-    public void AddCorpus(CorpusAdapterWriteDirect corpus)
-    {
-      _project.Add(corpus);
-      Selection = _project.SelectAll;
     }
 
     protected override ActionFilter ExecuteActionFilter
