@@ -20,7 +20,7 @@ namespace CorpusExplorer.Terminal.Console.Web
 {
   public class WebService : AbstractWebService
   {
-    private readonly AbstractCorpusAdapter _corpus;
+    private readonly IHydra _corpus;
 
     public WebService(AbstractTableWriter writer, string ip, int port, string file, int timeout = 0) : base(writer, ip, port, timeout)
     {

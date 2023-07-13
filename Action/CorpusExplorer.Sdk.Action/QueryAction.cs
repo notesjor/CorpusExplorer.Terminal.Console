@@ -18,7 +18,7 @@ namespace CorpusExplorer.Sdk.Action
     public override string Action => "query";
     public override string Description => Resources.DescQuery;
 
-    protected override AbstractCorpusAdapter ExecuteCall(Selection selection, string[] args, string path)
+    protected override IHydra ExecuteCall(Selection selection, string[] args, string path)
     {
       if (args == null || args.Length < 1)
         return null;

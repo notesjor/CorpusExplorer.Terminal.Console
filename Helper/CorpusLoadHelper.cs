@@ -13,7 +13,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
 {
   public static class CorpusLoadHelper
   {
-    public static AbstractCorpusAdapter LoadCorpus(string path)
+    public static IHydra LoadCorpus(string path)
     {
       return path.StartsWith("annotate#")
                ? LoadCorpusAnnotate(path)
@@ -22,7 +22,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
                  : null;
     }
 
-    private static AbstractCorpusAdapter LoadCorpusAnnotate(string path)
+    private static IHydra LoadCorpusAnnotate(string path)
     {
       // Bsp.: annotate#BundestagPlenarprotokolleScraper#[TAGGER]#[LANGUAGE]#[DIRECTORY]
       var split = path.Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -60,7 +60,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       return tagger.Output.FirstOrDefault();
     }
 
-    private static AbstractCorpusAdapter LoadCorpusImport(string path)
+    private static IHydra LoadCorpusImport(string path)
     {
       // Bsp.: import#ImporterCec6#[FILES]
       var split = path.Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);

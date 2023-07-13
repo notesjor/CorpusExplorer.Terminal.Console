@@ -66,6 +66,6 @@ namespace CorpusExplorer.Sdk.Action.Abstract
     /// <param name="args">Argumente (Export wurde bereits entfernt)</param>
     /// <param name="path">Pfad der später zu exportierenden Datei. Wird übergeben, falls Path.GetFileName genutzt werden soll.</param>
     /// <returns>Korpus</returns>
-    protected abstract AbstractCorpusAdapter ExecuteCall(Selection selection, string[] args, string path);
+    protected abstract IHydra ExecuteCall(Selection selection, string[] args, string path);
   }
 }

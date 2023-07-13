@@ -10,7 +10,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public override string Action => "convert";
     public override string Description => Resources.DescConvert;
-    protected override AbstractCorpusAdapter ExecuteCall(Selection selection, string[] args, string path)
+    protected override IHydra ExecuteCall(Selection selection, string[] args, string path)
       => selection.ToCorpus();
   }
 }
