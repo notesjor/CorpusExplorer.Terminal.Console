@@ -64,7 +64,11 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var s in selections)
       {
-        var output = path.Replace("{cluster}", s.Displayname);
+        var output = path.Replace("{cluster}", string.IsNullOrWhiteSpace(s.Displayname) ? "NONE" : s.Displayname);
+        var directory = Path.GetDirectoryName(output);
+        if (!Directory.Exists(directory))
+          Directory.CreateDirectory(directory);
+
         if (File.Exists(output) && new FileInfo(output).Length > 0)
           continue;
 
@@ -108,7 +112,11 @@ namespace CorpusExplorer.Sdk.Action
       else
         foreach (var s in selections)
         {
-          writer.Path = path.Replace("{cluster}", s.Displayname);
+          writer.Path = path.Replace("{cluster}", string.IsNullOrWhiteSpace(s.Displayname) ? "NONE" : s.Displayname);
+
+          var directory = Path.GetDirectoryName(writer.Path);
+          if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
 
           if (File.Exists(writer.Path) && new FileInfo(writer.Path).Length > 0)
             continue;
