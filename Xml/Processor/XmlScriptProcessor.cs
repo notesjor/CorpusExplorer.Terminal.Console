@@ -394,14 +394,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     {
       try
       {
-        var selections = GenerateSelections(project, session.queries);
-        var allowOverride = session.@override;
-
         Parallel.ForEach(session.actions.action,
                          !string.IsNullOrEmpty(session.actions.mode) && session.actions.mode.StartsWith("sync")
                            ? new ParallelOptions { MaxDegreeOfParallelism = 1 } // no prallel processing
                            : CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.actions.parallel),
-                         action => { ExecuteSessionAction(scriptFilename, action, selections, allowOverride); });
+                         action => { ExecuteSessionAction(scriptFilename, action, GenerateSelections(project, session.queries), session.@override); });
       }
       catch (Exception ex)
       {
@@ -558,7 +555,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         }
         else
         {
-          Parallel.ForEach(selections, Configuration.ParallelOptions, selection =>
+          // Nicht parallelisierbare Action - da sonst die Ausgabe durcheinander gerät.
+          foreach(var selection in selections)
           {
             var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), selection.Displayname, a.type);
 
@@ -622,7 +620,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
             // Reporting für Konsole
             ExecuteActionReport(taskGuid, selection.Displayname, a.type, outputPath, true);
-          });
+          }
         }
       }
       catch (Exception ex)
