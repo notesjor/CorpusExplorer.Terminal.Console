@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+src/CorpusExplorer/CorpusExplorer.py
+src/CorpusExplorer/__init__.py
+src/CorpusExplorer.egg-info/PKG-INFO
+src/CorpusExplorer.egg-info/SOURCES.txt
+src/CorpusExplorer.egg-info/dependency_links.txt
+src/CorpusExplorer.egg-info/requires.txt
+src/CorpusExplorer.egg-info/top_level.txt
