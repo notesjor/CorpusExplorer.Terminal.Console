@@ -477,7 +477,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
         /// </summary>
-        internal static string DescPhraseCount {
+        internal static string DescKwicPhraseCount {
             get {
                 return ResourceManager.GetString("DescKwicPhraseCount", resourceCulture);
             }
