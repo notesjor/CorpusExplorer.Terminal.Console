@@ -163,6 +163,7 @@ Folgende Import-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = import#CoraXml10#[FILES]
 [INPUT] = import#EchtzeitEngine#[FILES]
 [INPUT] = import#Cec5#[FILES]
+[INPUT] = import#Cec6Drm#[FILES]
 [INPUT] = import#Cec6Stream#[FILES]
 [INPUT] = import#CorpusWorkBench#[FILES]
 [INPUT] = import#Dewac#[FILES]
@@ -171,6 +172,7 @@ Folgende Import-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = import#FnhdC#[FILES]
 [INPUT] = import#FolkerFln#[FILES]
 [INPUT] = import#Korap#[FILES]
+[INPUT] = import#Korap2021#[FILES]
 [INPUT] = import#SimpleJsonStandoff#[FILES]
 [INPUT] = import#CorpusExplorerV1toV5#[FILES]
 [INPUT] = import#Redewiedergabe#[FILES]
@@ -181,6 +183,7 @@ Folgende Import-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = import#TreeTagger#[FILES]
 [INPUT] = import#Txm#[FILES]
 [INPUT] = import#Weblicht#[FILES]
+[INPUT] = import#LeipzigerWortschatz#[FILES]
 [INPUT] = import#OpusXces#[FILES]
 ```
 
@@ -210,7 +213,6 @@ Folgende Annotate-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = annotate#ListOfScrapDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Cosmas#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Csv#[TAGGER]#[LANGUAGE]#[DIRECTORY]
-[INPUT] = annotate#LeipzigerWortschatz#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#DigitalPlato#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Dpxc#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#DortmunderChatKorpus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -233,6 +235,7 @@ Folgende Annotate-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = annotate#SimpleJsonStandoff#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Kidko#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#KleineanfrageDe#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#NexisNew#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#NexisCom#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Cec6#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#SimpleDocxDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -241,6 +244,7 @@ Folgende Annotate-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = annotate#SimplePdfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#SimpleRtfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#PureXmlText#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#OpenLegalData#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Perseus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Txt#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Pmg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -248,6 +252,7 @@ Folgende Annotate-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = annotate#PurlOrg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#RssFeedItem#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Shakespeare#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SixCms#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Speedy#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Talkbank#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#P5Cal2#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -263,6 +268,7 @@ Folgende Annotate-Formate stehen in der Standardinstallation zur Verfügung:
 [INPUT] = annotate#Weblicht#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Wet#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Wordpress#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#LeipzigerWortschatz#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#YouTube#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 ```
 Notiz: [DIRECTORY] = Ein beliebiges Verzeichnis (alle Dateien werden verarbeitet)
@@ -292,24 +298,33 @@ Folgende Ausgabe-Formate stehen in der Standardinstallation zur Verfügung:
 [OUTPUT] = AnnoationPro#[FILE]
 [OUTPUT] = Catma#[FILE]
 [OUTPUT] = Conll#[FILE]
+[OUTPUT] = ConllZip#[FILE]
 [OUTPUT] = Cec5#[FILE]
+[OUTPUT] = CorpusWorkBench2022#[FILE]
 [OUTPUT] = CorpusWorkBench#[FILE]
 [OUTPUT] = Csv#[FILE]
 [OUTPUT] = CsvMetadataOnly#[FILE]
 [OUTPUT] = Dta#[FILE]
+[OUTPUT] = DtaZip#[FILE]
 [OUTPUT] = Dta2017#[FILE]
 [OUTPUT] = DwdsTei#[FILE]
 [OUTPUT] = HtmlPure#[FILE]
+[OUTPUT] = I5#[FILE]
+[OUTPUT] = Korap#[FILE]
 [OUTPUT] = Json#[FILE]
+[OUTPUT] = JsonZip#[FILE]
 [OUTPUT] = Plaintext#[FILE]
 [OUTPUT] = PlaintextPureInOneFile#[FILE]
 [OUTPUT] = PlaintextPure#[FILE]
+[OUTPUT] = SaltXml#[FILE]
 [OUTPUT] = SketchEngine#[FILE]
 [OUTPUT] = SlashA#[FILE]
 [OUTPUT] = Speedy#[FILE]
 [OUTPUT] = Tlv#[FILE]
 [OUTPUT] = TreeTagger#[FILE]
+[OUTPUT] = TreeTaggerZip#[FILE]
 [OUTPUT] = Txm#[FILE]
+[OUTPUT] = TxmZip#[FILE]
 [OUTPUT] = Weblicht#[FILE]
 [OUTPUT] = OpusXces#[FILE]
 [OUTPUT] = Xml#[FILE]
@@ -321,83 +336,102 @@ Bsp.: 'query': cec.exe import#Cec5#C:\mycorpus.cec5 query !M:Author::Jan Cec6#C:
 ### [ACTION]
 Für ACTION können folgenden Befehle genutzt werden (Argumente in [] sind verpflichtend, Argumente in {} sind optional.):
 ```SHELL
-[ACTION] = basic-information - Basis-Informationen wie z. B. Token, Sätze, Dokumente
-[ACTION] = cluster [QUERY] [TASK] {ARGUMENTS} - Führt einen [TASK] für jedes Cluster aus (erzeugt durch [QUERY])
-[ACTION] = cluster-list [QUERY] - Funktioniert wie 'cluster', mit dem Unterschied, dass hier eine Liste von Dokument GUIDs zurückgegeben wird.
-[ACTION] = convert - siehe Hilfe-Abschnitt [OUTPUT] für weitere Informationen
-[ACTION] = cooccurrence [LAYER] {minSIGNI} {minFREQ} -Signifikante Kookkurrenzen für alle [LAYER] Werte
-[ACTION] = cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - Signifikante Kookkurrenzen in [LAYER1] korrespondierend gefiltert durch [LAYER2] [WORDS] - ([ANY] = any matches [bool]).
-[ACTION] = cooccurrence-cross [LAYER] [WÖRTER] - Kreuz-Kookkurrenzen für die [WÖRTER] im [LAYER].
-[ACTION] = cooccurrence-cross-full [LAYER] [WORDS] - Berechnet alle Kookkurrenzen zu [WORDS] in [LAYER] (vervollständigte Liste).
-[ACTION] = cooccurrence-profile [LAYER] [WORD] - Kookkurrenz-Profil fürr [WORD] im [LAYER].
-[ACTION] = cooccurrence-select [LAYER] [WORDS] - Signifikante Kookkurrenzen aller Werte in [LAYER]
-[ACTION] = corresponding [LAYER1] [LAYER2] - findet alle korrespondierenden Werte zweischen den LAYERn 1 & 2 (z. B. 1: Lemma / 2: Wort)
+[ACTION] = add-tagger [TAGGER#LANGUAGE] [OUTPUT] - add another tagger to the corpus.
+[ACTION] = basic-information - basic information tokens/sentences/documents
+[ACTION] = cluster [QUERY] [TASK] {ARGUMENTS} - executes a [TASK] for every cluster (generated by [QUERY])
+[ACTION] = cluster-list [QUERY] - works like cluster but returns clusters with document GUIDs.
+[ACTION] = convert [OUTPUT] - see help section [OUTPUT] for more information
+[ACTION] = cooccurrence [LAYER] {minSIGNI} {minFREQ} - significant cooccurrences for all [LAYER] values
+[ACTION] = cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - significant cooccurrences for all [LAYER1] values with correspondig [LAYER2] [WORDS] - ([ANY] = any matches [bool]).
+[ACTION] = cooccurrence-cross [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER].
+[ACTION] = cooccurrence-cross-full [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER] (includes all cooccurrences).
+[ACTION] = cooccurrence-polarisation [LAYER] [TOKEN_A] [TOKEN_B] - significant cooccurrence polarisation for [LAYER] between [TOKEN_A] and [TOKEN_B].
+[ACTION] = cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER].
+[ACTION] = cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.
+[ACTION] = cooccurrence-select-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - significant cooccurrences for [WORD1] in [LAYER] values - with [LAYER2] [WORDS2] correspondig values.
+[ACTION] = corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 & LAYER2 (e. g. 1: Lemma / 2: Wort)
 [ACTION] = corresponding-metaphone [LAYER1] [LAYER2] - find all corresponding types betweet LAYER1 & LAYER2 (e. g. 1: Lemma / 2: Wort) based on metaphone
-[ACTION] = cross-frequency {LAYER} - Kreuz-Frequenz in [LAYER]
-[ACTION] = cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - Berechnet die Kreuz-Frequenz im [LAYER] die mit [LAYER2] [WORDS] korrespondieren.
-[ACTION] = disambiguiert [WORD] im [LAYER]
-[ACTION] = dispersion [LAYER] [META] - Berechnet die Dispersion von Werten in [LAYER] basierend auf [META]
-[ACTION] = dispersion-corresponding [LAYER1] [META] [LAYER2] [ANY] [WORDS] - Berechnet die Dispersion aller Werte aus [LAYER1] in [META] korrespondierend gefiltert mit [LAYER2] [WORDS].
-[ACTION] = editdist [LAYER] - Berechnet die Edit-Distanz aller Dokumente im [LAYER] untereinander.
-[ACTION] = frequency1 {LAYER} - Frequenzliste für [LAYER] (Voreinstellung: Wort)
-[ACTION] = frequency1-raw {LAYER} - Frequenz (ohne relative Frequenz)
-[ACTION] = frequency1-select [LAYER] [WORDS/FILE/SDM] - Berechnet die Frequenz aller [WORDS in [LAYER] = Leerzeichen getrennt [FILE] = Pro Zeile ein Token [SDM] = SDM-Datei
-[ACTION] = frequency2 {LAYER1} {LAYER2} - Frequenzliste über zwei Layer (Voreinstellung: Lemma, Wort)
-[ACTION] = frequency2-raw {LAYER1} {LAYER2} - Frequenz über zwei Layer (ohne relative Frequenz)
-[ACTION] = frequency3 {LAYER1} {LAYER2} {LAYER3} - Frequenzliste über 3 Layer (Voreinstellung: POS, Lemma, Wort)
-[ACTION] = frequency3-raw {LAYER1} {LAYER2} {LAYER3} - Frequenz über drei Layer (ohne relative Frequenz)
-[ACTION] = get-document [GUID] {LAYER} - Gibt das Dokument [GUID] von [LAYER] zurück.
-[ACTION] = get-document-displaynames - Gibt alle Dokumente mit GUID und Anzeigename zurück.
-[ACTION] = get-document-metadata [GUID] - Gibt alle Metadaten zum Dokument [GUID] zurück.
+[ACTION] = cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER]
+[ACTION] = cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - calculates the cross-frequency based on [LAYER] and apply corresponding [LAYER2] [WORDS] filter.
+[ACTION] = disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER]
+[ACTION] = dispersion [LAYER] [META] - calculates dispersions values of all [LAYER] values based on [META]
+[ACTION] = dispersion-corresponding [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter.
+[ACTION] = editdist [LAYER] - caculates the edit distance for all (to all) documents in [LAYER]
+[ACTION] = frequency1 {LAYER} - count token frequency on {LAYER} (default: Wort)
+[ACTION] = frequency1-raw {LAYER} - count token frequency on [LAYER] (no rel. frequency)
+[ACTION] = frequency1-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File
+[ACTION] = frequency2 {LAYER1} {LAYER2} - count token frequency on 2 layers (default: Lemma, Wort)
+[ACTION] = frequency2-raw {LAYER1} {LAYER2} - count token frequency on 2 layers (no rel. frequency)
+[ACTION] = frequency3 {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (default: POS, Lemma, Wort)
+[ACTION] = frequency3-raw {LAYER1} {LAYER2} {LAYER3} - count token frequency on 3 layers (no rel. frequency)
+[ACTION] = get-document [GUID] {LAYER} - get all layer-information for specific [GUID] document. Use {LAYER} to filter output.
+[ACTION] = get-document-displaynames - get all document GUID / display-names.
+[ACTION] = get-document-metadata [GUID] - get all metadata for specific [GUID] document.
 [ACTION] = get-types [LAYER] - list all [LAYER]-values (types)
-[ACTION] = hash [LAYER] [ALGO] - Hashwert für alle Dokumente in [LAYER]. [ALGO] = MD5, SHA1, SHA256, SHA512
+[ACTION] = hash [LAYER] [ALGO] - calculates a hashsum for all documents in [LAYER]. [ALGO] = MD5, SHA1, SHA256, SHA512
 [ACTION] = hash-roll [LAYER] - calculates a rolling hashsum for all documents in [LAYER].
-[ACTION] = how-many-documents - Summe aller Dokumente
-[ACTION] = how-many-sentences - Summe aller Sätze
-[ACTION] = how-many-tokens - Summe aller Token
-[ACTION] = how-many-types [LAYER] - Summe aller [LAYER]-Werte (Types)
-[ACTION] = idf [META] {LAYER} - Inverse Dokumenten-Frequenz für [META] im {LAYER} (Voreinstellung: WORT)
-[ACTION] = keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - berechnet Keyworte im [LAYER]-mit Hilfe einer Referenzlist [TSV_RefFile].
-[ACTION] = keyword [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - Berechnet Keywords (siehe [ACTION = keyword]) und wendet einen korrespondierenden Filter an.
-[ACTION] = kwic-any [LAYER] [WORDS] - KWIC für jedes Vorkommen - [WORDS] = Leerzeichen getrennt
-[ACTION] = kwic-document [LAYER] [WORDS] - [WORDS] = Leerzeichen getrennt - Ein Dokumente muss alle [WORDS] enthalten.
-[ACTION] = kwic-first-any [LAYER] [WORD] [WORDS] - KWIC erstes [WORD] dann ein beliebiges [WORDS] = Leerzeichen getrennt
-[ACTION] = ner [NERFILE] - Führt eine NER-Analyse durch und gibt auch alle Fundstellen aus.
-[ACTION] = kwic-phrase [LAYER] [WORDS] - [WORDS] = Leerzeichen getrennt - Alle [WORDS] in der angegebenen Reihenfolge.
-[ACTION] = kwic-sentence [LAYER] [WORDS] - [WORDS] = Leerzeichen getrennt - Ein Satz muss alle [WORDS] enthalten.
-[ACTION] = kwic-sig [LAYER] [WORDS] - KWIC mit Siginifkanz-Metrik - [WORDS] = Leerzeichen getrennt - [y/n] y= Ja / n = nein - zum Aktivieren des HTML-Highlights
-[ACTION] = kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Erzeugt einen KWIT-Baum. Sucht alle [WORDS] in [LAYER1] ([minFREQ] = Minimum-Frequenz) - Ausgabe in [LAYER2] - [WORDS] = Token separiert durch Leerzeichen (die Abfrage erfolgt als Phrase).
-[ACTION] = kwit-n [LAYER1] [LAYER2] [minFREQ] [PRE] [POST] [WORDS] - Funktioniert wie [ACTION = kwit], jedoch kann der Suchbereich mittels [PRE] und [POST] eingeschränkt werden.
-[ACTION] = layer-names - Auflistung aller [LAYER]-Namen
+[ACTION] = how-many-documents - sum of all documents
+[ACTION] = how-many-sentences - sum of all sentences
+[ACTION] = how-many-tokens - sum of all tokens
+[ACTION] = how-many-types [LAYER] - sum of all [LAYER]-values (types)
+[ACTION] = idf [META] {LAYER} - inverse document frequency for [META] on {LAYER} (default: WORT)
+[ACTION] = keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile].
+[ACTION] = keyword-corresponding [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter.
+[ACTION] = kwic-any [LAYER] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens
+[ACTION] = kwic-document [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a document must contains all token
+[ACTION] = kwic-export [LAYER] FILE:[WORDS+SPAN] [OUTPUT] - exports a KWIC of any occurrence - [WORDS] = space separated tokens + SPAN
+[ACTION] = kwic-first-any [LAYER] [WORD] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)
+[ACTION] = kwic-mda [MDA-FILE] {-SPAN} {+SPAN} - KWIC based on MDA-FILE
+[ACTION] = ner [NERFILE] - performs a named entity recorgnition + kwic-resuls
+[ACTION] = kwic-phrase [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order
+[ACTION] = kwic-sentence [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a sentence must contains all token
+[ACTION] = kwic-sig [LAYER] [y/n] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens - Enable HTML-Highlight [y/n]
+[ACTION] = kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order
+[ACTION] = kwit-n [LAYER1] [LAYER2] [minFREQ] [PRE] [POST] [WORDS] - Like kwit (but you can specificate the range [PRE] and [POST] the match - e.g. [PRE] = 3)
+[ACTION] = layer-clone [Original Layer-Name] [New Layer-Name] [OUTPUT] - clone original layer.
+[ACTION] = layer-names - all available names for [LAYER]
+[ACTION] = layer-new [New Layer-Name] [OUTPUT] - creates a new empty layer.
+[ACTION] = remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information.
+[ACTION] = layer-rename [Original Layer-Name] [New Layer-Name] [OUTPUT] - rename layer.
 [ACTION] = lda [CONFIG] {TOPIC-EXPORT} - [CONFIG] must be a JSON-Config file. If the file don't exists a new file will be created. Use {TOPIC-EXPORT} to export a additional topic-list.
-[ACTION] = meta - Listet alle Meta-Kategorien, Meta-Werte sowie deren Token/Type/Dokumenten-Anzahl auf.
-[ACTION] = meta-by-document - Listet alle Dokumente und deren Metadaten
-[ACTION] = meta-categories - Liste aller Meta-Kategorien
+[ACTION] = meta - lists all meta-categories, labels and token/type/document-count
+[ACTION] = meta-by-document - list all documents with meta-data
+[ACTION] = meta-by-document-select [META...N] - list selected document meta-data 
+[ACTION] = meta-categories - all available names for meta categories
+[ACTION] = meta-export [FILE] - export document metadata for external cleaning/usage
+[ACTION] = meta-import [FILE] [OUTPUT] - export document metadata for external cleaning/usage
 [ACTION] = metaphone [LAYER] - convert all types (in layer) into metaphone representations.
-[ACTION] = meta-select [category_1..n] - Listet alle Meta-Kategorien, Bezeichnungen und zählt für diese Tokens/Types/Dokumente
-[ACTION] = meta-select+domain [category_1..n] - Listet alle Metadaten (Kategorien, Bezeichnungen sowie Frequenzen für Token/Type/Dokumente) - Reduziert URLs (falls vorhanden) auf die Domain.
-[ACTION] = mtld [LAYER] [META] - Berechnet MTLD für [LAYER] cluster durch [META]
-[ACTION] = ner [NERFILE] - Führt eine NER-Analyse durch
-[ACTION] = ngram [N] {LAYER} {minFREQ} - [N]Gramme basierend auf [LAYER] (Voreinstellung: Wort)
-[ACTION] = ngram [N] [LAYER1] [minFREQ] [LAYER2] [ANY] [WORDS2] - [N]-gram basierend auf [LAYER1] - korrespondierend gefiltert durch [LAYER2] [WORD2].
-[ACTION] = ngram-select [N] [LAYER] [minFREQ] [WORDS] - Alle [N]Grammes im [LAYER] die [WORDS] beinhalten.
-[ACTION] = position-frequency [LAYER1] [WORD] -links/recht-Frequenz um ein gegebenes [WORD]
-[ACTION] = position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - Links-/Rechts-Positionsfrequenz von Kollokaten zu [WORD1] in [LAYER1] + korrespondierend gefiltert mit [LAYER2] [WORDS2].
-[ACTION] = query [QUERY] - siehe Hilfe-Abschnitt [OUTPUT] für weitere Informationen
-[ACTION] = query-count-documents [QUERY/FILE] - Zählt die Dokumente auf die [QUERY] zutrifft.
-[ACTION] = query-count-sentences [QUERY/FILE] - Zählt, wieviele Sätze zum [QUERY] passen.
-[ACTION] = query-count-tokens [QUERY/FILE] - Zählt, wie häufig [QUERY] vorkommt.
-[ACTION] = query-list [QUERY] [NAME] - Funktioniert wir 'query' nur mit dem Unterschied, dass eine Liste aller [GUID]s zurückgegeben wird und kein Teilkorpus.
+[ACTION] = meta-select [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n]
+[ACTION] = meta-select+domain [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n] (reduces all URLs > domain name only)
+[ACTION] = mtld [LAYER] [META] - calculates MTLD for [LAYER] clustered by [META]
+[ACTION] = ner [NERFILE] - performs a named entity recorgnition
+[ACTION] = ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on {LAYER} (default: Wort)
+[ACTION] = ngram-corresponding [N] [LAYER1] [minFREQ] [LAYER2] [ANY?] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.
+[ACTION] = ngram-select [N] [LAYER] [minFREQ] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE].
+[ACTION] = ngram-select-sig [N] [LAYER] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE] rated by [WORD/FILE] co-occurrences.
+[ACTION] = ngram-sig [N] [LAYER] - [N] sized N-gram based on [LAYER] rated with co-occurence-levels
+[ACTION] = phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order
+[ACTION] = position-frequency [LAYER1] [WORD] - left/right position of words around [WORD]
+[ACTION] = position-frequency-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.
+[ACTION] = query [QUERY] [OUTPUT] - see help section [OUTPUT] for more information
+[ACTION] = query-count-documents [QUERY/FILE] - counts how many documents match the [QUERY]
+[ACTION] = query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY]
+[ACTION] = query-count-tokens [QUERY/FILE] - counts how many token-spans match the [QUERY]
+[ACTION] = query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.
 [ACTION] = reading-ease {LAYER} - reading ease of {LAYER} (default: Wort)
-[ACTION] = similarity [META] {LAYER} - Ähnlichkeit von [META] basierend auf {LAYER} (Voreinstellung: WORT)
-[ACTION] = style-burrowsd [META1] [META2] - vergleicht [META1] mit [META2] basiert auf "Burrows Delta"
-[ACTION] = style-ngram [LAYER] [META] [N] [minFREQ] -Stil-Analyse basierend auf NGrammen
-[ACTION] = tf [META] {LAYER} - Term-Frequenz für [META] in {LAYER} (Voreinstellung: WORT)
-[ACTION] = tf-idf [META] {LAYER} - TF-IDF für [META] in {LAYER} (Voreinstellung: WORT)
-[ACTION] = token-list [LAYER] - Liste aller Token im [LAYER]
-[ACTION] = token-list-select [LAYER] [REGEX] - Listet alle Token in [LAYER] die zum [REGEX]-Ausdruck passen.
-[ACTION] = vocabulary-complexity {LAYER} -Vokabular Komplexität in {LAYER}
-[ACTION] = vocd [LAYER] [META] - berechnet VOCD auf [LAYER] Cluster mittels [META]
+[ACTION] = remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information.
+[ACTION] = remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information.
+[ACTION] = similarity [META] {LAYER} - [META] similarity based on {LAYER} (default: WORT)
+[ACTION] = size - returns the size (sentences/tokens) of all documents
+[ACTION] = style-burrowsd [META1] [META2] - compares [META1] with [META2] based on "Burrows Delta"
+[ACTION] = style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram
+[ACTION] = tf [META] {LAYER} - term frequency for [META] on {LAYER} (default: WORT)
+[ACTION] = tf-idf [META] {LAYER} - term frequency * inverse term frequency for [META] on {LAYER} (default: WORT)
+[ACTION] = token-list [LAYER] - list of all tokens in [LAYER]
+[ACTION] = token-list-select [LAYER] [REGEX] - list of all tokens in [LAYER] who are matching the [REGEX]-expression
+[ACTION] = validate - checks the loaded data against several rules.
+[ACTION] = vocabulary-complexity {LAYER} - vocabulary complexity in {LAYER}
+[ACTION] = vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]
 ```
 #### [ACTION] query
 Seit August 2017 nutzen alle CorpusExplorer-Terminals die selbe Abfragesyntax. D. h. Sie können auch aus der Windows-GUI Abfragen exportieren und in der Konsole nutzen.
@@ -539,6 +573,7 @@ Import corpus material - direct[INPUT]:
 [INPUT] = import#CoraXml10#[FILES]
 [INPUT] = import#EchtzeitEngine#[FILES]
 [INPUT] = import#Cec5#[FILES]
+[INPUT] = import#Cec6Drm#[FILES]
 [INPUT] = import#Cec6Stream#[FILES]
 [INPUT] = import#CorpusWorkBench#[FILES]
 [INPUT] = import#Dewac#[FILES]
@@ -547,6 +582,7 @@ Import corpus material - direct[INPUT]:
 [INPUT] = import#FnhdC#[FILES]
 [INPUT] = import#FolkerFln#[FILES]
 [INPUT] = import#Korap#[FILES]
+[INPUT] = import#Korap2021#[FILES]
 [INPUT] = import#SimpleJsonStandoff#[FILES]
 [INPUT] = import#CorpusExplorerV1toV5#[FILES]
 [INPUT] = import#Redewiedergabe#[FILES]
@@ -557,6 +593,7 @@ Import corpus material - direct[INPUT]:
 [INPUT] = import#TreeTagger#[FILES]
 [INPUT] = import#Txm#[FILES]
 [INPUT] = import#Weblicht#[FILES]
+[INPUT] = import#LeipzigerWortschatz#[FILES]
 [INPUT] = import#OpusXces#[FILES]
 ```
 Note: [FILES] = separate files with & - merges all files before processing
@@ -578,7 +615,6 @@ Example: cec.exe import#Cec5#C:\mycorpus1.cec5&C:\mycorpus2.cec5 convert Cec6#C:
 [INPUT] = annotate#ListOfScrapDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Cosmas#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Csv#[TAGGER]#[LANGUAGE]#[DIRECTORY]
-[INPUT] = annotate#LeipzigerWortschatz#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#DigitalPlato#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Dpxc#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#DortmunderChatKorpus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -601,6 +637,7 @@ Example: cec.exe import#Cec5#C:\mycorpus1.cec5&C:\mycorpus2.cec5 convert Cec6#C:
 [INPUT] = annotate#SimpleJsonStandoff#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Kidko#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#KleineanfrageDe#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#NexisNew#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#NexisCom#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Cec6#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#SimpleDocxDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -609,6 +646,7 @@ Example: cec.exe import#Cec5#C:\mycorpus1.cec5&C:\mycorpus2.cec5 convert Cec6#C:
 [INPUT] = annotate#SimplePdfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#SimpleRtfDocument#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#PureXmlText#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#OpenLegalData#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Perseus#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Txt#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Pmg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -616,6 +654,7 @@ Example: cec.exe import#Cec5#C:\mycorpus1.cec5&C:\mycorpus2.cec5 convert Cec6#C:
 [INPUT] = annotate#PurlOrg#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#RssFeedItem#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Shakespeare#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#SixCms#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Speedy#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Talkbank#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#P5Cal2#[TAGGER]#[LANGUAGE]#[DIRECTORY]
@@ -631,6 +670,7 @@ Example: cec.exe import#Cec5#C:\mycorpus1.cec5&C:\mycorpus2.cec5 convert Cec6#C:
 [INPUT] = annotate#Weblicht#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Wet#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#Wordpress#[TAGGER]#[LANGUAGE]#[DIRECTORY]
+[INPUT] = annotate#LeipzigerWortschatz#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 [INPUT] = annotate#YouTube#[TAGGER]#[LANGUAGE]#[DIRECTORY]
 ```
 Note: [DIRECTORY] = any directory you like - all files will be processed
@@ -655,24 +695,33 @@ Example: cec.exe annotate#Dpxc#SimpleTreeTagger#Deutsch#C:\dpxc\ convert Cec6#C:
 [OUTPUT] = AnnoationPro#[FILE]
 [OUTPUT] = Catma#[FILE]
 [OUTPUT] = Conll#[FILE]
+[OUTPUT] = ConllZip#[FILE]
 [OUTPUT] = Cec5#[FILE]
+[OUTPUT] = CorpusWorkBench2022#[FILE]
 [OUTPUT] = CorpusWorkBench#[FILE]
 [OUTPUT] = Csv#[FILE]
 [OUTPUT] = CsvMetadataOnly#[FILE]
 [OUTPUT] = Dta#[FILE]
+[OUTPUT] = DtaZip#[FILE]
 [OUTPUT] = Dta2017#[FILE]
 [OUTPUT] = DwdsTei#[FILE]
 [OUTPUT] = HtmlPure#[FILE]
+[OUTPUT] = I5#[FILE]
+[OUTPUT] = Korap#[FILE]
 [OUTPUT] = Json#[FILE]
+[OUTPUT] = JsonZip#[FILE]
 [OUTPUT] = Plaintext#[FILE]
 [OUTPUT] = PlaintextPureInOneFile#[FILE]
 [OUTPUT] = PlaintextPure#[FILE]
+[OUTPUT] = SaltXml#[FILE]
 [OUTPUT] = SketchEngine#[FILE]
 [OUTPUT] = SlashA#[FILE]
 [OUTPUT] = Speedy#[FILE]
 [OUTPUT] = Tlv#[FILE]
 [OUTPUT] = TreeTagger#[FILE]
+[OUTPUT] = TreeTaggerZip#[FILE]
 [OUTPUT] = Txm#[FILE]
+[OUTPUT] = TxmZip#[FILE]
 [OUTPUT] = Weblicht#[FILE]
 [OUTPUT] = OpusXces#[FILE]
 [OUTPUT] = Xml#[FILE]
@@ -741,21 +790,24 @@ Example: cec.exe import#Cec6#C:\mycorpus.cec6 query XR::100 frequency1 Wort | No
 
 Most actions accept arguments. [ARG] is a required argument. {ARG} is an optional argument.
 ```SHELL
+[ACTION] = add-tagger [TAGGER#LANGUAGE] [OUTPUT] - add another tagger to the corpus.
 [ACTION] = basic-information - basic information tokens/sentences/documents
 [ACTION] = cluster [QUERY] [TASK] {ARGUMENTS} - executes a [TASK] for every cluster (generated by [QUERY])
 [ACTION] = cluster-list [QUERY] - works like cluster but returns clusters with document GUIDs.
-[ACTION] = convert - see help section [OUTPUT] for more information
+[ACTION] = convert [OUTPUT] - see help section [OUTPUT] for more information
 [ACTION] = cooccurrence [LAYER] {minSIGNI} {minFREQ} - significant cooccurrences for all [LAYER] values
 [ACTION] = cooccurrence-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - significant cooccurrences for all [LAYER1] values with correspondig [LAYER2] [WORDS] - ([ANY] = any matches [bool]).
 [ACTION] = cooccurrence-cross [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER].
 [ACTION] = cooccurrence-cross-full [LAYER] [WORDS] - significant cooccurrence cross for [WORDS] on [LAYER] (includes all cooccurrences).
+[ACTION] = cooccurrence-polarisation [LAYER] [TOKEN_A] [TOKEN_B] - significant cooccurrence polarisation for [LAYER] between [TOKEN_A] and [TOKEN_B].
 [ACTION] = cooccurrence-profile [LAYER] [WORD] - significant cooccurrence profile for [WORD] on [LAYER].
 [ACTION] = cooccurrence-select [LAYER] [WORDS] - significant cooccurrences for all [LAYER] values.
+[ACTION] = cooccurrence-select-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - significant cooccurrences for [WORD1] in [LAYER] values - with [LAYER2] [WORDS2] correspondig values.
 [ACTION] = corresponding [LAYER1] [LAYER2] - find all corresponding values betweet LAYER1 & LAYER2 (e. g. 1: Lemma / 2: Wort)
 [ACTION] = corresponding-metaphone [LAYER1] [LAYER2] - find all corresponding types betweet LAYER1 & LAYER2 (e. g. 1: Lemma / 2: Wort) based on metaphone
 [ACTION] = cross-frequency {LAYER} - calculates the cross-frequency based on [LAYER]
 [ACTION] = cross-frequency-corresponding [LAYER1] [LAYER2] [ANY] [WORDS] - calculates the cross-frequency based on [LAYER] and apply corresponding [LAYER2] [WORDS] filter.
-[ACTION] = disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER].
+[ACTION] = disambiguation [LAYER] [WORD] - allows to disambiguate a [WORD] on [LAYER]
 [ACTION] = dispersion [LAYER] [META] - calculates dispersions values of all [LAYER] values based on [META]
 [ACTION] = dispersion-corresponding [LAYER1] [META] [LAYER2] [ANY] [WORDS] - calculates dispersions values of all [LAYER1] values based on [META] and annply correspondign filter.
 [ACTION] = editdist [LAYER] - caculates the edit distance for all (to all) documents in [LAYER]
@@ -779,20 +831,29 @@ Most actions accept arguments. [ARG] is a required argument. {ARG} is an optiona
 [ACTION] = idf [META] {LAYER} - inverse document frequency for [META] on {LAYER} (default: WORT)
 [ACTION] = keyword [LAYER] [TSV_RefFile] [COL_Token] [COL_RelFreq] - calculates the keynes of any [LAYER]-value by using a reference list [TSV_RefFile].
 [ACTION] = keyword-corresponding [LAYER1] [TSV_RefFile] [COL_Token] [COL_RelFreq] [LAYER2] [WORDS2] - calculates keyword (see [ACTION = keyword]) and applies the corresponding filter.
-[ACTION] = kwic-any [LAYER] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens
-[ACTION] = kwic-document [LAYER] [WORDS] - [WORDS] = space separated tokens - a document must contains all token
-[ACTION] = kwic-first-any [LAYER] [WORD] [WORDS] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)
+[ACTION] = kwic-any [LAYER] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens
+[ACTION] = kwic-document [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a document must contains all token
+[ACTION] = kwic-export [LAYER] FILE:[WORDS+SPAN] [OUTPUT] - exports a KWIC of any occurrence - [WORDS] = space separated tokens + SPAN
+[ACTION] = kwic-first-any [LAYER] [WORD] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)
+[ACTION] = kwic-mda [MDA-FILE] {-SPAN} {+SPAN} - KWIC based on MDA-FILE
 [ACTION] = ner [NERFILE] - performs a named entity recorgnition + kwic-resuls
-[ACTION] = kwic-phrase [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order
-[ACTION] = kwic-sentence [LAYER] [WORDS] - [WORDS] = space separated tokens - a sentence must contains all token
+[ACTION] = kwic-phrase [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order
+[ACTION] = kwic-sentence [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a sentence must contains all token
 [ACTION] = kwic-sig [LAYER] [y/n] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens - Enable HTML-Highlight [y/n]
 [ACTION] = kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order
 [ACTION] = kwit-n [LAYER1] [LAYER2] [minFREQ] [PRE] [POST] [WORDS] - Like kwit (but you can specificate the range [PRE] and [POST] the match - e.g. [PRE] = 3)
+[ACTION] = layer-clone [Original Layer-Name] [New Layer-Name] [OUTPUT] - clone original layer.
 [ACTION] = layer-names - all available names for [LAYER]
+[ACTION] = layer-new [New Layer-Name] [OUTPUT] - creates a new empty layer.
+[ACTION] = remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information.
+[ACTION] = layer-rename [Original Layer-Name] [New Layer-Name] [OUTPUT] - rename layer.
 [ACTION] = lda [CONFIG] {TOPIC-EXPORT} - [CONFIG] must be a JSON-Config file. If the file don't exists a new file will be created. Use {TOPIC-EXPORT} to export a additional topic-list.
 [ACTION] = meta - lists all meta-categories, labels and token/type/document-count
 [ACTION] = meta-by-document - list all documents with meta-data
+[ACTION] = meta-by-document-select [META...N] - list selected document meta-data 
 [ACTION] = meta-categories - all available names for meta categories
+[ACTION] = meta-export [FILE] - export document metadata for external cleaning/usage
+[ACTION] = meta-import [FILE] [OUTPUT] - export document metadata for external cleaning/usage
 [ACTION] = metaphone [LAYER] - convert all types (in layer) into metaphone representations.
 [ACTION] = meta-select [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n]
 [ACTION] = meta-select+domain [category_1..n] - lists all meta-categories, labels and token/type/document-count for [category_1..n] (reduces all URLs > domain name only)
@@ -801,21 +862,28 @@ Most actions accept arguments. [ARG] is a required argument. {ARG} is an optiona
 [ACTION] = ngram [N] {LAYER} {minFREQ} - [N] sized N-gram based on {LAYER} (default: Wort)
 [ACTION] = ngram-corresponding [N] [LAYER1] [minFREQ] [LAYER2] [ANY?] [WORDS2] - [N] sized N-gram based on [LAYER1] - apply [LAYER2] corresponding [WORD2] filter.
 [ACTION] = ngram-select [N] [LAYER] [minFREQ] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE].
+[ACTION] = ngram-select-sig [N] [LAYER] [WORDS/FILE] - all [N]-grams on [LAYER] containing [WORDS] or FILE:[FILE] rated by [WORD/FILE] co-occurrences.
+[ACTION] = ngram-sig [N] [LAYER] - [N] sized N-gram based on [LAYER] rated with co-occurence-levels
+[ACTION] = phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order
 [ACTION] = position-frequency [LAYER1] [WORD] - left/right position of words around [WORD]
-[ACTION] = position-frequency [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.
-[ACTION] = query [QUERY] - see help section [OUTPUT] for more information
+[ACTION] = position-frequency-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.
+[ACTION] = query [QUERY] [OUTPUT] - see help section [OUTPUT] for more information
 [ACTION] = query-count-documents [QUERY/FILE] - counts how many documents match the [QUERY]
 [ACTION] = query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY]
 [ACTION] = query-count-tokens [QUERY/FILE] - counts how many token-spans match the [QUERY]
 [ACTION] = query-list [QUERY] [NAME] - works like query, but returns a [NAME]ed list of document GUIDs.
 [ACTION] = reading-ease {LAYER} - reading ease of {LAYER} (default: Wort)
+[ACTION] = remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information.
+[ACTION] = remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information.
 [ACTION] = similarity [META] {LAYER} - [META] similarity based on {LAYER} (default: WORT)
+[ACTION] = size - returns the size (sentences/tokens) of all documents
 [ACTION] = style-burrowsd [META1] [META2] - compares [META1] with [META2] based on "Burrows Delta"
 [ACTION] = style-ngram [LAYER] [META] [N] [minFREQ] - style analytics based on ngram
 [ACTION] = tf [META] {LAYER} - term frequency for [META] on {LAYER} (default: WORT)
 [ACTION] = tf-idf [META] {LAYER} - term frequency * inverse term frequency for [META] on {LAYER} (default: WORT)
 [ACTION] = token-list [LAYER] - list of all tokens in [LAYER]
 [ACTION] = token-list-select [LAYER] [REGEX] - list of all tokens in [LAYER] who are matching the [REGEX]-expression
+[ACTION] = validate - checks the loaded data against several rules.
 [ACTION] = vocabulary-complexity {LAYER} - vocabulary complexity in {LAYER}
 [ACTION] = vocd [LAYER] [META] - calculates VOCD for [LAYER] clustered by [META]
 ```
