@@ -18,7 +18,7 @@ namespace CorpusExplorer.Sdk.Action
       var dt = new DataTable();
       dt.Columns.Add(Resources.Tokens, typeof(string));
 
-      var regex = new Regex(args[1]);
+      var regex = new Regex(args[1], RegexOptions.Compiled);
 
       dt.BeginLoadData();
       foreach (var v in selection.GetLayers(args[0]).FirstOrDefault().Values)
