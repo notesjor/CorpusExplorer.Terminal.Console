@@ -286,6 +286,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die frequency1-raw-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File (no rel. frequency) ähnelt.
+        /// </summary>
+        internal static string DescFrequ1RawSelect {
+            get {
+                return ResourceManager.GetString("DescFrequ1RawSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die frequency1 {LAYER} - count token frequency on {LAYER} (default: Wort) ähnelt.
         /// </summary>
         internal static string DescFrequency1 {

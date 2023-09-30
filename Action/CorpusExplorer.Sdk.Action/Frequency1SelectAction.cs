@@ -19,20 +19,25 @@ namespace CorpusExplorer.Sdk.Action
 
     public string Description => Resources.DescFrequency1Selected;
 
+    internal bool Normalize { get; set; } = true;
+
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var vm = new Frequency1LayerViewModel { Selection = selection };
-      if (args == null || args.Length < 1)
+      if (args == null || args.Length < 2)
         return;
 
-      vm.LayerDisplayname = args[0];
+      var vm = new Frequency1LayerViewModel
+      {
+        Selection = selection,
+        LayerDisplayname = args[0]
+      };
       vm.Execute();
 
       var lst = new List<string>(args);
       lst.RemoveAt(0);
       var hsh = new HashSet<string>(lst);
 
-      var div = vm.Frequency.Select(x => x.Value).Sum() / 1000000d;
+      var div = Normalize ? selection.CountToken / 1000000d : 0d;
 
       switch (hsh.Count)
       {
@@ -63,7 +68,8 @@ namespace CorpusExplorer.Sdk.Action
 
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
       res.Columns.Add(Resources.Frequency, typeof(double));
-      res.Columns.Add(Resources.FrequencyRel, typeof(double));
+      if(div > 0)
+        res.Columns.Add(Resources.FrequencyRel, typeof(double));
 
       res.BeginLoadData();
 
@@ -73,7 +79,10 @@ namespace CorpusExplorer.Sdk.Action
           continue;
 
         var sum = vm.Frequency[line];
-        res.Rows.Add(line, sum, sum / div);
+        if (div > 0)
+          res.Rows.Add(line, sum, sum / div);
+        else
+          res.Rows.Add(line, sum, sum);
       }
 
       res.EndLoadData();
@@ -90,7 +99,8 @@ namespace CorpusExplorer.Sdk.Action
 
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
       res.Columns.Add(Resources.Frequency, typeof(double));
-      res.Columns.Add(Resources.FrequencyRel, typeof(double));
+      if (div > 0)
+        res.Columns.Add(Resources.FrequencyRel, typeof(double));
 
       res.BeginLoadData();
 
@@ -106,7 +116,10 @@ namespace CorpusExplorer.Sdk.Action
           if (vm.Frequency.ContainsKey(split[i]))
             sum += vm.Frequency[split[i]];
 
-        res.Rows.Add(grp, sum, sum / div);
+        if (div > 0)
+          res.Rows.Add(line, sum, sum / div);
+        else
+          res.Rows.Add(line, sum, sum);
       }
 
       res.EndLoadData();
@@ -124,7 +137,8 @@ namespace CorpusExplorer.Sdk.Action
       res.Columns.Add(Resources.Category, typeof(string));
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
       res.Columns.Add(Resources.Frequency, typeof(double));
-      res.Columns.Add(Resources.FrequencyRel, typeof(double));
+      if(div > 0)
+        res.Columns.Add(Resources.FrequencyRel, typeof(double));
       res.Columns.Add(Resources.Value, typeof(double));
 
       res.BeginLoadData();
@@ -141,7 +155,10 @@ namespace CorpusExplorer.Sdk.Action
         {
           foreach (var w in GetSdmPostfixQuery(word.Substring(1), vm.Frequency))
           {
-            res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
+            if (div > 0)
+              res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
+            else
+              res.Rows.Add(split[0], w.Key, w.Value, split[2]);
             match += w.Value;
           }
         }
@@ -149,19 +166,28 @@ namespace CorpusExplorer.Sdk.Action
         {
           foreach (var w in GetSdmPrefixQuery(word.Substring(0, word.Length - 1), vm.Frequency))
           {
-            res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
+            if (div > 0)
+              res.Rows.Add(split[0], w.Key, w.Value, w.Value / div, split[2]);
+            else
+              res.Rows.Add(split[0], w.Key, w.Value, split[2]);
             match += w.Value;
           }
         }
         else if (vm.Frequency.ContainsKey(word))
         {
-          res.Rows.Add(split[0], word, vm.Frequency[word], vm.Frequency[word] / div, split[2]);
+          if (div > 0)
+            res.Rows.Add(split[0], word, vm.Frequency[word], vm.Frequency[word] / div, split[2]);
+          else
+            res.Rows.Add(split[0], word, vm.Frequency[word], split[2]);
           match += vm.Frequency[word];
         }
       }
 
       var other = vm.Selection.CountToken - match;
-      res.Rows.Add(Resources.Other, Resources.TokenCount, other, other / div, 0);
+      if (div > 0)
+        res.Rows.Add(Resources.Other, Resources.TokenCount, other, other / div, 0);
+      else
+        res.Rows.Add(Resources.Other, Resources.TokenCount, other, 0);
 
       res.EndLoadData();
 
@@ -185,12 +211,16 @@ namespace CorpusExplorer.Sdk.Action
 
       res.Columns.Add(vm.LayerDisplayname, typeof(string));
       res.Columns.Add(Resources.Frequency, typeof(double));
-      res.Columns.Add(Resources.FrequencyRel, typeof(double));
+      if(div > 0)
+        res.Columns.Add(Resources.FrequencyRel, typeof(double));
 
       res.BeginLoadData();
 
       foreach (var f in vm.Frequency.Where(f => hsh.Contains(f.Key)))
-        res.Rows.Add(f.Key, f.Value, f.Value / div);
+        if(div > 0)
+          res.Rows.Add(f.Key, f.Value, f.Value / div);
+        else
+          res.Rows.Add(f.Key, f.Value);
 
       res.EndLoadData();
 

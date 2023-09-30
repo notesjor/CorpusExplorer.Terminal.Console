@@ -76,6 +76,7 @@
     <Compile Include="DocumentSimilarityAction.cs" />
     <Compile Include="EditDistanceAction.cs" />
     <Compile Include="Frequency1RawAction.cs" />
+    <Compile Include="Frequency1RawSelectAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />
     <Compile Include="Helper\FileQueriesHelper.cs" />

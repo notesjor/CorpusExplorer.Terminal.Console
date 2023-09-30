@@ -406,16 +406,16 @@
     <value>position-frequency-corresponding [LAYER1] [WORD1] [LAYER2] [WORDS2] - left/right position of words around [WORD1] in [LAYER1] + corresponding [LAYER2] [WORDS2] filter.</value>
   </data>
   <data name="Query" xml:space="preserve">
-	  <value>Query</value>
+    <value>Query</value>
   </data>
   <data name="DescQueryCountAllTokenMatches" xml:space="preserve">
-	  <value>query-count-tokens [QUERY/FILE] - counts how many token-spans match the [QUERY]</value>
+    <value>query-count-tokens [QUERY/FILE] - counts how many token-spans match the [QUERY]</value>
   </data>
   <data name="DescQueryCountDocuments" xml:space="preserve">
-	  <value>query-count-documents [QUERY/FILE] - counts how many documents match the [QUERY]</value>
+    <value>query-count-documents [QUERY/FILE] - counts how many documents match the [QUERY]</value>
   </data>
   <data name="DescQueryCountSentences" xml:space="preserve">
-	  <value>query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY]</value>
+    <value>query-count-sentences [QUERY/FILE] - counts how many sentences match the [QUERY]</value>
   </data>
   <data name="Cooccurrence" xml:space="preserve">
     <value>Co-occurrence</value>
@@ -476,5 +476,8 @@
   </data>
   <data name="DescLayerClone" xml:space="preserve">
     <value>layer-clone [Original Layer-Name] [New Layer-Name] [OUTPUT] - clone original layer.</value>
+  </data>
+  <data name="DescFrequ1RawSelect" xml:space="preserve">
+    <value>frequency1-raw-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File (no rel. frequency)</value>
   </data>
 </root>
