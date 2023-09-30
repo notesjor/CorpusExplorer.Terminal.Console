@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.Runtime.InteropServices;
 using CorpusExplorer.Sdk.Action.Abstract;
 using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Action.Properties;
@@ -20,6 +22,48 @@ namespace CorpusExplorer.Sdk.Action
     public string Action => "cluster";
 
     public string Description => Resources.DescCluster;
+
+    public class InternalClusterTableWriter : AbstractTableWriter
+    {
+      private DataTable _dataTable;
+      private AbstractTableWriter _writer;
+
+      public InternalClusterTableWriter(AbstractTableWriter writer)
+      {
+        _writer = writer;
+      }
+
+      public override string TableWriterTag => "";
+
+      public override string Description => "only internal usage";
+
+      public override string MimeType => "";
+
+      public override AbstractTableWriter Clone(Stream stream)
+      {
+        return new InternalClusterTableWriter(_writer.Clone(stream));
+      }
+
+      protected override void WriteBody(DataTable table)
+      {
+        foreach(DataRow row in table.Rows)
+          _dataTable.Rows.Add(row.ItemArray);
+      }
+
+      protected override void WriteFooter()
+      {
+        _dataTable.EndLoadData();
+        _writer.WriteTable(_dataTable);
+      }
+
+      protected override void WriteHead(DataTable table)
+      {
+        _dataTable = new DataTable();
+        foreach (DataColumn column in table.Columns)
+          _dataTable.Columns.Add(column.ColumnName, column.DataType);
+        _dataTable.BeginLoadData();
+      }
+    }
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
@@ -42,7 +86,9 @@ namespace CorpusExplorer.Sdk.Action
         return;
 
       nargs.RemoveAt(0);
-      foreach (var s in selections) action.Execute(s, nargs.ToArray(), writer);
+      var clusterWriter = new InternalClusterTableWriter(writer);
+      foreach (var s in selections) action.Execute(s, nargs.ToArray(), clusterWriter);
+      clusterWriter.Destroy();
     }
 
     public void ExecuteXmlScriptProcessorBypass(AbstractActionWithExport action, Selection selection, string[] args, AbstractExporter exporter, string path)
