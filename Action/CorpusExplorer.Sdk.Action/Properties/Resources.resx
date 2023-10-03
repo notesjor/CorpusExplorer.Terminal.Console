@@ -480,4 +480,22 @@
   <data name="DescFrequ1RawSelect" xml:space="preserve">
     <value>frequency1-raw-select [LAYER] [WORDS/FILE/SDM] - count token frequency on 1 [LAYER] - [WORDS] = space separated tokens [FILE] = one line one token [SDM] = SDM-File (no rel. frequency)</value>
   </data>
+  <data name="MetaUnique" xml:space="preserve">
+    <value>meta-unique - count unique values for all categories</value>
+  </data>
+  <data name="MetaUniqueSelect" xml:space="preserve">
+    <value>meta-unique-select [META] - count unique values for all listed [META]-categories</value>
+  </data>
+  <data name="DescMetaUnique" xml:space="preserve">
+    <value>meta-unique - count unique values for all categories</value>
+  </data>
+  <data name="DescMetaUniqueSelect" xml:space="preserve">
+    <value>meta-unique-select [META] - count unique values for all listed [META]-categories</value>
+  </data>
+  <data name="DescMetaUniqueSelectValues" xml:space="preserve">
+    <value>meta-unique-select-values [META] - count unique values for all listed [META]-categories and print categories and values</value>
+  </data>
+  <data name="DescMetaUniqueValues" xml:space="preserve">
+    <value>meta-unique-values - count unique values for all categories and print categories and values</value>
+  </data>
 </root>

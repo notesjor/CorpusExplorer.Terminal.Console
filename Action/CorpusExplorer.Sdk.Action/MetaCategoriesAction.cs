@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;

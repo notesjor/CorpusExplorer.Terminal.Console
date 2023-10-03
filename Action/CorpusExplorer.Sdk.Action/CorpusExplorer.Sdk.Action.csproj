@@ -97,6 +97,10 @@
     <Compile Include="MetaImportAction.cs" />
     <Compile Include="MetaSelectedAction.cs" />
     <Compile Include="MetaSelectedDomainAction.cs" />
+    <Compile Include="MetaUniqueAction.cs" />
+    <Compile Include="MetaUniqueSelectAction.cs" />
+    <Compile Include="MetaUniqueSelectValuesAction.cs" />
+    <Compile Include="MetaUniqueValuesAction.cs" />
     <Compile Include="NGramCooccurrenceAction.cs" />
     <Compile Include="NGramCorrespondingAction.cs" />
     <Compile Include="NGramSelectedCooccurrenceAction.cs" />

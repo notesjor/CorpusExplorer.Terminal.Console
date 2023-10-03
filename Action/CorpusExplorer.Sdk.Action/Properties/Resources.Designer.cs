@@ -637,6 +637,42 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-unique - count unique values for all categories ähnelt.
+        /// </summary>
+        internal static string DescMetaUnique {
+            get {
+                return ResourceManager.GetString("DescMetaUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-unique-select [META] - count unique values for all listed [META]-categories ähnelt.
+        /// </summary>
+        internal static string DescMetaUniqueSelect {
+            get {
+                return ResourceManager.GetString("DescMetaUniqueSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-unique-select-values [META] - count unique values for all listed [META]-categories and print categories and values ähnelt.
+        /// </summary>
+        internal static string DescMetaUniqueSelectValues {
+            get {
+                return ResourceManager.GetString("DescMetaUniqueSelectValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-unique-values - count unique values for all categories and print categories and values ähnelt.
+        /// </summary>
+        internal static string DescMetaUniqueValues {
+            get {
+                return ResourceManager.GetString("DescMetaUniqueValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die mtld [LAYER] [META] - calculates MTLD for [LAYER] clustered by [META] ähnelt.
         /// </summary>
         internal static string DescMtld {
@@ -948,6 +984,24 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         internal static string MetaSelectedDomainActionDescription {
             get {
                 return ResourceManager.GetString("MetaSelectedDomainActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-unique - count unique values for all categories ähnelt.
+        /// </summary>
+        internal static string MetaUnique {
+            get {
+                return ResourceManager.GetString("MetaUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-unique-select [META] - count unique values for all listed [META]-categories ähnelt.
+        /// </summary>
+        internal static string MetaUniqueSelect {
+            get {
+                return ResourceManager.GetString("MetaUniqueSelect", resourceCulture);
             }
         }
         
