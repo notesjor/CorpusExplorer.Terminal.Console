@@ -18,7 +18,10 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using CorpusExplorer.Terminal.Console.Helper;
 using CorpusExplorer.Terminal.Console.Properties;
+#if Featherweight
+#else 
 using CorpusExplorer.Terminal.Console.Web;
+#endif
 using CorpusExplorer.Terminal.Console.Xml.Model;
 using CorpusExplorer.Terminal.Console.Xml.Processor;
 
@@ -223,6 +226,8 @@ namespace CorpusExplorer.Terminal.Console
           file = arg;
       }
 
+      #if Featherweight
+      #else
       if (file.Contains("#"))
       {
         var ws = new WebService(_writer, ip, port, file, timeout);
@@ -233,6 +238,7 @@ namespace CorpusExplorer.Terminal.Console
         var ws = new WebService(_writer, ip, port, file, timeout);
         ws.Run();
       }
+      #endif
     }
 
     private static void ExecuteDirect(string[] args)
