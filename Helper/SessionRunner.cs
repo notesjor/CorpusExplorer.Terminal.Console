@@ -15,7 +15,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
       {
         Items = new[]
         {
-          new file
+          new myFile
           {
             delete = delete,
             Value = importFilePath

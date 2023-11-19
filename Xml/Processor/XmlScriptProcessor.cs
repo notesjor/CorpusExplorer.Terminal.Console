@@ -160,7 +160,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     foreach (var item in a.Items)
                       switch (item)
                       {
-                        case file _:
+                        case myFile _:
                           using (var project = ReadSources(new[] { a }))
                             ExecuteSession(session, scriptFilename, project);
                           break;
@@ -173,7 +173,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                               {
                                 Items = new[]
                                 {
-                                  new file
+                                  new myFile
                                   {
                                     delete = d.delete,
                                     Value = file
@@ -195,7 +195,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     foreach (var item in i.Items)
                       switch (item)
                       {
-                        case file _:
+                        case myFile _:
                           using (var project = ReadSources(new[] { i }))
                             ExecuteSession(session, scriptFilename, project);
                           break;
@@ -208,7 +208,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                               {
                                 Items = new[]
                                 {
-                                  new file
+                                  new myFile
                                   {
                                     delete = d.delete,
                                     Value = file
@@ -243,7 +243,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     foreach (var item in i.Items)
                       switch (item)
                       {
-                        case file _:
+                        case myFile _:
                           using (var project = ReadSources(new[] { i }))
                             ExecuteSession(session, scriptFilename, project);
                           break;
@@ -280,7 +280,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                       tagger = a.tagger,
                       language = a.language,
                       Items = Directory.GetFiles(subDir, baseDirA.filter)
-                                       .Select(file => new file
+                                       .Select(file => new myFile
                                         {
                                           delete = baseDirA.delete,
                                           Value = file
@@ -302,7 +302,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     {
                       type = i.type,
                       Items = Directory.GetFiles(subDir, baseDirI.filter)
-                                       .Select(file => new file
+                                       .Select(file => new myFile
                                         {
                                           delete = baseDirI.delete,
                                           Value = file
@@ -334,7 +334,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                       tagger = a.tagger,
                       language = a.language,
                       Items = Directory.GetFiles(subDir, baseDirA.filter)
-                                       .Select(file => new file
+                                       .Select(file => new myFile
                                         {
                                           delete = baseDirA.delete,
                                           Value = file
@@ -361,7 +361,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     {
                       type = i.type,
                       Items = Directory.GetFiles(subDir, baseDirI.filter)
-                                       .Select(file => new file
+                                       .Select(file => new myFile
                                         {
                                           delete = baseDirI.delete,
                                           Value = file
@@ -1099,7 +1099,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         {
           switch (item)
           {
-            case file i:
+            case myFile i:
               res.Add(i.Value);
               break;
             case directory i:

@@ -20,7 +20,7 @@
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("directory", typeof(directory))]
-    [System.Xml.Serialization.XmlElementAttribute("file", typeof(file))]
+    [System.Xml.Serialization.XmlElementAttribute("file", typeof(myFile))]
     public object[] Items
     {
       get { return this.itemsField; }
