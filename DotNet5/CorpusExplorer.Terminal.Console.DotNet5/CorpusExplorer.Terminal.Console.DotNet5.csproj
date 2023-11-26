@@ -5,6 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>cec</AssemblyName>
     <RootNamespace>CorpusExplorer.Terminal.Console</RootNamespace>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
