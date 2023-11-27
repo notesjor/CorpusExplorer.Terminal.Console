@@ -49,10 +49,10 @@
     <Compile Include="..\..\Xml\Model\cescript.cs" Link="Xml\Model\cescript.cs" />
     <Compile Include="..\..\Xml\Model\config.cs" Link="Xml\Model\config.cs" />
     <Compile Include="..\..\Xml\Model\directory.cs" Link="Xml\Model\directory.cs" />
-    <Compile Include="..\..\Xml\Model\file.cs" Link="Xml\Model\file.cs" />
     <Compile Include="..\..\Xml\Model\head.cs" Link="Xml\Model\head.cs" />
     <Compile Include="..\..\Xml\Model\import.cs" Link="Xml\Model\import.cs" />
     <Compile Include="..\..\Xml\Model\meta.cs" Link="Xml\Model\meta.cs" />
+    <Compile Include="..\..\Xml\Model\myFile.cs" Link="Xml\Model\myFile.cs" />
     <Compile Include="..\..\Xml\Model\output.cs" Link="Xml\Model\output.cs" />
     <Compile Include="..\..\Xml\Model\queries.cs" Link="Xml\Model\queries.cs" />
     <Compile Include="..\..\Xml\Model\query.cs" Link="Xml\Model\query.cs" />
