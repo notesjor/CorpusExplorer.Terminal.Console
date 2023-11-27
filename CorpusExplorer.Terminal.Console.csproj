@@ -143,6 +143,10 @@
       <Project>{63f6b9f6-ff80-4764-bd45-109d549bf459}</Project>
       <Name>TFRES</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj">
+      <Project>{6841c8ca-7c40-44c4-b5aa-fbc84fcb7293}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.Xml</Name>
+    </ProjectReference>
     <ProjectReference Include="Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj">
       <Project>{693d7071-5091-481f-b404-ac4772a0df60}</Project>
       <Name>CorpusExplorer.Sdk.Action</Name>

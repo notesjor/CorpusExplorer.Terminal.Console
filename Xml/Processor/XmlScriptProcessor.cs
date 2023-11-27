@@ -271,9 +271,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsA = Directory.GetDirectories(baseDirA.Value);
                 foreach (var subDir in subDirsA)
                 {
-                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
-                  using (var project = ReadSources(new[]
+                  try
                   {
+                    overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
+                    using (var project = ReadSources(new[]
+                    {
                     new annotate
                     {
                       type = a.type,
@@ -287,7 +289,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                                         }).ToArray()
                     }
                   }))
-                    ExecuteSession(session, scriptFilename, project);
+                      ExecuteSession(session, scriptFilename, project);
+                  }
+                  catch (Exception ex)
+                  {
+                    LogError(ex);
+                  }
                 }
                 break;
               case import i:
@@ -295,9 +302,11 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
                 foreach (var subDir in subDirsI)
                 {
-                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
-                  using (var project = ReadSources(new[]
+                  try
                   {
+                    overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "").Replace("\\", "");
+                    using (var project = ReadSources(new[]
+                    {
                     new import
                     {
                       type = i.type,
@@ -309,7 +318,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                                         }).ToArray()
                     }
                   }))
-                    ExecuteSession(session, scriptFilename, project);
+                      ExecuteSession(session, scriptFilename, project);
+                  }
+                  catch (Exception ex)
+                  {
+                    LogError(ex);
+                  }
                 }
                 break;
             }
@@ -324,10 +338,12 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsA = Directory.GetDirectories(baseDirA.Value);
                 Parallel.ForEach(subDirsA, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
                 {
-                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
-                                             .Replace("\\", "");
-                  using (var project = ReadSources(new[]
+                  try
                   {
+                    overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
+                                               .Replace("\\", "");
+                    using (var project = ReadSources(new[]
+                    {
                     new annotate
                     {
                       type = a.type,
@@ -341,8 +357,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                                         }).ToArray()
                     }
                   }))
+                    {
+                      ExecuteSession(session, scriptFilename, project);
+                    }
+                  }
+                  catch (Exception ex)
                   {
-                    ExecuteSession(session, scriptFilename, project);
+                    LogError(ex);
                   }
                 });
                 break;
@@ -351,12 +372,14 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
                 Parallel.ForEach(subDirsI, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
                 {
-                  // TODO: Überlegen, ob man das nicht besser mit SessionRunner.Run(session, file, i.type, d.delete); ersetzt
-
-                  overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
-                                             .Replace("\\", "");
-                  using (var project = ReadSources(new[]
+                  try
                   {
+                    // TODO: Überlegen, ob man das nicht besser mit SessionRunner.Run(session, file, i.type, d.delete); ersetzt
+
+                    overrideCorpusName = subDir.Replace(Path.GetDirectoryName(subDir), "").Replace("/", "")
+                                               .Replace("\\", "");
+                    using (var project = ReadSources(new[]
+                    {
                     new import
                     {
                       type = i.type,
@@ -368,8 +391,13 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                                         }).ToArray()
                     }
                   }))
+                    {
+                      ExecuteSession(session, scriptFilename, project);
+                    }
+                  }
+                  catch (Exception ex)
                   {
-                    ExecuteSession(session, scriptFilename, project);
+                    LogError(ex);
                   }
                 });
                 break;
@@ -556,7 +584,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         else
         {
           // Nicht parallelisierbare Action - da sonst die Ausgabe durcheinander gerät.
-          foreach(var selection in selections)
+          foreach (var selection in selections)
           {
             var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), selection.Displayname, a.type);
 
