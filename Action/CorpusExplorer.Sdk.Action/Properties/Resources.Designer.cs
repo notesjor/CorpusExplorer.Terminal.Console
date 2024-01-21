@@ -412,7 +412,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-document [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a document must contains all token ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-document [LAYER] [WORDS+SPAN] [META] - [WORDS+SPAN] = space separated tokens (optional SPAN) - a document must contains all token. If flag META is set, schow all metadata (not only guid). ähnelt.
         /// </summary>
         internal static string DescKwicAllInDocument {
             get {
@@ -421,7 +421,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-sentence [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a sentence must contains all token ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-sentence [LAYER] [WORDS+SPAN] - [WORDS+SPAN] = space separated tokens (optional SPAN) - a sentence must contains all token. If flag META is set, schow all metadata (not only guid). ähnelt.
         /// </summary>
         internal static string DescKwicAllInSentence {
             get {
@@ -430,7 +430,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-any [LAYER] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-any [LAYER] [WORDS+SPAN] [META] - KWIC any occurrence - [WORDS+SPAN] = space separated tokens (optional SPAN). If flag META is set, schow all metadata (not only guid). ähnelt.
         /// </summary>
         internal static string DescKwicAny {
             get {
@@ -448,7 +448,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-first-any [LAYER] [WORD] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other) ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-first-any [LAYER] [WORDS+SPAN] [META]- KWIC any occurrence - [WORDS+SPAN] = space separated tokens (optional SPAN). KWIC must contains first token + any other token. If flag META is set, schow all metadata (not only guid). ähnelt.
         /// </summary>
         internal static string DescKwicFirstAny {
             get {
@@ -475,7 +475,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-phrase [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwic-phrase [LAYER] [WORDS+SPAN] [META] - [WORDS+SPAN] = space separated tokens (optional SPAN) - all token in one sentence + given order.  If flag META is set, schow all metadata (not only guid). ähnelt.
         /// </summary>
         internal static string DescKwicPhrase {
             get {

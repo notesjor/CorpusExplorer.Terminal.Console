@@ -9,6 +9,7 @@ namespace CorpusExplorer.Sdk.Action.Helper
     public static List<string> ResolveFileQueries(List<string> queries)
     {
       var res = new List<string>();
+
       foreach (var query in queries)
       {
         if (query.StartsWith("FILE:"))

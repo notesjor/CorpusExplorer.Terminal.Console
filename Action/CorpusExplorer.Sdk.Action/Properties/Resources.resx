@@ -211,22 +211,22 @@
     <value>get-document-metadata [GUID] - get all metadata for specific [GUID] document.</value>
   </data>
   <data name="DescKwicAllInDocument" xml:space="preserve">
-    <value>kwic-document [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a document must contains all token</value>
+    <value>kwic-document [LAYER] [WORDS+SPAN] [META] - [WORDS+SPAN] = space separated tokens (optional SPAN) - a document must contains all token. If flag META is set, schow all metadata (not only guid).</value>
   </data>
   <data name="DescKwicAllInSentence" xml:space="preserve">
-    <value>kwic-sentence [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - a sentence must contains all token</value>
+    <value>kwic-sentence [LAYER] [WORDS+SPAN] - [WORDS+SPAN] = space separated tokens (optional SPAN) - a sentence must contains all token. If flag META is set, schow all metadata (not only guid).</value>
   </data>
   <data name="DescSimilarity" xml:space="preserve">
     <value>similarity [META] {LAYER} - [META] similarity based on {LAYER} (default: WORT)</value>
   </data>
   <data name="DescKwicAny" xml:space="preserve">
-    <value>kwic-any [LAYER] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens</value>
+    <value>kwic-any [LAYER] [WORDS+SPAN] [META] - KWIC any occurrence - [WORDS+SPAN] = space separated tokens (optional SPAN). If flag META is set, schow all metadata (not only guid).</value>
   </data>
   <data name="DescKwicPhrase" xml:space="preserve">
-    <value>kwic-phrase [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
+    <value>kwic-phrase [LAYER] [WORDS+SPAN] [META] - [WORDS+SPAN] = space separated tokens (optional SPAN) - all token in one sentence + given order.  If flag META is set, schow all metadata (not only guid).</value>
   </data>
   <data name="DescKwicFirstAny" xml:space="preserve">
-    <value>kwic-first-any [LAYER] [WORD] [WORDS+SPAN] - KWIC any occurrence - [WORDS] = space separated tokens (KWIC must contains first token + any other)</value>
+    <value>kwic-first-any [LAYER] [WORDS+SPAN] [META]- KWIC any occurrence - [WORDS+SPAN] = space separated tokens (optional SPAN). KWIC must contains first token + any other token. If flag META is set, schow all metadata (not only guid).</value>
   </data>
   <data name="DescKwicNer" xml:space="preserve">
     <value>ner [NERFILE] - performs a named entity recorgnition + kwic-resuls</value>

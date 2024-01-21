@@ -38,7 +38,7 @@ namespace CorpusExplorer.Sdk.Action.Abstract
         vm.AddQuery(q);
       vm.Execute();
 
-      writer.WriteTable(selection.Displayname, vm.GetUniqueDataTableCsv());
+      writer.WriteTable(selection.Displayname, spanHelper.EnableMeta ? vm.GetUniqueDataTableCsvMeta() : vm.GetUniqueDataTableCsv());
     }
 
     protected abstract IEnumerable<AbstractFilterQuery> GetQuery(string layerDisplayname, IEnumerable<string> queries);
