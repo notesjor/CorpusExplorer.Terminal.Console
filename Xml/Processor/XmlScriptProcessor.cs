@@ -1035,7 +1035,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                     .Replace("{script}", scriptFilename)
                     .Replace("{corpus}", corpusName)
                     .Replace("{selection}", selectionName == "*" ? "ALL" : selectionName)
-          .Replace("{query}", selectionName == "*" ? "ALL" : selectionName) // früher {selection} - {query} ist eingängiger (beides unterstützt)
+                    .Replace("{query}", selectionName == "*" ? "ALL" : selectionName) // früher {selection} - {query} ist eingängiger (beides unterstützt)
                     .Replace("{action}", action)
                     .EnsureFileName();
       var dir = Path.GetDirectoryName(res);
