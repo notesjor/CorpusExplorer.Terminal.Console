@@ -1085,8 +1085,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               tagger.Input = cleaner2.Output;
               tagger.Execute();
 
-              foreach (var corpus in tagger.Output)
-                proj.Add(corpus);
+              while(tagger.Output.Count > 0)
+                if(tagger.Output.TryDequeue(out var corpus))
+                  proj.Add(corpus);
             }
             catch (Exception ex)
             {
