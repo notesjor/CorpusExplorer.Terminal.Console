@@ -5,7 +5,9 @@
       "distributionName": ""
     },
     "Profil \"1\"": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "F:HDF5#test.h5 import#Cec6#Ansprachen_Deutschland_Weihnachten.cec6 frequency1",
+      "workingDirectory": "C:\\Users\\Jan\\Desktop"
     }
   }
 }
