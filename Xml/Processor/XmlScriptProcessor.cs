@@ -659,8 +659,15 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
     private static string CorpusNameBuilder(List<Selection> selections)
     {
-      var hash = new HashSet<string>(selections.SelectMany(selection => selection.CorporaDisplaynames));
-      return hash.Count == 0 ? "NONE" : string.Join(";", hash);
+      try
+      {
+        var hash = new HashSet<string>(selections.SelectMany(selection => selection.CorporaDisplaynames));
+        return hash.Count == 0 ? "NONE" : string.Join(";", hash);
+      }
+      catch
+      {
+        return "NONE";
+      }
     }
 
     /// <summary>
@@ -1085,8 +1092,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               tagger.Input = cleaner2.Output;
               tagger.Execute();
 
-              while(tagger.Output.Count > 0)
-                if(tagger.Output.TryDequeue(out var corpus))
+              while (tagger.Output.Count > 0)
+                if (tagger.Output.TryDequeue(out var corpus))
                   proj.Add(corpus);
             }
             catch (Exception ex)
