@@ -90,7 +90,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Hdf5\CorpusExplorer.Sdk.Extern.Hdf5.csproj" />
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Json\CorpusExplorer.Sdk.Extern.Json.csproj" />
     <ProjectReference Include="..\..\..\TfresWebserver\TefresWebserver\TFRES.csproj" />
     <ProjectReference Include="..\..\Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj" />
