@@ -106,7 +106,6 @@
     <Compile Include="NGramCorrespondingAction.cs" />
     <Compile Include="NGramSelectedCooccurrenceAction.cs" />
     <Compile Include="PhraseCountAction.cs" />
-    <Compile Include="PositionFrequencyTransitionAction.cs" />
     <Compile Include="PositionFrequencyAction.cs" />
     <Compile Include="ConvertAction.cs" />
     <Compile Include="CooccurrenceAction.cs" />
