@@ -105,6 +105,7 @@
     <Compile Include="NGramCooccurrenceAction.cs" />
     <Compile Include="NGramCorrespondingAction.cs" />
     <Compile Include="NGramSelectedCooccurrenceAction.cs" />
+    <Compile Include="NgramSelectedTreeAction.cs" />
     <Compile Include="PhraseCountAction.cs" />
     <Compile Include="PositionFrequencyAction.cs" />
     <Compile Include="ConvertAction.cs" />
