@@ -17,7 +17,7 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "ngram-select-tree";
 
-    public string Description => "";
+    public string Description => "ngram-select-tree [N] [LAYER] [minFreq] [WORD/FILE] - generates a digraph";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
