@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace CorpusExplorer.Sdk.Action
 {
-  public class Frequency2SelectAction : IAction
+  public class Phrase2LayerCountAction : IAction
   {
-    public string Action => "frequency2-select";
+    public string Action => "phrase-2layer-count";
 
-    public string Description => "frequency2-select [LAYER1] [LAYER2] [WORDS1-PHRASE] - Search a Phrase [WORDS1-PHRASE] in [LAYER1] and sum up the frequency by [LAYER2]";
+    public string Description => "phrase-2layer-count [LAYER1] [LAYER2] [WORDS1-PHRASE] - Search a Phrase [WORDS1-PHRASE] in [LAYER1] and sum up the frequency by [LAYER2]";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
