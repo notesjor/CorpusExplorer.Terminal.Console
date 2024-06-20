@@ -32,7 +32,7 @@ namespace CorpusExplorer.Sdk.Action
       block.Layer1Displayname = args[1];
       block.NPre = int.Parse(args[2]);
       block.Layer2Displayname = args[3];
-      block.NPost = int.Parse(args[4]);      
+      block.NPost = int.Parse(args[4]);
 
       var queries = args.Skip(5).ToList();
       block.LayerQueries = FileQueriesHelper.ResolveFileQueries(queries);
@@ -51,51 +51,40 @@ namespace CorpusExplorer.Sdk.Action
       var b = post.Values.Max();
       var max = a > b ? a : b;
 
-      var pNodes = new Dictionary<int, Dictionary<string, string>>();
+      CalculatePositionFrequency(pre, post, out var pNodes, out var filter);
 
       foreach (var x in pre)
       {
-        if (x.Value < minFreq)
-          continue;
-
         var parts = x.Key.Split(' ');
-        string last = "";
+        string last = null;
 
         var p = (double)x.Value / max * 25d;
         if (p < 1)
           p = 1;
-        var w = (int)p;        
+        var w = (int)p;
 
         for (var i = 0; i < parts.Length; i++)
         {
           var idx = (parts.Length - i) * -1;
           string part = parts[i];
 
-          if (!pNodes.ContainsKey(idx))
-            pNodes.Add(idx, new Dictionary<string, string>());
+          if (filter[idx][part] < minFreq)
+            continue;
 
-          string current;
-          if (pNodes[idx].ContainsKey(part))
-            current = pNodes[idx][part];
-          else
-          {
-            current = $"p{idx:D2}_{pNodes[idx].Count:D5}";
-            pNodes[idx].Add(part, current);
-          }          
+          var current = pNodes[idx][part];
 
-          if (i > 0)
+          if (!string.IsNullOrWhiteSpace(last))
             stb.AppendLine($"\t\"{last}\" -> \"{current}\" [ label=\"{x.Value}\" penwidth={p.ToString(CultureInfo.CurrentCulture).Replace(",", ".")} weight={w} ];");
+
           last = current;
         }
 
-        stb.AppendLine($"\t\"{last}\" -> \"main\" [ label=\"{x.Value}\" penwidth={p.ToString(CultureInfo.CurrentCulture).Replace(",", ".")} weight={w} ];");
+        if (!string.IsNullOrWhiteSpace(last))
+          stb.AppendLine($"\t\"{last}\" -> \"main\" [ label=\"{x.Value}\" penwidth={p.ToString(CultureInfo.CurrentCulture).Replace(",", ".")} weight={w} ];");
       }
 
       foreach (var x in post)
       {
-        if (x.Value < minFreq)
-          continue;
-
         var parts = x.Key.Split(' ');
 
         var p = (double)x.Value / max * 25d;
@@ -110,34 +99,86 @@ namespace CorpusExplorer.Sdk.Action
           var idx = i + 1;
           string part = parts[i];
 
-          if (!pNodes.ContainsKey(idx))
-            pNodes.Add(idx, new Dictionary<string, string>());
+          if (filter[idx][part] < minFreq)
+            continue;
 
-          string current;
-          if (pNodes[idx].ContainsKey(part))
-            current = pNodes[idx][part];
-          else
-          {
-            current = $"p{idx:D2}_{pNodes[idx].Count:D5}";
-            pNodes[idx].Add(part, current);
-          }          
+          var current = pNodes[idx][part];
 
-          stb.AppendLine($"\t\"{last}\" -> \"{current}\" [ label=\"{x.Value}\" penwidth={p.ToString(CultureInfo.CurrentCulture).Replace(",", ".")} weight={w} ];");
+          if (!string.IsNullOrWhiteSpace(last))
+            stb.AppendLine($"\t\"{last}\" -> \"{current}\" [ label=\"{x.Value}\" penwidth={p.ToString(CultureInfo.CurrentCulture).Replace(",", ".")} weight={w} ];");
+          
           last = current;
         }
       }
 
       stb.AppendLine();
 
-      stb.AppendLine($"main [ label=\"{Filter(root)}\" ];");
+      stb.AppendLine($"\tmain [ label=\"{Filter(root)}\" ];");
 
-      foreach (var p in pNodes)
-        foreach (var x in p.Value)
-          stb.AppendLine($"{x.Value} [ label=\"{Filter(x.Key)}\" ];");
+      foreach(var p in filter)
+        foreach(var f in p.Value)
+          if(f.Value >= minFreq)
+            stb.AppendLine($"\t{pNodes[p.Key][f.Key]} [ label=\"{Filter(f.Key)}\" ];");
 
       stb.AppendLine("}");
 
       return stb.ToString();
+    }
+
+    private void CalculatePositionFrequency(Dictionary<string, int> pre, Dictionary<string, int> post, out Dictionary<int, Dictionary<string, string>> pNodes, out Dictionary<int, Dictionary<string, int>> filter)
+    {
+      pNodes = new Dictionary<int, Dictionary<string, string>>();
+      filter = new Dictionary<int, Dictionary<string, int>>();
+
+      foreach (var x in pre)
+      {
+        var parts = x.Key.Split(' ');
+
+        for (var i = 0; i < parts.Length; i++)
+        {
+          var idx = (parts.Length - i) * -1;
+          string part = parts[i];
+
+          if (!pNodes.ContainsKey(idx))
+          {
+            pNodes.Add(idx, new Dictionary<string, string>());
+            filter.Add(idx, new Dictionary<string, int>());
+          }
+
+          if (!pNodes[idx].ContainsKey(part))
+            pNodes[idx].Add(part, $"p{idx:D2}_{pNodes[idx].Count:D5}");
+
+          if (filter[idx].ContainsKey(part))
+            filter[idx][part] += x.Value;
+          else
+            filter[idx].Add(part, x.Value);
+        }
+      }
+
+      foreach (var x in post)
+      {
+        var parts = x.Key.Split(' ');
+
+        for (var i = 0; i < parts.Length; i++)
+        {
+          var idx = i + 1;
+          string part = parts[i];
+
+          if (!pNodes.ContainsKey(idx))
+          {
+            pNodes.Add(idx, new Dictionary<string, string>());
+            filter.Add(idx, new Dictionary<string, int>());
+          }
+
+          if (!pNodes[idx].ContainsKey(part))
+            pNodes[idx].Add(part, $"p{idx:D2}_{pNodes[idx].Count:D5}");
+
+          if (filter[idx].ContainsKey(part))
+            filter[idx][part] += x.Value;
+          else
+            filter[idx].Add(part, x.Value);
+        }
+      }
     }
 
     private static string Filter(object content)
