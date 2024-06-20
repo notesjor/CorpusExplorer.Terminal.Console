@@ -19,28 +19,30 @@ namespace CorpusExplorer.Sdk.Action
   {
     public string Action => "central-snip-tree";
 
-    public string Description => "central-snip-tree [LAYER1] [PRE] [LAYER2] [POST] [WORD/FILE] - generates a digraph of matching [LAYER1][WORDS/FILE] based on [LAYER2] with [PRE] and [POST] fixes";
+    public string Description => "central-snip-tree [minFreq] [LAYER1] [PRE] [LAYER2] [POST] [WORDS/FILE] - generates a digraph of matching [LAYER1][WORDS/FILE] based on [LAYER2] with [PRE] and [POST] fixes (filter by [minFreq])";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      if (args.Length < 5)
+      if (args.Length < 6)
         return;
 
-      var block = selection.CreateBlock<CentralSnipBlock>();
-      block.Layer1Displayname = args[0];
-      block.NPre = int.Parse(args[1]);
-      block.Layer2Displayname = args[2];
-      block.NPost = int.Parse(args[3]);
+      int minFreq = int.Parse(args[0]);
 
-      var queries = args.Skip(4).ToList();
+      var block = selection.CreateBlock<CentralSnipBlock>();
+      block.Layer1Displayname = args[1];
+      block.NPre = int.Parse(args[2]);
+      block.Layer2Displayname = args[3];
+      block.NPost = int.Parse(args[4]);      
+
+      var queries = args.Skip(5).ToList();
       block.LayerQueries = FileQueriesHelper.ResolveFileQueries(queries);
 
       block.Calculate();
 
-      writer.WriteDirectThroughStream(ConvertToDigraph(string.Join(" ", block.LayerQueries), block.FrequencyPre, block.FrequencyPost));
+      writer.WriteDirectThroughStream(ConvertToDigraph(string.Join(" ", block.LayerQueries), minFreq, block.FrequencyPre, block.FrequencyPost));
     }
 
-    private string ConvertToDigraph(string root, Dictionary<string, int> pre, Dictionary<string, int> post)
+    private string ConvertToDigraph(string root, int minFreq, Dictionary<string, int> pre, Dictionary<string, int> post)
     {
       var stb = new StringBuilder();
       stb.AppendLine("digraph G {");
@@ -53,13 +55,16 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var x in pre)
       {
+        if (x.Value < minFreq)
+          continue;
+
         var parts = x.Key.Split(' ');
         string last = "";
 
         var p = (double)x.Value / max * 25d;
         if (p < 1)
           p = 1;
-        var w = (int)p;
+        var w = (int)p;        
 
         for (var i = 0; i < parts.Length; i++)
         {
@@ -88,6 +93,9 @@ namespace CorpusExplorer.Sdk.Action
 
       foreach (var x in post)
       {
+        if (x.Value < minFreq)
+          continue;
+
         var parts = x.Key.Split(' ');
 
         var p = (double)x.Value / max * 25d;
@@ -121,11 +129,11 @@ namespace CorpusExplorer.Sdk.Action
 
       stb.AppendLine();
 
-      stb.AppendLine($"main [ label=\"{Filter(root)}\"] weight=0 ]");
+      stb.AppendLine($"main [ label=\"{Filter(root)}\" ];");
 
       foreach (var p in pNodes)
         foreach (var x in p.Value)
-          stb.AppendLine($"{x.Value} [ label=\"{Filter(x.Key)}\" weight={p.Key} ]");
+          stb.AppendLine($"{x.Value} [ label=\"{Filter(x.Key)}\" ];");
 
       stb.AppendLine("}");
 
