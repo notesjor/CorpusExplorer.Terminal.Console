@@ -49,6 +49,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="path">Pfad des CEScript</param>
     public static void Process(string path)
     {
+      var watch = DateTime.Now;
+
       cescript script = null;
       try
       {
@@ -86,6 +88,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       }
 
       ConsoleHelper.PrintHeader();
+
+      var diff = DateTime.Now - watch;
+      System.Console.WriteLine($"TIME: {diff}");
       System.Console.WriteLine(Resources.XmlScriptSuccess);
     }
 
