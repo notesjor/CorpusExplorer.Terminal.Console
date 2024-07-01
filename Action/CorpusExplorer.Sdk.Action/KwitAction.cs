@@ -8,6 +8,8 @@ using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
+using CorpusExplorer.Sdk.Utils.Filter.Abstract;
+using CorpusExplorer.Sdk.Utils.Filter.Queries;
 using CorpusExplorer.Sdk.ViewModel;
 
 namespace CorpusExplorer.Sdk.Action
@@ -28,19 +30,62 @@ namespace CorpusExplorer.Sdk.Action
       queries.RemoveAt(0);
       queries.RemoveAt(0);
 
+      var query = GetQuery(args[0], ref queries);
+
       var vm = new TextFlowSearchViewModel
       {
         Selection = selection,
-        Layer1Displayname = args[0],
-        Layer2Displayname = args[1],
+        LayerDisplayname = args[1],
         MinFrequency = int.Parse(args[2]),
-        LayerQueryPhrase = queries,
+        LayerQuery = query,
         AutoJoin = true,
         HighlightCooccurrences = false
       };
       vm.Execute();
 
       writer.WriteDirectThroughStream(ConvertToDigraphHelper.Convert(vm.DiscoveredConnections.ToArray()));
+    }
+
+    private AbstractFilterQuery GetQuery(string layerDisplayname, ref List<string> queries)
+    {
+      var filter = new HashSet<string>{ "ANY", "FIRST", "SENTENCE", "PHRASE" };
+      if (!filter.Contains(queries[0]))
+        return new FilterQuerySingleLayerExactPhrase
+        {
+          LayerDisplayname = layerDisplayname,
+          LayerQueries = queries
+        };
+
+      var match = queries[0];
+      queries.RemoveAt(0);
+
+      switch (match)
+      {
+        case "ANY":
+          return new FilterQuerySingleLayerAnyMatch
+          {
+            LayerDisplayname = layerDisplayname,
+            LayerQueries = queries
+          };
+        case "FIRST":
+          return new FilterQuerySingleLayerFirstAndAnyOtherMatch
+          {
+            LayerDisplayname = layerDisplayname,
+            LayerQueries = queries
+          };
+        case "SENTENCE":
+          return new FilterQuerySingleLayerAllInOneSentence
+          {
+            LayerDisplayname = layerDisplayname,
+            LayerQueries = queries
+          };
+        default:
+          return new FilterQuerySingleLayerExactPhrase
+          {
+            LayerDisplayname = layerDisplayname,
+            LayerQueries = queries
+          };
+      }
     }
   }
 }

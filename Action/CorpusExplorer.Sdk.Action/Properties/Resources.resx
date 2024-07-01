@@ -235,7 +235,7 @@
     <value>kwic-sig [LAYER] [y/n] [WORDS] - KWIC with significance metrics - [WORDS] = space separated tokens - Enable HTML-Highlight [y/n]</value>
   </data>
   <data name="DescKwit" xml:space="preserve">
-    <value>kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order</value>
+    <value>kwit [LAYER1] [LAYER2] [minFREQ] {ANY/FIRST/SENTENCE/PHRASE} [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens. {A/F/S/P} = Serch Operator (default: PHRASE)</value>
   </data>
   <data name="DescLayerNames" xml:space="preserve">
     <value>layer-names - all available names for [LAYER]</value>

@@ -502,7 +502,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die kwit [LAYER1] [LAYER2] [minFREQ] [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens - all token in one sentence + given order ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die kwit [LAYER1] [LAYER2] [minFREQ] {ANY/FIRST/SENTENCE/PHRASE} [WORDS] - Builds a KWIT-Tree. Search all [WORDS] in [LAYER1] (with minimum frequency [minFREQ]) - Output in [LAYER2] - [WORDS] = space separated tokens. {A/F/S/P} = Serch Operator (default: PHRASE) ähnelt.
         /// </summary>
         internal static string DescKwit {
             get {
