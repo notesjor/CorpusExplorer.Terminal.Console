@@ -136,6 +136,14 @@
       <Project>{63f6b9f6-ff80-4764-bd45-109d549bf459}</Project>
       <Name>TFRES</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection.csproj">
+      <Project>{19f44ee4-3978-4fe0-9533-4042af0280af}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.FuzzyCloneDetection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.MachineLearning\CorpusExplorer.Sdk.Extern.MachineLearning.csproj">
+      <Project>{73acf853-0911-489c-a586-62ef6123a588}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.MachineLearning</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Plaintext\CorpusExplorer.Sdk.Extern.Plaintext.csproj">
       <Project>{7de57051-2f0e-4964-a341-579db1ec9e7f}</Project>
       <Name>CorpusExplorer.Sdk.Extern.Plaintext</Name>
@@ -151,10 +159,6 @@
     <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Core\CorpusExplorer.Core.csproj">
       <Project>{029fe5a6-9504-499a-9e0d-05754d44cbb1}</Project>
       <Name>CorpusExplorer.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection.csproj">
-      <Project>{19f44ee4-3978-4fe0-9533-4042af0280af}</Project>
-      <Name>CorpusExplorer.Sdk.Extern.FuzzyCloneDetection</Name>
     </ProjectReference>
     <ProjectReference Include="C:\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
       <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>

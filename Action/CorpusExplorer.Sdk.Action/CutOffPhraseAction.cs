@@ -12,9 +12,9 @@ namespace CorpusExplorer.Sdk.Action
 {
   public class CutOffPhraseAction : IAction
   {
-    public string Action => throw new NotImplementedException();
+    public string Action => "cut-off-phrase";
 
-    public string Description => throw new NotImplementedException();
+    public string Description => "cut-off-phrase [LAYER] [QUERY 1] [QUERY 2] - search on [LAYER] in one sentence and prints out the sequence betweet [Q1/2]";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
