@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -46,7 +47,7 @@ namespace CorpusExplorer.Sdk.Action
 
       protected override void WriteBody(DataTable table)
       {
-        foreach(DataRow row in table.Rows)
+        foreach (DataRow row in table.Rows)
           _dataTable.Rows.Add(row.ItemArray);
       }
 
@@ -96,29 +97,36 @@ namespace CorpusExplorer.Sdk.Action
       if (args.Length < 2)
         return;
 
-      var query = QueryParser.Parse(args[0]);
-      if (!(query is FilterQueryUnsupportedParserFeature))
-        return;
-
-      var selections = UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature)query);
-      if (selections == null)
-        return;
-
-      var nargs = new List<string>(args);
-      nargs.RemoveAt(0);
-      nargs.RemoveAt(0);
-
-      foreach (var s in selections)
+      try
       {
-        var output = path.Replace("{cluster}", string.IsNullOrWhiteSpace(s.Displayname) ? "NONE" : s.Displayname);
-        var directory = Path.GetDirectoryName(output);
-        if (!Directory.Exists(directory))
-          Directory.CreateDirectory(directory);
+        var query = QueryParser.Parse(args[0]);
+        if (!(query is FilterQueryUnsupportedParserFeature))
+          return;
 
-        if (File.Exists(output) && new FileInfo(output).Length > 0)
-          continue;
+        var selections = UnsupportedQueryParserFeatureHelper.Handle(selection, (FilterQueryUnsupportedParserFeature)query);
+        if (selections == null)
+          return;
 
-        action.ExecuteXmlScriptProcessorBypass(s, nargs.ToArray(), exporter, output);
+        var nargs = new List<string>(args);
+        nargs.RemoveAt(0);
+        nargs.RemoveAt(0);
+
+        foreach (var s in selections)
+        {
+          var output = path.Replace("{cluster}", string.IsNullOrWhiteSpace(s.Displayname) ? "NONE" : s.Displayname);
+          var directory = Path.GetDirectoryName(output);
+          if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+
+          if (File.Exists(output) && new FileInfo(output).Length > 0)
+            continue;
+
+          action.ExecuteXmlScriptProcessorBypass(s, nargs.ToArray(), exporter, output);
+        }
+      }
+      catch (Exception ex)
+      {
+        // ignore
       }
     }
 

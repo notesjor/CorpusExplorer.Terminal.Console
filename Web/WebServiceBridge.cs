@@ -398,13 +398,13 @@ namespace CorpusExplorer.Terminal.Console.Web
       switch (date)
       {
         case "C":
-          return new SelectionClusterGeneratorDateTimeCenturyOnlyValue();
+          return new SelectionClusterGeneratorDateTimeCentury();
         case "Y":
-          return new SelectionClusterGeneratorDateTimeYearOnlyValue();
+          return new SelectionClusterGeneratorDateTimeYear();
         default: // YM
-          return new SelectionClusterGeneratorDateTimeYearMonthOnlyValue();
+          return new SelectionClusterGeneratorDateTimeYearMonth();
         case "YMD":
-          return new SelectionClusterGeneratorDateTimeYearMonthDayOnlyValue();
+          return new SelectionClusterGeneratorDateTimeYearMonthDay();
       }
     }
 
