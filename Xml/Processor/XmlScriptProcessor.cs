@@ -1144,8 +1144,8 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               res.Add(i.Value);
               break;
             case directory i:
-              var files = Directory.GetFiles(i.Value, ValidateSearchFilter(i.filter), SearchOption.TopDirectoryOnly);
-              res.AddRange(files);
+              var filter = ValidateSearchFilter(i.filter);
+              res.AddRange(Directory.GetFiles(i.Value, filter, SearchOption.TopDirectoryOnly));
               break;
           }
         }
@@ -1159,7 +1159,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
     private static string ValidateSearchFilter(string iFilter)
     {
-      return iFilter.StartsWith("*") ? iFilter : iFilter.StartsWith(".") ? $"*{iFilter}" : $"*.{iFilter}";
+      return iFilter.Contains("*") ? iFilter : iFilter.StartsWith(".") ? $"*{iFilter}" : $"*.{iFilter}";
     }
 
     private class ExecuteActionItem
