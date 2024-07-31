@@ -28,18 +28,21 @@ namespace CorpusExplorer.Sdk.Action
         var l2 = arguments[0];
         arguments.RemoveAt(0);
 
+        var corresponding = new CorrespondingLayerValueFilterViewModel
+        {
+          Layer1Displayname = l1,
+          Layer2Displayname = l2,
+          AnyMatch = true,
+          Layer2ValueFilters = new HashSet<string>(arguments),
+          Selection = selection
+        };
+        corresponding.Execute();
+
         var vm = new KeywordPresetReferenceListViewModel
         {
-          Selection = selection, 
+          Selection = selection,
           LayerDisplayname = l1,
-          CorrespondingLayerValueFilter = new CorrespondingLayerValueFilterViewModel
-          {
-            Layer1Displayname = l1,
-            Layer2Displayname = l2,
-            AnyMatch = true,
-            Layer2ValueFilters = new HashSet<string>(arguments),
-            Selection = selection
-          }
+          CorrespondingLayerValueFilter = corresponding
         };
         vm.LoadRefList(rFile, int.Parse(colToken), int.Parse(colFreq));
         vm.Execute();

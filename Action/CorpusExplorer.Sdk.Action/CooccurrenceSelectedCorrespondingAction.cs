@@ -29,14 +29,7 @@ namespace CorpusExplorer.Sdk.Action
       arguments.RemoveAt(0);
       var layer2values = new HashSet<string>(arguments);
 
-      var vm = new CooccurrenceSelectiveViewModel
-      {
-        Selection = selection,
-        LayerDisplayname = layer1,
-        LayerQueries = new[] { layer1value }
-      };
-
-      vm.CorrespondingLayerValueFilter = new CorrespondingLayerValueFilterViewModel
+      var coresponding = new CorrespondingLayerValueFilterViewModel
       {
         Layer1Displayname = layer1,
         Layer2Displayname = layer2,
@@ -44,8 +37,15 @@ namespace CorpusExplorer.Sdk.Action
         Layer2ValueFilters = layer2values,
         Selection = selection
       };
-      vm.CorrespondingLayerValueFilter.Execute();
+      coresponding.Execute();
 
+      var vm = new CooccurrenceSelectiveViewModel
+      {
+        Selection = selection,
+        LayerDisplayname = layer1,
+        LayerQueries = new[] { layer1value },
+        CorrespondingLayerValueFilter = coresponding
+      };
       vm.Execute();
 
       writer.WriteTable(selection.Displayname, vm.GetDataTable());

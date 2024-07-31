@@ -24,17 +24,20 @@ namespace CorpusExplorer.Sdk.Action
       var any = bool.Parse(arguments[0]);
       arguments.RemoveAt(0);
 
+      var corresponding = new CorrespondingLayerValueFilterViewModel
+      {
+        Layer1Displayname = l1,
+        Layer2Displayname = l2,
+        AnyMatch = any,
+        Layer2ValueFilters = new HashSet<string>(arguments),
+        Selection = selection
+      };
+      corresponding.Execute();
+
       var vm = new DispersionViewModel
       {
         Selection = selection,
-        CorrespondingLayerValueFilter = new CorrespondingLayerValueFilterViewModel
-        {
-          Layer1Displayname = l1,
-          Layer2Displayname = l2,
-          AnyMatch = any,
-          Layer2ValueFilters = new HashSet<string>(arguments),
-          Selection = selection
-        },
+        CorrespondingLayerValueFilter = corresponding,
         LayerDisplayname = l1,
         MetadataKey = meta
       };
