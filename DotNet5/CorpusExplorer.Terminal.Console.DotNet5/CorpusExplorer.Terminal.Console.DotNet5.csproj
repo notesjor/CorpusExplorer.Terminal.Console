@@ -103,12 +103,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Telerik.Windows.Zip">
-      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for WPF 2024 Q1\Binaries\WPF45\Telerik.Windows.Zip.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
