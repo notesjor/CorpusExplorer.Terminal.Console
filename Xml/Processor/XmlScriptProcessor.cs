@@ -110,6 +110,9 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
             int page;
             Configuration.Encoding = int.TryParse(config.Value, out page) ? Encoding.GetEncoding(page) : Encoding.GetEncoding(config.Value);
             break;
+          case "buffer":
+            Configuration.IOBufferSize = int.Parse(config.Value);
+            break;
           case "cache":
             switch (config.Value)
             {
