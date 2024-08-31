@@ -259,7 +259,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                           var files = Directory.GetFiles(d.Value, d.filter);
                           Parallel.ForEach(files, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), file =>
                           {
-                            SessionRunner.Run(session, new[] { file }, i.type, d.delete);
+                            SessionRunner.Run(session, file, i.type, d.delete);
                           });
 
                           break;
@@ -382,8 +382,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
                 {
                   try
                   {
-                    var files = Directory.GetFiles(subDir, baseDirI.filter);
-                    SessionRunner.Run(session, files, i.type, baseDirI.delete);
+                    SessionRunner.Run(session, subDir, baseDirI.filter, i.type, baseDirI.delete);
                   }
                   catch (Exception ex)
                   {

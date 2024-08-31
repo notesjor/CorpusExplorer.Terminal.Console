@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
@@ -11,18 +9,59 @@ namespace CorpusExplorer.Terminal.Console.Helper
 {
   public static class SessionRunner
   {
-    public static void Run(session session, IEnumerable<string> importFilePaths, string type, bool delete)
+    /// <summary>
+    /// Importiert ein komplettes Verzeichnis und merged alle Korpora, die auf den Filter/Type passen und führt darauf die Session aus.
+    /// </summary>
+    /// <param name="session">Session</param>
+    /// <param name="importDirectory">Verzeichnis mit Korpora</param>
+    /// <param name="filter">Dateifilter (z. B. *.cec6)</param>
+    /// <param name="type">Import-Type</param>
+    /// <param name="delete">Dateien löschen?</param>
+    public static void Run(session session, string importDirectory, string filter, string type, bool delete)
     {
       Run(session, new import
       {
-        Items = importFilePaths.Select(x => new myFile
+        Items = new[]
         {
-          delete = delete,
-          Value = x
-        }).ToArray()
+          new directory
+          {
+            delete = delete,
+            Value = importDirectory,
+            filter = filter
+          }
+        },
+        type = type
       });
     }
 
+    /// <summary>
+    /// Importiert eine einzelne Datei (Korpus) und führt darauf die Session aus.
+    /// </summary>
+    /// <param name="session">Session</param>
+    /// <param name="importFilePath">Pfad zum Korpus</param>
+    /// <param name="type">Import-Type</param>
+    /// <param name="delete">Löschen?</param>
+    public static void Run(session session, string importFilePath, string type, bool delete)
+    {
+      Run(session, new import
+      {
+        Items = new[]
+        {
+          new myFile
+          {
+            delete = delete,
+            Value = importFilePath
+          }
+        },
+        type = type
+      });
+    }
+
+    /// <summary>
+    /// Wendet auf den Import die Session an.
+    /// </summary>
+    /// <param name="session">Session</param>
+    /// <param name="import">Import (enthält ggf. Dateien/Ordner und Hinweise zur Verarbeitung)</param>
     public static void Run(session session, import import)
     {
       Run(new session
@@ -42,6 +81,10 @@ namespace CorpusExplorer.Terminal.Console.Helper
       });
     }
 
+    /// <summary>
+    /// Führt eine Session aus.
+    /// </summary>
+    /// <param name="session">Session</param>
     public static void Run(session session)
     {
       string xml;
