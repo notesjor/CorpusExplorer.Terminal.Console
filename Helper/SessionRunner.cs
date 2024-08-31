@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
@@ -9,19 +11,15 @@ namespace CorpusExplorer.Terminal.Console.Helper
 {
   public static class SessionRunner
   {
-    public static void Run(session session, string importFilePath, string type, bool delete)
+    public static void Run(session session, IEnumerable<string> importFilePaths, string type, bool delete)
     {
       Run(session, new import
       {
-        Items = new[]
+        Items = importFilePaths.Select(x => new myFile
         {
-          new myFile
-          {
-            delete = delete,
-            Value = importFilePath
-          }
-        },
-        type = type
+          delete = delete,
+          Value = x
+        }).ToArray()
       });
     }
 
