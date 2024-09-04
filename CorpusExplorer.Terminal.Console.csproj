@@ -136,6 +136,10 @@
       <Project>{63f6b9f6-ff80-4764-bd45-109d549bf459}</Project>
       <Name>TFRES</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Binary\CorpusExplorer.Sdk.Extern.Binary.csproj">
+      <Project>{130da92c-9c08-44bc-b491-340c88056396}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.Binary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection.csproj">
       <Project>{19f44ee4-3978-4fe0-9533-4042af0280af}</Project>
       <Name>CorpusExplorer.Sdk.Extern.FuzzyCloneDetection</Name>
