@@ -378,11 +378,16 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
               case import i:
                 var baseDirI = i.Items.FirstOrDefault() as directory;
                 var subDirsI = Directory.GetDirectories(baseDirI.Value);
-                Parallel.ForEach(subDirsI, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel), subDir =>
+
+                Parallel.ForEach(subDirsI, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel, 2), subDir =>
                 {
                   try
                   {
-                    SessionRunner.Run(session, subDir, baseDirI.filter, i.type, baseDirI.delete);
+                    var files = Directory.GetFiles(subDir, baseDirI.filter);
+                    Parallel.ForEach(files, CustomParallelConfigurationHelper.UseCustomParallelConfiguration(session.sources.parallel, 2), file =>
+                    {
+                      SessionRunner.Run(session, file, i.type, baseDirI.delete);
+                    });
                   }
                   catch (Exception ex)
                   {

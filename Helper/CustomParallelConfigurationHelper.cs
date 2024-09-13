@@ -5,7 +5,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
 {
   public static class CustomParallelConfigurationHelper
   {
-    public static ParallelOptions UseCustomParallelConfiguration(string parallel)
+    public static ParallelOptions UseCustomParallelConfiguration(string parallel, int divide = 1)
     {
       try
       {
@@ -13,6 +13,8 @@ namespace CorpusExplorer.Terminal.Console.Helper
           return Configuration.ParallelOptions;
 
         var maxDegreeOfParallelism = int.Parse(parallel);
+        maxDegreeOfParallelism = maxDegreeOfParallelism / divide;
+
         if (maxDegreeOfParallelism > 1)
           return new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism };
         if (maxDegreeOfParallelism <= 0)

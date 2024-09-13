@@ -18,7 +18,7 @@ namespace CorpusExplorer.Sdk.Action
   public class PhraseCountAction : IAction
   {
     public string Action => "phrase-count";
-    public string Description => "phrase-count [LAYER] [WORDS+SPAN] - [WORDS] = space separated tokens - all token in one sentence + given order";
+    public string Description => "phrase-count [LAYER] [WORDS] - [WORDS] = space separated tokens - all token in one sentence + given order";
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
