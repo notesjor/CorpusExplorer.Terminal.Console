@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Action;
 using CorpusExplorer.Sdk.Ecosystem.Model;
@@ -186,8 +187,8 @@ namespace CorpusExplorer.Terminal.Console.Web
 
     protected override Server ConfigureServer(Server server)
     {
-      server.AddEndpoint(System.Net.Http.HttpMethod.Get, "/add/languages/", AvailableLanguagesRoute);
-      server.AddEndpoint(System.Net.Http.HttpMethod.Post, "/add/", AddRoute);
+      server.AddEndpoint(HttpMethod.Get, "/add/languages/", AvailableLanguagesRoute);
+      server.AddEndpoint(HttpMethod.Post, "/add/", AddRoute);
 
       if (!Directory.Exists("corpora"))
         Directory.CreateDirectory("corpora");
