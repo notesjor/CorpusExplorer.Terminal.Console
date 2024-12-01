@@ -13,7 +13,6 @@ using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
 using Microsoft.OpenApi.Models;
 using Tfres;
 using System.Collections.Generic;
-using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace CorpusExplorer.Terminal.Console.Web

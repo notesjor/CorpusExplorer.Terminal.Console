@@ -48,7 +48,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
@@ -80,9 +79,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -210,10 +207,6 @@
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
       <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>
       <Name>CorpusExplorer.Sdk</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Projekte-Kooperation\FuzzyHashing\Hyldahl.Hashing\Hyldahl.Hashing.csproj">
-      <Project>{6968101f-a3d4-4a14-a481-05e373cd5dc1}</Project>
-      <Name>Hyldahl.Hashing</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
