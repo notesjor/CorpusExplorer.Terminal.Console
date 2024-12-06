@@ -97,6 +97,7 @@
     <Compile Include="CooccurrenceSelectedCorrespondingAction.cs" />
     <Compile Include="CorrespondingValuesAction.cs" />
     <Compile Include="CrossFrequencyCorrespondingAction.cs" />
+    <Compile Include="CrossFrequencySelectAction.cs" />
     <Compile Include="CutOffPhraseAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />
     <Compile Include="DispersionAction.cs" />
