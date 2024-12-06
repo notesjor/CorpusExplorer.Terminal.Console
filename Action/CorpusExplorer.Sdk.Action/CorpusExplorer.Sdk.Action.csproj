@@ -104,6 +104,8 @@
     <Compile Include="DocumentHashAction.cs" />
     <Compile Include="DocumentSimilarityAction.cs" />
     <Compile Include="EditDistanceAction.cs" />
+    <Compile Include="Frequency1PerDocumentAction.cs" />
+    <Compile Include="Frequency1PerSentenceAction.cs" />
     <Compile Include="Frequency1RawAction.cs" />
     <Compile Include="Frequency1RawSelectAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
