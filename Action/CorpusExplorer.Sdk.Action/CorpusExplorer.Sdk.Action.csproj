@@ -87,12 +87,15 @@
     <Compile Include="Abstract\AbstractFilterAction.cs" />
     <Compile Include="AddTaggerAction.cs" />
     <Compile Include="BasicInformationAction.cs" />
+    <Compile Include="BurrowsDeltaAction.cs" />
     <Compile Include="CentralSnipAction.cs" />
     <Compile Include="ClusterAction.cs" />
     <Compile Include="ClusterListAction.cs" />
+    <Compile Include="CooccurrenceClassicAction.cs" />
     <Compile Include="CooccurrenceCorrespondingAction.cs" />
     <Compile Include="CooccurrenceCrossAction.cs" />
     <Compile Include="CooccurrenceCrossFullAction.cs" />
+    <Compile Include="CooccurrenceDiversityAction.cs" />
     <Compile Include="CooccurrencePolarisationAction.cs" />
     <Compile Include="CooccurrenceSelectedCorrespondingAction.cs" />
     <Compile Include="CorrespondingValuesAction.cs" />
