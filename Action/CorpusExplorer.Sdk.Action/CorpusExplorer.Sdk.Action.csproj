@@ -98,9 +98,11 @@
     <Compile Include="CooccurrenceDiversityAction.cs" />
     <Compile Include="CooccurrencePolarisationAction.cs" />
     <Compile Include="CooccurrenceSelectedCorrespondingAction.cs" />
+    <Compile Include="CorpusFiniteStateMachineAction.cs" />
     <Compile Include="CorrespondingValuesAction.cs" />
     <Compile Include="CrossFrequencyCorrespondingAction.cs" />
     <Compile Include="CrossFrequencySelectAction.cs" />
+    <Compile Include="CrossFrequencySelectRangeAction.cs" />
     <Compile Include="CutOffPhraseAction.cs" />
     <Compile Include="DisambiguationeAction.cs" />
     <Compile Include="DispersionAction.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Frequency1RawSelectAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
     <Compile Include="CentralSnipTreeAction.cs" />
+    <Compile Include="NGramCharAction.cs" />
     <Compile Include="Phrase2LayerCountAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />
     <Compile Include="Helper\ConvertToDigraphHelper.cs" />
@@ -187,13 +190,16 @@
     <Compile Include="QueryCountDocumentsAction.cs" />
     <Compile Include="QueryCountSentencesAction.cs" />
     <Compile Include="QueryListAction.cs" />
+    <Compile Include="ReadingEaseAction.cs" />
     <Compile Include="RemoveLayerAction.cs" />
     <Compile Include="RemoveMetaAction.cs" />
     <Compile Include="SentenceCountAction.cs" />
     <Compile Include="SizeAction.cs" />
+    <Compile Include="SkipgramAction.cs" />
     <Compile Include="StopwordListAction.cs" />
     <Compile Include="StyleBurrowsDeltaAction.cs" />
     <Compile Include="StyleNgramAction.cs" />
+    <Compile Include="TermDocumentMatrixAction.cs" />
     <Compile Include="TermFrequencyInverseDocumentFrequencyAction.cs" />
     <Compile Include="DocumentTermFrequencyAction.cs" />
     <Compile Include="TokenCountAction.cs" />
@@ -210,6 +216,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.NHunspell\CorpusExplorer.Sdk.Extern.NHunspell.csproj">
+      <Project>{0317C4F4-D9EF-43CF-8B3E-071D96543A3F}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.NHunspell</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj">
       <Project>{dc1b5a58-29da-476d-89f8-e73a1db11e52}</Project>
       <Name>CorpusExplorer.Sdk</Name>
