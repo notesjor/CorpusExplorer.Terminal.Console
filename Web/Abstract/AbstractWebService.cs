@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,8 +91,8 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       _documentation = AppendDefaultDocumentation(GetDocumentation()).ConvertToJson();
 
       _server = new Server(_ip, _port, OpenApiRoute, continueWith) { Timeout = _timeout };
-      _server.AddEndpoint(System.Net.Http.HttpMethod.Get, "/execute/actions/", ExecuteActionsRoute);
-      _server.AddEndpoint(System.Net.Http.HttpMethod.Post, "/execute/", ExecuteRoute);
+      _server.AddEndpoint(HttpMethod.Get, "/execute/actions/", ExecuteActionsRoute);
+      _server.AddEndpoint(HttpMethod.Post, "/execute/", ExecuteRoute);
       _server = ConfigureServer(_server);
       System.Console.WriteLine(_server != null ? "ready!" : "error!");
 

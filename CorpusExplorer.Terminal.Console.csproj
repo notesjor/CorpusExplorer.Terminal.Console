@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CorpusExplorer.Terminal.Console</RootNamespace>
     <AssemblyName>cec</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -68,7 +68,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -135,26 +134,6 @@
     <ProjectReference Include="..\..\Projekte-Kooperation\TfresWebserver\TefresWebserver\TFRES.csproj">
       <Project>{63f6b9f6-ff80-4764-bd45-109d549bf459}</Project>
       <Name>TFRES</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Binary\CorpusExplorer.Sdk.Extern.Binary.csproj">
-      <Project>{130da92c-9c08-44bc-b491-340c88056396}</Project>
-      <Name>CorpusExplorer.Sdk.Extern.Binary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection\CorpusExplorer.Sdk.Extern.FuzzyCloneDetection.csproj">
-      <Project>{19f44ee4-3978-4fe0-9533-4042af0280af}</Project>
-      <Name>CorpusExplorer.Sdk.Extern.FuzzyCloneDetection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.MachineLearning\CorpusExplorer.Sdk.Extern.MachineLearning.csproj">
-      <Project>{73acf853-0911-489c-a586-62ef6123a588}</Project>
-      <Name>CorpusExplorer.Sdk.Extern.MachineLearning</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Plaintext\CorpusExplorer.Sdk.Extern.Plaintext.csproj">
-      <Project>{7de57051-2f0e-4964-a341-579db1ec9e7f}</Project>
-      <Name>CorpusExplorer.Sdk.Extern.Plaintext</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj">
-      <Project>{6841c8ca-7c40-44c4-b5aa-fbc84fcb7293}</Project>
-      <Name>CorpusExplorer.Sdk.Extern.Xml</Name>
     </ProjectReference>
     <ProjectReference Include="Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj">
       <Project>{693d7071-5091-481f-b404-ac4772a0df60}</Project>
