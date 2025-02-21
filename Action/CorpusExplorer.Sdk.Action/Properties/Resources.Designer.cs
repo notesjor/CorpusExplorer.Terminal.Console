@@ -853,7 +853,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die token-list-select [LAYER] [REGEX] - list of all tokens in [LAYER] who are matching the [REGEX]-expression ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die token-list-select [LAYER] [REGEX/FILE] - list of all tokens in [LAYER] who are matching the [REGEX]-expression or [FILE] ähnelt.
         /// </summary>
         internal static string DescTokeListSelect {
             get {
