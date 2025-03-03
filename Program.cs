@@ -77,8 +77,50 @@ namespace CorpusExplorer.Terminal.Console
         }
     }
 
+    private class PInfo
+    {
+      public DateTime DateTimeStart { get; set; }
+      public DateTime DateTimeLoad { get; set; }
+
+      public double SizeAppInRam { get; set; }
+      public double SizeCorpusInRam { get; set; }
+      public double SizeMaxRamUse { get; set; }
+
+      public void Print()
+      {
+        var end = DateTime.Now;
+        System.Console.WriteLine($"RAM (app): {SizeAppInRam / 1024 / 1024}");
+        System.Console.WriteLine($"Load corpus: {(DateTimeLoad - DateTimeStart).Milliseconds}ms");
+        System.Console.WriteLine($"RAM (corpus): {SizeCorpusInRam / 1024 / 1024} MB");
+        System.Console.WriteLine($"Execute action: {(end - DateTimeLoad).Milliseconds}ms");
+        System.Console.WriteLine($"RAM (all): {SizeMaxRamUse / 1024 / 1024} MB");
+      }
+    }
+
+    private static PInfo _pInfo = null;
+
     private static void Execute(string[] args)
     {
+      if (args == null || args.Length == 0)
+      {
+        PrintHelp(true);
+        return;
+      }
+
+      // --> Start of dev-relevant arguments
+      if (args.Length > 0 && args[0] == "/PINFO")
+      {
+        var tmp = args.ToList();
+        tmp.RemoveAt(0);
+
+        args = tmp.ToArray();
+        _pInfo = new PInfo
+        {
+          DateTimeStart = DateTime.Now,
+          SizeAppInRam = GC.GetTotalMemory(false)
+        };
+      }
+
       if (args.Length > 0 && args[0] == "/WAIT")
       {
         System.Console.WriteLine("...PRESS ENTER TO CONTINUE...");
@@ -90,23 +132,21 @@ namespace CorpusExplorer.Terminal.Console
         args = tmp.ToArray();
       }
 
-      if (args == null || args.Length == 0)
-      {
-        PrintHelp(true);
-        return;
-      }
-
       if (args.Length == 1 && args[0] == "--github")
       {
         PrintDocs();
         return;
       }
+      // <-- End of dev-relevant arguments
 
-      if (args[0].StartsWith("WAIT:"))
+      if (args.Length > 0 && args[0] == "/WAIT")
       {
-        Wait(args[0]);
+        System.Console.WriteLine("...PRESS ENTER TO CONTINUE...");
+        System.Console.ReadLine();
+
         var tmp = args.ToList();
         tmp.RemoveAt(0);
+
         args = tmp.ToArray();
       }
 
@@ -226,8 +266,8 @@ namespace CorpusExplorer.Terminal.Console
           file = arg;
       }
 
-      #if Featherweight
-      #else
+#if Featherweight
+#else
       if (file.Contains("#"))
       {
         var ws = new WebService(_writer, ip, port, file, timeout);
@@ -238,7 +278,7 @@ namespace CorpusExplorer.Terminal.Console
         var ws = new WebService(_writer, ip, port, file, timeout);
         ws.Run();
       }
-      #endif
+#endif
     }
 
     private static void ExecuteDirect(string[] args)
@@ -253,10 +293,22 @@ namespace CorpusExplorer.Terminal.Console
       if (selection == null)
         return;
 
+      if(_pInfo != null)
+      {
+        _pInfo.DateTimeLoad = DateTime.Now;
+        _pInfo.SizeCorpusInRam = GC.GetTotalMemory(false);
+      }
+
       var temp = args.ToList();
       temp.RemoveAt(0); // CorpusFile (no longer needed)
       temp.RemoveAt(0); // Action (no longer needed)
       action.Execute(selection, temp.ToArray(), _writer);
+
+      if (_pInfo != null)
+      {
+        _pInfo.SizeMaxRamUse = GC.GetTotalMemory(false);
+        _pInfo.Print();
+      }
     }
 
     private static void ExecuteShell()
