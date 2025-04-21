@@ -888,65 +888,57 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
 
       // Erzeuge erste Abfrage
       var qs = new List<query>(queryGroup.query);
-      var selection = GenerateSelections_Compile(all, $"{prefix}{qs[0].Text.CleanXmlValue()}", qs[0].name).First()
-                                                                                                          .CorporaAndDocumentGuids
-                                                                                                          .ToDictionary(x => x.Key,
-                                                                                                                        x =>
-                                                                                                                          new
-                                                                                                                            HashSet
-                                                                                                                            <Guid
-                                                                                                                            >(x
-                                                                                                                               .Value));
+      var selections = GenerateSelections_Compile(all, $"{prefix}{qs[0].Text.CleanXmlValue()}", qs[0].name);
+      var merged = selections == null ? new Dictionary<Guid, HashSet<Guid>>() : selections.JoinToDictionary();
+
       qs.RemoveAt(0); // Entferne erste Abfrage aus der Liste
 
       // Führe alle Folgeabfragen aus.
       foreach (var query in qs)
       {
-        var temp = GenerateSelections_Compile(all, $"{prefix}{query.Text.CleanXmlValue()}", "").First()
-                                                                                               .CorporaAndDocumentGuids
-                                                                                               .ToDictionary(x => x.Key,
-                                                                                                             x =>
-                                                                                                               new
-                                                                                                                 HashSet
-                                                                                                                 <Guid
-                                                                                                                 >(x
-                                                                                                                    .Value));
+        selections = GenerateSelections_Compile(all, $"{prefix}{query.Text.CleanXmlValue()}", "");
+        var temp = selections == null ? new Dictionary<Guid, HashSet<Guid>>() : selections.JoinToDictionary();
+
         switch (queryGroup.@operator)
         {
           default:
           // ReSharper disable once RedundantCaseLabel
           case "and": // Ergebnisse müssen mit allen Abfragen übereinstimmen
-            var csels = selection.Keys.ToArray();
+            if (temp.Count == 0)
+            {
+              merged.Clear();
+              break;
+            }
+            var csels = merged.Keys.ToArray();
             foreach (var csel in csels)
             {
               if (!temp.ContainsKey(csel))
               {
-                selection.Remove(csel);
+                merged.Remove(csel);
                 continue;
               }
 
-              var dsels = selection[csel];
-              foreach (var dsel in dsels)
-                if (!temp.ContainsKey(dsel))
-                  selection[csel].Remove(dsel);
+              var dsels = merged[csel];
+              foreach (var dsel in dsels.Where(dsel => !temp.ContainsKey(dsel)))
+                merged[csel].Remove(dsel);
             }
 
             break;
           case "or": // Ergebnis trifft auf die erste oder eine Folgeabfrage zu
             foreach (var csel in temp)
             {
-              if (!selection.ContainsKey(csel.Key))
-                selection.Add(csel.Key, new HashSet<Guid>());
+              if (!merged.ContainsKey(csel.Key))
+                merged.Add(csel.Key, new HashSet<Guid>());
               foreach (var dsel in csel.Value)
-                if (!selection[csel.Key].Contains(dsel))
-                  selection[csel.Key].Add(dsel);
+                if (!merged[csel.Key].Contains(dsel))
+                  merged[csel.Key].Add(dsel);
             }
 
             break;
         }
       }
 
-      res.Add(key, new[] { all.Create(selection, key, false) });
+      res.Add(key, new[] { all.Create(merged, key, false) });
     }
 
     /// <summary>
