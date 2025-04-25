@@ -885,56 +885,73 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
         return;
 
       var prefix = string.IsNullOrEmpty(queryGroup.prefix) ? string.Empty : queryGroup.prefix;
+      var qs = new List<query>(queryGroup.query);
 
       // Erzeuge erste Abfrage
-      var qs = new List<query>(queryGroup.query);
-      var selections = GenerateSelections_Compile(all, $"{prefix}{qs[0].Text.CleanXmlValue()}", qs[0].name);
-      var merged = selections == null ? new Dictionary<Guid, HashSet<Guid>>() : selections.JoinToDictionary();
+      Dictionary<Guid, HashSet<Guid>> merged;
+      Selection[] selections;
+
+      try
+      {
+        selections = GenerateSelections_Compile(all, $"{prefix}{qs[0].Text.CleanXmlValue()}", qs[0].name);
+        merged = selections == null ? new Dictionary<Guid, HashSet<Guid>>() : selections.JoinToDictionary();
+      }
+      catch
+      {
+        merged = new Dictionary<Guid, HashSet<Guid>>();
+      }
 
       qs.RemoveAt(0); // Entferne erste Abfrage aus der Liste
 
       // Führe alle Folgeabfragen aus.
       foreach (var query in qs)
       {
-        selections = GenerateSelections_Compile(all, $"{prefix}{query.Text.CleanXmlValue()}", "");
-        var temp = selections == null ? new Dictionary<Guid, HashSet<Guid>>() : selections.JoinToDictionary();
-
-        switch (queryGroup.@operator)
+        try
         {
-          default:
-          // ReSharper disable once RedundantCaseLabel
-          case "and": // Ergebnisse müssen mit allen Abfragen übereinstimmen
-            if (temp.Count == 0)
-            {
-              merged.Clear();
-              break;
-            }
-            var csels = merged.Keys.ToArray();
-            foreach (var csel in csels)
-            {
-              if (!temp.ContainsKey(csel))
+          selections = GenerateSelections_Compile(all, $"{prefix}{query.Text.CleanXmlValue()}", "");
+          var temp = selections == null ? new Dictionary<Guid, HashSet<Guid>>() : selections.JoinToDictionary();
+
+          switch (queryGroup.@operator)
+          {
+            default: // "and": // Ergebnisse müssen mit allen Abfragen übereinstimmen
+              if (temp.Count == 0)
               {
-                merged.Remove(csel);
-                continue;
+                merged.Clear();
+                break;
               }
+              var csels = merged.Keys.ToArray();
+              foreach (var csel in csels)
+              {
+                if (!temp.ContainsKey(csel))
+                {
+                  merged.Remove(csel);
+                  continue;
+                }
 
-              var dsels = merged[csel];
-              foreach (var dsel in dsels.Where(dsel => !temp.ContainsKey(dsel)))
-                merged[csel].Remove(dsel);
-            }
+                var dsels = merged[csel];
+                foreach (var dsel in dsels.Where(dsel => !temp.ContainsKey(dsel)))
+                  merged[csel].Remove(dsel);
+              }
+              break;
+            case "or": // Ergebnis trifft auf die erste oder eine Folgeabfrage zu
+              foreach (var csel in temp)
+              {
+                if (!merged.ContainsKey(csel.Key))
+                  merged.Add(csel.Key, new HashSet<Guid>());
+                foreach (var dsel in csel.Value)
+                  if (!merged[csel.Key].Contains(dsel))
+                    merged[csel.Key].Add(dsel);
+              }
+              break;
+          }
+        }
+        catch
+        {
+          if (queryGroup.@operator != "and") 
+            continue;
 
-            break;
-          case "or": // Ergebnis trifft auf die erste oder eine Folgeabfrage zu
-            foreach (var csel in temp)
-            {
-              if (!merged.ContainsKey(csel.Key))
-                merged.Add(csel.Key, new HashSet<Guid>());
-              foreach (var dsel in csel.Value)
-                if (!merged[csel.Key].Contains(dsel))
-                  merged[csel.Key].Add(dsel);
-            }
-
-            break;
+          merged.Clear();
+          break;
         }
       }
 
