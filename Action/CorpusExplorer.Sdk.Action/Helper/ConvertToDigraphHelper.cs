@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CorpusExplorer.Sdk.Action.Helper
 {
   public static class ConvertToDigraphHelper
   {
-    public static string Convert(Tuple<string, int, string>[] connections)
+    public static string Convert(Dictionary<string, Dictionary<string, double>> connections)
+     => Convert((from connection in connections from connection2 in connection.Value select new Tuple<string, int, string>(connection.Key, (int)connection2.Value, connection2.Key)));
+
+    public static string Convert(IEnumerable<Tuple<string, int, string>> connections)
     {
-      if (connections == null || connections.Length == 0)
+      if (connections == null || !connections.Any())
         return string.Empty;
 
       var stb = new StringBuilder();
