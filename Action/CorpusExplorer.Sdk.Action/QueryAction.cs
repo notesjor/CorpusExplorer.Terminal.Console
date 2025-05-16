@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using CorpusExplorer.Sdk.Action.Abstract;
+using CorpusExplorer.Sdk.Action.Helper;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
@@ -38,11 +39,10 @@ namespace CorpusExplorer.Sdk.Action
           return null;
 
         var query = QueryParser.Parse(args[0]);
-        if (query is FilterQueryUnsupportedParserFeature feature)
-        {
-          // UnsupportedQueryParserFeatureHelper.Handle(selection, feature, args[1], writer); - Macht hier keinen Sinn
-          return null;
-        }
+        if (query is FilterQueryUnsupportedParserFeature q)
+          return q.MetaLabel == "<:RANDOM:>" 
+            ? UnsupportedQueryParserFeatureHelper.Handle(selection, q, args[1]).First().ToCorpus() 
+            : null;
 
         res = selection.Create(new[] {query}, Path.GetFileNameWithoutExtension(path), false);
       }
