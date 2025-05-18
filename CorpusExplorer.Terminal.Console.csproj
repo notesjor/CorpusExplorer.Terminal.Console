@@ -135,6 +135,18 @@
       <Project>{63f6b9f6-ff80-4764-bd45-109d549bf459}</Project>
       <Name>TFRES</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Json\CorpusExplorer.Sdk.Extern.Json.csproj">
+      <Project>{dd54a9b0-80a9-4dd6-83a6-65359086ce18}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Plaintext\CorpusExplorer.Sdk.Extern.Plaintext.csproj">
+      <Project>{7de57051-2f0e-4964-a341-579db1ec9e7f}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.Plaintext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj">
+      <Project>{6841c8ca-7c40-44c4-b5aa-fbc84fcb7293}</Project>
+      <Name>CorpusExplorer.Sdk.Extern.Xml</Name>
+    </ProjectReference>
     <ProjectReference Include="Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj">
       <Project>{693d7071-5091-481f-b404-ac4772a0df60}</Project>
       <Name>CorpusExplorer.Sdk.Action</Name>
