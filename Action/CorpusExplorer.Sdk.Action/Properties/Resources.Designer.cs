@@ -547,7 +547,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die remove-layer [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die layer-remove [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information. ähnelt.
         /// </summary>
         internal static string DescLayerRemove {
             get {
