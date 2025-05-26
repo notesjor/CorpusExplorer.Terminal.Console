@@ -4,6 +4,7 @@ using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
 using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.Model.Extension;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Sdk.Action
@@ -17,8 +18,6 @@ namespace CorpusExplorer.Sdk.Action
     {
       if (args.Length != 3)
         return;
-
-      selection.LayerRename(args[0], args[1]);
         
       var output = args[2].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
@@ -33,7 +32,10 @@ namespace CorpusExplorer.Sdk.Action
       if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
         Directory.CreateDirectory(dir);
 
-      exporter.Export(selection, path);
+      var corpus = selection.ToCorpus();
+      corpus.LayerRename(args[0], args[1]);
+
+      exporter.Export(corpus, path);
     }
   }
 }
