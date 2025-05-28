@@ -219,6 +219,7 @@
     <Compile Include="StopwordListAction.cs" />
     <Compile Include="StyleBurrowsDeltaAction.cs" />
     <Compile Include="StyleNgramAction.cs" />
+    <Compile Include="TelerikLicense.cs" />
     <Compile Include="TermDocumentMatrixAction.cs" />
     <Compile Include="TermFrequencyInverseDocumentFrequencyAction.cs" />
     <Compile Include="DocumentTermFrequencyAction.cs" />

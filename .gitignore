@@ -252,3 +252,4 @@ paket-files/
 *.sln.iml
 *.gz
 *.whl
+TelerikLicense.cs
