@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
+using CorpusExplorer.Sdk.Helper;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
@@ -35,7 +36,7 @@ namespace CorpusExplorer.Sdk.Action
 
         foreach (var x in pair.Value)
           if (dict.ContainsKey(x.Key))
-            row[dict[x.Key]] = x.Value?.ToString();
+            row[dict[x.Key]] = x.Value?.ToStringSafe();
 
         dt.Rows.Add(row);
       }

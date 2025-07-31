@@ -1,10 +1,11 @@
+using CorpusExplorer.Sdk.Action.Properties;
+using CorpusExplorer.Sdk.Addon;
+using CorpusExplorer.Sdk.Helper;
+using CorpusExplorer.Sdk.Model;
+using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using CorpusExplorer.Sdk.Action.Properties;
-using CorpusExplorer.Sdk.Addon;
-using CorpusExplorer.Sdk.Model;
-using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Sdk.Action
 {
@@ -28,7 +29,7 @@ namespace CorpusExplorer.Sdk.Action
       foreach (var pair in selection.DocumentMetadata)
       {
         var items = new List<object> { pair.Key.ToString("N") };
-        items.AddRange(columns.Select(x => pair.Value.TryGetValue(x, out var v) ? v?.ToString() : null));
+        items.AddRange(columns.Select(x => pair.Value.TryGetValue(x, out var v) ? v?.ToStringSafe() : null));
         dt.Rows.Add(items.ToArray());
       }
 
