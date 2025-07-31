@@ -15,20 +15,20 @@ namespace CorpusExplorer.Sdk.Action
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      var columns = selection.GetDocumentMetadataPrototypeOnlyPropertiesAndTypes();
-      if (columns.ContainsKey(Resources.Guid))
+      var columns = new HashSet<string>(selection.GetDocumentMetadataPrototypeOnlyProperties());
+      if (columns.Contains(Resources.Guid))
         columns.Remove(Resources.Guid);
 
       var dt = new DataTable();
       dt.Columns.Add(Resources.Guid, typeof(string));
       foreach (var column in columns)
-        dt.Columns.Add(column.Key, column.Value);
+        dt.Columns.Add(column, typeof(string));
 
       dt.BeginLoadData();
       foreach (var pair in selection.DocumentMetadata)
       {
         var items = new List<object> { pair.Key.ToString("N") };
-        items.AddRange(columns.Select(column => pair.Value.ContainsKey(column.Key) ? pair.Value[column.Key] : null));
+        items.AddRange(columns.Select(x => pair.Value.TryGetValue(x, out var v) ? v?.ToString() : null));
         dt.Rows.Add(items.ToArray());
       }
 
