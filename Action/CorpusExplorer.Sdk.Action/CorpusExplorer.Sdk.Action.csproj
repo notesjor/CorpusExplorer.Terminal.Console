@@ -136,6 +136,10 @@
     <Compile Include="Frequency1RawSelectAction.cs" />
     <Compile Include="Frequency2RawAction.cs" />
     <Compile Include="CentralSnipTreeAction.cs" />
+    <Compile Include="GuidOfCorpusAction.cs" />
+    <Compile Include="GuidOfDocumentAction.cs" />
+    <Compile Include="GuidOfLayerAction.cs" />
+    <Compile Include="GuidOfSelectionAction.cs" />
     <Compile Include="KwitFrequencyAction.cs" />
     <Compile Include="NGramCharAction.cs" />
     <Compile Include="Phrase2LayerCountAction.cs" />
