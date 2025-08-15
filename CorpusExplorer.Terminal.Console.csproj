@@ -193,7 +193,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Security.Permissions">
-      <Version>9.0.6</Version>
+      <Version>9.0.8</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
