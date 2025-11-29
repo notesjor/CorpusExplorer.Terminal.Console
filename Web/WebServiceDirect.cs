@@ -17,7 +17,7 @@ using CorpusExplorer.Terminal.Console.Properties;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebServiceDirect;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Newtonsoft.Json;
 using Tfres;
 
@@ -205,13 +205,13 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/execute/", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Post, new OpenApiOperation
+                  HttpMethod.Post, new OpenApiOperation
                   {
                     Description = "Executes a command against a corpus (defined by corpusId)",
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
@@ -220,16 +220,16 @@ namespace CorpusExplorer.Terminal.Console.Web
                           "Executes a command against the complete corpus or a sub-corpus (defined by GUIDs)",
                         Schema = new OpenApiSchema
                         {
-                          Type = "object",
-                          Properties = new Dictionary<string, OpenApiSchema>
+                          Type = JsonSchemaType.Object,
+                          Properties = new Dictionary<string, IOpenApiSchema>
                           {
-                            {"action", new OpenApiSchema {Type = "string"}},
+                            {"action", new OpenApiSchema {Type = JsonSchemaType.String}},
                             {
                               "arguments",
                               new OpenApiSchema
-                                {Type = "object", AdditionalProperties = new OpenApiSchema {Type = "string"}}
+                                {Type = JsonSchemaType.Object, AdditionalProperties = new OpenApiSchema {Type = JsonSchemaType.String}}
                             },
-                            {"corpusId", new OpenApiSchema {Type = "string"}}
+                            {"corpusId", new OpenApiSchema {Type = JsonSchemaType.String}}
                           }
                         }
                       }
@@ -246,10 +246,10 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/add/langauges/", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Get, new OpenApiOperation
+                  HttpMethod.Get, new OpenApiOperation
                   {
                     Description = string.Format(Resources.WebHelpListAvailableLanguages, Url),
                     Responses = new OpenApiResponses
@@ -264,13 +264,13 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/add/", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Post, new OpenApiOperation
+                  HttpMethod.Post, new OpenApiOperation
                   {
                     Description = Resources.WebHelpAddCorpus,
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
@@ -278,28 +278,28 @@ namespace CorpusExplorer.Terminal.Console.Web
                         Description = Resources.WebHelpAddCorpus,
                         Schema = new OpenApiSchema
                         {
-                          Type = "object",
-                          Properties = new Dictionary<string, OpenApiSchema>
+                          Type = JsonSchemaType.Object,
+                          Properties = new Dictionary<string, IOpenApiSchema>
                           {
                             {
                               "language",
                               new OpenApiSchema
-                                {Type = "string", Description = "see /add/language/ for all available languages."}
+                                {Type = JsonSchemaType.String, Description = "see /add/language/ for all available languages."}
                             },
                             {
                               "documents", new OpenApiSchema
                               {
-                                Type = "array",
+                                Type = JsonSchemaType.Array,
                                 Items = new OpenApiSchema
                                 {
-                                  Type = "object", 
-                                  Properties = new Dictionary<string, OpenApiSchema>
+                                  Type = JsonSchemaType.Object,
+                                  Properties = new Dictionary<string, IOpenApiSchema>
                                   {
-                                    {"text", new OpenApiSchema {Type = "string"}},
+                                    {"text", new OpenApiSchema {Type = JsonSchemaType.String}},
                                     {
                                       "metadata",
                                       new OpenApiSchema
-                                        {Type = "object", AdditionalProperties = new OpenApiSchema {Type = "string"}}
+                                        {Type = JsonSchemaType.Object, AdditionalProperties = new OpenApiSchema {Type = JsonSchemaType.String}}
                                     },
                                   }
                                 }

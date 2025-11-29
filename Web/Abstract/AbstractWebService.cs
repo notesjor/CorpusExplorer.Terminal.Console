@@ -11,7 +11,7 @@ using CorpusExplorer.Sdk.Utils.WaitBehaviour;
 using CorpusExplorer.Sdk.Utils.WaitBehaviour.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Response;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Newtonsoft.Json;
 using Tfres;
 
@@ -137,10 +137,10 @@ namespace CorpusExplorer.Terminal.Console.Web.Abstract
       document.Paths.Add("/execute/actions/",
        new OpenApiPathItem
        {
-         Operations = new Dictionary<OperationType, OpenApiOperation>
+         Operations = new Dictionary<HttpMethod, OpenApiOperation>
          {
             {
-              OperationType.Get, new OpenApiOperation
+              HttpMethod.Get, new OpenApiOperation
               {
                 Description= $"Lists all available actions for {Url}execute/",
                 Responses = new OpenApiResponses

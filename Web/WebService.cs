@@ -10,10 +10,11 @@ using CorpusExplorer.Terminal.Console.Properties;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
-using Microsoft.OpenApi.Models;
 using Tfres;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.OpenApi;
+using System.Net.Http;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -89,13 +90,13 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/execute/", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Post, new OpenApiOperation
+                  HttpMethod.Post, new OpenApiOperation
                   {
                     Description = string.Format(Resources.WebHelpExecute, Url),
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
@@ -103,12 +104,12 @@ namespace CorpusExplorer.Terminal.Console.Web
                         Description = "Executes a command against the complete corpus or a sub-corpus (defined by GUIDs)",
                         Schema = new OpenApiSchema
                         {
-                          Type = "object",
-                          Properties = new Dictionary<string, OpenApiSchema>
+                          Type = JsonSchemaType.Object,
+                          Properties = new Dictionary<string, IOpenApiSchema>
                           {
-                            {"action", new OpenApiSchema {Type = "string"}},
-                            {"arguments", new OpenApiSchema {Type = "object", AdditionalProperties = new OpenApiSchema {Type = "string"}}},
-                            {"guids", new OpenApiSchema {Type = "array", Items = new OpenApiSchema{Type ="string"}}}
+                            {"action", new OpenApiSchema {Type = JsonSchemaType.String}},
+                            {"arguments", new OpenApiSchema {Type = JsonSchemaType.Object, AdditionalProperties = new OpenApiSchema {Type = JsonSchemaType.String}}},
+                            {"guids", new OpenApiSchema {Type = JsonSchemaType.Array, Items = new OpenApiSchema{Type = JsonSchemaType.String}}}
                           }
                         }
                       }

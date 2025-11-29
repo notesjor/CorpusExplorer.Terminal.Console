@@ -10,7 +10,6 @@ using CorpusExplorer.Terminal.Console.Properties;
 using CorpusExplorer.Terminal.Console.Web.Abstract;
 using CorpusExplorer.Terminal.Console.Web.Model;
 using CorpusExplorer.Terminal.Console.Web.Model.Request.WebService;
-using Microsoft.OpenApi.Models;
 using Tfres;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,6 +31,7 @@ using System.Net.Http.Headers;
 using CorpusExplorer.Terminal.Universal;
 using CorpusExplorer.Sdk.Model.Cache;
 using System.Net.Sockets;
+using Microsoft.OpenApi;
 
 namespace CorpusExplorer.Terminal.Console.Web
 {
@@ -379,7 +379,7 @@ namespace CorpusExplorer.Terminal.Console.Web
         if (socket == null)
           return;
 
-        socket.KeepOpenAndRecive(context, (msg) => 
+        socket.KeepOpenAndRecive(context, (msg) =>
         {
           // ignore msg from client
         }).Wait();
@@ -493,31 +493,31 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/fast/norm", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Get, new OpenApiOperation
+                  HttpMethod.Get, new OpenApiOperation
                   {
                     Description = "Returns norm-data",
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
                         Name = "selection", In = ParameterLocation.Query, Required = false,
                         Description = "If empty - Return information about all loaded corpora/snapshot. If value is 'date' you get a clustred result by date (see date-meta).",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                       new OpenApiParameter
                       {
                         Name = "date-meta", In = ParameterLocation.Query, Required = false,
                         Description = "default (not set): Datum - please specify a DateTime-Value.",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                       new OpenApiParameter
                       {
                         Name = "info", In = ParameterLocation.Query, Required = false,
                         Description = "If selection = date - you can set info to simple and then you only get the token per day as a response",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       }
                     },
                     Responses = new OpenApiResponses
@@ -532,19 +532,19 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/fast/count", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Get, new OpenApiOperation
+                  HttpMethod.Get, new OpenApiOperation
                   {
                     Description = "Count occurrences of q",
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
                         Name = "q", In = ParameterLocation.Query, Required = true,
                         Description = "Please URL-Encode complex data like umlauts or spaces",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       }
                     },
                     Responses = new OpenApiResponses
@@ -559,19 +559,19 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/fast/kwic", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Get, new OpenApiOperation
+                  HttpMethod.Get, new OpenApiOperation
                   {
                     Description = "Get KWICs of q",
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
                         Name = "q", In = ParameterLocation.Query, Required = true,
                         Description = "Please URL-Encode complex data like umlauts or spaces",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       }
                     },
                     Responses = new OpenApiResponses
@@ -586,37 +586,37 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/fast/fulltext", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Get, new OpenApiOperation
+                  HttpMethod.Get, new OpenApiOperation
                   {
                     Description = "Returns fulltext of a document",
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
                         Name = "guid", In = ParameterLocation.Query, Required = true,
                         Description = "As you can see in /fast/kwic - you get a DocumentID. Use this here as the parameter",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                       new OpenApiParameter
                       {
                         Name = "sentence", In = ParameterLocation.Query, Required = false,
                         Description = "0-based id of the sentence - if this and from/to is not set, you get the complete document",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                       new OpenApiParameter
                       {
                         Name = "from", In = ParameterLocation.Query, Required = false,
                         Description = "For a more fine grained result (as sentence)",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                       new OpenApiParameter
                       {
                         Name = "to", In = ParameterLocation.Query, Required = false,
                         Description = "For a more fine grained result (as sentence)",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       }
                     },
                     Responses = new OpenApiResponses
@@ -631,19 +631,19 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/fast/cooc", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Get, new OpenApiOperation
+                  HttpMethod.Get, new OpenApiOperation
                   {
                     Description = "Get cooccurrences of q",
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
                         Name = "q", In = ParameterLocation.Query, Required = true,
                         Description = "Please URL-Encode complex data like umlauts or spaces. Note: The first requests generates the model, all following requests are fast.",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       }
                     },
                     Responses = new OpenApiResponses
@@ -658,31 +658,31 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/fast/timeline", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Get, new OpenApiOperation
+                  HttpMethod.Get, new OpenApiOperation
                   {
                     Description = "Returns a timeline of the query q",
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
                         Name = "q", In = ParameterLocation.Query, Required = true,
                         Description = "Please URL-Encode complex data like umlauts or spaces. Note: The first requests generates the model, all following requests are fast.",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                       new OpenApiParameter
                       {
                         Name = "date", In = ParameterLocation.Query, Required = false,
                         Description = "You can use the values C, Y, YM and YMD. This referes to century (C), year (Y), month (YM) and day (YMD)",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                       new OpenApiParameter
                       {
                         Name = "date-meta", In = ParameterLocation.Query, Required = false,
                         Description = "If you prefer another meta-data field then 'Datum' please use this parameter",
-                        Schema = new OpenApiSchema {Type = "string"}
+                        Schema = new OpenApiSchema {Type = JsonSchemaType.String}
                       },
                     },
                     Responses = new OpenApiResponses
@@ -697,13 +697,13 @@ namespace CorpusExplorer.Terminal.Console.Web
           {
             "/execute/", new OpenApiPathItem
             {
-              Operations = new Dictionary<OperationType, OpenApiOperation>
+              Operations = new Dictionary<HttpMethod, OpenApiOperation>
               {
                 {
-                  OperationType.Post, new OpenApiOperation
+                  HttpMethod.Post, new OpenApiOperation
                   {
                     Description = string.Format(Resources.WebHelpExecute, Url),
-                    Parameters = new List<OpenApiParameter>
+                    Parameters = new List<IOpenApiParameter>
                     {
                       new OpenApiParameter
                       {
@@ -711,12 +711,12 @@ namespace CorpusExplorer.Terminal.Console.Web
                         Description = "Executes a command against all corpora",
                         Schema = new OpenApiSchema
                         {
-                          Type = "object",
-                          Properties = new Dictionary<string, OpenApiSchema>
+                          Type = JsonSchemaType.Object,
+                          Properties = new Dictionary<string, IOpenApiSchema>
                           {
-                            {"action", new OpenApiSchema {Type = "string"}},
-                            {"arguments", new OpenApiSchema {Type = "object", AdditionalProperties = new OpenApiSchema {Type = "string"}}},
-                            {"guids", new OpenApiSchema {Type = "array", Items = new OpenApiSchema{Type ="string"}}}
+                            {"action", new OpenApiSchema {Type = JsonSchemaType.String}},
+                            {"arguments", new OpenApiSchema {Type = JsonSchemaType.Object, AdditionalProperties = new OpenApiSchema {Type = JsonSchemaType.String}}},
+                            {"guids", new OpenApiSchema {Type = JsonSchemaType.Array, Items = new OpenApiSchema{Type =JsonSchemaType.String}}}
                           }
                         }
                       }
