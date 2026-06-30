@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>cec</AssemblyName>
     <RootNamespace>CorpusExplorer.Terminal.Console</RootNamespace>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <PlatformTarget>AnyCPU</PlatformTarget>
+	<NuGetAudit>false</NuGetAudit>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -107,12 +108,6 @@
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj" />
     <ProjectReference Include="..\..\Action\CorpusExplorer.Sdk.Action\CorpusExplorer.Sdk.Action.csproj" />
     <ProjectReference Include="C:\Projekte-Kooperation\TfresWebserver\TefresWebserver\TFRES.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Telerik.Licensing.Runtime">
-      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for WinForms 2025 Q2\Bin48\Telerik.Licensing.Runtime.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

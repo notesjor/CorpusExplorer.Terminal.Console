@@ -51,10 +51,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>CorpusExplorerNextSnKey2019.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28Linux%29|AnyCPU'">
     <OutputPath>bin\Debug %28Linux%29\</OutputPath>
@@ -128,7 +129,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="CorpusExplorerNextSnKey2019.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Projekte-Kooperation\TfresWebserver\TefresWebserver\TFRES.csproj">
