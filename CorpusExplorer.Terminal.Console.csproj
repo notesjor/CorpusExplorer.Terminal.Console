@@ -86,6 +86,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TelerikLicense.cs" />
     <Compile Include="Web\Abstract\AbstractWebService.cs" />
     <Compile Include="Web\Helper\QuerySystemHelper.cs" />
     <Compile Include="Web\Model\ActionFilter.cs" />
