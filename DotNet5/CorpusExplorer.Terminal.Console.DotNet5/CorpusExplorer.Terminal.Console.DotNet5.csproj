@@ -111,6 +111,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Telerik.Licensing.Runtime">
+      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for WPF 2026 Q2\Binaries.NoXaml\WPF462\Telerik.Licensing.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
