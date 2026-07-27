@@ -504,7 +504,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
       {
         if (!string.IsNullOrEmpty(a.mode) && a.mode == "merge")
         {
-          var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), query, a.type);
+          var outputPath = PathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), query, a.type);
 
           // Wurde eine Action bereits abgeschlossen? - Falls ja, breche ab.
           if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
@@ -580,7 +580,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
           // Nicht parallelisierbare Action - da sonst die Ausgabe durcheinander gerät.
           foreach (var selection in selections)
           {
-            var outputPath = OutputPathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), selection.Displayname, a.type);
+            var outputPath = PathBuilder(a.output.Value, scriptFilename, CorpusNameBuilder(selections), selection.Displayname, a.type);
 
             // Wurde die Action bereits abgeschlossen? - Falls ja, breche ab.
             if (!allowOverride && File.Exists(outputPath) && new FileInfo(outputPath).Length > 0)
@@ -1038,7 +1038,7 @@ namespace CorpusExplorer.Terminal.Console.Xml.Processor
     /// <param name="selectionName">Schnappschussname</param>
     /// <param name="action">Action</param>
     /// <returns>Ausgabepfad</returns>
-    private static string OutputPathBuilder(string path, string scriptFilename, string corpusName, string selectionName, string action)
+    private static string PathBuilder(string path, string scriptFilename, string corpusName, string selectionName, string action)
     {
       corpusName = overrideCorpusName ?? corpusName;
       var res = path.Replace("{all}", "{script}_{corpus}_{query}_{action}")
