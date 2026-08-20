@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CorpusExplorer.Sdk.Action.Properties;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Ecosystem.Model;
@@ -9,18 +11,18 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Sdk.Action
 {
-  public class RemoveLayerAction : IAction
+  public class MetaRemoveAction : IAction
   {
-    public string Action => "remove-layer";
-    public string Description => Resources.DescLayerRemove;
+    public string Action => "meta-remove";
+    public string Description => Resources.DescMetaRemove;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args.Length != 2)
         return;
 
-      var layer = args[0];
-      selection.LayerDelete(layer);
+      var meta = args[0];
+      selection.RemoveDocumentMetadata(meta);
 
       var output = args[1].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)

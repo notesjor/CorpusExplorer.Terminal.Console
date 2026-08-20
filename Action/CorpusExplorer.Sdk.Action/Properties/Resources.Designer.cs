@@ -19,7 +19,7 @@ namespace CorpusExplorer.Sdk.Action.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -628,11 +628,20 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-remove [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information. ähnelt.
         /// </summary>
         internal static string DescMetaRemove {
             get {
                 return ResourceManager.GetString("DescMetaRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-rename [META - name old] [META - name new] [OUTPUT] - rename a specific metadata value for every document. see help section [OUTPUT] for more information. ähnelt.
+        /// </summary>
+        internal static string DescMetaRename {
+            get {
+                return ResourceManager.GetString("DescMetaRename", resourceCulture);
             }
         }
         

@@ -86,10 +86,10 @@
     <PackageReference Include="K4os.Compression.LZ4" Version="1.3.8" />
     <PackageReference Include="K4os.Compression.LZ4.Streams" Version="1.3.8" />
     <PackageReference Include="K4os.Hash.xxHash" Version="1.0.8" />
-    <PackageReference Include="Microsoft.OpenApi" Version="3.7.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="3.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
-    <PackageReference Include="System.Security.Permissions" Version="10.0.9" />
+    <PackageReference Include="System.Security.Permissions" Version="10.0.11" />
   </ItemGroup>
 
   <ItemGroup>
@@ -112,7 +112,7 @@
 
   <ItemGroup>
     <Reference Include="Telerik.Licensing.Runtime">
-      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for WPF 2026 Q2\Binaries.NoXaml\WPF462\Telerik.Licensing.Runtime.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Progress\Telerik UI for WinForms 2026 Q3\Bin48\Telerik.Licensing.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -436,7 +436,10 @@
     <value>layer-remove [LAYER] [OUTPUT] - remove a layer. see help section [OUTPUT] for more information.</value>
   </data>
   <data name="DescMetaRemove" xml:space="preserve">
-    <value>remove-meta [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information.</value>
+    <value>meta-remove [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information.</value>
+  </data>
+  <data name="DescMetaRename" xml:space="preserve">
+    <value>meta-rename [META - name old] [META - name new] [OUTPUT] - rename a specific metadata value for every document. see help section [OUTPUT] for more information.</value>
   </data>
   <data name="DescMetaImport" xml:space="preserve">
     <value>meta-import [FILE] [OUTPUT] - export document metadata for external cleaning/usage</value>

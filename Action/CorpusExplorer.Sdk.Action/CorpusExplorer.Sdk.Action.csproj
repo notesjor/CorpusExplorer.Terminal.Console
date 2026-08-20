@@ -100,16 +100,16 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.WinControls, Version=2026.2.702.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\lib\RCWF\2026.2.702.48\Telerik.WinControls.dll</HintPath>
+    <Reference Include="Telerik.WinControls, Version=2026.3.812.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\lib\RCWF\2026.3.812.48\Telerik.WinControls.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.WinControls.UI, Version=2026.2.702.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\lib\RCWF\2026.2.702.48\Telerik.WinControls.UI.dll</HintPath>
+    <Reference Include="Telerik.WinControls.UI, Version=2026.3.812.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\lib\RCWF\2026.3.812.48\Telerik.WinControls.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="TelerikCommon, Version=2026.2.702.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\lib\RCWF\2026.2.702.48\TelerikCommon.dll</HintPath>
+    <Reference Include="TelerikCommon, Version=2026.3.812.48, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\lib\RCWF\2026.3.812.48\TelerikCommon.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -153,6 +153,7 @@
     <Compile Include="GuidOfLayerAction.cs" />
     <Compile Include="GuidOfSelectionAction.cs" />
     <Compile Include="KwitFrequencyAction.cs" />
+    <Compile Include="MetaRenameAction.cs" />
     <Compile Include="NGramCharAction.cs" />
     <Compile Include="Phrase2LayerCountAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />
@@ -228,8 +229,7 @@
     <Compile Include="QueryCountSentencesAction.cs" />
     <Compile Include="QueryListAction.cs" />
     <Compile Include="ReadingEaseAction.cs" />
-    <Compile Include="RemoveLayerAction.cs" />
-    <Compile Include="RemoveMetaAction.cs" />
+    <Compile Include="MetaRemoveAction.cs" />
     <Compile Include="SentenceCountAction.cs" />
     <Compile Include="SizeAction.cs" />
     <Compile Include="SkipgramAction.cs" />

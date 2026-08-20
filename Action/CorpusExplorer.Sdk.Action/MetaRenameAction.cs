@@ -9,20 +9,21 @@ using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
 
 namespace CorpusExplorer.Sdk.Action
 {
-  public class RemoveMetaAction : IAction
+  public class MetaRenameAction : IAction
   {
-    public string Action => "remove-meta";
-    public string Description => Resources.DescMetaRemove;
+    public string Action => "meta-rename";
+    public string Description => Resources.DescMetaRename;
 
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
-      if (args.Length != 2)
+      if (args.Length != 3)
         return;
 
-      var meta = args[0];
-      selection.RemoveDocumentMetadata(meta);
+      var metaOld = args[0];
+      var metaNew = args[1];
+      selection.RenameDocumentMetadata(metaOld, metaNew);
 
-      var output = args[1].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
+      var output = args[2].Split(Splitter.Hashtag, StringSplitOptions.RemoveEmptyEntries);
       if (output.Length != 2)
         return;
 

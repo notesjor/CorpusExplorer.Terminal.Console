@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CorpusExplorer.Sdk.Addon;
 using CorpusExplorer.Sdk.Blocks;
 using CorpusExplorer.Sdk.Blocks.Range;
 using CorpusExplorer.Sdk.Model;
 using CorpusExplorer.Sdk.Utils.DataTableWriter.Abstract;
-using CorpusExplorer.Sdk.ViewModel;
 
 namespace CorpusExplorer.Sdk.Action
 {
   public class CooccurrenceClassicAction : IAction
   {
-    public string Action => "cooccurrence-classic [LAYER] [FROM] [TO]";
-    public string Description { get; }
+    public string Action => "cooccurrence-classic";
+    public string Description => "cooccurrence-classic [LAYER] [FROM] [TO] [QUERY] - calculates co-occurrence of a layer in a given range (token) for a given query (classic co-occurrence)";
     public void Execute(Selection selection, string[] args, AbstractTableWriter writer)
     {
       if (args.Length < 4)
