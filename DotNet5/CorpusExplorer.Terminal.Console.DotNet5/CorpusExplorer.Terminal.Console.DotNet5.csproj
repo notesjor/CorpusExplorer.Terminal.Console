@@ -103,6 +103,7 @@
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.NHunspell\CorpusExplorer.Sdk.Extern.NHunspell.csproj" />
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Plaintext\CorpusExplorer.Sdk.Extern.Plaintext.csproj" />
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.SocialMedia\CorpusExplorer.Sdk.Extern.SocialMedia.csproj" />
+    <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.SpaCy\CorpusExplorer.Sdk.Extern.SpaCy.csproj" />
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Wiki\CorpusExplorer.Sdk.Extern.Wiki.csproj" />
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk.Extern.Xml\CorpusExplorer.Sdk.Extern.Xml.csproj" />
     <ProjectReference Include="..\..\..\..\Projekte\CorpusExplorerV2\CorpusExplorer\CorpusExplorer.Sdk\CorpusExplorer.Sdk.csproj" />
