@@ -154,6 +154,7 @@
     <Compile Include="GuidOfSelectionAction.cs" />
     <Compile Include="KwitFrequencyAction.cs" />
     <Compile Include="MetaRenameAction.cs" />
+    <Compile Include="MetaSetAction.cs" />
     <Compile Include="NGramCharAction.cs" />
     <Compile Include="Phrase2LayerCountAction.cs" />
     <Compile Include="Frequency3RawAction.cs" />

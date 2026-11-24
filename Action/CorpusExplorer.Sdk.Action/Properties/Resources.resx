@@ -438,6 +438,9 @@
   <data name="DescMetaRemove" xml:space="preserve">
     <value>meta-remove [META] [OUTPUT] - remove a specific metadata value for every document. see help section [OUTPUT] for more information.</value>
   </data>
+  <data name="DescMetaSet" xml:space="preserve">
+    <value>meta-set [META-NAME] [META-VALUE] [OUTPUT] - set [META-NAME] to every document with the default [META-VALUE]. see help section [OUTPUT] for more information.</value>
+  </data>
   <data name="DescMetaRename" xml:space="preserve">
     <value>meta-rename [META - name old] [META - name new] [OUTPUT] - rename a specific metadata value for every document. see help section [OUTPUT] for more information.</value>
   </data>

@@ -646,6 +646,15 @@ namespace CorpusExplorer.Sdk.Action.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die meta-set [META-NAME] [META-VALUE] [OUTPUT] - set [META-NAME] to every document with the default [META-VALUE]. see help section [OUTPUT] for more information. ähnelt.
+        /// </summary>
+        internal static string DescMetaSet {
+            get {
+                return ResourceManager.GetString("DescMetaSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die meta-unique - count unique values for all categories ähnelt.
         /// </summary>
         internal static string DescMetaUnique {
