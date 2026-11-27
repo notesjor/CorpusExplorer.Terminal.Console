@@ -96,7 +96,7 @@ namespace CorpusExplorer.Terminal.Console.Helper
         xml = Encoding.UTF8.GetString(ms.ToArray());
       }
 
-      var assembly = Assembly.GetExecutingAssembly().Location;
+      var assembly = AppContext.BaseDirectory;
 
       // start process of the same exe and write to stdin
       var process = new System.Diagnostics.Process
